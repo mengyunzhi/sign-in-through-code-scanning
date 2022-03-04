@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>学生端</title>
+    <title>查看班级</title>
     <link rel="stylesheet" type="text/css" href="/thinkphp5/public/static/bootstrap-3.3.5-dist/css/bootstrap.min.css">
 </head>
 
@@ -20,8 +20,7 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li  class="active"><a href="">我的课程</a></li>
-                            <li><a href="">扫码签到</a></li>
+                            <li  class="active"><a href="">(课程名称)</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="">注销</a></li>
@@ -40,28 +39,44 @@
             <table class="table table-hover table-bordered">
                 <tr class="info">
                     <th>序号</th>
-                    <th>课程名称</th>
+                    <th>上课班级</th>
                     <th>操作</th>
                 </tr>
                 <tr>
                     <td>1</td>
-                    <td>程序设计</td>
-                    <td><a class="btn btn-sm btn-primary" href="">&nbsp;查看成绩</a></td>
+                    <td>计科211</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{:url('student')}">&nbsp;查看学生</a>
+                        <a class="btn btn-sm btn-info" href="">&nbsp;生成成绩单</a>
+                        <a class="btn btn-sm btn-danger" href="">&nbsp;删除</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>2</td>
-                    <td>高等数学</td>
-                    <td><a class="btn btn-sm btn-primary" href="">&nbsp;查看成绩</a></td>
+                    <td>计科212</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{:url('student')}">&nbsp;查看学生</a>
+                    	<a class="btn btn-sm btn-info" href="">&nbsp;生成成绩单</a>
+                    	<a class="btn btn-sm btn-danger" href="">&nbsp;删除</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>3</td>
-                    <td>数据结构</td>
-                    <td><a class="btn btn-sm btn-primary" href="">&nbsp;查看成绩</a></td>
+                    <td>计科213</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{:url('student')}">&nbsp;查看学生</a>
+                        <a class="btn btn-sm btn-info" href="">&nbsp;生成成绩单</a>
+                        <a class="btn btn-sm btn-danger" href="">&nbsp;删除</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>4</td>
-                    <td>数学分析</td>
-                    <td><a class="btn btn-sm btn-primary" href="">&nbsp;查看成绩</a></td>
+                    <td>重修班</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="{:url('student')}">&nbsp;查看学生</a>
+                        <a class="btn btn-sm btn-info" href="">&nbsp;生成成绩单</a>
+                        <a class="btn btn-sm btn-danger" href="">&nbsp;删除</a>
+                    </td>
                 </tr>
             </table>
         </div>

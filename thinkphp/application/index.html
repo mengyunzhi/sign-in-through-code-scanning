@@ -4,13 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <title>{block name="title"}标题{/block}</title>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/bootstrap-3.4.1-dist/css/bootstrap.min.css">
 </head>
 
 <body class="container">
 
-{block name="nav"}
- <!-- 菜单导航 -->
+    <!-- 菜单导航 -->
     <div class="row">
         <div class="col-md-12">
             <nav class="navbar navbar-default" role="navigation">
@@ -18,15 +17,14 @@
                     <div class="navbar-header">
                         <a class="navbar-brand" href="http://www.mengyunzhi.com">梦云智</a>
                     </div>
-                    <ul class="nav navbar-nav">
-                        <li><a href="{:url('admin_center/index')}">管理端</a></li>
-                        <li class=""><a href="{:url('admin_teacher/index')}">教师管理</a></li>
-                        <li><a href="{:url('admin_klass/index')}">班级管理</a></li>
-                        <li><a href="{:url('admin_course/index')}">课程管理</a></li>
-                        <li><a href="{:url('admin_room/index')}">教室管理</a></li>
-                    </ul>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class=""><a href="{:url('Teacher/index')}">教师管理</a></li>
+                            <li><a href="{:url('Student/index')}">学生管理</a></li>
+                            <li><a href="{:url('Klass/index')}">班级管理</a></li>
+                            <li><a href="{:url('Course/index')}">课程管理</a></li>
+                        </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="{:url('Login/index')}">注销</a></li>
                         </ul>
@@ -37,8 +35,8 @@
             </nav>
         </div>
     </div>
-<!-- /菜单导航 -->
-{/block}
+    <!-- /菜单导航 -->
+
 
     <div class="row">
         <div class="col-md-12">
