@@ -1,22 +1,27 @@
 {extend name="index"/}
 {block name="title"}
-添加班级
+添加学生
 {/block}
-
 {block name="search"}
 {/block}
 {block name="content"}
 <form class="">
   <div class="form-group row">
-    <label for="name" class="col-sm-1 col-form-label">班级名称</label>
+    <label for="name" class="col-sm-1 col-form-label">学生姓名</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" id="name" name="name">
     </div>
   </div>
   <div class="form-group row">
-    <label for="numberOfStudents" class="col-sm-1 col-form-label">学生人数</label>
+    <label for="sex" class="col-sm-1 col-form-label">性别</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="numberOfStudents" name="numberOfStudents">
+      <input type="text" class="form-control" id="sex" name="sex">
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="sno" class="col-sm-1 col-form-label">学号</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="sno" name="sno">
     </div>
   </div>
   <div class="form-group row">

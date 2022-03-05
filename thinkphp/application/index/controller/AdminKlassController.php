@@ -12,4 +12,23 @@ class AdminKlassController extends Controller
 	{
 		return $this->fetch();
 	}
+
+	public function add() {
+		return $this->fetch();
+	}
+
+	public function edit() {
+		return $this->fetch();
+	}
+
+	public function klassMembers() {
+		return $this->fetch();
+	}
+
+	public function studentAdd() {
+		return $this->fetch();
+	}
+	public function studentEdit() {
+		return $this->fetch();
+	}
 }

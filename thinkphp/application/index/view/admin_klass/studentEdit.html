@@ -1,16 +1,15 @@
 {extend name="index"/}
 {block name="title"}
-修改教师信息
+添加学生
 {/block}
-
 {block name="search"}
 {/block}
 {block name="content"}
 <form class="">
   <div class="form-group row">
-    <label for="name" class="col-sm-1 col-form-label">姓名</label>
+    <label for="name" class="col-sm-1 col-form-label">学生姓名</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="name" name="name" value="张三">
+      <input type="text" class="form-control" id="name" name="name" value="小明">
     </div>
   </div>
   <div class="form-group row">
@@ -20,17 +19,20 @@
     </div>
   </div>
   <div class="form-group row">
-    <label for="username" class="col-sm-1 col-form-label">用户名</label>
+    <label for="sno" class="col-sm-1 col-form-label">学号</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="username" name="username" value="zhangsan">
+      <input type="text" class="form-control" id="sno" name="sno" value="010">
     </div>
   </div>
   <div class="form-group row">
     <div class="col-sm-10">
-      <button type="submit" class="btn btn-primary">Sign in</button>
+      <button type="submit" class="btn btn-primary">确定</button>
     </div>
   </div>
 </form>
+{/block}
+{block name="page"}
+{/block}
 {/block}
 {block name="page"}
 {/block}
