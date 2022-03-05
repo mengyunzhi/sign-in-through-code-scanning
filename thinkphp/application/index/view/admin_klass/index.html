@@ -6,7 +6,7 @@
 <hr />
 <div class="row">
     <div class="col-md-3">
-        <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加班级</a>
+        <a href="{:url('add')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加班级</a>
     </div>
 </div>
 <hr />
@@ -24,9 +24,9 @@
         <td>计2022</td>
         <td>20</td>
         <td>
-            <a href="" class="btn btn-primary">修改班级信息</a> &nbsp;&nbsp;
-            <a href="" class="btn btn-success">查看班级成员</a> &nbsp;&nbsp;
-            <a href="" class="btn btn-danger">删除</a>
+            <a href="{:url('edit')}" class="btn btn-primary">修改班级信息</a> &nbsp;&nbsp;
+            <a href="{:url('classMembers')}" class="btn btn-success">查看班级成员</a> &nbsp;&nbsp;
+            <a href="{:url('delete')}" class="btn btn-danger">删除</a>
         </td>
     </tr>
 </table>

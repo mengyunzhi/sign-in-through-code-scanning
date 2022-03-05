@@ -12,4 +12,6 @@ class AdminCenterController extends Controller
 	{
 		return $this->fetch();
 	}
+
+	
 }
