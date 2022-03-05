@@ -14,30 +14,4 @@ class TeacherController extends Controller
         // 将数据返回给用户
         return $htmls;
     }
-
-    public function klass()
-    {
-        // 取回打包后的数据
-        $htmls = $this->fetch();
-
-        // 将数据返回给用户
-        return $htmls;
-    }
-
-    public function student()
-    {
-        // 取回打包后的数据
-        $htmls = $this->fetch();
-
-        // 将数据返回给用户
-        return $htmls;
-    }
-    public function fraction()
-    {
-        // 取回打包后的数据
-        $htmls = $this->fetch();
-
-        // 将数据返回给用户
-        return $htmls;
-    }
 }
