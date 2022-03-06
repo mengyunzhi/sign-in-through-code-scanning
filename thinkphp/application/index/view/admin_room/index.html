@@ -20,15 +20,17 @@
         <th>可容纳人数</th>
         <th>操作</th>
     </tr>
+    {volist name="rooms" id="_room" key="key"}
     <tr>
-        <td>1</td>
-        <td>A301</td>
-        <td>100</td>
+        <td>{$key}</td>
+        <td>{$_room->name}</td>
+        <td>{$_room->capacity}</td>
         <td>
             <a href="{:url('edit')}" class="btn btn-primary">修改教室信息</a> &nbsp;&nbsp;
             <a href="" class="btn btn-danger">删除</a>
         </td>
     </tr>
+    {/volist}
 </table>
 {/block}
 {block name="page"}

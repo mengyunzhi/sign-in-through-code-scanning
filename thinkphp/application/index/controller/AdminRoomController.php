@@ -1,5 +1,7 @@
 <?php
 namespace app\index\controller;
+use app\common\model\Room;
+use think\Request;
 use think\Controller;
 
 /**
@@ -10,6 +12,8 @@ class AdminRoomController extends Controller
 	
 	public function index() 
 	{
+		$rooms = Room::paginate();
+		$this->assign('rooms', $rooms);
 		return $this->fetch();
 	}
 
