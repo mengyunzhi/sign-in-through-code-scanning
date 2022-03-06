@@ -19,16 +19,18 @@
         <th>人数</th>
         <th>操作</th>
     </tr>
+    {volist name="klasses" id="_klass" key="key"}
     <tr>
-        <td>1</td>
-        <td>计2022</td>
-        <td>20</td>
+        <td>{$key}</td>
+        <td>{$_klass->name}</td>
+        <td>{$_klass->number}</td>
         <td>
             <a href="{:url('edit')}" class="btn btn-primary">修改班级信息</a> &nbsp;&nbsp;
             <a href="{:url('klassMembers')}" class="btn btn-success">查看班级成员</a> &nbsp;&nbsp;
             <a href="{:url('delete')}" class="btn btn-danger">删除</a>
         </td>
     </tr>
+    {/volist}
 </table>
 {/block}
 {block name="page"}
