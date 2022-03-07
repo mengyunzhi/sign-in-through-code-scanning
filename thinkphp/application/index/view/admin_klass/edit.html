@@ -6,22 +6,24 @@
 {block name="search"}
 {/block}
 {block name="content"}
-<form class="">
+<form action="{:url('update')}" method="post">
+  <input type="hidden" name="id" value="{:$Klass->id}">
   <div class="form-group row">
     <label for="name" class="col-sm-1 col-form-label">班级名称</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="name" name="name" value="计2022">
+      <input type="text" class="form-control" id="name" name="name" value="{:$Klass->name}">
     </div>
   </div>
   <div class="form-group row">
     <label for="number" class="col-sm-1 col-form-label">学生人数</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="number" name="number" value="30">
+      <input type="text" class="form-control" id="number" name="number" value="{:$Klass->number}">
     </div>
   </div>
   <div class="form-group row">
     <div class="col-sm-10">
       <button type="submit" class="btn btn-primary">确定</button>
+      <a href="{:url('index')}" class="btn btn-primary">返回</a>
     </div>
   </div>
 </form>
