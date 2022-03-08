@@ -32,6 +32,7 @@ class AdminTeacherController extends Controller
 		$teacher = Request::instance()->post();
 		$id = Request::instance()->post('id/d');
 		$Teacher = Teacher::get($id);
+        $Teacher = new Teacher;
 		$state = $Teacher->validate(true)->isUpdate(true)->save($teacher);
 		if ($state === false) 
         {

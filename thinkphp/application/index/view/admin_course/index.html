@@ -7,6 +7,7 @@
 <div class="row">
     <div class="col-md-3">
         <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;导出所有课程</a>
+        <a href="{:url('add')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加课程</a>
     </div>
 </div>
 <hr />
@@ -26,8 +27,9 @@
         <th>64</th>
         <th>张三</th>
         <td>
-            <a href="" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
-            <a href="" class="btn btn-danger">删除</a>
+            <a href="{:url('edit')}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
+            <a href="{:url('courseDetail')}" class="btn btn-success">查看详情</a>&nbsp;&nbsp;
+            <a href="" class="btn btn-danger">删除</a>&nbsp;&nbsp;
         </td>
     </tr>
 </table>
