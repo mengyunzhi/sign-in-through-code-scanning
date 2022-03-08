@@ -44,7 +44,7 @@ class AdminRoomController extends Controller
 
         $room = new room();
         $room->name = $postData['name'];
-        $room->maxnumber = $postData['maxnumber'];
+        $room->capacity = $postData['capacity'];
         if ($room->validate(true)->save() === false) 
         {
             $message = '操作失败:' . $room->getError();
@@ -64,7 +64,7 @@ class AdminRoomController extends Controller
         if (!is_null($room)) {
             // 写入要更新的数据
         	$room->name = $postData['name'];
-        	$room->maxnumber = $postData['maxnumber'];
+        	$room->capacity = $postData['capacity'];
 
             // 更新
             if (false === $room->validate(true)->save()) {
