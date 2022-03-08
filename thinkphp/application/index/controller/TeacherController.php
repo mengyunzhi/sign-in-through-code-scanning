@@ -64,4 +64,36 @@ class TeacherController extends Controller
 
         return $htmls;
     }
+
+    public function klassAdd() {
+        $htmls = $this->fetch();
+
+        return $htmls;
+    }
+
+    public function studentAdd() {
+        $htmls = $this->fetch();
+
+        return $htmls;
+    }
+
+    public function QRCodeOpen() {
+        return $this->success('二维码开放成功', url('coursestart'));
+    }
+
+    public function QRCodeView() {
+        $htmls = $this->fetch();
+
+        return $htmls;
+    }
+
+    public function SignInStudent() {
+        $htmls = $this->fetch();
+
+        return $htmls;
+    }
+
+    public function CourseEnd() {
+        return $this->success('课程已结束', url('index'));
+    }
 }
