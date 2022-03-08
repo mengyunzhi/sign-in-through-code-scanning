@@ -76,7 +76,7 @@ class Response
         $type = empty($type) ? 'null' : strtolower($type);
 
         $class = false !== strpos($type, '\\') ? $type : '\\think\\response\\' . ucfirst($type);
-        if (class_exists($class)) {
+        if (class_exists($class) && is_array($data)) {
             $response = new $class($data, $code, $header, $options);
         } else {
             $response = new static($data, $code, $header, $options);
