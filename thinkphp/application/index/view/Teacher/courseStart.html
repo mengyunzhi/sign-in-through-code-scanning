@@ -17,6 +17,64 @@
 {block name="search"}
 {/block}
 {block name="content"}
+
+<div class="row">
+    <div class="col col-md-6">
+        <div class="col-sm-12">
+          <a href="{:url('index')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>&nbsp&nbsp
+        </div>
+        <hr>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col-md-3">项</th>
+              <th scope="col-md-3">内容</th>
+              <th scope="col-md-3">其他</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>课程名称</td>
+              <td>程序设计</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>项目1</td>
+              <td>c语言</td>
+              <td>学时:16</td>
+            </tr>
+
+            <tr>
+              <td>项目2</td>
+              <td>java语言</td>
+              <td>学时:16</td>
+            </tr>
+            <tr>
+              <td>项目3</td>
+              <td>c++语言</td>
+              <td>学时:16</td>
+            </tr>
+
+            <tr>
+              <td>rank<br>(用于自动关联课程)</td>
+              <td>26</td>
+              <td><a href="{:url('rankEdit')}">修改rank值</a></td>
+            </tr>
+
+            <tr>
+              <td class="navbar-brand col-md-3 info">当前课程</td>
+              <td class="navbar-brand col-md-5 info">java语言</td>
+              <td class="navbar-brand col-md-4 info"></td>
+            </tr>
+
+          </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
   <div class="form-group row">
     <div class="col-sm-10">
       <a href="{:url('QRCodeOpen')}" type="submit" class="btn btn-primary">开放学生端签到二维码</a>
