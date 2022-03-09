@@ -27,5 +27,8 @@ class AdminCourseController extends Controller
 	public function programAdd() {
 		return $this->fetch();
 	}
+	public function courseTimeAdd() {
+		return $this->fetch();
+	}
 
 }
