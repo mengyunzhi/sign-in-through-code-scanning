@@ -9,6 +9,11 @@ class TestController extends Controller
 
     public function index() 
     {
+        $a = '1';
+        var_dump($a);
+        $a = (int) $a;
+        var_dump($a);
+        die();
         return $this->fetch();
     }
 

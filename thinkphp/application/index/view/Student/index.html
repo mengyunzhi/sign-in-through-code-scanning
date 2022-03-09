@@ -29,59 +29,66 @@
 
 {block name="content"}
 <table class="table table-hover table-bordered">
+            <thead>
                 <tr class="info">
                     <th>序号</th>
                     <th>课程名称</th>
                     <th>教师</th>
                     <th>教室</th>
-                    <th>课程时间(1.2为每周一第二节)</th>
+                    <th>课程时间</th>
                     <th>操作</th>
                 </tr>
+            </thead>
+            <tbody>
                 <tr>
-                    <td>1</td>
-                    <td>程序设计</td>
-                    <td>张三</td>
-                    <td>A301</td>
-                    <td>7-13周,1.2&3,4</td>
-                    <td>
+                    <td rowspan="2">1</td>
+                    <td rowspan="2">高等数学</td>
+                    <td rowspan="2">李四</td>
+                    <td rowspan="2">B301</td>
+                    <td>5-12周>>星期三>>1-2节</td>
+                    <td rowspan="2">
                         <a class="btn btn-sm btn-primary" href="{:url('scoreDetail')}"><i class="glyphicon glyphicon-pencil"></i>&nbsp;查看成绩</a>
                         <a class="btn btn-sm btn-info" href=""><i ></i>&nbsp;扫码签到</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>2</td>
-                    <td>高等数学</td>
-                    <td>李四</td>
-                    <td>B301</td>
-                    <td>5-12周,3.2&4,1</td>
-                    <td>
+                    <td>5-12周>>星期四>>3-4节</td>
+                </tr>
+
+                <tr>
+                    <td rowspan="2">2</td>
+                    <td rowspan="2">数据结构</td>
+                    <td rowspan="2">王五</td>
+                    <td rowspan="2">C301</td>
+                    <td>1-8周>>星期二>>1-2节</td>
+                    <td rowspan="2">
                         <a class="btn btn-sm btn-primary" href="{:url('scoreDetail')}"><i class="glyphicon glyphicon-pencil"></i>&nbsp;查看成绩</a>
                         <a class="btn btn-sm btn-info" href=""><i ></i>&nbsp;扫码签到</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>3</td>
-                    <td>数据结构</td>
-                    <td>王五</td>
-                    <td>C301</td>
-                    <td>1-8周,2.2,5.3</td>
-                    <td>
+                    <td>1-8周>>星期五>>5-6节</td>
+                </tr>
+
+                <tr>
+                    <td rowspan="3">3</td>
+                    <td rowspan="3">数学分析</td>
+                    <td rowspan="3">赵六</td>
+                    <td rowspan="3">D301</td>
+                    <td>3-16周>>星期二>>7-8节</td>
+                    <td rowspan="3">
                         <a class="btn btn-sm btn-primary" href="{:url('scoreDetail')}"><i class="glyphicon glyphicon-pencil"></i>&nbsp;查看成绩</a>
                         <a class="btn btn-sm btn-info" href=""><i ></i>&nbsp;扫码签到</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>4</td>
-                    <td>数学分析</td>
-                    <td>赵六</td>
-                    <td>D301</td>
-                    <td>3-16周,2.4&6.2</td>
-                    <td>
-                        <a class="btn btn-sm btn-primary" href="{:url('scoreDetail')}"><i class="glyphicon glyphicon-pencil"></i>&nbsp;查看成绩</a>
-                        <a class="btn btn-sm btn-info" href=""><i ></i>&nbsp;扫码签到</a>
-                    </td>
+                    <td>1-8周>>星期四>>5-6节</td>
                 </tr>
-            </table>
+                <tr>
+                    <td>1-8周>>星期六>>9-11节</td>
+                </tr>
+            </tbody>
+        </table>
 {/block}
 {block name="page"}
 {/block}
