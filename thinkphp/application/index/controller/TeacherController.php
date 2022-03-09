@@ -65,10 +65,24 @@ class TeacherController extends Controller
         return $htmls;
     }
 
+    public function klassImport() {
+        $htmls = $this->fetch();
+
+        return $htmls;
+    }
+
     public function klassAdd() {
         $htmls = $this->fetch();
 
         return $htmls;
+    }
+
+    public function courseTimeAdd() {
+        return $this->fetch();
+    }
+
+    public function programAdd() {
+        return $this->fetch();
     }
 
     public function studentAdd() {
@@ -96,4 +110,5 @@ class TeacherController extends Controller
     public function CourseEnd() {
         return $this->success('课程已结束', url('index'));
     }
+
 }

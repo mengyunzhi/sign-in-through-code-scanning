@@ -1,68 +1,94 @@
 {extend name="index"/}
 {block name="title"}
-登记成绩
-{/block}
-
-{block name="nav"}
-<!-- 菜单导航 -->
-<nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="http://www.mengyunzhi.com">梦云智</a>
-        </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li  class="active"><a href="">(课程名称)</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="">注销</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-<!-- /菜单导航 -->
+课程管理
 {/block}
 {block name="search"}
 {/block}
 {block name="content"}
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th scope="col">项目</th>
-      <th scope="col">信息</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">课程名称</th>
-      <td>程序设计1</td>
-    </tr>
-    <tr>
-      <th scope="row">课程项目</th>
-      <th>a|b|c|d</th>
-    </tr>
-    <tr>
-      <th scope="row">学时</th>
-      <td>64 (a|b|c|d)</td>
-    </tr>
-    <tr>
-      <th scope="row">上课班级</th>
-      <td>计2022，计2021</td>
-    </tr>
-    <tr>
-      <th scope="row">上课人数</th>
-      <td>40</td>
-    </tr>
-    <tr>
-      <th scope="row">上课时间</th>
-      <td>4-17周，周五，8:30-10:05</td>
-    </tr>
-    <tr>
-      <th scope="row">上课地点</th>
-      <td>A301</td>
-    </tr>
-</tbody>
-</table>
+<div class="row">
+    <div class="col col-md-6">
+        <div class="col-sm-12">
+          <a href="{:url('index')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>&nbsp&nbsp
+          <a href="{:url('programAdd')}" class="btn btn-info"><i class="glyphicon"></i>&nbsp;添加项目</a>&nbsp&nbsp
+          <a href="{:url('courseTimeAdd')}" class="btn btn-success">&nbsp;添加上课时间</a>&nbsp;
+          <a href="{:url('')}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除项目</a>
+        </div>
+        <hr>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col-md-3">项</th>
+              <th scope="col-md-3">内容</th>
+              <th scope="col-md-3">其他</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>课程名称</td>
+              <td>程序设计</td>
+              <td></td>
+            </tr>
+            <tr class="info">
+              <td>项目1</td>
+              <td>c语言</td>
+              <td>学时:16</td>
+            </tr>
+
+            <tr class="info">
+              <td>项目2</td>
+              <td>java语言</td>
+              <td>学时:16</td>
+            </tr>
+            <tr class="info">
+              <td>项目3</td>
+              <td>c++语言</td>
+              <td>学时:16</td>
+            </tr>
+
+            <tr>
+              <td>学时</td>
+              <td>48</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td rowspan="2">上课班级</td>
+              <td>计2021班</td>
+              <td><a href="{:url('')}" class="btn btn-sm">&nbsp;删除</a></td>
+            </tr>
+            <tr>
+              <td>计2022班</td>
+              <td><a href="{:url('')}" class="btn btn-sm">&nbsp;删除</a></td>
+            </tr>
+
+
+            <tr>
+              <td rowspan="2">上课时间</td>
+              <td>1-12周>>星期二>>3-4节</td>
+              <td><a href="{:url('')}" class="btn btn-sm">&nbsp;删除</a></td>
+            </tr>
+            <tr>
+              <td>1-12周>>星期三>>5-6节</td>
+              <td><a href="{:url('')}" class="btn btn-sm">&nbsp;删除</a></td>
+            </tr>
+            <tr>
+              <td>教师</td>
+              <td>张三</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>教室</td>
+              <td>A301</td>
+              <td></td>
+            </tr>
+            <!-- <tr>
+              <td colspan="2">Larry the Bird</td>
+            </tr> -->
+          </tbody>
+        </table>
+    </div>
+</div>
+
+
 {/block}
 {block name="page"}
 {/block}
