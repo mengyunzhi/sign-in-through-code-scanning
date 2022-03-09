@@ -111,4 +111,8 @@ class TeacherController extends Controller
         return $this->success('课程已结束', url('index'));
     }
 
+    public function rankEdit() {
+        return $this->fetch();
+    }
+
 }

@@ -11,7 +11,7 @@
  Target Server Version : 100422
  File Encoding         : 65001
 
- Date: 06/03/2022 15:50:27
+ Date: 09/03/2022 20:46:44
 */
 
 SET NAMES utf8mb4;
@@ -25,6 +25,7 @@ CREATE TABLE `yunzhi_course`  (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `hour` int NOT NULL COMMENT '上课学时',
+  `rank` int NULL DEFAULT NULL COMMENT '关联课程',
   `teacher_id` int NOT NULL,
   `room_id` int NOT NULL,
   `klass_id` int NOT NULL,
