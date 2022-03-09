@@ -166,7 +166,6 @@ class AdminKlassController extends Controller
 	public function studentUpdate() {
 		$student = Request::instance()->post();
 		$id = Request::instance()->post('id/d');
-		var_dump($student);
 		$Student = Student::get($id);
 		$state = $Student->validate(true)->isUpdate(true)->save($student);
 		if ($state === false) 
