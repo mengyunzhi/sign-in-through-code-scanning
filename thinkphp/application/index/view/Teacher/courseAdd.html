@@ -1,66 +1,55 @@
 {extend name="index"/}
 {block name="title"}
-登记成绩
-{/block}
-
-{block name="nav"}
-<!-- 菜单导航 -->
-<nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="http://www.mengyunzhi.com">梦云智</a>
-        </div>
-    </div>
-</nav>
-<!-- /菜单导航 -->
+课程管理
 {/block}
 {block name="search"}
+        
 {/block}
 {block name="content"}
-<form class="">
+<form class="" action="{:url('update')}" method="post">
   <div class="form-group row">
     <label for="name" class="col-sm-1 col-form-label">课程名称</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="name" name="name">
+      <input type="text" class="form-control" id="name" name="name" value="">
     </div>
   </div>
   <div class="form-group row">
-    <label for="program" class="col-sm-1 col-form-label">实验项目</label>
+    <label for="hour" class="col-sm-1 col-form-label">学时</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="program" name="program">
+      <input type="text" class="form-control" id="hour" name="hour" value="">
     </div>
   </div>
   <div class="form-group row">
-    <label for="time" class="col-sm-1 col-form-label">上课时间</label>
+    <label for="teacher_id" class="col-sm-1 col-form-label">教师</label>
     <div class="col-sm-4">
-      <input type="" class="form-control" id="time" name="time">
+      <input type="text" class="form-control" id="teacher_id" name="teacher_id" value="">
     </div>
   </div>
   <div class="form-group row">
-    <label for="klass" class="col-sm-1 col-form-label">上课班级</label>
+    <label for="klass" class="col-sm-1 col-form-label">上课班级<br>(可多选)</label>
     <div class="col-sm-4">
-      <select class="selectpicker form-control col-sm-12" multiple name="klass" id="klass">
+      <select class="selectpicker form-control col-sm-12" multiple name="klass[]" id="klass">
         <option>1班</option>
         <option>2班</option>
         <option>3班</option>
-        <option>4班(实现多选)</option>
+        <option>4班</option>
       </select>
     </div>
   </div>
   <div class="form-group row">
-    <label for="room" class="col-sm-1 col-form-label">上课地点</label>
+    <label for="room_id" class="col-sm-1 col-form-label">教室</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="room" name="room">
+      <input type="text" class="form-control" id="room_id" name="room_id" value="">
     </div>
   </div>
-  
-  
   <div class="form-group row">
     <div class="col-sm-10">
-      <button type="submit" class="btn btn-primary">Sign in</button>
+      <button type="submit" class="btn btn-primary">确定</button>
+      <a href="{:url('index')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>
     </div>
   </div>
 </form>
+<div>*添加上课时间请点击主界面查看详情</div>
 {/block}
 {block name="page"}
 {/block}
