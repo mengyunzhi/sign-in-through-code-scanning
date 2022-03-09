@@ -2,7 +2,33 @@
 {block name="title"}
 教室管理
 {/block}
-
+{block name='4'}
+active
+{/block}
+{block name="nav"}
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="">梦云智</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <!-- <li><a href="{:url('admin_center/index')}">管理端</a></li> -->
+                        <li class=""><a href="{:url('admin_teacher/index')}">教师管理</a></li>
+                        <li class=""><a href="{:url('admin_klass/index')}">班级管理</a></li>
+                        <li class=""><a href="{:url('admin_course/index')}">课程管理</a></li>
+                        <li class="active"><a href="{:url('admin_room/index')}">教室管理</a></li>
+                    </ul>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="{:url('Login/index')}">注销</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container-fluid -->
+            </nav>
+{/block}
 {block name="search"}
 <hr />
 <div class="row">
