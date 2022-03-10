@@ -20,13 +20,13 @@ class LoginController extends Controller
 		$postData = Request::instance()->post();
 
 		// 验证用户名何密码，不同的用户名密码将登录不同的端口
-		if ($postData['username'] === 'teacher_zhangsan' && $postData['password'] === '123456') {
+		if ($postData['username'] === 'teacher' && $postData['password'] === '111111') {
 			return $this->success('登录成功', url('teacher/index'));
 		} else {
-			if ($postData['username'] === 'student_zhangsan' && $postData['password'] === '654321') {
+			if ($postData['username'] === 'student' && $postData['password'] === '111111') {
 				return $this->success('登录成功', url('student/index'));
 			} else {
-				if ($postData['username'] === 'admin_zhangsan' && $postData['password'] === '456789') {
+				if ($postData['username'] === 'admin' && $postData['password'] === '111111') {
 					return $this->success('登录成功', url('admin_teacher/index'));
 				} else {
 					return $this->error('用户名或密码错误', url('index'));

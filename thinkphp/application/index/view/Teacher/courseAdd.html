@@ -1,56 +1,26 @@
-<!DOCTYPE html>
-<html lang="zh-cn">
-
-<head>
-    <meta charset="UTF-8">
-    <title>添加课程</title>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-</head>
-
-<body class="container">
-
-  <!-- 菜单导航 -->
-<nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="http://www.mengyunzhi.com">梦云智</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li  class="active"><a href="">添加课程</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="{:url('Login/index')}">注销</a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container-fluid -->
-</nav>
-<!-- /菜单导航 -->
-
-  <form class="" action="{:url('update')}" method="post">
+{extend name="index"/}
+{block name="title"}
+课程管理
+{/block}
+{block name="search"}
+        
+{/block}
+{block name="content"}
+<form class="" action="{:url('update')}" method="post">
   <div class="form-group row">
-    <label for="name" class="col-sm-1 col-form-label">课程名称</label>
+    <label for="name" class="col-sm-1 col-form-label" style="width: 162px">课程名称</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" id="name" name="name" value="">
     </div>
   </div>
   <div class="form-group row">
-    <label for="hour" class="col-sm-1 col-form-label">学时</label>
+    <label for="hour" class="col-sm-1 col-form-label" style="width: 162px">学时</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" id="hour" name="hour" value="">
     </div>
   </div>
   <div class="form-group row">
-    <label for="teacher_id" class="col-sm-1 col-form-label">教师</label>
-    <div class="col-sm-4">
-      <input type="text" class="form-control" id="teacher_id" name="teacher_id" value="">
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="klass" class="col-sm-1 col-form-label">上课班级<br>(可多选)</label>
+    <label for="klass" class="col-sm-1 col-form-label" style="width: 162px">上课班级<br>(可多选)</label>
     <div class="col-sm-4">
       <select class="selectpicker form-control col-sm-12" multiple name="klass[]" id="klass">
         <option>1班</option>
@@ -61,7 +31,7 @@
     </div>
   </div>
   <div class="form-group row">
-    <label for="room_id" class="col-sm-1 col-form-label">教室</label>
+    <label for="room_id" class="col-sm-1 col-form-label" style="width: 162px">教室</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" id="room_id" name="room_id" value="">
     </div>
@@ -74,4 +44,6 @@
   </div>
 </form>
 <div>*添加上课时间请点击主界面查看详情</div>
-</body>
+{/block}
+{block name="page"}
+{/block}
