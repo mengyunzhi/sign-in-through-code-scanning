@@ -2,40 +2,46 @@
 {block name="title"}
 添加班级
 {/block}
-{block name="nav"}
-<!-- 菜单导航 -->
-<nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="http://www.mengyunzhi.com">梦云智</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="">注销</a></li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container-fluid -->
-</nav>
-<!-- /菜单导航 -->
-{/block}
+
 {block name="search"}
-<hr />
-<div class="row">
-    <div class="col">
-        <label>已选择班级Excel文件:</label><input type="" name="" class="form-control" style="width: 200px">
+{/block}
+{block name="content"}
+<form action="{:url('save')}" method="post">
+  <input type="hidden" name="id" value="">
+  <div class="form-group row">
+    <label for="name" class="col-sm-1 col-form-label">班级名称</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="name" name="name" value="">
     </div>
-    <div class="col" style="margin-top: 20px">
-        <a href="" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;选择Excel文件</a>
+  </div>
+  <div class="form-group row">
+    <label for="number" class="col-sm-1 col-form-label">学生人数</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="number" name="number" value="">
     </div>
-    <div class="col" style="margin-top: 20px">
-        <a href="{:url('klassAdd')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;导入</a>
+  </div>
+  <div class="form-group row">
+    <label for="entrance_date" class="col-sm-1 col-form-label">入学日期</label>
+    <div class="col-sm-4">
+      <input type="date" class="form-control" id="entrance_date" name="entrance_date" value="">
     </div>
-    <div class="col" style="margin-top: 20px">
-        <a href="{:url('klass')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>
+  </div>
+  <div class="form-group row">
+    <label for="educational_system" class="col-sm-1 col-form-label">学制</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="educational_system" name="educational_system" value="">
     </div>
-</div>
-<hr />
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary">确定</button>
+      <a href="{:url('index')}" class="btn btn-primary">返回</a>
+    </div>
+  </div>
+</form>
+{/block}
+{block name="page"}
+{/block}
+{/block}
+{block name="page"}
 {/block}
