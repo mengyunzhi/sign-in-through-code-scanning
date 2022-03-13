@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>教师端(mobile)</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<body class="container">
+   <!-- 菜单导航 -->
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="">梦云智</a>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="{:url('Login/index')}">注销</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+<!-- /菜单导航 -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-sm-12">
+          <a href="{:url('index')}" class="btn btn-primary col-sm-8"><i class="glyphicon"></i>&nbsp;返回</a>&nbsp&nbsp
+        </div>
+        <hr>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col-md-3">项</th>
+              <th scope="col-md-3">内容</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>课程名称</td>
+              <td>程序设计</td>
+            </tr>
+            <tr>
+              <td>项目1</td>
+              <td>c语言</td>
+            </tr>
+
+            <tr>
+              <td>项目2</td>
+              <td>java语言</td>
+            </tr>
+            <tr>
+              <td>项目3</td>
+              <td>c++语言</td>
+            </tr>
+
+            <tr>
+              <td>rank<br>(用于自动关联课程)</td>
+              <td>26</td>
+            </tr>
+
+            <tr>
+              <td class="navbar-brand col-md-3 info">当前课程</td>
+              <td class="navbar-brand col-md-5 info">java语言</td>
+            </tr>
+
+          </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="form-group row">
+  <div class="col-sm-10">
+    <a href="{:url('QRCodeOpen')}" type="submit" class="btn btn-primary col-sm-10">开放学生端签到二维码</a>
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-sm-10">
+    <a href="{:url('teacher/QRCodeView')}" type="submit" class="btn btn-primary col-sm-10">查看签到二维码</a>
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-sm-10">
+    <a href="{:url('SignInStudent')}" type="submit" class="btn btn-success col-sm-10">查看完成签到学生</a>
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-sm-10">
+    <a href="{:url('CourseEnd')}" type="submit" class="btn btn-danger col-sm-10">课程结束</a>
+  </div>
+</div>
+</body>
+</html>

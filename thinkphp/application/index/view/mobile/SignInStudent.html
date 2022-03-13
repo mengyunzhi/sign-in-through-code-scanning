@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>教师端(mobile)</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<body class="container">
+   <!-- 菜单导航 -->
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="">梦云智</a>
+                    </div>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="{:url('Login/index')}">注销</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+<!-- /菜单导航 -->
+<div class="row">
+  <div class="col-md-12">
+      <table class="table table-hover table-bordered">
+          <tr class="info">
+              <th>序号</th>
+              <th>班级</th>
+              <th>姓名</th>
+              <th>学号</th>
+              <th>性别</th>
+          </tr>
+          <tr>
+              <td>1</td>
+              <td>计科211</td>
+              <td>张三</td>
+              <td>001</td>
+              <td>男</td>
+          </tr>
+          <tr>
+              <td>2</td>
+              <td>计科211</td>
+              <td>李四</td>
+              <td>002</td>
+              <td>女</td>
+          </tr>
+          <tr>
+              <td>3</td>
+              <td>计科211</td>
+              <td>王五</td>
+              <td>003</td>
+              <td>男</td>
+          </tr>
+          <tr>
+              <td>4</td>
+              <td>计科211</td>
+              <td>赵六</td>
+              <td>004</td>
+              <td>女</td>
+          </tr>
+      </table>
+  </div>
+</div>
+<div class="row">
+    <div class="col" style="margin-left: 20px">
+        <label>已签到学生人数：60</label>
+    </div>
+    <div class="col">
+      <a href="{:url('index')}" class="btn btn-primary">返回</a>
+    </div>
+</div>
+</body>
+</html>
