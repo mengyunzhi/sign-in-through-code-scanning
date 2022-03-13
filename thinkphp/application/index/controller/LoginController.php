@@ -29,7 +29,7 @@ class LoginController extends Controller
 				if ($postData['username'] === 'admin' && $postData['password'] === '111111') {
 					return $this->success('登录成功', url('admin_teacher/index'));
 				} else {
-					return $this->error('用户名或密码错误', url('index'));
+					return $this->error('用户名或密码错误', url('login/index'));
 				}
 			}
 		}

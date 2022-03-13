@@ -2,35 +2,11 @@
 {block name="title"}
 班级管理
 {/block}
-{block name="nav"}
-            <nav class="navbar navbar-default" role="navigation">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="">梦云智</a>
-                    </div>
-                    <ul class="nav navbar-nav">
-                        <!-- <li><a href="{:url('admin_center/index')}">管理端</a></li> -->
-                        <li class=""><a href="{:url('admin_teacher/index')}">教师管理</a></li>
-                        <li class="active"><a href="{:url('admin_klass/index')}">班级管理</a></li>
-                        <li><a href="{:url('admin_course/index')}">课程管理</a></li>
-                        <li><a href="{:url('admin_room/index')}">教室管理</a></li>
-                    </ul>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="{:url('Login/index')}">注销</a></li>
-                        </ul>
-                    </div>
-                    <!-- /.navbar-collapse -->
-                </div>
-                <!-- /.container-fluid -->
-            </nav>
-{/block}
 {block name="search"}
 <hr />
 <div class="row">
     <div class="col-md-3">
-        <a href="{:url('add')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;导入班级Excel文件</a>
+        <a href="{:url('add')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加班级</a>
     </div>
 </div>
 <hr />
@@ -41,6 +17,8 @@
         <th>序号</th>
         <th>班级名称</th>
         <th>人数</th>
+        <th>入学日期</th>
+        <th>学制</th>
         <th>操作</th>
     </tr>
     {volist name="klasses" id="_klass" key="key"}
@@ -48,6 +26,8 @@
         <td>{$key}</td>
         <td>{$_klass->name}</td>
         <td>{$_klass->number}</td>
+        <td>2021年9月1日</td>
+        <td>4年制</td>
         <td>
             <a href="{:url('klassMembers?id='.$_klass->id)}" class="btn btn-success">查看班级成员</a> &nbsp;&nbsp;
             <a href="{:url('delete?id='.$_klass->id)}" class="btn btn-danger">删除</a>
