@@ -10,7 +10,7 @@
 <body class="container">
 <a href="{:url('admin_teacher/index')}" class="btn btn-sm">管理端</a>
 <a href="{:url('teacher/index')}" class="btn btn-sm">教师端</a>
-<a href="{:url('student/index')}" class="btn btn-sm">学生端</a>
+<a href="{:url('student/index')}" class="btn btn-sm">学生端(待删)</a>
  <!-- 菜单导航 -->
     <div class="row">
         <div class="col-md-12">
@@ -23,7 +23,7 @@
                     <ul class="nav navbar-nav">
                         <!-- <li><a href="{:url('admin_center/index')}">管理端</a></li> -->
                         <li class=""><a href="{:url('admin_teacher/index')}">教师管理</a></li>
-                        <li><a href="{:url('')}">学生管理</a></li>
+                        <li><a href="{:url('admin_student/index')}">学生管理</a></li>
                         <li><a href="{:url('admin_klass/index')}">班级管理</a></li>
                         <li><a href="{:url('admin_course/index')}">课程管理</a></li>
                         <li><a href="{:url('admin_room/index')}">教室管理</a></li>
@@ -48,17 +48,18 @@
             {block name="search"}
             <hr />
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <form class="form-inline">
                         <div class="form-group">
-                            <label class="sr-only" for="name">姓名</label>
-                            <input name="name" type="text" class="form-control" placeholder="姓名..." value={:input('get.name')}>
+                            <input name="klass" type="text" class="form-control " placeholder="班级">
+                            <input name="name" type="text" class="form-control" placeholder="姓名">
+                            <input name="sno" type="text" class="form-control" placeholder="学号">
                         </div>
                         <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i>&nbsp;查询</button>
                     </form>
                 </div>
-                <div class="col-md-4 text-right">
-                    <a href="{:url('studentAdd')}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>&nbsp;增加</a>
+                <div class="col-md-2 text-right">
+                    <a href="{:url('Add')}" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i>&nbsp;增加</a>
                 </div>
             </div>
             <hr />
