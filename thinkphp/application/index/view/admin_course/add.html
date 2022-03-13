@@ -20,9 +20,16 @@
     </div>
   </div>
   <div class="form-group row">
-    <label for="teacher_id" class="col-sm-1 col-form-label" style="width: 162px">教师</label>
+    <label for="klass" class="col-sm-1 col-form-label" style="width: 162px">老师</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="teacher_id" name="teacher_id" value="">
+      <select class="selectpicker form-control col-sm-12" multiple name="klass[]" id="klass">
+        <option>张三</option>
+        <option>李四</option>
+        <option>王五</option>
+        <option>赵六</option>
+        <option>孙七</option>
+        <option>周八</option>
+      </select>
     </div>
   </div>
   <div class="form-group row">
@@ -34,12 +41,6 @@
         <option>3班</option>
         <option>4班</option>
       </select>
-    </div>
-  </div>
-  <div class="form-group row">
-    <label for="room_id" class="col-sm-1 col-form-label" style="width: 162px">教室</label>
-    <div class="col-sm-4">
-      <input type="text" class="form-control" id="room_id" name="room_id" value="">
     </div>
   </div>
   <div class="form-group row">
