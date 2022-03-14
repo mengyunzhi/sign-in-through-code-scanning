@@ -28,46 +28,48 @@
 {/block}
 {block name="content"}
 <table class="table table-hover table-bordered">
-    <tr class="info">
-        <th>序号</th>
-        <th>班级</th>
-        <th>姓名</th>
-        <th>学号</th>
-        <th>性别</th>
-    </tr>
-    <tr>
-        <td>1</td>
-        <td>计科211</td>
-        <td>张三</td>
-        <td>001</td>
-        <td>男</td>
-    </tr>
-    <tr>
-        <td>2</td>
-        <td>计科211</td>
-        <td>李四</td>
-        <td>002</td>
-        <td>女</td>
-    </tr>
-    <tr>
-        <td>3</td>
-        <td>计科211</td>
-        <td>王五</td>
-        <td>003</td>
-        <td>男</td>
-    </tr>
-    <tr>
-        <td>4</td>
-        <td>计科211</td>
-        <td>赵六</td>
-        <td>004</td>
-        <td>女</td>
-    </tr>
-</table>
+          <tr class="info">
+              <th>序号</th>
+              <th>班级</th>
+              <th>姓名</th>
+              <th>学号</th>
+              <th>性别</th>
+          </tr>
+          <tr bgcolor="#FAD7D2">
+              <td>1</td>
+              <td>计科211</td>
+              <td>张三</td>
+              <td>001</td>
+              <td>男</td>
+          </tr>
+          <tr bgcolor="#D6F3CC">
+              <td>2</td>
+              <td>计科211</td>
+              <td>李四</td>
+              <td>002</td>
+              <td>女</td>
+          </tr>
+          <tr bgcolor="#D6F3CC">
+              <td>3</td>
+              <td>计科211</td>
+              <td>王五</td>
+              <td>003</td>
+              <td>男</td>
+          </tr>
+          <tr bgcolor="#f2f2f2">
+              <td>4</td>
+              <td>计科211</td>
+              <td>赵六</td>
+              <td>004</td>
+              <td>女</td>
+          </tr>
+      </table>
 <div class="row">
     <div class="col" style="margin-left: 20px">
-        <label>已签到学生人数：60</label>
+        <label>已签到学生人数：60</label><br>
+        <label>异常签到：1</label>
     </div>
+    <a href="{:url('courseStart')}" class="btn btn-primary">返回</a>
 </div>
 {/block}
 {block name="page"}

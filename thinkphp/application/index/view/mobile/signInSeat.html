@@ -30,48 +30,31 @@
 <div class="row">
   <div class="col-md-12">
       <table class="table table-hover table-bordered">
-          <tr class="info">
-              <th>序号</th>
-              <th>班级</th>
-              <th>姓名</th>
-              <th>学号</th>
-              <th>性别</th>
-          </tr>
-          <tr bgcolor="#FAD7D2">
-              <td>1</td>
-              <td>计科211</td>
-              <td>张三</td>
-              <td>001</td>
-              <td>男</td>
-          </tr>
-          <tr bgcolor="#D6F3CC">
-              <td>2</td>
-              <td>计科211</td>
-              <td>李四</td>
-              <td>002</td>
-              <td>女</td>
-          </tr>
-          <tr bgcolor="#D6F3CC">
-              <td>3</td>
-              <td>计科211</td>
-              <td>王五</td>
-              <td>003</td>
-              <td>男</td>
-          </tr>
-          <tr bgcolor="#f2f2f2">
-              <td>4</td>
-              <td>计科211</td>
-              <td>赵六</td>
-              <td>004</td>
-              <td>女</td>
-          </tr>
+
+        <thead>
+            <tr>
+                <th class="info" colspan="8">座位签到状况</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td bgcolor="D6F3CC" class="col-sm-1" title="签到时间9:01">1&nbsp&nbsp张三</td>
+                <td bgcolor="D6F3CC" class="col-sm-1" title="签到时间9:01">2&nbsp&nbsp李四</td>
+                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">3&nbsp&nbsp</td>
+                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">5&nbsp&nbsp</td>
+                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">6&nbsp&nbsp</td>
+                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">7&nbsp&nbsp</td>
+                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">8&nbsp&nbsp</td>
+                <td bgcolor="FAD7D2" class="col-sm-1" title="异常:多人签到">4&nbsp&nbsp王五&nbsp&nbsp赵六</td>
+            </tr>
+        </tbody>
       </table>
   </div>
 </div>
 <div class="row">
     <div class="col" style="margin-left: 20px">
         <label>已签到学生人数：2</label><br>
-        <label>签到异常：1</label>
+        <label>异常签到：1</label>
     </div>
     <div class="col">
       <a href="{:url('courseStart')}" class="btn btn-primary">返回</a>

@@ -101,7 +101,13 @@ class TeacherController extends Controller
         return $htmls;
     }
 
-    public function SignInStudent() {
+    public function signInStudent() {
+        $htmls = $this->fetch();
+
+        return $htmls;
+    }
+
+    public function signInSeat() {
         $htmls = $this->fetch();
 
         return $htmls;
