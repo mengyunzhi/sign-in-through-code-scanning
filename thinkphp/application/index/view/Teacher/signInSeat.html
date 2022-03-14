@@ -6,6 +6,7 @@
     <title>教师端(mobile)</title>
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
+
 <body class="container">
    <!-- 菜单导航 -->
     <div class="row">
@@ -29,30 +30,40 @@
 <div class="row">
   <div class="col-md-12">
       <table class="table table-hover table-bordered">
-        <thead>
+
             <tr>
-                <th class="info" colspan="8">座位签到状况</th>
+                <th class="info" colspan="8">座位签到状况（A301）</th>
             </tr>
-        </thead>
-        <tbody>
             <tr>
                 <td bgcolor="D6F3CC" class="col-sm-1" title="签到时间9:01">1&nbsp&nbsp张三</td>
                 <td bgcolor="D6F3CC" class="col-sm-1" title="签到时间9:01">2&nbsp&nbsp李四</td>
-                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">3&nbsp&nbsp</td>
-                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">5&nbsp&nbsp</td>
-                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">6&nbsp&nbsp</td>
-                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">7&nbsp&nbsp</td>
-                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">8&nbsp&nbsp</td>
+                <td bgcolor="D6F3CC" class="col-sm-1" title="签到时间9:01">3&nbsp&nbsp李五</td>
+                <td bgcolor="D6F3CC" class="col-sm-1" title="签到时间9:01">5&nbsp&nbsp李六</td>
+                <td bgcolor="D6F3CC" class="col-sm-1" title="签到时间9:01">6&nbsp&nbsp李七</td>
+                <td bgcolor="D6F3CC" class="col-sm-1" title="签到时间9:01">7&nbsp&nbsp李八</td>
+                <td bgcolor="D6F3CC" class="col-sm-1" title="签到时间9:01">8&nbsp&nbsp李九</td>
                 <td bgcolor="FAD7D2" class="col-sm-1" title="异常:多人签到">4&nbsp&nbsp王五&nbsp&nbsp赵六</td>
             </tr>
-        </tbody>
+            <tr>
+                <th class="info" colspan="8">座位签到状况（A302）</th>
+            </tr>
+            <tr>
+                <td bgcolor="D6F3CC" class="col-sm-1" title="签到时间9:01">1&nbsp&nbsp张一</td>
+                <td bgcolor="D6F3CC" class="col-sm-1" title="签到时间9:01">2&nbsp&nbsp张二</td>
+                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">3&nbsp&nbsp</td>
+                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">4&nbsp&nbsp</td>
+                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">5&nbsp&nbsp</td>
+                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">7&nbsp&nbsp</td>
+                <td bgcolor="f2f2f2" class="col-sm-1" title="签到时间9:01">8&nbsp&nbsp</td>
+                <td bgcolor="FAD7D2" class="col-sm-1" title="异常:多人签到">6&nbsp&nbsp张四&nbsp&nbsp张五</td>
+            </tr>
       </table>
   </div>
 </div>
 <div class="row">
     <div class="col" style="margin-left: 20px">
-        <label>已签到学生人数：2</label><br>
-        <label>异常签到：1</label>
+        <label>已签到学生人数：10人(8 + 2)</label><br>
+        <label>异常签到：4人(2 + 2)</label>
     </div>
     <div class="col">
       <a href="{:url('courseStart')}" class="btn btn-primary">返回</a>
