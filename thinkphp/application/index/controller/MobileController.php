@@ -20,27 +20,19 @@ class MobileController extends Controller
         return $this->fetch();
     }
 
-    public function QRCodeOpen() {
-        return $this->success('二维码开放成功', url('coursestart'));
-    }
 
-    public function QRCodeView() {
+    public function signInStudent() {
         $htmls = $this->fetch();
-
         return $htmls;
     }
 
-    public function SignInStudent() {
+    public function signInSeat() {
         $htmls = $this->fetch();
         return $htmls;
     }
 
     public function CourseEnd() {
         return $this->success('课程已结束', url('index'));
-    }
-
-    public function rankEdit() {
-        return $this->fetch();
     }
 
 }
