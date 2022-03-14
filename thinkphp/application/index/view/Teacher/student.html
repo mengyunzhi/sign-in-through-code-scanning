@@ -25,6 +25,25 @@
 <!-- /菜单导航 -->
 {/block}
 
+{block name="search"}
+            <hr>
+            <div class="row">
+                <div class="col-md-10">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input name="klass" type="text" class="form-control " placeholder="班级" style="margin-top: 20px">
+                            <input name="name" type="text" class="form-control" placeholder="姓名" style="margin-top: 20px">
+                            <input name="sno" type="text" class="form-control" placeholder="学号"  style="margin-top: 20px">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default" style="height: 30px"><i class="glyphicon glyphicon-search"></i>&nbsp;查询</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <hr/>
+{/block}
+
 {block name="content"}
 <table class="table table-hover table-bordered">
     <tr class="info">

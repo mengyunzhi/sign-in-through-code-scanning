@@ -5,26 +5,32 @@
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 
-    <title>登录</title>
+    <title>学生签到</title>
 </head>
 <body class="container" style="margin-top: 20px">
-    <form action="{:url('Login/login')}" method="post">
+    <form action="{:url('')}" method="post">
     	<div style="margin-left: 500px">
     		<div class="row">
     			<div class="col-12 p-2">
-    				<label for="username">用户名:</label>
+    				<label for="username">当前位置:</label>
+    				<input type="text" name="username" id="username" class="form-control" style="width: 150px" value="A301-1" disabled/>
+    			</div>
+    		</div>
+    		<div class="row">
+    			<div class="col-12 p-2">
+    				<label for="username">请输入签到人学号:</label>
     				<input type="text" name="username" id="username" class="form-control" style="width: 150px"/>
     			</div>
     		</div>
     		<div class="row">
     			<div class="col-12 p-2">
-    				<label for="password">密码:</label>
+    				<label for="password">请输入课程验证码:</label>
     				<input type="password" name="password" id="password" class="form-control" style="width: 150px"/>
     			</div>
     		</div>
     		<div class="row">
     			<div class="col-12 p-2" style="margin-top: 10px">
-    				<button type="submit" class="btn btn-primary">登录</button>
+    				<button type="submit" class="btn btn-primary">确认签到</button>
     			</div>
     		</div>
     	</div>

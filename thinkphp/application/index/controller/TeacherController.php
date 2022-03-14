@@ -121,4 +121,7 @@ class TeacherController extends Controller
         return $this->fetch();
     }
 
+    public function programEdit() {
+        return $this->fetch();
+    }
 }
