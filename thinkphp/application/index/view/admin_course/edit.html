@@ -10,24 +10,31 @@
   <div class="form-group row">
     <label for="name" class="col-sm-1 col-form-label">课程名称</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="name" name="name" value="程序设计1">
+      <input type="text" class="form-control" id="name" name="name" value="程序设计1" style="margin-left: 80px">
     </div>
   </div>
   <div class="form-group row">
     <label for="hour" class="col-sm-1 col-form-label">学时</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="hour" name="hour" value="64">
+      <input type="text" class="form-control" id="hour" name="hour" value="64" style="margin-left: 80px">
     </div>
   </div>
   <div class="form-group row">
-    <label for="teacher_id" class="col-sm-1 col-form-label">教师</label>
+    <label for="klass" class="col-sm-1 col-form-label" style="width: 162px">老师</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="teacher_id" name="teacher_id" value="张三">
+      <select class="selectpicker form-control col-sm-12" name="klass[]" id="klass">
+        <option>张三</option>
+        <option>李四</option>
+        <option>王五</option>
+        <option>赵六</option>
+        <option>孙七</option>
+        <option>周八</option>
+      </select>
     </div>
   </div>
   <div class="form-group row">
     <label for="klass" class="col-sm-1 col-form-label">上课班级<br>(可多选)</label>
-    <div class="col-sm-4">
+    <div class="col-sm-4" style="margin-left: 80px">
       <select class="selectpicker form-control col-sm-12" multiple name="klass[]" id="klass">
         <option>1班</option>
         <option>2班</option>
