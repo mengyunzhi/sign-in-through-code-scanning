@@ -18,7 +18,7 @@ class SigninController extends Controller
 
 	public function LoginSuccess()
 	{
-		return $this->success('登陆成功', url('index'));
+		return $this->success('操作成功', url('index'));
 	}
 
 	public function dontLogin()
@@ -43,7 +43,11 @@ class SigninController extends Controller
 
 	public function signIn()
 	{
-		return $this->success('签到成功');
-        
+		return $this->success('签到成功');  
+	}
+
+	public function verificationCode()
+	{
+        return $this->fetch();
 	}
 }
