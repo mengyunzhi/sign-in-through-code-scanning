@@ -65,13 +65,18 @@ class TeacherController extends Controller
         return $htmls;
     }
 
+    public function courseProgramEdit() 
+    {
+        return $this->fetch();
+    }
+
     public function klassImport() {
         $htmls = $this->fetch();
 
         return $htmls;
     }
 
-    public function klassAdd() {
+    public function courseKlassAdd() {
         $htmls = $this->fetch();
 
         return $htmls;
@@ -81,7 +86,7 @@ class TeacherController extends Controller
         return $this->fetch();
     }
 
-    public function programAdd() {
+    public function courseProgramAdd() {
         return $this->fetch();
     }
 
@@ -121,7 +126,4 @@ class TeacherController extends Controller
         return $this->fetch();
     }
 
-    public function programEdit() {
-        return $this->fetch();
-    }
 }
