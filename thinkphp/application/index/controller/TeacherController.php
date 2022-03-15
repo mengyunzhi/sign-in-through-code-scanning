@@ -126,5 +126,4 @@ class TeacherController extends Controller
         return $this->fetch();
     }
 
-
 }

@@ -175,4 +175,9 @@ class AdminKlassController extends Controller
         }
         return $this->success('操作成功', url('klassMembers?id='.$student['klass_id']));
 	}
+
+    public function ExcelAdd()
+    {
+        return $this->fetch();
+    }
 }
