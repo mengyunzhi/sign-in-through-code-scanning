@@ -41,6 +41,11 @@ class TeacherController extends Controller
         return $htmls;
     }
 
+    public function fractionSave()
+    {
+        return $this->success('操作成功', url('student'));
+    }
+
     public function courseAdd() {
         $htmls = $this->fetch();
 
@@ -59,15 +64,40 @@ class TeacherController extends Controller
         return $htmls;
     }
 
+    public function courseUpdate()
+    {
+        return $this->success('操作成功', url('courseDetail'));
+    }
+
     public function courseStart() {
         $htmls = $this->fetch();
 
         return $htmls;
     }
 
+    public function courseSave()
+    {
+        return $this->success('操作成功', url('index'));
+    }
+
     public function courseProgramEdit() 
     {
         return $this->fetch();
+    }
+
+    public function courseProgramSave()
+    {
+        return $this->success('操作成功', url('courseDetail'));
+    }
+
+    public function courseProgramUpdate()
+    {
+        return $this->success('操作成功', url('courseDetail'));
+    }
+
+    public function courseTimeSave()
+    {
+        return $this->success('操作成功', url('courseDetail'));
     }
 
     public function klassImport() {
@@ -82,6 +112,11 @@ class TeacherController extends Controller
         return $htmls;
     }
 
+    public function courseKlassSave()
+    {
+        return $this->success('操作成功', url('courseDetail'));
+    }
+
     public function courseTimeAdd() {
         return $this->fetch();
     }
@@ -94,6 +129,11 @@ class TeacherController extends Controller
         $htmls = $this->fetch();
 
         return $htmls;
+    }
+
+    public function studentSave()
+    {
+        return $this->success('操作成功', url('student'));
     }
 
     public function QRCodeOpen() {
@@ -124,6 +164,36 @@ class TeacherController extends Controller
 
     public function rankEdit() {
         return $this->fetch();
+    }
+
+    public function add() 
+    {
+        return $this->success('操作成功', url('index'));
+    }
+
+    public function update() 
+    {
+        return $this->success('操作成功', url('coursedetail'));
+    }
+
+    public function insert() 
+    {
+        return $this->success('操作成功', url('coursedetail'));
+    }
+
+    public function save() 
+    {
+        return $this->success('操作成功', url('student'));
+    }
+
+    public function savefraction() 
+    {
+        return $this->success('操作成功', url('fraction'));
+    }
+
+    public function rankUpdate() 
+    {
+        return $this->success('操作成功', url('courseStart'));
     }
 
 }
