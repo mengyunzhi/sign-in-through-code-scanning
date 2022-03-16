@@ -43,6 +43,10 @@ class AdminTeacherController extends Controller
 	}
 
 	public function save() {
+
+        return $this->success('操作成功', url('index'));
+
+        
 		$postData = Request::instance()->post();
 
         $Teacher = new Teacher();
