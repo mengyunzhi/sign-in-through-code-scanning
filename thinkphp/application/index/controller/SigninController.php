@@ -43,10 +43,15 @@ class SigninController extends Controller
 
 	public function signIn()
 	{
-		return $this->success('签到成功');  
+		return $this->success('签到成功', url('loginsuccessV'));  
 	}
 
 	public function verificationCode()
+	{
+        return $this->fetch();
+	}
+
+	public function loginsuccessV()
 	{
         return $this->fetch();
 	}

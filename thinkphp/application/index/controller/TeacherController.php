@@ -126,4 +126,28 @@ class TeacherController extends Controller
         return $this->fetch();
     }
 
+    public function add() 
+    {
+        return $this->success('操作成功', url('index'));
+    }
+
+    public function update() 
+    {
+        return $this->success('操作成功', url('coursedetail'));
+    }
+
+    public function insert() 
+    {
+        return $this->success('操作成功', url('coursedetail'));
+    }
+
+    public function save() 
+    {
+        return $this->success('操作成功', url('student'));
+    }
+
+    public function savefraction() 
+    {
+        return $this->success('操作成功', url('fraction'));
+    }
 }

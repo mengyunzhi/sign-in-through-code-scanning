@@ -25,4 +25,9 @@ class AdminStudentController extends Controller
         return $this->fetch();
     }
 
+    public function insert()
+    {
+        return $this->success('保存成功', url('index'));
+    }
+
 }
