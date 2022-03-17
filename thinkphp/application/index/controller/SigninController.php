@@ -55,4 +55,24 @@ class SigninController extends Controller
 	{
         return $this->fetch();
 	}
+
+	public function PasswordSignIn()
+	{
+		return $this->fetch();
+	}
+
+	public function PasswordConfirmation()
+	{
+		return $this->fetch();
+	}
+
+	public function nosignin()
+	{
+		return $this->fetch();
+	}
+
+	public function RegisterSuccess()
+	{
+		return $this->success('注册成功，正在转跳登录页面', url('StudentLogin'));  
+	}
 }
