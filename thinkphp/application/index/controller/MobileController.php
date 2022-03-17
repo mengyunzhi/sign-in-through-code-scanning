@@ -10,15 +10,35 @@ class MobileController extends Controller
     {
         // 取回打包后的数据
         $htmls = $this->fetch();
-
         // 将数据返回给用户
         return $htmls;
     }
+
+    public function login()
+    {
+        return $this->fetch();
+    }
+
+    public function isLogin()
+    {
+        return $this->success('登陆成功', url('index'));
+    }
+
 
     public function courseStart() 
     {
         return $this->fetch();
     }
+
+    public function coursing()
+    {
+        return $this->fetch();
+    }
+
+    public function courseEnd() {
+        return $this->success('课程已结束', url('index'));
+    }
+
 
 
     public function signInStudent() {
@@ -31,8 +51,10 @@ class MobileController extends Controller
         return $htmls;
     }
 
-    public function CourseEnd() {
-        return $this->success('课程已结束', url('index'));
+
+    public function randomCode()
+    {
+        return $this->fetch();
     }
 
 }
