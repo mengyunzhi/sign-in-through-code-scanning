@@ -66,7 +66,6 @@ class AdminKlassController extends Controller
 
         $Klass = new Klass();
         $Klass->name = $klass['name'];
-        $Klass->number = $klass['number'];
         if ($Klass->validate(true)->save() === false) 
         {
             $message = '操作失败:' . $Klass->getError();
