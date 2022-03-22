@@ -131,6 +131,16 @@ class TeacherController extends Controller
         return $htmls;
     }
 
+    public function courseSort()
+    {
+        return $this->fetch();
+    }
+
+    public function coursing()
+    {
+        return $this->fetch();
+    }
+
     public function studentSave()
     {
         return $this->success('操作成功', url('student'));
@@ -194,6 +204,11 @@ class TeacherController extends Controller
     public function rankUpdate() 
     {
         return $this->success('操作成功', url('courseStart'));
+    }
+
+    public function randomCode()
+    {
+        return $this->fetch();
     }
 
 }

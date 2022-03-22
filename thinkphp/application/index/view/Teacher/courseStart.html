@@ -10,7 +10,21 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="http://www.mengyunzhi.com">梦云智</a>
         </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li  class=""><a href="index">课程管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li  class=""><a href="courseSort">排课管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{:url('Login/index')}">注销</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
     </div>
+    <!-- /.container-fluid -->
 </nav>
 <!-- /菜单导航 -->
 {/block}
@@ -29,69 +43,52 @@
             <tr>
               <th scope="col-md-3">项</th>
               <th scope="col-md-3">内容</th>
-              <th scope="col-md-3">其他</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>课程名称</td>
               <td>程序设计</td>
-              <td></td>
             </tr>
             <tr>
-              <td>项目1</td>
-              <td>c语言</td>
-              <td>学时:16</td>
-            </tr>
-
-            <tr>
-              <td>项目2</td>
-              <td>java语言</td>
-              <td>学时:16</td>
+              <td>当前周次</td>
+              <td>第七周</td>
             </tr>
             <tr>
-              <td>项目3</td>
-              <td>c++语言</td>
-              <td>学时:16</td>
+              <td>课次</td>
+              <td>周三5-6节</td>
             </tr>
-
             <tr>
-              <td>序值<br>(用于自动关联课程)</td>
-              <td>26</td>
-              <td><a href="{:url('rankEdit')}">修改序值</a></td>
+              <td rowspan="2">上课的班级</td>
+              <td>计2021(30人)</td>
             </tr>
-
             <tr>
-              <td class="navbar-brand col-md-3 info">当前课程</td>
-              <td class="navbar-brand col-md-5 info">java语言</td>
-              <td class="navbar-brand col-md-4 info"></td>
+              <td>计2022(29人)</td>
             </tr>
-
+            <tr>
+              <td>总人数</td>
+              <td>59</td>
+            </tr>
+            <tr>
+              <td class="navbar-brand col-md-3 info">当前项目</td>
+              <td class="navbar-brand col-md-5 info">链表的使用</td>
+            </tr>
           </tbody>
         </table>
     </div>
 </div>
 
-
-
-
-  <div class="form-group row">
-    <div class="col-sm-10">
-      <a href="{:url('signInSeat')}" type="submit" class="btn btn-primary">查看签到座位（按权限排序）</a>
-    </div>
+<div class="form-group row">
+  <div class="col-md-12">
+    <a href="{:url('randomCode')}" name="" type="submit" class="btn btn-primary">点击生成随机码(可选)</a>
   </div>
-
-  <div class="form-group row">
-    <div class="col-sm-10">
-      <a href="{:url('signInStudent')}" type="submit" class="btn btn-success">查看完成签到学生</a>
-    </div>
+</div>
+<div class="form-group row">
+  <div class="col-md-12">
+    <a href="{:url('coursing')}" class="btn btn-warning">开始上课</a>
   </div>
+</div>
   
-  <div class="form-group row">
-    <div class="col-sm-10">
-      <a href="{:url('CourseEnd')}" type="submit" class="btn btn-danger">课程结束</a>
-    </div>
-  </div>
 {/block}
 {block name="page"}
 {/block}
