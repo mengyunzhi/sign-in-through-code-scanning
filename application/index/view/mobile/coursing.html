@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <title>教师端(mobile)</title>
+    <meta charset="utf-8">
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+<body class="container">
+<!-- 菜单导航 -->
+<div class="row">
+    <div class="col-md-12">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand">梦云智</a>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{:url('Login/index')}">注销</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+<!-- /菜单导航 -->
+<div class="row">
+    <div class="col-md-12">
+        <hr>
+         <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col-md-3">项</th>
+              <th scope="col-md-3">内容</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>课程名称</td>
+              <td>程序设计</td>
+            </tr>
+            <tr>
+              <td>当前周次</td>
+              <td>第七周</td>
+            </tr>
+            <tr>
+              <td>课次</td>
+              <td>周三5-6节</td>
+            </tr>
+            <tr>
+              <td rowspan="2">上课的班级</td>
+              <td>计2021(30人)</td>
+            </tr>
+            <tr>
+              <td>计2022(29人)</td>
+            </tr>
+            <tr>
+              <td>总人数</td>
+              <td>59</td>
+            </tr>
+            <tr>
+              <td class="navbar-brand col-md-3 info">当前项目</td>
+              <td class="navbar-brand col-md-5 info">链表的使用</td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+</div>
+<div class="form-group row">
+
+<div class="form-group row">
+  <div class="col-sm-10">
+    <label class="col-sm-2">您的随机码为:1234</label>
+  </div>
+</div>
+
+  <div class="col-sm-10">
+    <a href="{:url('signInSeat')}" type="submit" class="btn btn-primary btn-block">查看签到座位（按权限排序）</a>
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-sm-10">
+    <a href="{:url('signInStudent')}" type="submit" class="btn btn-success btn-block">查看完成签到学生（按学号进行学生的排序）</a>
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-sm-10">
+    <a href="{:url('CourseEnd')}" type="submit" class="btn btn-danger btn-block">课程结束</a>
+  </div>
+</div>
+</body>
+</html>

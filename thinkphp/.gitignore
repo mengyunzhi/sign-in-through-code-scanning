@@ -1,3 +1,10 @@
+<<<<<<< HEAD
 .idea
 composer.lock
 *.log
+=======
+/composer.lock
+/vendor
+.idea
+.DS_Store
+>>>>>>> 57a21e2 (new)
