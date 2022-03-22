@@ -1,0 +1,94 @@
+{extend name="index"/}
+{block name="title"}
+学生端
+{/block}
+{block name="nav"}
+<!-- 菜单导航 -->
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="http://www.mengyunzhi.com">梦云智</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="{:url('index')}">我的课程</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="">注销</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+<!-- /菜单导航 -->
+{/block}
+{block name="search"}
+{/block}
+
+{block name="content"}
+<table class="table table-hover table-bordered">
+            <thead>
+                <tr class="info">
+                    <th>序号</th>
+                    <th>课程名称</th>
+                    <th>教师</th>
+                    <th>教室</th>
+                    <th>课程时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan="2">1</td>
+                    <td rowspan="2">高等数学</td>
+                    <td rowspan="2">李四</td>
+                    <td rowspan="2">B301</td>
+                    <td>5-12周>>星期三>>1-2节</td>
+                    <td rowspan="2">
+                        <a class="btn btn-sm btn-primary" href="{:url('scoreDetail')}"><i class="glyphicon glyphicon-pencil"></i>&nbsp;查看成绩</a>
+                        <a class="btn btn-sm btn-info" href=""><i ></i>&nbsp;扫码签到</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>5-12周>>星期四>>3-4节</td>
+                </tr>
+
+                <tr>
+                    <td rowspan="2">2</td>
+                    <td rowspan="2">数据结构</td>
+                    <td rowspan="2">王五</td>
+                    <td rowspan="2">C301</td>
+                    <td>1-8周>>星期二>>1-2节</td>
+                    <td rowspan="2">
+                        <a class="btn btn-sm btn-primary" href="{:url('scoreDetail')}"><i class="glyphicon glyphicon-pencil"></i>&nbsp;查看成绩</a>
+                        <a class="btn btn-sm btn-info" href=""><i ></i>&nbsp;扫码签到</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1-8周>>星期五>>5-6节</td>
+                </tr>
+
+                <tr>
+                    <td rowspan="3">3</td>
+                    <td rowspan="3">数学分析</td>
+                    <td rowspan="3">赵六</td>
+                    <td rowspan="3">D301</td>
+                    <td>3-16周>>星期二>>7-8节</td>
+                    <td rowspan="3">
+                        <a class="btn btn-sm btn-primary" href="{:url('scoreDetail')}"><i class="glyphicon glyphicon-pencil"></i>&nbsp;查看成绩</a>
+                        <a class="btn btn-sm btn-info" href=""><i ></i>&nbsp;扫码签到</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1-8周>>星期四>>5-6节</td>
+                </tr>
+                <tr>
+                    <td>1-8周>>星期六>>9-11节</td>
+                </tr>
+            </tbody>
+        </table>
+{/block}
+{block name="page"}
+{/block}
