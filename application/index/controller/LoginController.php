@@ -14,6 +14,11 @@ class LoginController extends Controller
 		return $this->fetch();
 	}
 
+	public function MobileLogin() 
+	{
+		return $this->fetch();
+	}
+
 	public function login() 
 	{
 		// 接收V层传入的数据
