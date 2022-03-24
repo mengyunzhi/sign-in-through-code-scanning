@@ -71,6 +71,11 @@ class SigninController extends IndexController
 		return $this->fetch();
 	}
 
+	public function alreadysignin()
+	{
+		return $this->fetch();
+	}
+
 	public function RegisterSuccess()
 	{
 		return $this->success('注册成功，正在转跳登录页面', url('StudentLogin'));  
