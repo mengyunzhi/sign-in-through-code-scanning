@@ -4,7 +4,7 @@ use think\Controller;
 use think\Request;
 use think\Db;   // 引用数据库操作类
 
-class TestController extends Controller
+class TestController extends IndexController
 {
 
     public function index() 

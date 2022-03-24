@@ -7,7 +7,7 @@ use app\common\model\Admin;
 /**
  * 管理端
  */
-class AdminCenterController extends Controller
+class AdminCenterController extends IndexController
 {
 	
 	public function index() 
@@ -17,5 +17,14 @@ class AdminCenterController extends Controller
 		return $this->fetch();
 	}
 
+	public function termEdit()
+	{
+		return $this->fetch();
+	}
+
+	public function termSave()
+	{
+		return $this->success('操作成功', url('index'));
+	}
 	
 }

@@ -7,7 +7,7 @@ use think\Controller;
 /**
  * 管理端
  */
-class AdminStudentController extends Controller
+class AdminStudentController extends IndexController
 {
 	
     public function index()

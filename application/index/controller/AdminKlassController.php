@@ -9,7 +9,7 @@ use think\Request;
 /**
  * 管理端
  */
-class AdminKlassController extends Controller
+class AdminKlassController extends IndexController
 {
 	
 	public function index() 

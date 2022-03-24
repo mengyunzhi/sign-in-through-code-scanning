@@ -8,7 +8,7 @@ use app\index\controller\LoginController;
 /**
  * 管理端
  */
-class SigninController extends Controller
+class SigninController extends IndexController
 {
 	
 	public function index()
