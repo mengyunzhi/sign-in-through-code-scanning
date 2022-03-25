@@ -1,38 +1,9 @@
-<!DOCTYPE html>
-<html lang="zh-cn">
+{extend name="mobileIndex"}
+{block name="title"}
+教师端mobile
+{/block}
 
-<head>
-    <title>教师端(mobile)</title>
-    <meta charset="utf-8">
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-</head>
-
-<body class="container">
-   <!-- 菜单导航 -->
-    <div class="row">
-        <div class="col-md-12">
-            <nav class="navbar navbar-default" role="navigation">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="">梦云智</a>
-                    </div>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="{:url('Login/index')}">注销</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </div>
-<!-- /菜单导航 -->
+{block name="content"}
 <div class="row">
   <div class="col-sm-12">
       <table class="table table-hover table-bordered">
@@ -78,8 +49,7 @@
         <label>(30分钟后签到)</label>
     </div>
 </div>
-    <div class="col-sm-2">
-      <a href="{:url('coursing')}" class="btn btn-primary btn-block">返回</a>
-    </div>
-</body>
-</html>
+<div class="col-sm-2">
+  <a href="{:url('coursing')}" class="btn btn-primary btn-block">返回</a>
+</div>
+{/block}
