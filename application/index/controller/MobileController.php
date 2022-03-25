@@ -3,9 +3,21 @@ namespace app\index\controller;     //命名空间，也说明了文件所在的
 use think\Controller;
 use think\Request;
 use think\Db;   // 引用数据库操作类
+use app\common\model\Teacher;
 
 class MobileController extends IndexController
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+        
+        //判断是否登录
+        if (!(Teacher::isLogin())) {
+            return $this->error('请先进行登录', url('login/mobileLogin'));
+        }
+    }
+
     public function index()
     {
         // 取回打包后的数据
@@ -13,17 +25,6 @@ class MobileController extends IndexController
         // 将数据返回给用户
         return $htmls;
     }
-
-    public function login()
-    {
-        return $this->fetch();
-    }
-
-    public function isLogin()
-    {
-        return $this->success('登陆成功', url('index'));
-    }
-
 
     public function courseStart() 
     {

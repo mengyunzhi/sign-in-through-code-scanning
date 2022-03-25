@@ -11,6 +11,12 @@ use app\index\controller\LoginController;
 class IndexController extends Controller
 {		
 
+	public function __construct()
+	{
+		parent::__construct();
+		session_start();
+	}
+
 	public function index()
 	{
        	 return $this->fetch('login/index');
