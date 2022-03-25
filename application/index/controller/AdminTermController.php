@@ -7,13 +7,21 @@ use app\common\model\Admin;
 /**
  * 管理端
  */
-class AdminCenterController extends IndexController
+class AdminTermController extends IndexController
 {
 	
+	public function add()
+	{
+		return $this->fetch();
+	}
+
+	public function edit()
+	{
+		return $this->fetch();
+	}
+
 	public function index() 
 	{
-		$admins = Admin::paginate();
-		$this->assign('admins', $admins);
 		return $this->fetch();
 	}
 
