@@ -9,6 +9,17 @@ use app\common\model\Admin;
  */
 class AdminCenterController extends IndexController
 {
+
+	public function __construct()
+    {
+        parent::__construct();
+        
+        //判断是否登录
+        if (!(Admin::isLogin())) {
+            return $this->error('请先进行登录', url('login/index'));
+        }
+    }
+
 	
 	public function index() 
 	{
