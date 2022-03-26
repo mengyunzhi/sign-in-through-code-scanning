@@ -24,7 +24,7 @@ class LoginController extends IndexController
 
 	public function studentLogin()
 	{
-        return $this->fetch();
+		return $this->fetch();
 	}
 
 	/**

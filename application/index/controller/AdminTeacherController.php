@@ -33,21 +33,21 @@ class AdminTeacherController extends IndexController
 		$id = Request::instance()->post('id/d');
 		$Teacher = Teacher::get($id);
         $Teacher = new Teacher;
-		$state = $Teacher->validate(true)->isUpdate(true)->save($teacher);
-		if ($state === false) 
+        $state = $Teacher->validate(true)->isUpdate(true)->save($teacher);
+        if ($state === false) 
         {
             $message = '操作失败:' . $Teacher->getError();
             return $this->error($message);
         }
         return $this->success('操作成功', url('index'));
-	}
+    }
 
-	public function save() {
+    public function save() {
 
         return $this->success('操作成功', url('index'));
 
         
-		$postData = Request::instance()->post();
+        $postData = Request::instance()->post();
 
         $Teacher = new Teacher();
         $Teacher->name = $postData['name'];
@@ -59,9 +59,9 @@ class AdminTeacherController extends IndexController
             return $this->error($message);
         } 
         return $this->success('操作成功', url('index'));
-	}
+    }
 
-	public function delete() {
+    public function delete() {
         try {
             // 获取get数据
             $Request = Request::instance();
@@ -96,7 +96,7 @@ class AdminTeacherController extends IndexController
 
         // 进行跳转
         return $this->success('删除成功', $Request->header('referer'));
-	}
-        
+    }
+    
 
 }

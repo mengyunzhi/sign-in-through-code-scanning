@@ -12,27 +12,28 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
+
 <body class="container">
     <form action="{:url('login')}" method="post">
         <input type="hidden" name="role" value="student">
-		<div class="row">
-			<div class="col-md-12 p-2">
-				<label for="sno">请输入学号:</label>
-				<input type="text" name="sno" id="sno" class="form-control" value="" />
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12 p-2">
-				<label for="password">请输入密码:</label>
-				<input type="password" name="password" id="password" class="form-control"/>
-			</div>
-		</div>
+        <div class="row">
+            <div class="col-md-12 p-2">
+                <label for="sno">请输入学号:</label>
+                <input type="text" name="sno" id="sno" class="form-control" value="" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 p-2">
+                <label for="password">请输入密码:</label>
+                <input type="password" name="password" id="password" class="form-control" />
+            </div>
+        </div>
         &nbsp
-		<div class="row">
-			<div class="col-md-12 p-2">
-				<button type="submit" class="btn btn-primary btn-lg btn-block">登录</button>
-			</div>
-		</div>
+        <div class="row">
+            <div class="col-md-12 p-2">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">登录</button>
+            </div>
+        </div>
         &nbsp
         <div class="row">
             <div class="col-md-12 text-right">
@@ -41,4 +42,5 @@
         </div>
     </form>
 </body>
+
 </html>

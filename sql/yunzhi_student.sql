@@ -11,7 +11,7 @@
  Target Server Version : 100422
  File Encoding         : 65001
 
- Date: 25/03/2022 17:51:52
+ Date: 26/03/2022 15:19:18
 */
 
 SET NAMES utf8mb4;
@@ -31,7 +31,7 @@ CREATE TABLE `yunzhi_student`  (
   `klass_id` int NOT NULL DEFAULT 0,
   `create_time` int NOT NULL DEFAULT 0,
   `update_time` int NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`, `sno`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;

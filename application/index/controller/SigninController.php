@@ -22,7 +22,7 @@ class SignInController extends IndexController
 
 	public function index()
 	{
-        return $this->fetch();
+		return $this->fetch();
 	}
 
 	public function LoginSuccess()
@@ -33,7 +33,7 @@ class SignInController extends IndexController
 
 	public function dontRegister()
 	{
-        return $this->error('检测到您未注册，请先注册', url('StudentRegister'));
+		return $this->error('检测到您未注册，请先注册', url('StudentRegister'));
 	}
 
 	/**
@@ -67,7 +67,7 @@ class SignInController extends IndexController
 
 	public function studentRegister()
 	{
-        return $this->fetch();
+		return $this->fetch();
 	}
 
 	public function signIn()
@@ -77,12 +77,12 @@ class SignInController extends IndexController
 
 	public function verificationCode()
 	{
-        return $this->fetch();
+		return $this->fetch();
 	}
 
 	public function loginsuccessV()
 	{
-        return $this->fetch();
+		return $this->fetch();
 	}
 
 	public function PasswordSignIn()
