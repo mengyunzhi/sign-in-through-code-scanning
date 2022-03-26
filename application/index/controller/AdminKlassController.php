@@ -62,12 +62,12 @@ class AdminKlassController extends IndexController
     } 
 
     public function save() {
-      $klass = Request::instance()->post();
+        $klass = Request::instance()->post();
 
-      $Klass = new Klass();
-      $Klass->name = $klass['name'];
-      if ($Klass->validate(true)->save() === false) 
-      {
+        $Klass = new Klass();
+        $Klass->name = $klass['name'];
+        if ($Klass->validate(true)->save() === false) 
+        {
         $message = '操作失败:' . $Klass->getError();
         return $this->error($message);
         } 
@@ -75,54 +75,54 @@ class AdminKlassController extends IndexController
     }
 
     public function edit() {
-      $id = Request::instance()->param('id/d');
-      $Klass = Klass::get($id);
-      $this->assign('Klass', $Klass);
-      return $this->fetch();
+        $id = Request::instance()->param('id/d');
+        $Klass = Klass::get($id);
+        $this->assign('Klass', $Klass);
+        return $this->fetch();
     }
 
     public function update() {
-      $klass = Request::instance()->post();
-      $id = Request::instance()->post('id/d');
-      $Klass = Klass::get($id);
-      $state = $Klass->validate(true)->isUpdate(true)->save($klass);
-      if ($state === false) 
-      {
+        $klass = Request::instance()->post();
+        $id = Request::instance()->post('id/d');
+        $Klass = Klass::get($id);
+        $state = $Klass->validate(true)->isUpdate(true)->save($klass);
+        if ($state === false) 
+        {
         $message = '操作失败:' . $Klass->getError();
         return $this->error($message);
-    }
-    return $this->success('操作成功', url('index'));
+        }
+        return $this->success('操作成功', url('index'));
     }
 
     public function klassMembers() {
-      $name = Request::instance()->get('name');
-      $Student = new Student;
-      $students = $Student->where('name', 'like', '%'. $name .'%')->paginate(5);
-      $this->assign('students', $students);
-      return $this->fetch();
+        $name = Request::instance()->get('name');
+        $Student = new Student;
+        $students = $Student->where('name', 'like', '%'. $name .'%')->paginate(5);
+        $this->assign('students', $students);
+        return $this->fetch();
     }
 
     public function studentAdd() {
-      return $this->fetch();
+        return $this->fetch();
     }
     public function studentSave() {
-      $student = Request::instance()->param();
+        $student = Request::instance()->param();
 
-      $Student = new Student();
-      $Student->name = $student['name'];
-      $Student->sex = $student['sex'];
-      $Student->sno = $student['sno'];
-      $Student->klass_id = $student['klass_id'];
-      if ($Student->validate(true)->save() === false) 
-      {
-        $message = '操作失败:' . $Student->getError();
-        return $this->error($message);
-    } 
-    return $this->success('操作成功', url('klassMembers?id='.$student['klass_id']));
+        $Student = new Student();
+        $Student->name = $student['name'];
+        $Student->sex = $student['sex'];
+        $Student->sno = $student['sno'];
+        $Student->klass_id = $student['klass_id'];
+        if ($Student->validate(true)->save() === false) 
+        {
+            $message = '操作失败:' . $Student->getError();
+            return $this->error($message);
+        } 
+        return $this->success('操作成功', url('klassMembers?id='.$student['klass_id']));
     }
 
     public function studentDelete() {
-      try {
+        try {
                 // 获取get数据
         $Request = Request::instance();
         $id = Request::instance()->param('id/d');
@@ -142,36 +142,36 @@ class AdminKlassController extends IndexController
         }
 
             // 获取到ThinkPHP的内置异常时，直接向上抛出，交给ThinkPHP处理
-    } catch (\think\Exception\HttpResponseException $e) {
-        throw $e;
+        } catch (\think\Exception\HttpResponseException $e) {
+            throw $e;
 
             // 获取到正常的异常时，输出异常
-    } catch (\Exception $e) {
-        return $e->getMessage();
-    }
+        } catch (\Exception $e) {
+           return $e->getMessage();
+        }
 
             // 进行跳转
-    return $this->success('删除成功', $Request->header('referer'));
+        return $this->success('删除成功', $Request->header('referer'));
     }
 
     public function studentEdit() {
-      $id = Request::instance()->param('id/d');
-      $Student = Student::get($id);
-      $this->assign('Student', $Student);
-      return $this->fetch();
+        $id = Request::instance()->param('id/d');
+        $Student = Student::get($id);
+        $this->assign('Student', $Student);
+        return $this->fetch();
     }
 
     public function studentUpdate() {
-      $student = Request::instance()->post();
-      $id = Request::instance()->post('id/d');
-      $Student = Student::get($id);
-      $state = $Student->validate(true)->isUpdate(true)->save($student);
-      if ($state === false) 
-      {
-        $message = '操作失败:' . $Student->getError();
-        return $this->error($message);
-    }
-    return $this->success('操作成功', url('klassMembers?id='.$student['klass_id']));
+        $student = Request::instance()->post();
+        $id = Request::instance()->post('id/d');
+        $Student = Student::get($id);
+        $state = $Student->validate(true)->isUpdate(true)->save($student);
+        if ($state === false) 
+        {
+            $message = '操作失败:' . $Student->getError();
+            return $this->error($message);
+        }
+            return $this->success('操作成功', url('klassMembers?id='.$student['klass_id']));
     }
 
     public function excelAdd()
