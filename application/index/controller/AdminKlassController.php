@@ -92,7 +92,6 @@ class AdminKlassController extends IndexController
             return $this->error($message);
         }
         return $this->success('操作成功', url('index'));
-
 	}
 
 	public function klassMembers() {

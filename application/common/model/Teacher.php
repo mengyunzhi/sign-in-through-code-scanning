@@ -30,7 +30,7 @@ class Teacher extends Model {
 	
 	static public function isLogin()
 	{
-		if (isset($_SESSION["static::user"])) {
+		if (isset($_SESSION[Teacher::$user])) {
 			return true;
 		} else {
 			return false;
@@ -39,8 +39,8 @@ class Teacher extends Model {
 
 	/*
 	 * 移动端教师登录
-	 * 登录成功就设置 $_SESSION["static::user"] 并将id存入
-	*/
+	 * 登录成功就设置 $_SESSION[Teacher::$user] 并将id存入
+	 */
 	static public function login($postData)
 	{
 		$map = array("number" => $postData['number']);
@@ -48,17 +48,10 @@ class Teacher extends Model {
 
 		if (!is_null($Teacher)) {
 			if ($Teacher->checkPassword($postData['password'])) {
-				$_SESSION["static::user"] = $Teacher->getData('id');
+				$_SESSION[Teacher::$user] = $Teacher->getData('id');
 				return true;
 			}
 		}
-
 		return false;
 	}
-
-	static public function logout()
-	{
-		session_unset();
-	}
-
 }
