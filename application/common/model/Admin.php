@@ -4,6 +4,8 @@ use think\Model;
 
 class Admin extends Model {
 
+	static public $user = 'admin';
+
 	public function getSexAttr($value) {
 		$status = [
 			'0'=>'男',

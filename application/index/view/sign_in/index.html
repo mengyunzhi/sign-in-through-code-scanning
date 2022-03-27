@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <title>学生端(mobile)</title>
+    <meta charset="utf-8">
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<body class="container">
+    <form action="{:url('signIn')}" method="post">
+        <div>
+            <div class="row">
+                <div class="col-12 p-2">
+                    <label for="username">当前课程:</label>
+                    <input type="text" name="username" id="username" class="form-control" value="程序设计" disabled />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 p-2">
+                    <label for="username">当前位置:</label>
+                    <input type="text" name="username" id="username" class="form-control" value="A301-1" disabled />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 p-2">
+                    <label for="username">签到人:</label>
+                    <input type="text" name="username" id="username" class="form-control " value="张三" disabled />
+                </div>
+            </div>
+            <!--<div class="row">
+                    <label for="test" style="font-size: 50px">请输入课程暗号:</label>
+                    <input type="test" name="test" id="test" class="form-control" style="width: 600px; height: 100px; font-size: 50px"/>
+                </div>
+            </div>-->
+            &nbsp
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">自动签到</button>
+                </div>
+            </div>
+            &nbsp
+            <div class="row">
+                <div class="col">
+                    <a href="{:url('PasswordSignIn')}" type="submit" class="btn btn-primary btn-lg btn-block">暗号签到</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 p-2">
+                    <label>*若您上的课程与当前显示课程不一致，请选择暗号签到</label>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>

@@ -6,39 +6,39 @@
 {/block}
 {block name="content"}
 <form class="" action="{:url('save')}" method="post">
-  <div class="form-group row">
-    <label for="name" class="col-sm-2 col-form-label">名称</label>
-    <div class="col-sm-4">
-      <input type="text" class="form-control" id="name" name="name">
+    <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">名称</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <label for="start_date" class="col-sm-2 col-form-label">开始日期</label>
-    <div class="col-sm-4">
-      <input type="date" class="form-control" id="start_date" name="start_date">
+    <div class="form-group row">
+        <label for="start_date" class="col-sm-2 col-form-label">开始日期</label>
+        <div class="col-sm-4">
+            <input type="date" class="form-control" id="start_date" name="start_date">
+        </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <label for="state" class="col-sm-2 col-form-label">状态</label>
-    <div class="col-sm-4">
-      <input value="1" type="radio" name="state" id="1">
-      <label for="1">已激活</label>
-      <input value="0" type="radio" name="state" id="0">
-      <label for="0">未激活</label>
+    <div class="form-group row">
+        <label for="state" class="col-sm-2 col-form-label">状态</label>
+        <div class="col-sm-4">
+            <input value="1" type="radio" name="state" id="1">
+            <label for="1">已激活</label>
+            <input value="0" type="radio" name="state" id="0">
+            <label for="0">未激活</label>
+        </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <label for="day" class="col-sm-2 col-form-label">时长</label>
-    <div class="col-sm-4">
-      <input type="text" class="form-control" id="day" name="day">
+    <div class="form-group row">
+        <label for="day" class="col-sm-2 col-form-label">时长</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="day" name="day">
+        </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-sm-10">
-      <button type="submit" class="btn btn-primary">保存</button>
-      <a href="{:url('index')}" class="btn btn-primary">返回</a>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">保存</button>
+            <a href="{:url('index')}" class="btn btn-primary">返回</a>
+        </div>
     </div>
-  </div>
 </form>
 {/block}
 {block name="page"}

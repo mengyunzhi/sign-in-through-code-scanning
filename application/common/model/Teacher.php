@@ -4,6 +4,17 @@ use think\Model;
 
 class Teacher extends Model {
 
+	static public $user = 'teacher';
+
+	/**
+	 * 判断密码是否正确
+	 * 进行密码加密
+	 * */
+	public function checkPassword($password)
+	{
+		return ($this->getData('password') === $password);
+	}
+
 	public function getSexAttr($value) {
 		$status = [
 			'0'=>'男',
@@ -19,32 +30,28 @@ class Teacher extends Model {
 	
 	static public function isLogin()
 	{
-		if (isset($_SESSION['teacherId'])) {
+		if (isset($_SESSION[Teacher::$user])) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	//移动端教师登录
-	//登录成功就设置 $_SESSION['teacherId'] 并将id存入
+
+	/*
+	 * 移动端教师登录
+	 * 登录成功就设置 $_SESSION[Teacher::$user] 并将id存入
+	 */
 	static public function login($postData)
 	{
 		$map = array("number" => $postData['number']);
-		$user = Teacher::get($map);
+		$Teacher = self::get($map);
 
-		if (!is_null($user)) {
-			if ($postData['password'] === $user['password']) {
-				$_SESSION['teacherId'] = $user->getData('id');
+		if (!is_null($Teacher)) {
+			if ($Teacher->checkPassword($postData['password'])) {
+				$_SESSION[Teacher::$user] = $Teacher->getData('id');
 				return true;
 			}
 		}
-
 		return false;
 	}
-
-	static public function logout()
-	{
-		session_unset();
-	}
-
 }

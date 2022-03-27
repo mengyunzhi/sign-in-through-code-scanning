@@ -78,10 +78,10 @@ class AdminRoomController extends IndexController
     public function delete() {
     	// 实例化请求类
         $Request = Request::instance();
-            
+        
         // 获取get数据
         $id = Request::instance()->param('id/d');
-            
+        
         // 判断是否成功接收
         if (0 === $id) {
             throw new \Exception('未获取到ID信息', 1);

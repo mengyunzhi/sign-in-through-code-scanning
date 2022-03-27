@@ -2,26 +2,25 @@
 {block name="title"}
 添加班级
 {/block}
-
 {block name="search"}
 {/block}
 {block name="content"}
 <form action="{:url('excelSave')}" method="post">
-  <input type="hidden" name="id" value="">
-  <div class="form-group row">
-    <div class="col-sm-4">
-      <input type="file" class="form-control" id="selectfile" name="" style="height: 35px"/>
+    <input type="hidden" name="id" value="">
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <input type="file" class="form-control" id="selectfile" name="" style="height: 35px" />
+        </div>
+        <div style="margin-top: 3px">
+            <label for="selectfile" class="btn btn-warning">选择Excel文件</label>
+        </div>
     </div>
-    <div style="margin-top: 3px">
-      <label for="selectfile" class="btn btn-warning">选择Excel文件</label>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">确定</button>
+            <a href="{:url('klassMembers')}" class="btn btn-primary">返回</a>
+        </div>
     </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-sm-10">
-      <button type="submit" class="btn btn-primary">确定</button>
-      <a href="{:url('klassMembers')}" class="btn btn-primary">返回</a>
-    </div>
-  </div>
 </form>
 {/block}
 {block name="page"}
