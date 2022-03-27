@@ -34,7 +34,6 @@ class LoginController extends IndexController
 	{
 		session_unset();
 		$index = Request::instance()->param('index');
-		var_dump($index);
 		return $this->success('您已成功注销', url('login/' . $index));
 	}
 
@@ -45,6 +44,7 @@ class LoginController extends IndexController
 	public function login()
 	{
 		$postData = Request::instance()->post();
+		dump($postData);
 		$role = $postData['role'];
 		if ($role === 'student') {
 			$status = Student::Login($postData);
@@ -74,6 +74,34 @@ class LoginController extends IndexController
 
 	}
 
-	
 
+	/**
+	 * 管理员与教师的web端登录
+	 * */
+	public function webLogin() 
+	{
+		$postData = Request::instance()->post();
+		$map = array("number" => $postData['number']);
+		// 在管理员表中查找对应手机号的管理员
+		$AdminUser = Admin::get($map);
+		// 在管理员表中查找对应手机号的教师
+		$TeacherUser = Teacher::get($map);  
+		if (is_null($AdminUser)) {
+			// 当查找不到管理员时说明是教师用户，进入教师登录的验证
+			$status = Teacher::Login($postData);
+			if ($status) {
+				return $this->success('登录成功', url('teacher/index'));	
+			} else {
+				return $this->error('用户名或密码错误，请重新登录', url('login/index'));
+			}
+		} else {
+			// 当查找到管理员时，进入管理员登陆的验证
+			$status = Admin::Login($postData);
+			if ($status) {
+				return $this->success('登录成功', url('admin_teacher/index'));	
+			} else {
+				return $this->error('用户名或密码错误，请重新登录', url('login/index'));
+			}
+		}
+	}
 }
