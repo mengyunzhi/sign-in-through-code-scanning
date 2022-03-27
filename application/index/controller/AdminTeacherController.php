@@ -1,6 +1,7 @@
 <?php
 namespace app\index\controller;
 use app\common\model\Teacher;
+use app\common\model\Admin;
 use think\Request;
 use think\Controller;
 
@@ -9,7 +10,16 @@ use think\Controller;
  */
 class AdminTeacherController extends IndexController
 {
-	
+	public function __construct()
+    {
+        parent::__construct();
+        
+        //判断是否登录
+        if (!(Admin::isLogin())) {
+            return $this->error('请先进行登录', url('login/index'));
+        }
+    }
+
 	public function index()
 	{
 		$teachers = Teacher::paginate();

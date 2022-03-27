@@ -1,11 +1,22 @@
 <?php
 namespace app\index\controller;     //命名空间，也说明了文件所在的文件夹
 use think\Controller;
+use app\common\model\Teacher;
 use think\Request;
 use think\Db;   // 引用数据库操作类
 
 class TeacherController extends IndexController
 {
+    public function __construct()
+    {
+        parent::__construct();
+        
+        //判断是否登录
+        if (!(Teacher::isLogin())) {
+            return $this->error('请先进行登录', url('login/index'));
+        }
+    }
+
     public function index()
     {
         // 取回打包后的数据
