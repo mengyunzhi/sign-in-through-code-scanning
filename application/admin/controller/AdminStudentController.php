@@ -1,5 +1,5 @@
 <?php
-namespace app\index\controller;
+namespace app\admin\controller;
 use app\common\model\Teacher;
 use think\Request;
 use think\Controller;
@@ -9,7 +9,7 @@ use think\Controller;
  */
 class AdminStudentController extends IndexController
 {
-	
+    
     public function index()
     {
         return $this->fetch();

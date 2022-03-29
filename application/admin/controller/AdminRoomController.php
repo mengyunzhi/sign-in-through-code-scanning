@@ -1,5 +1,5 @@
 <?php
-namespace app\index\controller;
+namespace app\admin\controller;
 use app\common\model\Room;
 use think\Request;
 use think\Controller;
@@ -9,30 +9,30 @@ use think\Controller;
  */
 class AdminRoomController extends IndexController
 {
-	
-	public function index() 
-	{
-		$pageSize = 5;
+    
+    public function index() 
+    {
+        $pageSize = 5;
 
-		$rooms = Room::paginate($pageSize, false);
-		$this->assign('rooms', $rooms);
-		return $this->fetch();
-	}
+        $rooms = Room::paginate($pageSize, false);
+        $this->assign('rooms', $rooms);
+        return $this->fetch();
+    }
 
-	public function add() {
-		return $this->fetch();
-	}
+    public function add() {
+        return $this->fetch();
+    }
 
-	public function edit() {
-		// 获取传入ID
-		$room = Room::get(Request::instance()->param('id/d'));
+    public function edit() {
+        // 获取传入ID
+        $room = Room::get(Request::instance()->param('id/d'));
 
-		// 向模版传值
-		$this->assign('room', $room);
-		return $this->fetch();
-	}
+        // 向模版传值
+        $this->assign('room', $room);
+        return $this->fetch();
+    }
 
-	/**
+    /**
      * 插入新数据
      * @return   html                   
      * @author 梦云智 http://www.mengyunzhi.com
@@ -54,7 +54,7 @@ class AdminRoomController extends IndexController
     }
 
     public function update() {
-    	// 接收数据，取要更新的关键字信息
+        // 接收数据，取要更新的关键字信息
         $id = Request::instance()->post('id/d');
         $postData = Request::instance()->post();
 
@@ -63,20 +63,20 @@ class AdminRoomController extends IndexController
 
         if (!is_null($room)) {
             // 写入要更新的数据
-        	$room->name = $postData['name'];
-        	$room->capacity = $postData['capacity'];
+            $room->name = $postData['name'];
+            $room->capacity = $postData['capacity'];
 
             // 更新
             if (false === $room->validate(true)->save()) {
                 return $this->error('更新失败' . $room->getError());
             } else {
-            	return $this->success('操作成功', url('index'));
+                return $this->success('操作成功', url('index'));
             } 
         }
     }
 
     public function delete() {
-    	// 实例化请求类
+        // 实例化请求类
         $Request = Request::instance();
         
         // 获取get数据

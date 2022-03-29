@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{block name="title"}标题{/block}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/foundation/5.5.3/css/foundation.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/foundation/5.5.3/js/foundation.min.js"></script>
+    <script src="https://cdn.staticfile.org/foundation/5.5.3/js/vendor/modernizr.js"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body class="container">
+    <a href="{:url('admin_teacher/index')}" class="btn btn-sm">管理端</a>
+    <a href="{:url('teacher/index')}" class="btn btn-sm">教师端</a>
+    <a href="{:url('mobile/index')}" class="btn btn-sm">移动端教师端</a>
+    <a href="{:url('student/index')}" class="btn btn-sm">学生端(待删)</a>
+    <a href="{:url('sign_in/index')}" class="btn btn-sm">学生签到界面</a>
+    <a href="{:url('login/studentLogin')}" class="btn btn-sm">学生登录界面</a>
+    <a href="{:url('sign_in/studentRegister')}" class="btn btn-sm">学生注册界面</a>
+    <a href="{:url('sign_in/nosignin')}" class="btn btn-sm">(无到可签)</a>
+    <a href="{:url('sign_in/alreadysignin')}" class="btn btn-sm">(已有人签到)</a>
+    <a href="{:url('Login/MobileLogin')}" class="btn btn-sm">移动端登录界面</a>
+    <!-- 菜单导航 -->
+    <div class="row">
+        <div class="col-md-12">
+            {block name="nav"}
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="">梦云智</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <!-- <li><a href="{:url('admin_center/index')}">管理端</a></li> -->
+                        <li><a href="{:url('admin_term/index')}">学期管理</a></li>
+                        <li class=""><a href="{:url('admin_teacher/index')}">教师管理</a></li>
+                        <li><a href="{:url('admin_student/index')}">学生管理</a></li>
+                        <li><a href="{:url('admin_klass/index')}">班级管理</a></li>
+                        <li><a href="{:url('admin_room/index')}">教室管理</a></li>
+                    </ul>
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="{:url('Login/logout?index=index')}">注销</a></li>
+                        </ul>
+                    </div>
+                    <!-- /.navbar-collapse -->
+                </div>
+                <!-- /.container-fluid -->
+            </nav>
+            {/block}
+        </div>
+    </div>
+    <!-- /菜单导航 -->
+    <div class="row">
+        <div class="col-md-12">
+            {block name="search"}
+            <hr>
+            <div class="row">
+                <div class="col-md-10">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <input name="klass" type="text" class="form-control " placeholder="班级" style="margin-top: 20px">
+                            <input name="name" type="text" class="form-control" placeholder="姓名" style="margin-top: 20px">
+                            <input name="sno" type="text" class="form-control" placeholder="学号" style="margin-top: 20px">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default" style="height: 30px"><i class="glyphicon glyphicon-search"></i>&nbsp;查询</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-2 text-right">
+                    <a href="{:url('Add')}" class="btn btn-primary" style="margin-top: 20px"><i class="glyphicon glyphicon-plus"></i>&nbsp;增加</a>
+                </div>
+            </div>
+            <hr />
+            {/block}
+            {block name="content"}
+            {/block}
+            {block name="page"}
+            {/block}
+        </div>
+    </div>
+</body>
+
+</html>

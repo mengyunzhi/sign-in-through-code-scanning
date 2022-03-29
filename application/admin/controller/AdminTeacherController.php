@@ -1,5 +1,5 @@
 <?php
-namespace app\index\controller;
+namespace app\admin\controller;
 use app\common\model\Teacher;
 use app\common\model\Admin;
 use think\Request;
@@ -10,38 +10,30 @@ use think\Controller;
  */
 class AdminTeacherController extends IndexController
 {
-	public function __construct()
+    
+
+    public function index()
     {
-        parent::__construct();
-        
-        //判断是否登录
-        if (!(Admin::isLogin())) {
-            return $this->error('请先进行登录', url('login/index'));
-        }
+        $teachers = Teacher::paginate();
+        $this->assign('teachers', $teachers);
+        return $this->fetch();
     }
 
-	public function index()
-	{
-		$teachers = Teacher::paginate();
-		$this->assign('teachers', $teachers);
-		return $this->fetch();
-	}
+    public function add() {
+        return $this->fetch();
+    }
 
-	public function add() {
-		return $this->fetch();
-	}
+    public function edit() {
+        $id = Request::instance()->param('id/d');
+        $Teacher = Teacher::get($id);
+        $this->assign('Teacher', $Teacher);
+        return $this->fetch();
+    }
 
-	public function edit() {
-		$id = Request::instance()->param('id/d');
-		$Teacher = Teacher::get($id);
-		$this->assign('Teacher', $Teacher);
-		return $this->fetch();
-	}
-
-	public function update() {
-		$teacher = Request::instance()->post();
-		$id = Request::instance()->post('id/d');
-		$Teacher = Teacher::get($id);
+    public function update() {
+        $teacher = Request::instance()->post();
+        $id = Request::instance()->post('id/d');
+        $Teacher = Teacher::get($id);
         $Teacher = new Teacher;
         $state = $Teacher->validate(true)->isUpdate(true)->save($teacher);
         if ($state === false) 
