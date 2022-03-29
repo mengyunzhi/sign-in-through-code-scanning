@@ -17,21 +17,21 @@
     <form action="{:url('signIn')}" method="post">
         <div>
             <div class="row">
-                <div class="col-12 p-2">
+                <div class="col-md-12 p-2">
                     <label for="username">当前课程:</label>
                     <input type="text" name="username" id="username" class="form-control" value="程序设计" disabled />
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 p-2">
+                <div class="col-md-12 p-2">
                     <label for="username">当前位置:</label>
                     <input type="text" name="username" id="username" class="form-control" value="A301-1" disabled />
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 p-2">
+                <div class="col-md-12 p-2">
                     <label for="username">签到人:</label>
-                    <input type="text" name="username" id="username" class="form-control " value="张三" disabled />
+                    <input type="text" name="username" id="username" class="form-control " value="{:$Student->name}" disabled />
                 </div>
             </div>
             <!--<div class="row">
@@ -41,18 +41,18 @@
             </div>-->
             &nbsp
             <div class="row">
-                <div class="col">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">自动签到</button>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">签到</button>
                 </div>
             </div>
             &nbsp
             <div class="row">
-                <div class="col">
+                <div class="col-md-12">
                     <a href="{:url('PasswordSignIn')}" type="submit" class="btn btn-primary btn-lg btn-block">暗号签到</a>
                 </div>
             </div>
             <div class="row">
-                <div class="col-6 p-2">
+                <div class="col-md-12 p-2">
                     <label>*若您上的课程与当前显示课程不一致，请选择暗号签到</label>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 <?php
-namespace app\index\controller;
+namespace app\admin\controller;
 use app\common\model\Admin;
 use app\common\model\Klass;
 use app\common\model\Student;
@@ -11,21 +11,21 @@ use think\Request;
  */
 class AdminKlassController extends IndexController
 {
-	
-	public function index() 
-	{
-		$klasses = Klass::paginate();
-		$this->assign('klasses', $klasses);
-		return $this->fetch();
-	}
+    
+    public function index() 
+    {
+        $klasses = Klass::paginate();
+        $this->assign('klasses', $klasses);
+        return $this->fetch();
+    }
 
-	public function add() {
+    public function add() {
 
-		return $this->fetch();
-	}
+        return $this->fetch();
+    }
 
-	public function delete() {
-		try {
+    public function delete() {
+        try {
             // 获取get数据
             $Request = Request::instance();
             $id = Request::instance()->param('id/d');

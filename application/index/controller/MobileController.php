@@ -8,16 +8,6 @@ use app\common\model\Teacher;
 class MobileController extends IndexController
 {
 
-    public function __construct()
-    {
-        parent::__construct();
-        
-        //判断是否登录
-        if (!(Teacher::isLogin())) {
-            return $this->error('请先进行登录', url('login/mobileLogin'));
-        }
-    }
-
     public function index()
     {
         // 取回打包后的数据
