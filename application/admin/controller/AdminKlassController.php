@@ -166,7 +166,6 @@ class AdminKlassController extends IndexController
         $id = Request::instance()->post('id/d');
         $Student = Student::get($id);
         $state = $Student->validate(true)->isUpdate(true)->save($student);
-        die();
         if ($state === false) 
         {
             $message = '操作失败:' . $Student->getError();
