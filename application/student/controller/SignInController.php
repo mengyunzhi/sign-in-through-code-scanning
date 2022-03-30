@@ -2,6 +2,7 @@
 namespace app\student\controller;
 use app\common\model\Teacher;
 use app\common\model\Student;
+use app\common\model\User;
 use think\Request;
 use think\Controller;
 
@@ -11,6 +12,15 @@ use think\Controller;
 class SignInController extends Controller
 {
     
+    public function __construct()
+    {
+        parent::__construct();
+        session_start();
+        if ((int)User::isLogin() !== User::$ROLE_STUDENT) {
+            return $this->error('当前未登录');
+        }
+    }
+
     public function index()
     {
         $map = ["id" => 1];

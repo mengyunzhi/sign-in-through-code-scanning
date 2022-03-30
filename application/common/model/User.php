@@ -10,6 +10,17 @@ class User extends Model {
     public static $USER_KEY_ID = 'userId';
 
     /**
+     * 登录验证
+     */
+    static public function isLogin()
+    {
+        if (isset($_SESSION[self::$USER_KEY_ID])) {
+            $User = self::get(['id' => $_SESSION[self::$USER_KEY_ID]]);
+            return $User->role;
+        }
+    }
+
+    /**
      * @param $username 用户名（学生是学号，其他用户是手机号; $password密码;$role 权限判断;$mode false-根据mode判定权限是否匹配，true-根据$User->role字段选择跳转页面
      * @return 登录失败 false; 登录成功 true;
      */
@@ -41,6 +52,8 @@ class User extends Model {
             return false;
         }
         if ($mode) {
+            //存session
+            $_SESSION[self::$USER_KEY_ID] = $User->id;
             if ((int)$User->role === self::$ROLE_TEACHER) {
                 return 'Teacher';
             } else if ((int)$User->role === self::$ROLE_ADMIN) {
@@ -53,7 +66,13 @@ class User extends Model {
             return false;
         }
         //将查出数据的id存入session
+
         $_SESSION[self::$USER_KEY_ID] = $User->id;
         return true;
+    }
+
+    static public function logout()
+    {
+        session_unset();
     }
 }
