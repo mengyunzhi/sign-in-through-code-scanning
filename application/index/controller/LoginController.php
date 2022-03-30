@@ -1,5 +1,5 @@
 <?php
-namespace app\common\controller;
+namespace app\index\controller;
 use think\Controller;
 use think\Request;
 use app\common\model\Admin;
@@ -28,6 +28,13 @@ class LoginController extends Controller
         return $this->fetch();
     }
 
+
+
+    public function studentLogin()
+    {
+        return $this->fetch();
+    }
+
     /**
      * 注册
      * 如果学号存在，就将密码，手机号存入
@@ -35,24 +42,26 @@ class LoginController extends Controller
     public function register()
     {
         $postData = Request::instance()->post();
-        $status = User::register($postData['sno'], $postData['number'], $postData['password']);
-        if ($status === '存在空值') {
-            return $this->error('注册失败：传入数据存在空值');
-        } else if ($status === '学号错误') {
-            return $this->error('注册失败：学号错误');
-        } else if ($status === '已注册') {
-            return $this->error('您已注册');
-        } else if ($status === '注册失败') {
-            return $this->error('注册失败');
-        } else {
-            return $this->success('注册成功', url('studentLogin'));
+        $map = ['sno' => $postData['sno']];
+        $Student = Student::get($map);
+        if (is_null($Student)) {
+            //学号不存在
+            return $this->error('注册失败：学号不存在，请联系教师', url('StudentRegister'));
         }
-        
-    }
+        if (!empty($Student['password'])) {
+            //已经注册
+            return $this->error('注册失败：该学号已经注册过,请进行登录', url('login/studentLogin'));
+        }
 
-    public function studentLogin()
-    {
-        return $this->fetch();
+        $Student->password = $postData['password'];
+        $Student->number = $postData['number'];
+        //保存
+        $status = $Student->validate()->save();
+        if (!$status) {
+            $message = '注册失败' . $Student->getError();
+            return $this->error($message);
+        }
+        return $this->success('注册成功', url('login/studentLogin'));
     }
 
     public function studentRegister()

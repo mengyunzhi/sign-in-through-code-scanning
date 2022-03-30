@@ -14,8 +14,7 @@ class IndexController extends Controller
     public function __construct()
     {
         parent::__construct();
-        session_start();
-        if ((int)User::isLogin() !== User::$ROLE_TEACHER) {
+        if (!User::checkAccessByRole(User::$ROLE_TEACHER)) {
             return $this->error('当前未登录');
         }
     }
