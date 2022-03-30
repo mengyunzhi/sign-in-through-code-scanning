@@ -4,8 +4,6 @@ use think\Model;
 
 class Student extends Model {
 
-	static public $user = 'student';
-	
 	/**
 	 * 判断密码是否正确
 	 * 进行密码加密

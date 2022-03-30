@@ -75,4 +75,33 @@ class User extends Model {
     {
         session_unset();
     }
+
+    /**
+     * @param   $sno      用来获取数据
+     * @param   $number   存入user的手机号
+     * @param   $password 存入user的密码
+     * @return  不同错误返回不同信息
+     */
+    static public function register($sno, $number, $password)
+    {
+        if (is_null($sno) || is_null($number) || is_null($password)) {
+            return '存在空值';
+        }
+        $Student = Student::get(['sno' => $sno]);
+
+        if (is_null($Student)) {
+            return '学号错误';
+        }
+        if ($Student->state === 1) {
+            return '已注册';
+        }
+        $User = self::get(['id' => $Student->user_id]);
+        $status = $Student->save(['state' => 1]) && $User->save(['number' => $number, 'password' => $password]);
+
+        if (!$status) {
+            return false;
+        }
+
+        return true;
+    }
 }
