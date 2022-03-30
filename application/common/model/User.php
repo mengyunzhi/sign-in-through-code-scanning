@@ -10,7 +10,7 @@ class User extends Model {
     public static $USER_KEY_ID = 'userId';
 
     /**
-     * 登录验证
+     * session存在，返回role
      */
     static public function isLogin()
     {
