@@ -5,6 +5,7 @@ use think\Request;
 use app\common\model\Admin;
 use app\common\model\Teacher;
 use app\common\model\Student;
+use app\common\model\User;
 
 /**
  * 管理端
@@ -73,70 +74,55 @@ class LoginController extends Controller
         return $this->success('您已成功注销', url('login/' . $index));
     }
 
-
     /**
-     * 根据role不同，调用不同类的登录方法，跳转不同界面
-     * */
-    public function login()
+     * 移动端教师登录
+     * 登录成功：跳转主页
+     * 登录失败：返回登录界面
+     */
+    public function mobileTeacherLogin()
     {
+        $role = User::$ROLE_TEACHER;
         $postData = Request::instance()->post();
-        $role = $postData['role'];
-        if ($role === 'student') {
-            $status = Student::Login($postData);
-            //通过$status返回值不同，报错不同
-            if ($status === 1) {
-                return $this->success('登录成功', url('student/SignIn/index')); 
-            } else if ($status === 0) {
-                return $this->error('登录失败：用户名或密码错误', url('login/studentLogin'));
-            } elseif ($status === -1) {
-                return $this->error('登录失败：当前学号尚未注册', url('login/studentLogin'));
-            }
-        } else if($role === 'teacher') {
-            $status = Teacher::Login($postData);
-            if ($status) {
-                return $this->success('登录成功', url('index/mobile/index')); 
-            } else {
-                return $this->error('用户名或密码错误，请重新登录', url('login/mobileLogin'));
-            }
-        } else if($role === 'admin') {
-            $status = Admin::Login($postData);
-            if ($status) {
-                return $this->success('登录成功', url('admin/admin_term/index')); 
-            } else {
-                return $this->error('用户名或密码错误，请重新登录', url(''));
-            }
+        $status = User::login($postData['number'], $postData['password'], $role);
+        if ($status === false) {
+            return $this->error('登录失败：用户名或密码错误');
         }
-
+        return $this->success('登录成功', url('index/mobile/index'));
     }
 
+    /**
+     * 移动端学生登录
+     * 登录成功：跳转主页
+     * 登录失败：返回登录界面
+     * 未注册：提示未注册返回登录界面
+     */
+    public function signInStudentLogin()
+    {
+        $role = User::$ROLE_STUDENT;
+        $postData = Request::instance()->post();
+        $status = User::login($postData['sno'], $postData['password'], $role);
+        if ($status === '未注册') {
+            return $this->error('登录失败：该学号还未注册');
+        } else if (!$status) {
+            return $this->error('登录失败：用户名或密码错误');
+        }
+        return $this->success('登录成功', url('student/sign_in/index'));
+    }
 
     /**
      * 管理员与教师的web端登录
-     * */
+     * 登录成功：跳转主页
+     * 登录失败：返回登录界面
+     */
     public function webLogin() 
     {
         $postData = Request::instance()->post();
-        $map = array("number" => $postData['number']);
-        // 在管理员表中查找对应手机号的管理员
-        $AdminUser = Admin::get($map);
-        // 在管理员表中查找对应手机号的教师
-        $TeacherUser = Teacher::get($map);  
-        if (is_null($AdminUser)) {
-            // 当查找不到管理员时说明是教师用户，进入教师登录的验证
-            $status = Teacher::Login($postData);
-            if ($status) {
-                return $this->success('登录成功', url('index/teacher/index'));    
-            } else {
-                return $this->error('用户名或密码错误，请重新登录', url('login/index'));
-            }
-        } else {
-            // 当查找到管理员时，进入管理员登陆的验证
-            $status = Admin::Login($postData);
-            if ($status) {
-                return $this->success('登录成功', url('admin/admin_teacher/index'));  
-            } else {
-                return $this->error('用户名或密码错误，请重新登录', url('login/index'));
-            }
+        $status = User::login($postData['number'], $postData['password'], 'not student', true);
+        if ($status === 'Admin') {
+            return $this->success('登录成功', url('admin/admin_term/index'));
+        } else if ($status === 'Teacher') {
+            return $this->success('登录成功', url('index/teacher/index'));
         }
+        return $this->error('登录失败：用户名或密码错误');
     }
 }

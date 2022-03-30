@@ -18,7 +18,7 @@ class IndexController extends Controller
 
     public function index()
     {
-        return $this->fetch(url('login/login/index'));
+        return $this->fetch();
     }
 
 }
