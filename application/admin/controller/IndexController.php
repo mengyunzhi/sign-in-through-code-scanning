@@ -2,7 +2,6 @@
 namespace app\admin\controller;
 use app\common\model\Teacher;
 use app\common\model\User;
-use app\index\controller\LoginController;
 use think\Request;
 use think\Controller;
 
