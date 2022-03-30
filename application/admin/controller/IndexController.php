@@ -1,9 +1,9 @@
 <?php
 namespace app\admin\controller;
 use app\common\model\Teacher;
+use app\common\model\User;
 use think\Request;
 use think\Controller;
-use app\index\controller\LoginController;
 
 /**
  * 管理端
@@ -11,20 +11,13 @@ use app\index\controller\LoginController;
 class IndexController extends Controller
 {       
 
-    // public function __construct()
-    // {
-    //     parent::__construct();
-        
-    //     //判断是否登录
-    //     if (!(Admin::isLogin())) {
-    //         return $this->error('请先进行登录', url('login/index'));
-    //     }
-    // }
-    
     public function __construct()
     {
         parent::__construct();
         session_start();
+        if ((int)User::isLogin() !== User::$ROLE_ADMIN) {
+            return $this->error('当前未登录');
+        }
     }
 
     public function index()

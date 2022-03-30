@@ -13,6 +13,12 @@ use app\common\model\User;
 class LoginController extends Controller
 {
     
+    public function __construct()
+    {
+        parent::__construct();
+        session_start();
+    }
+
     public function index() 
     {
         return $this->fetch();
@@ -91,6 +97,15 @@ class LoginController extends Controller
     }
 
     /**
+     * 教师移动端注销
+     */
+    public function mobileTeacherLogout()
+    {
+        User::logout();
+        return $this->success('已注销', url('mobileLogin'));
+    }
+
+    /**
      * 移动端学生登录
      * 登录成功：跳转主页
      * 登录失败：返回登录界面
@@ -110,6 +125,24 @@ class LoginController extends Controller
     }
 
     /**
+     * 学生移动端注销
+     */
+    public function signInStudentLogout() 
+    {
+        User::logout();
+        return $this->success('已注销', url('studentLogin'));
+    }
+
+    /**
+     * 管理员web端注销
+     */
+    public function webAdminLogout() 
+    {
+        User::logout();
+        return $this->success('已注销', url('index'));
+    }
+
+    /**
      * 管理员与教师的web端登录
      * 登录成功：跳转主页
      * 登录失败：返回登录界面
@@ -124,5 +157,14 @@ class LoginController extends Controller
             return $this->success('登录成功', url('index/teacher/index'));
         }
         return $this->error('登录失败：用户名或密码错误');
+    }
+
+    /**
+     * 教师web端注销
+     */
+    public function webTeacherLogout() 
+    {
+        User::logout();
+        return $this->success('已注销', url('index'));
     }
 }
