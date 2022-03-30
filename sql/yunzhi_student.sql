@@ -11,7 +11,7 @@
  Target Server Version : 100422
  File Encoding         : 65001
 
- Date: 26/03/2022 15:19:18
+ Date: 30/03/2022 19:19:37
 */
 
 SET NAMES utf8mb4;
@@ -23,15 +23,13 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `yunzhi_student`;
 CREATE TABLE `yunzhi_student`  (
   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '姓名',
-  `number` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `password` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `sno` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
-  `sex` tinyint NOT NULL DEFAULT 0,
-  `klass_id` int NOT NULL DEFAULT 0,
+  `user_id` int UNSIGNED NOT NULL,
+  `sno` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `state` int UNSIGNED NOT NULL,
   `create_time` int NOT NULL DEFAULT 0,
   `update_time` int NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`, `sno`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `T1lDuz5XXcEbggrC`(`user_id`) USING BTREE
 ) ENGINE = MyISAM AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;
