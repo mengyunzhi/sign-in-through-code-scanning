@@ -12,11 +12,6 @@ use app\common\model\User;
  */
 class LoginController extends Controller
 {
-    
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     public function index() 
     {
@@ -35,9 +30,15 @@ class LoginController extends Controller
      */
     public function mobileTeacherLogin()
     {
-        $role = User::$ROLE_TEACHER;
         $postData = Request::instance()->post();
-        $status = User::login($postData['number'], $postData['password'], $role);
+        //数据校验
+        if (!isset($postData['number'])) {
+            return $this->error('请输入手机号');
+        } elseif (!isset($postData['password'])) {
+            return $this->error('请输入密码');
+        }
+
+        $status = User::login($postData['number'], $postData['password'], User::$ROLE_TEACHER);
         if ($status === false) {
             return $this->error('登录失败：用户名或密码错误');
         }
@@ -55,26 +56,31 @@ class LoginController extends Controller
 
 
     /**
-     * 管理员与教师的web端登录
+     * 教师web端登录
      * 登录成功：跳转主页
      * 登录失败：返回登录界面
      */
     public function webLogin() 
     {
         $postData = Request::instance()->post();
-        $status = User::login($postData['number'], $postData['password'], 'not student', true);
-        if ($status === 'Admin') {
-            return $this->success('登录成功', url('admin/admin_term/index'));
-        } else if ($status === 'Teacher') {
-            return $this->success('登录成功', url('index/teacher/index'));
+        //数据校验
+        if (!isset($postData['number'])) {
+            return $this->error('请输入手机号');
+        } elseif (!isset($postData['password'])) {
+            return $this->error('请输入密码');
         }
-        return $this->error('登录失败：用户名或密码错误');
+        
+        $status = User::login($postData['number'], $postData['password'], User::$ROLE_TEACHER);
+        if (!$status) {
+            return $this->error('登录失败：用户名或密码错误');
+        }
+        return $this->success('登录成功', url('index/index'));
     }
 
     /**
      * 教师web端注销
      */
-    public function webTeacherLogout() 
+    public function webLogout()
     {
         User::logout();
         return $this->success('已注销', url('index'));

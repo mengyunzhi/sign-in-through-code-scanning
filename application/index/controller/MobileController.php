@@ -1,12 +1,22 @@
 <?php
 namespace app\index\controller;     //命名空间，也说明了文件所在的文件夹
+use app\common\model\Teacher;
+use app\common\model\User;
 use think\Controller;
 use think\Request;
-use think\Db;   // 引用数据库操作类
-use app\common\model\Teacher;
 
-class MobileController extends IndexController
+class MobileController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+        if (is_null(User::getCurrentLoginUser())) {
+            return $this->error('请先进行登录', url('login/mobileLogin'));
+        }
+        if (!User::checkAccessByRole(User::$ROLE_TEACHER)) {
+            return $this->error('您并不拥有操作当前模块的权限');
+        }
+    }
 
     public function index()
     {
