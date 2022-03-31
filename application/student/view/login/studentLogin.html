@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <title>学生端(mobile)</title>
+    <meta charset="utf-8">
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+</head>
+
+<body class="container">
+    <form action="{:url('signInStudentLogin')}" method="post">
+        <div class="row">
+            <div class="col-md-12 p-2">
+                <label for="sno">请输入学号:</label>
+                <input type="text" name="sno" id="sno" class="form-control" value="" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 p-2">
+                <label for="password">请输入密码:</label>
+                <input type="password" name="password" id="password" class="form-control" />
+            </div>
+        </div>
+        &nbsp
+        <div class="row">
+            <div class="col-md-12 p-2">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">登录</button>
+            </div>
+        </div>
+        &nbsp
+        <div class="row">
+            <div class="col-md-12 text-right">
+                <a href="{:url('login/studentRegister')}">点击此处进行注册</a>
+            </div>
+        </div>
+    </form>
+</body>
+
+</html>

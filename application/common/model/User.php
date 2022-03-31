@@ -2,33 +2,35 @@
 namespace app\common\model;
 use app\common\model\Student;
 use think\Model;
+use think\Exception;
 
 class User extends Model {
     public static $ROLE_ADMIN = 0;
     public static $ROLE_TEACHER = 1;
     public static $ROLE_STUDENT = 2;
-    public static $SESSION_KEY_USER = 'userId';
+    public static $SESSION_KEY_USER = 'user';
 
     /**
      *判断是否具有某个角色的权限
      */
     static public function checkAccessByRole($role)
     {
-        $CurrentRole = self::getCurrentLoginUserRole();
-        if ($CurrentRole === $role) {
-            return true;
-        } else {
-            return false;
-        }
+        return self::getCurrentLoginUserRole() === $role;
     }
 
 
     /**
      *获取当前登录用户
+     *type array
      */
     static public function getCurrentLoginUser() 
-    {
-        $User = self::get(['id' => $_SESSION[self::$SESSION_KEY_USER]]);
+    {   
+        $User = null;
+
+        if (isset($_SESSION[User::$SESSION_KEY_USER])) {
+            $User = $_SESSION[User::$SESSION_KEY_USER];
+        }
+
         return $User;
     }
 
@@ -38,7 +40,12 @@ class User extends Model {
     static public function getCurrentLoginUserRole() 
     {
         $User = self::getCurrentLoginUser();
-        return (int) $User->role;
+        
+        if (is_null($User)) {
+            return null;
+        }
+        
+        return (int) $User['role'];
     }
 
     /**
@@ -74,7 +81,7 @@ class User extends Model {
         }
         if ($mode) {
             //存session
-            $_SESSION[self::$SESSION_KEY_USER] = $User->id;
+            $_SESSION[self::$SESSION_KEY_USER] = $User->toArray();
             if ((int)$User->role === self::$ROLE_TEACHER) {
                 return 'Teacher';
             } else if ((int)$User->role === self::$ROLE_ADMIN) {
@@ -88,7 +95,7 @@ class User extends Model {
         }
         //将查出数据的id存入session
 
-        $_SESSION[self::$SESSION_KEY_USER] = $User->id;
+        $_SESSION[self::$SESSION_KEY_USER] = $User->toArray();
         return true;
     }
 
@@ -101,20 +108,24 @@ class User extends Model {
      * @param   $sno      用来获取数据
      * @param   $number   存入user的手机号
      * @param   $password 存入user的密码
+     * @param   $verificationCode 验证码判断
      * @return  不同错误返回不同信息
      */
-    static public function register($sno, $number, $password)
+    static public function register($sno, $number, $password,$verificationCode ,&$callbackMessage)
     {
         if (is_null($sno) || is_null($number) || is_null($password)) {
-            return '存在空值';
+            $callbackMessage = '存在空值';
+            return false;
         }
         $Student = Student::get(['sno' => $sno]);
 
         if (is_null($Student)) {
-            return '学号错误';
+            $callbackMessage = '学号错误';
+            return false;
         }
         if ($Student->state === 1) {
-            return '已注册';
+            $callbackMessage = '已注册';
+            return false;
         }
         $User = self::get(['id' => $Student->user_id]);
         $status = $Student->save(['state' => 1]) && $User->save(['number' => $number, 'password' => $password]);
