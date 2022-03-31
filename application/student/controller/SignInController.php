@@ -18,7 +18,7 @@ class SignInController extends Controller
         parent::__construct();
 
         if (!User::checkAccessByRole(User::$ROLE_STUDENT)) {
-            return $this->error('当前未登录', url('Login/studentLogin'));
+            return $this->error('您并不拥有操作当前模块的权限', url('Login/studentLogin'));
         }
     }
 
