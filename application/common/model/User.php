@@ -2,6 +2,7 @@
 namespace app\common\model;
 use app\common\model\Student;
 use think\Model;
+use think\Exception;
 
 class User extends Model {
     public static $ROLE_ADMIN = 0;
@@ -14,12 +15,7 @@ class User extends Model {
      */
     static public function checkAccessByRole($role)
     {
-        $CurrentRole = self::getCurrentLoginUserRole();
-        if ($CurrentRole === $role) {
-            return true;
-        } else {
-            return false;
-        }
+        return self::getCurrentLoginUserRole() === $role;
     }
 
 
@@ -27,8 +23,12 @@ class User extends Model {
      *获取当前登录用户
      */
     static public function getCurrentLoginUser() 
-    {
-        $User = self::get(['id' => $_SESSION[self::$SESSION_KEY_USER]]);
+    {   
+        $id = 0;
+        if (isset($_SESSION[self::$SESSION_KEY_USER])) {
+            $id = $_SESSION[self::$SESSION_KEY_USER];
+        }
+        $User = self::get(['id' => $id]);
         return $User;
     }
 
@@ -38,6 +38,10 @@ class User extends Model {
     static public function getCurrentLoginUserRole() 
     {
         $User = self::getCurrentLoginUser();
+        
+        if (is_null($User)) {
+            return null;
+        }
         return (int) $User->role;
     }
 
@@ -101,20 +105,24 @@ class User extends Model {
      * @param   $sno      用来获取数据
      * @param   $number   存入user的手机号
      * @param   $password 存入user的密码
+     * @param   $verificationCode 验证码判断
      * @return  不同错误返回不同信息
      */
-    static public function register($sno, $number, $password)
+    static public function register($sno, $number, $password,$verificationCode ,&$callbackMessage)
     {
         if (is_null($sno) || is_null($number) || is_null($password)) {
-            return '存在空值';
+            $callbackMessage = '存在空值';
+            return false;
         }
         $Student = Student::get(['sno' => $sno]);
 
         if (is_null($Student)) {
-            return '学号错误';
+            $callbackMessage = '学号错误';
+            return false;
         }
         if ($Student->state === 1) {
-            return '已注册';
+            $callbackMessage = '已注册';
+            return false;
         }
         $User = self::get(['id' => $Student->user_id]);
         $status = $Student->save(['state' => 1]) && $User->save(['number' => $number, 'password' => $password]);

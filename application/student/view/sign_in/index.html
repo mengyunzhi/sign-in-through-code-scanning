@@ -14,6 +14,20 @@
 </head>
 
 <body class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand">梦云智</a>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="{:url('Login/logout')}">注销</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
     <form action="{:url('signIn')}" method="post">
         <div>
             <div class="row">
@@ -31,14 +45,9 @@
             <div class="row">
                 <div class="col-md-12 p-2">
                     <label for="username">签到人:</label>
-                    <input type="text" name="username" id="username" class="form-control " value="{:$Student->name}" disabled />
+                    <input type="text" name="username" id="username" class="form-control " value="{}" disabled />
                 </div>
             </div>
-            <!--<div class="row">
-                    <label for="test" style="font-size: 50px">请输入课程暗号:</label>
-                    <input type="test" name="test" id="test" class="form-control" style="width: 600px; height: 100px; font-size: 50px"/>
-                </div>
-            </div>-->
             &nbsp
             <div class="row">
                 <div class="col-md-12">
