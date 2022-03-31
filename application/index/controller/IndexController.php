@@ -15,7 +15,7 @@ class IndexController extends Controller
     {
         parent::__construct();
         if (!User::checkAccessByRole(User::$ROLE_TEACHER)) {
-            return $this->error('当前未登录');
+            return $this->error('您并不拥有操作当前模块的权限', url('login/index'));
         }
     }
 
@@ -23,5 +23,4 @@ class IndexController extends Controller
     {
         return $this->fetch();
     }
-
 }
