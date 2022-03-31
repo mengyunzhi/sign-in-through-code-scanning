@@ -14,14 +14,14 @@ class IndexController extends Controller
     public function __construct()
     {
         parent::__construct();
-        if ((int)User::isLogin() !== User::$ROLE_ADMIN) {
-            return $this->error('当前未登录');
+        if (!User::checkAccessByRole(User::$ROLE_ADMIN)) {
+            return $this->error('您并不拥有操作当前模块的权限', url('/index/login'));
         }
     }
 
     public function index()
     {
-        return $this->fetch('login/index');
+        return $this->fetch('admin_term/index');
     }
 
 }
