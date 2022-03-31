@@ -13,11 +13,6 @@ use app\common\model\User;
 class LoginController extends Controller
 {
     
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function index() 
     {
         return $this->fetch();
@@ -26,27 +21,32 @@ class LoginController extends Controller
     /**
      * 管理员web端注销
      */
-    public function webAdminLogout() 
+    public function logout() 
     {
         User::logout();
         return $this->success('已注销', url('/index/login'));
     }
 
     /**
-     * 管理员与教师的web端登录
+     * 管理员web端登录
      * 登录成功：跳转主页
      * 登录失败：返回登录界面
      */
-    public function webLogin() 
+    public function Login() 
     {
         $postData = Request::instance()->post();
-        $status = User::login($postData['number'], $postData['password'], 'not student', true);
-        if ($status === 'Admin') {
-            return $this->success('登录成功', url('admin/admin_term/index'));
-        } else if ($status === 'Teacher') {
-            return $this->success('登录成功', url('index/teacher/index'));
+        //数据校验
+        if (!isset($postData['number'])) {
+            return $this->error('请输入手机号');
+        } elseif (!isset($postData['password'])) {
+            return $this->error('请输入密码');
         }
-        return $this->error('登录失败：用户名或密码错误');
+        
+        $status = User::login($postData['number'], $postData['password'], User::$ROLE_ADMIN);
+        if (!$status) {
+            return $this->error('登录失败：用户名或密码错误');
+        }
+        return $this->success('登录成功', url('admin/admin_term/index'));
     }
 
 }

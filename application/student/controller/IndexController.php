@@ -19,7 +19,7 @@ class IndexController extends Controller
             return $this->error('请先进行登录', url('Login/index'));
         }
         if (!User::checkAccessByRole(User::$ROLE_STUDENT)) {
-            return $this->error('您并不拥有操作当前模块的权限', url('Login/index'));
+            return $this->error('您并不拥有操作当前模块的权限');
         }
     }
 

@@ -38,9 +38,9 @@ class LoginController extends Controller
             return $this->error('请输入密码');
         }
 
-        $status = User::login($postData['sno'], $postData['password'], $role, $callbackMessage);
+        $status = User::login($postData['sno'], $postData['password'], $role);
         if (!$status) {
-            return $this->error('登录失败:' . $callbackMessage);
+            return $this->error('登录失败');
         }
         return $this->success('登录成功', url('index/index'));
     }
@@ -72,10 +72,10 @@ class LoginController extends Controller
             return $this->error('请输入验证码');
         }
 
-        $status = User::register($postData['sno'], $postData['number'], $postData['password'],$postData['verificationCode'], $callbackMessage);
+        $status = User::register($postData['sno'], $postData['number'], $postData['password'],$postData['verificationCode']);
 
         if (!$status) {
-            return $this->error('注册失败：' . $callbackMessage);
+            return $this->error('注册失败');
         }
         return $this->success('注册成功', url('studentLogin'));
     }
