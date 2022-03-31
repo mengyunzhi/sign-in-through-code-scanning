@@ -8,7 +8,7 @@ class User extends Model {
     public static $ROLE_ADMIN = 0;
     public static $ROLE_TEACHER = 1;
     public static $ROLE_STUDENT = 2;
-    public static $SESSION_KEY_USER = 'userId';
+    public static $SESSION_KEY_USER = 'user';
 
     /**
      *判断是否具有某个角色的权限
@@ -21,14 +21,16 @@ class User extends Model {
 
     /**
      *获取当前登录用户
+     *type array
      */
     static public function getCurrentLoginUser() 
     {   
-        $id = 0;
-        if (isset($_SESSION[self::$SESSION_KEY_USER])) {
-            $id = $_SESSION[self::$SESSION_KEY_USER];
+        $User = null;
+
+        if (isset($_SESSION[User::$SESSION_KEY_USER])) {
+            $User = $_SESSION[User::$SESSION_KEY_USER];
         }
-        $User = self::get(['id' => $id]);
+
         return $User;
     }
 
@@ -42,7 +44,8 @@ class User extends Model {
         if (is_null($User)) {
             return null;
         }
-        return (int) $User->role;
+        
+        return (int) $User['role'];
     }
 
     /**
@@ -78,7 +81,7 @@ class User extends Model {
         }
         if ($mode) {
             //存session
-            $_SESSION[self::$SESSION_KEY_USER] = $User->id;
+            $_SESSION[self::$SESSION_KEY_USER] = $User->toArray();
             if ((int)$User->role === self::$ROLE_TEACHER) {
                 return 'Teacher';
             } else if ((int)$User->role === self::$ROLE_ADMIN) {
@@ -92,7 +95,7 @@ class User extends Model {
         }
         //将查出数据的id存入session
 
-        $_SESSION[self::$SESSION_KEY_USER] = $User->id;
+        $_SESSION[self::$SESSION_KEY_USER] = $User->toArray();
         return true;
     }
 

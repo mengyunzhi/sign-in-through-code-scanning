@@ -14,7 +14,9 @@ class SignInController extends Controller
     
     public function __construct()
     {
+        
         parent::__construct();
+
         if (!User::checkAccessByRole(User::$ROLE_STUDENT)) {
             return $this->error('当前未登录', url('Login/studentLogin'));
         }
