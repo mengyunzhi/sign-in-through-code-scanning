@@ -1,5 +1,5 @@
 <?php
-namespace app\index\controller;
+namespace app\admin\controller;
 use think\Controller;
 use think\Request;
 use app\common\model\Admin;
@@ -23,36 +23,14 @@ class LoginController extends Controller
         return $this->fetch();
     }
 
-    public function MobileLogin() 
-    {
-        return $this->fetch();
-    }
-
     /**
-     * 移动端教师登录
-     * 登录成功：跳转主页
-     * 登录失败：返回登录界面
+     * 管理员web端注销
      */
-    public function mobileTeacherLogin()
-    {
-        $role = User::$ROLE_TEACHER;
-        $postData = Request::instance()->post();
-        $status = User::login($postData['number'], $postData['password'], $role);
-        if ($status === false) {
-            return $this->error('登录失败：用户名或密码错误');
-        }
-        return $this->success('登录成功', url('index/mobile/index'));
-    }
-
-    /**
-     * 教师移动端注销
-     */
-    public function mobileTeacherLogout()
+    public function webAdminLogout() 
     {
         User::logout();
-        return $this->success('已注销', url('mobileLogin'));
+        return $this->success('已注销', url('/index/login'));
     }
-
 
     /**
      * 管理员与教师的web端登录
@@ -71,12 +49,4 @@ class LoginController extends Controller
         return $this->error('登录失败：用户名或密码错误');
     }
 
-    /**
-     * 教师web端注销
-     */
-    public function webTeacherLogout() 
-    {
-        User::logout();
-        return $this->success('已注销', url('index'));
-    }
 }
