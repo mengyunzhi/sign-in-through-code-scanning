@@ -6,7 +6,26 @@ class Admin extends Model {
 
 	static public $user = 'admin';
 
-	public function getSexAttr($value) {
+	/**
+     *通过id获取管理员
+     */
+    static public function getAdminById($id) 
+    {
+        $Admin = self::get($id);
+        return $Admin;
+    }
+
+    /**
+     *获取管理员的user_id字段
+     */
+    static public function getUserId($id) 
+    {
+        $Admin = self::getAdminById($id);
+        return $Admin['user_id'];
+    }
+
+	public function getSexAttr($value) 
+	{
 		$status = [
 			'0'=>'男',
 			'1'=>'女',

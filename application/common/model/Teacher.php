@@ -7,6 +7,24 @@ class Teacher extends Model {
 	static public $user = 'teacher';
 
 	/**
+     *通过id获取教师
+     */
+    static public function getTeacherById($id) 
+    {
+        $Teacher = self::get($id);
+        return $Teacher;
+    }
+
+    /**
+     *获取教师的user_id字段
+     */
+    static public function getUserId($id) 
+    {
+        $Teacher = self::getTeacherById($id);
+        return $Teacher['user_id'];
+    }
+
+	/**
 	 * 判断密码是否正确
 	 * 进行密码加密
 	 * */

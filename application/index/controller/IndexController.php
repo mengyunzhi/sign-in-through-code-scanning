@@ -1,6 +1,8 @@
 <?php
 namespace app\index\controller;     //命名空间，也说明了文件所在的文件夹
 use app\common\model\Teacher;
+use app\common\model\Admin;
+use app\common\model\Student;
 use app\common\model\User;
 use think\Controller;
 use think\Request;
