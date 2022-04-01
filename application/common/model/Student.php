@@ -5,21 +5,29 @@ use think\Model;
 class Student extends Model {
 
 	/**
-     *通过id获取学生
+     *通过user_id获取学生用户
      */
-    static public function getStudentById($id) 
+    public function getUser() 
     {
-        $Student = self::get($id);
-        return $Student;
+        $UserId = $this->data['user_id'];
+        $this->data['user'] = User::get($UserId);
+        return $this->data['user'];
     }
 
     /**
-     *获取学生的user_id字段
+     *通过获取sno(学号)字段
      */
-    static public function getUserId($id) 
+    public function getSno() 
     {
-        $Student = self::getStudentById($id);
-        return $Student['user_id'];
+        return $this->data['sno'];
+    }
+
+    /**
+     *通过获取state字段
+     */
+    public function getState() 
+    {
+        return $this->data['state'];
     }
 
 	/**

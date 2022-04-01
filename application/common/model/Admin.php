@@ -1,5 +1,6 @@
 <?php
 namespace app\common\model;
+use app\common\model\User;
 use think\Model;
 
 class Admin extends Model {
@@ -7,22 +8,15 @@ class Admin extends Model {
 	static public $user = 'admin';
 
 	/**
-     *通过id获取管理员
+     *通过user_id获取管理员用户
      */
-    static public function getAdminById($id) 
+    public function getUser() 
     {
-        $Admin = self::get($id);
-        return $Admin;
+        $UserId = $this->data['user_id'];
+        $this->data['user'] = User::get($UserId);
+        return $this->data['user'];
     }
 
-    /**
-     *获取管理员的user_id字段
-     */
-    static public function getUserId($id) 
-    {
-        $Admin = self::getAdminById($id);
-        return $Admin['user_id'];
-    }
 
 	public function getSexAttr($value) 
 	{
