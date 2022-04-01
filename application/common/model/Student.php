@@ -5,6 +5,24 @@ use think\Model;
 class Student extends Model {
 
 	/**
+     *通过id获取学生
+     */
+    static public function getStudentById($id) 
+    {
+        $Student = self::get($id);
+        return $Student;
+    }
+
+    /**
+     *获取学生的user_id字段
+     */
+    static public function getUserId($id) 
+    {
+        $Student = self::getStudentById($id);
+        return $Student['user_id'];
+    }
+
+	/**
 	 * 判断密码是否正确
 	 * 进行密码加密
 	 * */
