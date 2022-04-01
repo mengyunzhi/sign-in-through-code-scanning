@@ -24,7 +24,7 @@ class LoginController extends Controller
     public function logout() 
     {
         User::logout();
-        return $this->success('已注销', url('/index/login'));
+        return $this->success('已注销', url('index'));
     }
 
     /**

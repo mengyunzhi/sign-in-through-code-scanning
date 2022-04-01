@@ -40,7 +40,7 @@ class LoginController extends Controller
 
         $status = User::login($postData['sno'], $postData['password'], $role);
         if (!$status) {
-            return $this->error('登录失败');
+            return $this->error('登录失败:学号或密码错误');
         }
         return $this->success('登录成功', url('index/index'));
     }
@@ -75,7 +75,7 @@ class LoginController extends Controller
         $status = User::register($postData['sno'], $postData['number'], $postData['password'],$postData['verificationCode']);
 
         if (!$status) {
-            return $this->error('注册失败');
+            return $this->error('注册失败:学号错误或者已注册');
         }
         return $this->success('注册成功', url('studentLogin'));
     }
