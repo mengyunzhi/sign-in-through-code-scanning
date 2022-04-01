@@ -28,6 +28,7 @@ class Student extends Model {
     public function getState() 
     {
         return $this->data['state'];
+<<<<<<< HEAD
     }
 
     /**
@@ -61,6 +62,8 @@ class Student extends Model {
     public function getSex() 
     {
         return $this->getUser()->getSex();
+=======
+>>>>>>> d50a02672ef77d134f7b313b457a83259477a089
     }
 
 	/**

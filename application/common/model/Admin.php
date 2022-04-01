@@ -17,6 +17,7 @@ class Admin extends Model {
         return $this->data['user'];
     }
 
+<<<<<<< HEAD
     /**
      *获取管理员的number字段
      */
@@ -24,6 +25,8 @@ class Admin extends Model {
     {
         return $this->getUser()->getNumber();
     }
+=======
+>>>>>>> d50a02672ef77d134f7b313b457a83259477a089
 
     /**
      *获取管理员的password字段
