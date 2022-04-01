@@ -19,44 +19,9 @@ class IndexController extends Controller
         }
     }
 
-    public function index()
+    public function add() 
     {
-        // 取回打包后的数据
-        $htmls = $this->fetch();
-
-        // 将数据返回给用户
-        return $htmls;
-    }
-
-    public function klass()
-    {
-        // 取回打包后的数据
-        $htmls = $this->fetch();
-
-        // 将数据返回给用户
-        return $htmls;
-    }
-
-    public function student()
-    {
-        // 取回打包后的数据
-        $htmls = $this->fetch();
-
-        // 将数据返回给用户
-        return $htmls;
-    }
-
-    public function fraction() {
-        // 取回打包后的数据
-        $htmls = $this->fetch();
-
-        // 将数据返回给用户
-        return $htmls;
-    }
-
-    public function fractionSave()
-    {
-        return $this->success('操作成功', url('student'));
+        return $this->success('操作成功', url('index'));
     }
 
     public function courseAdd() {
@@ -77,20 +42,23 @@ class IndexController extends Controller
         return $htmls;
     }
 
-    public function courseUpdate()
-    {
-        return $this->success('操作成功', url('courseDetail'));
+    public function CourseEnd() {
+        return $this->success('课程已结束', url('index'));
     }
 
-    public function courseStart() {
+    public function courseKlassAdd() {
         $htmls = $this->fetch();
 
         return $htmls;
     }
 
-    public function courseSave()
+    public function courseKlassSave()
     {
-        return $this->success('操作成功', url('index'));
+        return $this->success('操作成功', url('courseDetail'));
+    }
+
+    public function courseProgramAdd() {
+        return $this->fetch();
     }
 
     public function courseProgramEdit() 
@@ -108,40 +76,9 @@ class IndexController extends Controller
         return $this->success('操作成功', url('courseDetail'));
     }
 
-    public function courseTimeSave()
+    public function courseSave()
     {
-        return $this->success('操作成功', url('courseDetail'));
-    }
-
-    public function klassImport() {
-        $htmls = $this->fetch();
-
-        return $htmls;
-    }
-
-    public function courseKlassAdd() {
-        $htmls = $this->fetch();
-
-        return $htmls;
-    }
-
-    public function courseKlassSave()
-    {
-        return $this->success('操作成功', url('courseDetail'));
-    }
-
-    public function courseTimeAdd() {
-        return $this->fetch();
-    }
-
-    public function courseProgramAdd() {
-        return $this->fetch();
-    }
-
-    public function studentAdd() {
-        $htmls = $this->fetch();
-
-        return $htmls;
+        return $this->success('操作成功', url('index'));
     }
 
     public function courseSort()
@@ -149,15 +86,73 @@ class IndexController extends Controller
         return $this->fetch();
     }
 
+    public function courseStart() 
+    {
+        $htmls = $this->fetch();
+        return $htmls;
+    }
+
+    public function courseTimeAdd() {
+        return $this->fetch();
+    }
+
+    public function courseTimeSave()
+    {
+        return $this->success('操作成功', url('courseDetail'));
+    }
+
+    public function courseUpdate()
+    {
+        return $this->success('操作成功', url('courseDetail'));
+    }
+
     public function coursing()
     {
         return $this->fetch();
     }
 
-    public function studentSave()
+    public function fraction() {
+        // 取回打包后的数据
+        $htmls = $this->fetch();
+
+        // 将数据返回给用户
+        return $htmls;
+    }
+
+    public function fractionSave()
     {
         return $this->success('操作成功', url('student'));
     }
+
+    public function index()
+    {
+        // 取回打包后的数据
+        $htmls = $this->fetch();
+
+        // 将数据返回给用户
+        return $htmls;
+    }
+
+    public function insert() 
+    {
+        return $this->success('操作成功', url('coursedetail'));
+    }
+
+    public function klass()
+    {
+        // 取回打包后的数据
+        $htmls = $this->fetch();
+
+        // 将数据返回给用户
+        return $htmls;
+    }
+
+    public function klassImport() {
+        $htmls = $this->fetch();
+
+        return $htmls;
+    }
+    
 
     public function QRCodeOpen() {
         return $this->success('二维码开放成功', url('coursestart'));
@@ -169,20 +164,18 @@ class IndexController extends Controller
         return $htmls;
     }
 
-    public function signInStudent() {
-        $htmls = $this->fetch();
-
-        return $htmls;
-    }
-
-    public function signInStudentAdd()
-    {
+    public function rankEdit() {
         return $this->fetch();
     }
 
-    public function signInStudentSave()
+    public function save() 
     {
-        return $this->success('操作成功', url('coursing'));
+        return $this->success('操作成功', url('student'));
+    }
+
+    public function savefraction() 
+    {
+        return $this->success('操作成功', url('fraction'));
     }
 
     public function signInSeat() {
@@ -201,37 +194,45 @@ class IndexController extends Controller
         return $this->success('操作成功', url('coursing'));
     }
 
-    public function CourseEnd() {
-        return $this->success('课程已结束', url('index'));
-    }
+    public function signInStudent() {
+        $htmls = $this->fetch();
 
-    public function rankEdit() {
+        return $htmls;
+    }
+    
+    public function signInStudentAdd()
+    {
         return $this->fetch();
     }
 
-    public function add() 
+    public function signInStudentSave()
     {
-        return $this->success('操作成功', url('index'));
+        return $this->success('操作成功', url('coursing'));
     }
 
-    public function update() 
+    public function student()
     {
-        return $this->success('操作成功', url('coursedetail'));
+        // 取回打包后的数据
+        $htmls = $this->fetch();
+
+        // 将数据返回给用户
+        return $htmls;
     }
 
-    public function insert() 
-    {
-        return $this->success('操作成功', url('coursedetail'));
+    public function studentAdd() {
+        $htmls = $this->fetch();
+
+        return $htmls;
     }
 
-    public function save() 
+    public function studentSave()
     {
         return $this->success('操作成功', url('student'));
     }
 
-    public function savefraction() 
+    public function randomCode()
     {
-        return $this->success('操作成功', url('fraction'));
+        return $this->fetch();
     }
 
     public function rankUpdate() 
@@ -239,9 +240,9 @@ class IndexController extends Controller
         return $this->success('操作成功', url('courseStart'));
     }
 
-    public function randomCode()
+    public function update() 
     {
-        return $this->fetch();
+        return $this->success('操作成功', url('coursedetail'));
     }
 
 }

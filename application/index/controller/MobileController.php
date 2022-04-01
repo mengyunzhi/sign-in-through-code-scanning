@@ -26,6 +26,10 @@ class MobileController extends Controller
         return $htmls;
     }
 
+    public function courseEnd() {
+        return $this->success('课程已结束', url('index'));
+    }
+
     public function courseStart() 
     {
         return $this->fetch();
@@ -36,15 +40,9 @@ class MobileController extends Controller
         return $this->fetch();
     }
 
-    public function courseEnd() {
-        return $this->success('课程已结束', url('index'));
-    }
-
-
-
-    public function signInStudent() {
-        $htmls = $this->fetch();
-        return $htmls;
+    public function randomCode()
+    {
+        return $this->fetch();
     }
 
     public function signInSeat() {
@@ -52,10 +50,8 @@ class MobileController extends Controller
         return $htmls;
     }
 
-
-    public function randomCode()
-    {
-        return $this->fetch();
+    public function signInStudent() {
+        $htmls = $this->fetch();
+        return $htmls;
     }
-
 }
