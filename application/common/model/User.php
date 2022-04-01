@@ -16,6 +16,60 @@ class User extends Model {
     public static $SESSION_KEY_USER = 'user';
 
     /**
+     *通过id获取用户
+     */
+    static public function getUserById($id) 
+    {
+        $User = self::get($id);
+        return $User;
+    }
+
+    /**
+     *获取用户的number字段
+     */
+    static public function getNumber($id) 
+    {
+        $User = self::getUserById($id);
+        return $User['number'];
+    }
+
+    /**
+     *获取用户的password字段
+     */
+    static public function getPassword($id) 
+    {
+        $User = self::getUserById($id);
+        return $User['password'];
+    }
+
+    /**
+     *获取用户的role字段
+     */
+    static public function getRole($id) 
+    {
+        $User = self::getUserById($id);
+        return $User['role'];
+    }
+
+    /**
+     *获取用户的name字段
+     */
+    static public function getName($id) 
+    {
+        $User = self::getUserById($id);
+        return $User['name'];
+    }
+
+    /**
+     *获取用户的sex字段
+     */
+    static public function getSex($id) 
+    {
+        $User = self::getUserById($id);
+        return $User['sex'];
+    }
+
+    /**
      *判断是否具有某个角色的权限
      */
     static public function checkAccessByRole($role)
