@@ -117,19 +117,19 @@ class User extends Model {
             $Student = Student::get(['sno' => $username]);
             //无数据返回false
             if (is_null($Student)) {
-                throw new Exception('学号不存在');
+                // throw new Exception('学号不存在');
                 return false;
             }
             //未注册返回 '未注册'
             if ($Student->state === 0) {
-                throw new Exception('未注册');
+                // throw new Exception('未注册');
                 return false;
             }
             $User = self::get(['id' => $Student->user_id]);
         }
         //找不到数据
         if (is_null($User)) {
-            throw new Exception('该用户不存在');
+            // throw new Exception('该用户不存在');
             return false;
         }
         //查出的数据和角色不匹配
@@ -170,11 +170,11 @@ class User extends Model {
         $Student = Student::get(['sno' => $sno]);
         //学号不存在
         if (is_null($Student)) {
-            throw new Exception("学号错误");
+            // throw new Exception("学号错误");
             return false;
         }
         if ($Student->state === 1) {
-            throw new Exception("已注册");
+            // throw new Exception("已注册");
             return false;
         }
         //student表中state改成1，user表中存入number和password
