@@ -77,6 +77,14 @@ class User extends Model {
         return self::getCurrentLoginUserRole() === $role;
     }
 
+    /**
+     * 判断密码是否正确
+     * 进行密码加密(暂未实现)
+     * */
+    public function checkPassword($password)
+    {
+        return ($this->getData('password') === $password);
+    }
 
     /**
      * 获取当前登录用户
@@ -115,12 +123,12 @@ class User extends Model {
         } else {
         //是学生使用学号查
             $Student = Student::get(['sno' => $username]);
-            //无数据返回false
+            //无数据
             if (is_null($Student)) {
                 // throw new Exception('学号不存在');
                 return false;
             }
-            //未注册返回 '未注册'
+            //未注册
             if ($Student->state === 0) {
                 // throw new Exception('未注册');
                 return false;
@@ -134,11 +142,16 @@ class User extends Model {
         }
         //查出的数据和角色不匹配
         if ($User->role != $role) {
-            throw new Exception("权限错误");
+            // throw new Exception("权限错误");
             return false;
         }
+        //密码校验
+        if (!$User->checkPassword($password)) {
+            return false;
+        }
+
+
         //将查出数据以数组形式存入session
-        
         $_SESSION[self::$SESSION_KEY_USER] = $User->toArray();
         return true;
     }
