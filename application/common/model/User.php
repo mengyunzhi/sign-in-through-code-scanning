@@ -16,57 +16,43 @@ class User extends Model {
     public static $SESSION_KEY_USER = 'user';
 
     /**
-     *通过id获取用户
-     */
-    static public function getUserById($id) 
-    {
-        $User = self::get($id);
-        return $User;
-    }
-
-    /**
      *获取用户的number字段
      */
-    static public function getNumber($id) 
+    public function getNumber() 
     {
-        $User = self::getUserById($id);
-        return $User['number'];
+        return $this->data['number'];
     }
 
     /**
      *获取用户的password字段
      */
-    static public function getPassword($id) 
+    public function getPassword() 
     {
-        $User = self::getUserById($id);
-        return $User['password'];
+        return $this->data['password'];
     }
 
     /**
      *获取用户的role字段
      */
-    static public function getRole($id) 
+    public function getRole() 
     {
-        $User = self::getUserById($id);
-        return $User['role'];
+        return $this->data['role'];
     }
 
     /**
      *获取用户的name字段
      */
-    static public function getName($id) 
+    public function getName() 
     {
-        $User = self::getUserById($id);
-        return $User['name'];
+        return $this->data['name'];
     }
 
     /**
      *获取用户的sex字段
      */
-    static public function getSex($id) 
+    public function getSex() 
     {
-        $User = self::getUserById($id);
-        return $User['sex'];
+        return $this->data['sex'];
     }
 
     /**
@@ -149,7 +135,6 @@ class User extends Model {
         if (!$User->checkPassword($password)) {
             return false;
         }
-
 
         //将查出数据以数组形式存入session
         $_SESSION[self::$SESSION_KEY_USER] = $User->toArray();

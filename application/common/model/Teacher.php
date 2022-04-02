@@ -1,27 +1,62 @@
 <?php
 namespace app\common\model;
+use app\common\model\User;
 use think\Model;
 
 class Teacher extends Model {
 
 	/**
-     *通过id获取教师
+     *通过user_id获取教师用户
      */
-    static public function getTeacherById($id) 
+    public function getUser() 
     {
-        $Teacher = self::get($id);
-        return $Teacher;
+        $UserId = $this->data['user_id'];
+        $this->data['user'] = User::get($UserId);
+        return $this->data['user'];
     }
 
     /**
-     *获取教师的user_id字段
+     *获取教师的number字段
      */
-    static public function getUserId($id) 
+    public function getNumber() 
     {
-        $Teacher = self::getTeacherById($id);
-        return $Teacher['user_id'];
+        return $this->getUser()->getNumber();
     }
 
+    /**
+     *获取教师的password字段
+     */
+    public function getPassword() 
+    {
+        return $this->getUser()->getPassword();
+    }
+
+
+    /**
+     *获取教师的name字段
+     */
+    public function getName() 
+    {
+        return $this->getUser()->getName();
+    }
+
+    /**
+     *获取教师的sex字段
+     */
+    public function getSex() 
+    {
+        return $this->getUser()->getSex();
+    }
+
+
+	/**
+	 * 判断密码是否正确
+	 * 进行密码加密
+	 * */
+	public function checkPassword($password)
+	{
+		return ($this->getData('password') === $password);
+	}
 
 	public function getSexAttr($value) {
 		$status = [

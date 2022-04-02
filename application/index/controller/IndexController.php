@@ -111,7 +111,8 @@ class IndexController extends Controller
         return $this->fetch();
     }
 
-    public function fraction() {
+    public function fraction() 
+    {
         // 取回打包后的数据
         $htmls = $this->fetch();
 
