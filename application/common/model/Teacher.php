@@ -17,7 +17,6 @@ class Teacher extends Model {
         return $this->data['user'];
     }
 
-<<<<<<< HEAD
     /**
      *获取教师的number字段
      */
@@ -25,8 +24,6 @@ class Teacher extends Model {
     {
         return $this->getUser()->getNumber();
     }
-=======
->>>>>>> d50a02672ef77d134f7b313b457a83259477a089
 
     /**
      *获取教师的password字段
