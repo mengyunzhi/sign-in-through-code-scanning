@@ -4,28 +4,28 @@ use think\Model;
 
 class Dispatch extends Model {
 
-	public function getId() {
-		return $this->data['id'];
-	}
+    public function getId() {
+        return $this->data['id'];
+    }
 
-	public function getYear() {
-		return $this->data['year'];
-	}
+    public function getYear() {
+        return $this->data['year'];
+    }
 
-	public function getMonth() {
-		return $this->data['month'];
-	}
+    public function getMonth() {
+        return $this->data['month'];
+    }
 
-	public function getDay() {
-		return $this->data['day'];
-	}
+    public function getDay() {
+        return $this->data['day'];
+    }
 
-	public function getStartTime() {
-		return $this->data['start_time'];
-	}
+    public function getStartTime() {
+        return $this->data['start_time'];
+    }
 
-	public function getEndTime() {
-		return $this->data['end_time'];
-	}
+    public function getEndTime() {
+        return $this->data['end_time'];
+    }
 
 }

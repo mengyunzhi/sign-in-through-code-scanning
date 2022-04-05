@@ -4,16 +4,16 @@ use think\Model;
 
 class DispatchRoom extends Model {
 
-	public function getId() {
-		return $this->data['id'];
-	}
+    public function getId() {
+        return $this->data['id'];
+    }
 
-	public function getStudentId() {
-		return $this->data['student_id'];
-	}
+    public function getStudentId() {
+        return $this->data['student_id'];
+    }
 
-	public function getScheduleId() {
-		return $this->data['schedule_id'];
-	}
+    public function getScheduleId() {
+        return $this->data['schedule_id'];
+    }
 
 }
