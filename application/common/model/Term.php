@@ -2,7 +2,7 @@
 namespace app\common\model;
 use think\Model;
 
-class Klass extends Model {
+class Term extends Model {
 
     public function getId() {
         return $this->data['id'];
@@ -12,8 +12,8 @@ class Klass extends Model {
         return $this->data['name'];
     }
 
-    public function getCourseId() {
-        return $this->data['course_id'];
+    public function getStartTime() {
+        return $this->data['start_time'];
     }
 
 }

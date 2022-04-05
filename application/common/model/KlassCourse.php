@@ -2,14 +2,14 @@
 namespace app\common\model;
 use think\Model;
 
-class Klass extends Model {
+class KlassCourse extends Model {
 
     public function getId() {
         return $this->data['id'];
     }
 
-    public function getName() {
-        return $this->data['name'];
+    public function getKlassId() {
+        return $this->data['klass_id'];
     }
 
     public function getCourseId() {

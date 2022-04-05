@@ -2,7 +2,7 @@
 namespace app\common\model;
 use think\Model;
 
-class Klass extends Model {
+class Program extends Model {
 
     public function getId() {
         return $this->data['id'];
