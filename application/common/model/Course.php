@@ -2,7 +2,7 @@
 namespace app\common\model;
 use think\Model;
 
-class Room extends Model {
+class Course extends Model {
 
 	public function getId() {
 		return $this->data['id'];
@@ -12,9 +12,8 @@ class Room extends Model {
 		return $this->data['name'];
 	}
 
-	public function getCapacity() {
-		return $this->data['capacity'];
+	public function getLesson() {
+		return $this->data['lesson'];
 	}
 
-	
 }
