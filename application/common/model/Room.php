@@ -5,15 +5,15 @@ use think\Model;
 class Room extends Model {
 
     public function getId() {
-        return (int)$this->data['id'];
+        return isset($this->data['id']) ? (int)$this->data['id'] : null;
     }
 
     public function getName() {
-        return $this->data['name'];
+        return isset($this->data['name']) ? $this->data['name'] : null;
     }
 
     public function getCapacity() {
-        return $this->data['capacity'];
+        return isset($this->data['capacity']) ? $this->data['capacity'] : null;
     }
 
     

@@ -5,27 +5,27 @@ use think\Model;
 class Dispatch extends Model {
 
     public function getId() {
-        return (int)$this->data['id'];
+        return isset($this->data['id']) ? (int)$this->data['id'] : null;
     }
 
     public function getYear() {
-        return $this->data['year'];
+        return isset($this->data['year']) ? $this->data['year'] : null;
     }
 
     public function getMonth() {
-        return $this->data['month'];
+        return isset($this->data['month']) ? $this->data['month'] : null;
     }
 
     public function getDay() {
-        return $this->data['day'];
+        return isset($this->data['day']) ? $this->data['day'] : null;
     }
 
     public function getStartTime() {
-        return $this->data['start_time'];
+        return isset($this->data['start_time']) ? $this->data['start_time'] : null;
     }
 
     public function getEndTime() {
-        return $this->data['end_time'];
+        return isset($this->data['end_time']) ? $this->data['end_time'] : null;
     }
 
 }
