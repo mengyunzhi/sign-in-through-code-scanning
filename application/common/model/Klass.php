@@ -5,7 +5,7 @@ use think\Model;
 class Klass extends Model {
 
     public function getId() {
-        return $this->data['id'];
+        return (int)$this->data['id'];
     }
 
     public function getName() {
@@ -13,7 +13,7 @@ class Klass extends Model {
     }
 
     public function getCourseId() {
-        return $this->data['course_id'];
+        return (int)$this->data['course_id'];
     }
 
 }

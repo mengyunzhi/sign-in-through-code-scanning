@@ -5,15 +5,15 @@ use think\Model;
 class ProgramScore extends Model {
 
     public function getId() {
-        return $this->data['id'];
+        return (int)$this->data['id'];
     }
 
     public function getStudentId() {
-        return $this->data['student_id'];
+        return (int)$this->data['student_id'];
     }
 
     public function getCourseId() {
-        return $this->data['course_id'];
+        return (int)$this->data['course_id'];
     }
 
     public function getProgramId() {

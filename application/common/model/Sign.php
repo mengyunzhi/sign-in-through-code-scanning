@@ -5,15 +5,15 @@ use think\Model;
 class Sign extends Model {
 
     public function getId() {
-        return $this->data['id'];
+        return (int)$this->data['id'];
     }
 
     public function getDispatchId() {
-        return $this->data['dispatch_id'];
+        return (int)$this->data['dispatch_id'];
     }
 
     public function getKlassId() {
-        return $this->data['student_id'];
+        return (int)$this->data['student_id'];
     }
 
     public function getIn() {

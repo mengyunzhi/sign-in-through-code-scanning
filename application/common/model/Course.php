@@ -5,7 +5,7 @@ use think\Model;
 class Course extends Model {
 
     public function getId() {
-        return $this->data['id'];
+        return (int)$this->data['id'];
     }
 
     public function getName() {

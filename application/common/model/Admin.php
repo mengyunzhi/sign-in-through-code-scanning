@@ -50,21 +50,6 @@ class Admin extends Model {
         return $this->getUser()->getSex();
     }
 
-
-    public function getSexAttr($value) 
-    {
-        $status = [
-            '0'=>'男',
-            '1'=>'女',
-        ];
-        $sex = $status[$value];
-        if (isset($sex)) {
-            return $sex;
-        } else {
-            return $status[0];
-        }
-    }
-
     static public function isLogin()
     {
         if (isset($_SESSION[Admin::$user])) {

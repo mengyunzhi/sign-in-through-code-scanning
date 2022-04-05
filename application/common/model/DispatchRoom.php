@@ -5,15 +5,15 @@ use think\Model;
 class DispatchRoom extends Model {
 
     public function getId() {
-        return $this->data['id'];
+        return (int)$this->data['id'];
     }
 
     public function getStudentId() {
-        return $this->data['student_id'];
+        return (int)$this->data['student_id'];
     }
 
     public function getScheduleId() {
-        return $this->data['schedule_id'];
+        return (int)$this->data['schedule_id'];
     }
 
 }
