@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_program_score`;
 CREATE TABLE `yunzhi_program_score`  (
-  `id` int NOT NULL DEFAULT 0 AUTO_INCREMENT,
+  `id` int NOT NULL  AUTO_INCREMENT,
   `student_id` int NOT NULL DEFAULT 0,
   `course_id` int NOT NULL DEFAULT 0,
   `program_id` int NOT NULL DEFAULT 0,

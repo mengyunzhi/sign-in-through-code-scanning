@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_dispatch`;
 CREATE TABLE `yunzhi_dispatch`  (
-  `id` int NOT NULL DEFAULT 0 AUTO_INCREMENT,
+  `id` int NOT NULL  AUTO_INCREMENT,
   `year` int NOT NULL DEFAULT 0,
   `month` int NOT NULL DEFAULT 0,
   `day` int NOT NULL DEFAULT 0,
