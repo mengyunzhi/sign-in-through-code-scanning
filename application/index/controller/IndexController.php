@@ -4,6 +4,8 @@ use app\common\model\Teacher;
 use app\common\model\Admin;
 use app\common\model\Student;
 use app\common\model\User;
+use app\common\model\Course;
+use app\common\model\Klass;
 use think\Controller;
 use think\Request;
 class IndexController extends Controller
@@ -25,6 +27,13 @@ class IndexController extends Controller
     }
 
     public function courseAdd() {
+        //获取课程
+        $Courses = Course::all();
+        $this->assign('Courses', $Courses);
+        //获取班级
+        $Klasses = Klass::all();
+        $this->assign('Klasses', $Klasses);
+
         $htmls = $this->fetch();
 
         return $htmls;
