@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_room`;
 CREATE TABLE `yunzhi_room`  (
-  `id` int NOT NULL DEFAULT 0 AUTO_INCREMENT,
+  `id` int NOT NULL  AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `capacity` int NOT NULL DEFAULT 0,
   `create_time` int NOT NULL DEFAULT 0,

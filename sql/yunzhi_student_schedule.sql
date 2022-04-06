@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_student_schedule`;
 CREATE TABLE `yunzhi_student_schedule`  (
-  `id` int NOT NULL DEFAULT 0 AUTO_INCREMENT,
+  `id` int NOT NULL  AUTO_INCREMENT,
   `student_id` int NOT NULL DEFAULT 0,
   `schedule_id` int NOT NULL DEFAULT 0,
   `create_time` int NOT NULL DEFAULT 0,
