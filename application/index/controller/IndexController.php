@@ -4,6 +4,11 @@ use app\common\model\Teacher;
 use app\common\model\Admin;
 use app\common\model\Student;
 use app\common\model\User;
+use app\common\model\Course;
+use app\common\model\Klass;
+use app\common\model\Room;
+use app\common\model\Schedule;
+use app\common\model\Dispatch;
 use think\Controller;
 use think\Request;
 class IndexController extends Controller
@@ -25,8 +30,39 @@ class IndexController extends Controller
     }
 
     public function courseAdd() {
-        $htmls = $this->fetch();
 
+        //获取课程
+        $Courses = Course::all();
+        $this->assign('Courses', $Courses);
+        //获取班级
+        $Klasses = Klass::all();
+        $this->assign('Klasses', $Klasses);
+        //7行
+        $Rows = [];
+        for ($i=0; $i < 7; $i++) { 
+            $Rows[$i] = $i;
+        }
+        //11列
+        $Cols = [];
+        for ($i=0; $i < 11; $i++) { 
+            $Cols[$i] = $i;
+        }
+        //周几
+        $dayArray = ['一','二','三','四','五','六','日'];
+        //多少周 可以通过term的start和end计算
+        $Weeks = [];
+        for ($i=0; $i < 11; $i++) { 
+            $Weeks[$i] = $i;
+        }
+        //所有教室
+        $Rooms = Room::all();
+        //传参
+        $this->assign('Weeks', $Weeks);
+        $this->assign('Rooms', $Rooms);
+        $this->assign('dayArray', $dayArray);
+        $this->assign('Rows', $Rows);
+        $this->assign('Cols', $Cols);
+        $htmls = $this->fetch();
         return $htmls;
     }
 
@@ -78,7 +114,12 @@ class IndexController extends Controller
 
     public function courseSave()
     {
-        return $this->success('操作成功', url('index'));
+        $postData = Request::instance()->post();
+        $status = Teacher::courseSave($postData);
+        if (!$status) {
+            return $this->error('操作失败');
+        }
+        return $this->success('操作成功', url('courseSort'));
     }
 
     public function courseSort()

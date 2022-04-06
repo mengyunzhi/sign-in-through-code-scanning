@@ -20,6 +20,10 @@ class Schedule extends Model {
         return isset($this->data['course_id']) ? (int)$this->data['course_id'] : null;
     }
 
+    public function klasses()
+    {
+        return $this->belongsToMany('Klass', 'yunzhi_schedule_klass', 'klass_id', 'schedule_id');
+    }
     
 
 }

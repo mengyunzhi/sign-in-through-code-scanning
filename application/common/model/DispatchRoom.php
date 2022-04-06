@@ -8,8 +8,8 @@ class DispatchRoom extends Model {
         return isset($this->data['id']) ? (int)$this->data['id'] : null;
     }
 
-    public function getStudentId() {
-        return isset($this->data['student_id']) ? (int)$this->data['student_id'] : null;
+    public function getDispatchId() {
+        return isset($this->data['dispatch_id']) ? (int)$this->data['dispatch_id'] : null;
     }
 
     public function getScheduleId() {
