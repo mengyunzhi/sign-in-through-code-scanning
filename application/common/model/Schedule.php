@@ -5,19 +5,19 @@ use think\Model;
 class Schedule extends Model {
 
     public function getId() {
-        return $this->data['id'];
+        return isset($this->data['id']) ? (int)$this->data['id'] : null;
     }
 
     public function getCallId() {
-        return $this->data['call_id'];
+        return isset($this->data['call_id']) ? (int)$this->data['call_id'] : null;
     }
 
     public function getTermId() {
-        return $this->data['term_id'];
+        return isset($this->data['term_id']) ? (int)$this->data['term_id'] : null;
     }
 
     public function getCourseId() {
-        return $this->data['course_id'];
+        return isset($this->data['course_id']) ? (int)$this->data['course_id'] : null;
     }
 
     

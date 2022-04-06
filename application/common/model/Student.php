@@ -9,11 +9,23 @@ class Student extends Model {
      */
     public function getUser() 
     {
-        $UserId = $this->data['user_id'];
+        if (isset($this->data['user'])) {
+            return $this->data['user'];
+        }
+
+        $UserId = isset($this->data['user_id']) ? $this->data['user_id'] : null;
         $this->data['user'] = User::get($UserId);
         return $this->data['user'];
     }
 
+    /**
+     * 获取id字段
+     */
+    public function getId() 
+    {
+        return isset($this->data['id']) ? $this->data['id'] : null;
+    }
+    
     /**
      *通过获取sno(学号)字段
      */
@@ -35,7 +47,7 @@ class Student extends Model {
      */
     public function getNumber() 
     {
-        return $this->getUser()->getNumber();
+        return !is_null($this->getUser()) ? $this->getUser()->getNumber() : null;
     }
 
     /**
@@ -43,7 +55,7 @@ class Student extends Model {
      */
     public function getPassword() 
     {
-        return $this->getUser()->getPassword();
+        return !is_null($this->getUser()) ? $this->getUser()->getPassword() : null;
     }
 
 
@@ -52,7 +64,7 @@ class Student extends Model {
      */
     public function getName() 
     {
-        return $this->getUser()->getName();
+        return !is_null($this->getUser()) ? $this->getUser()->getName() : null;
     }
 
     /**
@@ -60,7 +72,7 @@ class Student extends Model {
      */
     public function getSex() 
     {
-        return $this->getUser()->getSex();
+        return !is_null($this->getUser()) ? $this->getUser()->getSex() : null;
     }
 
     /**
@@ -75,19 +87,6 @@ class Student extends Model {
     static public function isLogin()
     {
         return isset($_SESSION[Student::$user]);
-    }
-
-    public function getSexAttr($value) {
-        $status = [
-            '0'=>'男',
-            '1'=>'女',
-        ];
-        $sex = $status[$value];
-        if (isset($sex)) {
-            return $sex;
-        } else {
-            return $status[0];
-        }
     }
 
     /*

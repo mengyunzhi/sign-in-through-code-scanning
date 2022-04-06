@@ -16,11 +16,19 @@ class User extends Model {
     public static $SESSION_KEY_USER = 'user';
 
     /**
+     * 获取id字段
+     */
+    public function getId() 
+    {
+        return isset($this->data['id']) ? $this->data['id'] : null;
+    }
+
+    /**
      *获取用户的number字段
      */
     public function getNumber() 
     {
-        return $this->data['number'];
+        return isset($this->data['number']) ? $this->data['number'] : null;
     }
 
     /**
@@ -28,7 +36,7 @@ class User extends Model {
      */
     public function getPassword() 
     {
-        return $this->data['password'];
+        return isset($this->data['password']) ? $this->data['password'] : null;
     }
 
     /**
@@ -36,7 +44,7 @@ class User extends Model {
      */
     public function getRole() 
     {
-        return $this->data['role'];
+        return isset($this->data['role']) ? $this->data['role'] : null;
     }
 
     /**
@@ -44,7 +52,7 @@ class User extends Model {
      */
     public function getName() 
     {
-        return $this->data['name'];
+        return isset($this->data['name']) ? $this->data['name'] : null;
     }
 
     /**
@@ -52,7 +60,23 @@ class User extends Model {
      */
     public function getSex() 
     {
-        return $this->data['sex'];
+        return isset($this->data['sex']) ? $this->sex : null;
+    }
+
+    public function getSexAttr($value) 
+    {
+        $status = [
+            '0'=>'男',
+            '1'=>'女',
+        ];
+
+        $sex = $status[$value];
+
+        if (isset($sex)) {
+            return $sex;
+        } else {
+            return $status[0];
+        }
     }
 
     /**

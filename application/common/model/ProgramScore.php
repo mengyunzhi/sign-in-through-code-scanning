@@ -5,27 +5,27 @@ use think\Model;
 class ProgramScore extends Model {
 
     public function getId() {
-        return $this->data['id'];
+        return isset($this->data['id']) ? (int)$this->data['id'] : null;
     }
 
     public function getStudentId() {
-        return $this->data['student_id'];
+        return isset($this->data['student_id']) ? (int)$this->data['student_id'] : null;
     }
 
     public function getCourseId() {
-        return $this->data['course_id'];
+        return isset($this->data['course_id']) ? (int)$this->data['course_id'] : null;
     }
 
     public function getProgramId() {
-        return $this->data['program'];
+        return isset($this->data['program']) ? $this->data['program'] : null;
     }
 
     public function getUsual() {
-        return $this->data['usual'];
+        return isset($this->data['usual']) ? $this->data['usual'] : null;
     }
 
     public function getTerminal() {
-        return $this->data['terminal'];
+        return isset($this->data['terminal']) ? $this->data['terminal'] : null;
     }
 
 }

@@ -5,15 +5,15 @@ use think\Model;
 class KlassCourse extends Model {
 
     public function getId() {
-        return $this->data['id'];
+        return isset($this->data['id']) ? (int)$this->data['id'] : null;
     }
 
     public function getKlassId() {
-        return $this->data['klass_id'];
+        return isset($this->data['klass_id']) ? (int)$this->data['klass_id'] : null;
     }
 
     public function getCourseId() {
-        return $this->data['course_id'];
+        return isset($this->data['course_id']) ? (int)$this->data['course_id'] : null;
     }
 
 }
