@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_admin`;
 CREATE TABLE `yunzhi_admin`  (
-  `id` int NOT NULL DEFAULT 0 AUTO_INCREMENT,
+  `id` int NOT NULL  AUTO_INCREMENT,
   `user_id` int NOT NULL DEFAULT 0,
   `create_time` int NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int NOT NULL DEFAULT 0 COMMENT '更新时间',

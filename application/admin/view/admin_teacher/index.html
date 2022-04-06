@@ -20,15 +20,15 @@
         <th>手机号</th>
         <th>操作</th>
     </tr>
-    {volist name="teachers" id="_teacher" key="key"}
+    {volist name="teachers" id="_Teacher" key="key"}
     <tr>
         <td>{$key}</td>
-        <td>{$_teacher->name}</td>
-        <td>{$_teacher->sex}</td>
-        <td>{$_teacher->number}</td>
+        <td>{$_Teacher->getName()}</td>
+        <td>{$_Teacher->getSex()}</td>
+        <td>{$_Teacher->getNumber()}</td>
         <td>
-            <a href="{:url('edit?id='. $_teacher->id)}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
-            <a href="{:url('delete?id='. $_teacher->id)}" class="btn btn-danger">删除</a>
+            <a href="{:url('edit?id='. $_Teacher->getId())}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
+            <a href="{:url('delete?id='. $_Teacher->getId())}" class="btn btn-danger">删除</a>
         </td>
     </tr>
     {/volist}
