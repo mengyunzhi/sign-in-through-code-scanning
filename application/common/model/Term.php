@@ -12,18 +12,17 @@ class Term extends Model {
         return isset($this->data['name']) ? $this->data['name'] : null;
     }
 
+    public function getState() {
+        return isset($this->data['state']) ? $this->data['state'] : null;
+    }
+
     public function getStartTime() {
         return isset($this->data['start_time']) ? $this->data['start_time'] : null;
     }
 
     static public function getCurrentTerm()
     {
-        return self::get(self::getCurrentTermId());
-    }
-
-    static public function getCurrentTermId()
-    {
-        return 1;
+        return self::where('state', 'eq', 1)->find();
     }
 
 }

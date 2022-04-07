@@ -8,24 +8,16 @@ class Dispatch extends Model {
         return isset($this->data['id']) ? (int)$this->data['id'] : null;
     }
 
-    public function getYear() {
-        return isset($this->data['year']) ? $this->data['year'] : null;
-    }
-
-    public function getMonth() {
-        return isset($this->data['month']) ? $this->data['month'] : null;
+    public function getWeek() {
+        return isset($this->data['week']) ? $this->data['week'] : null;
     }
 
     public function getDay() {
         return isset($this->data['day']) ? $this->data['day'] : null;
     }
 
-    public function getStartTime() {
-        return isset($this->data['start_time']) ? $this->data['start_time'] : null;
-    }
-
-    public function getEndTime() {
-        return isset($this->data['end_time']) ? $this->data['end_time'] : null;
+    public function getLesson() {
+        return isset($this->data['lesson']) ? $this->data['lesson'] : null;
     }
 
     public function Rooms() {
