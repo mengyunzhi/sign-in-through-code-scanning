@@ -29,8 +29,8 @@ class IndexController extends Controller
         return $this->success('操作成功', url('index'));
     }
 
-    public function courseAdd() {
-
+    public function courseAdd() 
+    {
         //获取课程
         $Courses = Course::all();
         $this->assign('Courses', $Courses);
@@ -66,23 +66,27 @@ class IndexController extends Controller
         return $htmls;
     }
 
-    public function courseDetail() {
+    public function courseDetail() 
+    {
         $htmls = $this->fetch();
 
         return $htmls;
     }
 
-    public function courseEdit() {
+    public function courseEdit() 
+    {
         $htmls = $this->fetch();
 
         return $htmls;
     }
 
-    public function CourseEnd() {
+    public function CourseEnd() 
+    {
         return $this->success('课程已结束', url('index'));
     }
 
-    public function courseKlassAdd() {
+    public function courseKlassAdd() 
+    {
         $htmls = $this->fetch();
 
         return $htmls;
@@ -93,7 +97,8 @@ class IndexController extends Controller
         return $this->success('操作成功', url('courseDetail'));
     }
 
-    public function courseProgramAdd() {
+    public function courseProgramAdd() 
+    {
         return $this->fetch();
     }
 
@@ -124,6 +129,8 @@ class IndexController extends Controller
 
     public function courseSort()
     {
+        $callId = $_SESSION['user']['id'];
+        $Schedules = Schedule::where('call_id' === $callId);
         return $this->fetch();
     }
 
@@ -133,7 +140,8 @@ class IndexController extends Controller
         return $htmls;
     }
 
-    public function courseTimeAdd() {
+    public function courseTimeAdd() 
+    {
         return $this->fetch();
     }
 
@@ -189,24 +197,28 @@ class IndexController extends Controller
         return $htmls;
     }
 
-    public function klassImport() {
+    public function klassImport() 
+    {
         $htmls = $this->fetch();
 
         return $htmls;
     }
     
 
-    public function QRCodeOpen() {
+    public function QRCodeOpen() 
+    {
         return $this->success('二维码开放成功', url('coursestart'));
     }
 
-    public function QRCodeView() {
+    public function QRCodeView() 
+    {
         $htmls = $this->fetch();
 
         return $htmls;
     }
 
-    public function rankEdit() {
+    public function rankEdit() 
+    {
         return $this->fetch();
     }
 
@@ -220,7 +232,8 @@ class IndexController extends Controller
         return $this->success('操作成功', url('fraction'));
     }
 
-    public function signInSeat() {
+    public function signInSeat() 
+    {
         $htmls = $this->fetch();
 
         return $htmls;
@@ -236,7 +249,8 @@ class IndexController extends Controller
         return $this->success('操作成功', url('coursing'));
     }
 
-    public function signInStudent() {
+    public function signInStudent() 
+    {
         $htmls = $this->fetch();
 
         return $htmls;
@@ -261,7 +275,8 @@ class IndexController extends Controller
         return $htmls;
     }
 
-    public function studentAdd() {
+    public function studentAdd() 
+    {
         $htmls = $this->fetch();
 
         return $htmls;
