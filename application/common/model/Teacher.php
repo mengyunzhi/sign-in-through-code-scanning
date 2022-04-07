@@ -17,12 +17,12 @@ class Teacher extends Model {
         //teacher_id 教师id       1个
         $teacherId = (int) $_SESSION['user']['id'];
         //已激活学期
-        $termId = Term::getCurrentTermId();
+        $term = Term::getCurrentTerm();
 
         //存入排课信息
         $Schedule = new Schedule;
         $Schedule->teacher_id = $teacherId;
-        $Schedule->term_id = $termId;
+        $Schedule->term_id = $term->getId();
         $Schedule->course_id = $courseId;
         $status = $Schedule->save();
         if (!$status) {
@@ -30,7 +30,7 @@ class Teacher extends Model {
         }
 
         //排课班级表
-        $status = $Schedule->klasses()->saveAll($klass_ids);
+        $status = $Schedule->Klasses()->saveAll($klass_ids);
         if (!$status) {
             throw new Exception('schedule_klass表添加失败');
         }
@@ -45,12 +45,12 @@ class Teacher extends Model {
         //当前有week_XX, room_XX
         $Dispatch = [];
         //学期开始时间,从term表获取
-        $startTimeString = Term::getCurrentStartTimeString();
+        $startTimeString = date('Ymd', $term->getStartTime());
         for ($i=1;$i <= 77; $i++) { 
             if (isset($postData['course_'. $i])) {
                 if (empty($postData['room_' . $i])) {
                     //只选了第几周，没选教室
-                    throw new Exception('room_' . $i .'student_schedule表添加失败');
+                    throw new Exception('room_' . $i .'_student_schedule表添加失败');
                 }
                 //room_$i是字符串(一节课可以在多个教室之后改成数组)
                 $roomId = $postData['room_'.$i];
@@ -80,7 +80,7 @@ class Teacher extends Model {
                     if (!$status) {
                         throw new Exception('dispatch表添加失败');
                     }
-                    $status = $Dispatch[$i][$key]->rooms()->save($roomId);
+                    $status = $Dispatch[$i][$key]->Rooms()->save($roomId);
                     if (!$status) {
                         throw new Exception('dispatch_room表添加失败');
                     }
@@ -221,7 +221,7 @@ class Teacher extends Model {
     static public function studentScheduleSaveByKlassIds($Schedule, $klassIds) {
         foreach ($klassIds as $key => $klassId) {
             $Student[$key] = Student::where('klass_id', 'eq', $klassId)->select();
-            $status = $Schedule->students()->saveAll($Student[$key]);
+            $status = $Schedule->Students()->saveAll($Student[$key]);
             if (!$status) {
                 break;
             }
