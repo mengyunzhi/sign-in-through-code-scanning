@@ -16,4 +16,9 @@ class Term extends Model {
         return isset($this->data['start_time']) ? $this->data['start_time'] : null;
     }
 
+    static public function getStartTimeString()
+    {
+        return '20210901';
+    }
+
 }

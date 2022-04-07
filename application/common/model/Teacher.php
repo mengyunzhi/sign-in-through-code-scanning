@@ -1,6 +1,7 @@
 <?php
 namespace app\common\model;
 use app\common\model\User;
+use app\common\model\Term;
 use think\Model;
 
 class Teacher extends Model {
@@ -22,20 +23,18 @@ class Teacher extends Model {
         //排课表
         $Schedule = new Schedule;
         $Schedule->call_id = $callId;
+        $Schedule->role = $_SESSION['user']['role'];
         $Schedule->term_id = $termId;
         $Schedule->course_id = $courseId;
         $Schedule->save();
 
-        var_dump($klass_ids);
         //排课班级表
         $Schedule->klasses()->saveAll($klass_ids);
-        die();
         $status = false; 
         //当前有week_XX, room_XX
-        $Dispatches = [];
+        $Dispatch = [];
         //学期开始时间,从term表获取
-        $startTimeString = '20210901';
-
+        $startTimeString = Term::getStartTimeString();
         for ($i=1;$i <= 77; $i++) { 
             if (isset($postData['course_'. $i])) {
                 if (empty($postData['room_' . $i])) {
