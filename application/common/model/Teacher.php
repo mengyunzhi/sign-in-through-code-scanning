@@ -3,42 +3,54 @@ namespace app\common\model;
 use app\common\model\User;
 use app\common\model\Term;
 use think\Model;
-
+use think\Exception;
 class Teacher extends Model {
 
     /**
      * 添加课程
      */
     static public function courseSave($postData) {
-
-        //string
+        //string 对应课程         1个
         $courseId = (int) $postData['course_id'];
-        //array
+        //array 班级              n个
         $klass_ids = $postData['klass_id'];
-        //call_id
+        //teacher_id 教师id       1个
         $teacherId = (int) $_SESSION['user']['id'];
-        //哪个学期是激活状态那么termId就是哪个
-        $termId = 1;
+        //已激活学期
+        $term = Term::getCurrentTerm();
 
-        //排课表
+        //存入排课信息
         $Schedule = new Schedule;
         $Schedule->teacher_id = $teacherId;
-        $Schedule->term_id = $termId;
+        $Schedule->term_id = $term->getId();
         $Schedule->course_id = $courseId;
-        $Schedule->save();
+        $status = $Schedule->save();
+        if (!$status) {
+            throw new Exception('schedule表添加失败');
+        }
 
         //排课班级表
-        $Schedule->klasses()->saveAll($klass_ids);
-        $status = false; 
+        $status = $Schedule->Klasses()->saveAll($klass_ids);
+        if (!$status) {
+            throw new Exception('schedule_klass表添加失败');
+        }
+
+        //存入学生和排课表的关系  通过班级id数组
+        //如果班级的学生是空的也会报错
+        $status = self::studentScheduleSaveByKlassIds($Schedule, $klass_ids);
+        if (!$status) {
+            throw new Exception('student_schedule表添加失败');
+        }
+
         //当前有week_XX, room_XX
         $Dispatch = [];
         //学期开始时间,从term表获取
-        $startTimeString = Term::getStartTimeString();
+        $startTimeString = date('Ymd', $term->getStartTime());
         for ($i=1;$i <= 77; $i++) { 
             if (isset($postData['course_'. $i])) {
                 if (empty($postData['room_' . $i])) {
                     //只选了第几周，没选教室
-                    return false;
+                    throw new Exception('room_' . $i .'_student_schedule表添加失败');
                 }
                 //room_$i是字符串(一节课可以在多个教室之后改成数组)
                 $roomId = $postData['room_'.$i];
@@ -64,14 +76,17 @@ class Teacher extends Model {
                     $Dispatch[$i][$key]->end_time = 1;
 
                     //调度表中存时间  //调度表和教室表的中间表
-                    $status = $Dispatch[$i][$key]->save() &&  $Dispatch[$i][$key]->rooms()->save($roomId);
+                    $status = $Dispatch[$i][$key]->save();
                     if (!$status) {
-                        return false;
+                        throw new Exception('dispatch表添加失败');
+                    }
+                    $status = $Dispatch[$i][$key]->Rooms()->save($roomId);
+                    if (!$status) {
+                        throw new Exception('dispatch_room表添加失败');
                     }
                 }
             }
         }
-        //如果失败删除存入schedule表的东西
         return $status;
     }
 
@@ -196,5 +211,22 @@ class Teacher extends Model {
 			return $status[0];
 		}
 	}
+
+    /**
+     * 通过班级id存入学生和排课的关系
+     * @param  [object] $Schedule [要存的排课对象]
+     * @param  [array] $klassIds [班级id的数组]
+     * @return [bool]           [成功 true; 失败 false]
+     */
+    static public function studentScheduleSaveByKlassIds($Schedule, $klassIds) {
+        foreach ($klassIds as $key => $klassId) {
+            $Student[$key] = Student::where('klass_id', 'eq', $klassId)->select();
+            $status = $Schedule->Students()->saveAll($Student[$key]);
+            if (!$status) {
+                break;
+            }
+        }
+        return $status;
+    }
 	
 }

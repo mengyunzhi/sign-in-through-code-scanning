@@ -129,8 +129,9 @@ class IndexController extends Controller
 
     public function courseSort()
     {
-        $callId = $_SESSION['user']['id'];
-        $Schedules = Schedule::where('call_id' === $callId);
+        $teacherId = $_SESSION['user']['id'];
+        $Schedules = Schedule::where('teacher_id', 'eq', $teacherId)->paginate();
+        $this->assign('Schedules', $Schedules);
         return $this->fetch();
     }
 

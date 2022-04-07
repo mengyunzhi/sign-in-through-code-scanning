@@ -28,7 +28,7 @@ class Dispatch extends Model {
         return isset($this->data['end_time']) ? $this->data['end_time'] : null;
     }
 
-    public function rooms() {
+    public function Rooms() {
         return $this->belongsToMany('Room', 'yunzhi_dispatch_room', 'room_id', 'dispatch_id');
     }
 

@@ -22,17 +22,26 @@
         <th>班级</th>
         <th>操作</th>
     </tr>
+    {volist name="Schedules" id="_Schedule" key="key"}
     <tr>
-        <td>1</td>
-        <td>数学分析</td>
-        <td>2022年春季学期</td>
-        <td>计2021 计2022</td>
+        <td>{:$key}</td>
+        <td>{:$_Schedule->getCourse()->getName()}</td>
+        <td>{:$_Schedule->getTerm()->getName()}</td>
+        <td><?php 
+            foreach($_Schedule->Klasses as $key => $Klass) {
+                if($key !== 0)
+                    echo ' ';
+                echo $Klass->getName();
+            }
+         ?></td>
         <td>
             <a class="btn btn-info" href="{:url('courseDetail')}"><i class="glyphicon"></i>&nbsp;编辑</a>
             <a class="btn btn-danger" href=""><i class="glyphicon"></i>&nbsp;删除</a>
         </td>
     </tr>
+    {/volist}
 </table>
 {/block}
 {block name="page"}
+    {:$Schedules->render()}
 {/block}
