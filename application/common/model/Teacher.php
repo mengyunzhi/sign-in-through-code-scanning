@@ -50,36 +50,25 @@ class Teacher extends Model {
             if (isset($postData['course_'. $i])) {
                 if (empty($postData['room_' . $i])) {
                     //只选了第几周，没选教室
-                    throw new Exception('room_' . $i .'_student_schedule表添加失败');
+                    throw new Exception('room_' . $i .'中无数据');
                 }
                 //room_$i是字符串(一节课可以在多个教室之后改成数组)
                 $roomId = $postData['room_'.$i];
 
-                //course_$i是一个数组
+                //course_$i是一个数组 
                 foreach ($postData['course_'. $i] as $key => $week) {
-                    //获取距离开学时间的秒数
-                    $seconds = Teacher::getSecondsFromTermBegin($i, $week);
-                    //日期字符串和秒数转换成当前日期
-                    $dayString = Teacher::getDateAfterSeconds($startTimeString, $seconds);
-                    //获取时间数组
-                    $date = Teacher::getTimeFromString($dayString);
-
                     $Dispatch[$i][$key] = new Dispatch;
                     $Dispatch[$i][$key]->schedule_id = $Schedule->getId();
-                    $Dispatch[$i][$key]->year = $date['year'];
-                    $Dispatch[$i][$key]->month = $date['month'];
-                    $Dispatch[$i][$key]->day = $date['day'];
-                    //第几节课,还没用得上 
-                    $lesson = $i % 11;
-                    //开始时间和结束时间 再补充
-                    $Dispatch[$i][$key]->start_time = 1;
-                    $Dispatch[$i][$key]->end_time = 1;
+                    $Dispatch[$i][$key]->week = $week;
+                    $Dispatch[$i][$key]->day = $i / 11 + 1;
+                    $Dispatch[$i][$key]->lesson = $i % 11;
 
-                    //调度表中存时间  //调度表和教室表的中间表
+                    //调度表中存时间  
                     $status = $Dispatch[$i][$key]->save();
                     if (!$status) {
                         throw new Exception('dispatch表添加失败');
                     }
+
                     $status = $Dispatch[$i][$key]->Rooms()->save($roomId);
                     if (!$status) {
                         throw new Exception('dispatch_room表添加失败');
@@ -104,18 +93,17 @@ class Teacher extends Model {
     }
 
     /**
-     * @param  [int] $lessonRank    [第几节课(一周为77节课)]
-     * @param  [int] $weekRank [第几周的课]
+     * @param  [int] $lesson    [第几节课]
+     * @param  [int] $week [第几周的课]
+     * @param  [int] $day [本周第几天]
      * @return [int]       [返回秒数]
      */
-    static public function getSecondsFromTermBegin($lessonRank, $weekRank) 
+    static public function getSecondsFromTermBegin($week, $day, $lesson = 0) 
     {
         //距学期开始的第几周内
-        $days = ((int)$weekRank-1) * 7;
-        //某天当天
-        $weekDay = (int)($lessonRank / 11) + 1;
+        $days = ((int)$week-1) * 7;
         //当天距离学期开始的秒数
-        $seconds = ($days + ($weekDay-1))* 86400;
+        $seconds = ($days + ($day-1))* 86400;
 
         return $seconds; 
     }
@@ -125,7 +113,7 @@ class Teacher extends Model {
      * @param  [string] $string [日期字符串]
      * @return [array]         [带年月日的数组]
      */
-    static public function getTimeFromString($string)
+    static public function getTimeFromDateString($string)
     {
         // function 从中间无符号的字符串截取日期
         $date['year'] = (int)substr($string, 0, 4);
