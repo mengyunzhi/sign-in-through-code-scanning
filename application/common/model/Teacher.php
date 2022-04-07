@@ -16,14 +16,13 @@ class Teacher extends Model {
         //array
         $klass_ids = $postData['klass_id'];
         //call_id
-        $callId = (int) $_SESSION['user']['id'];
+        $teacherId = (int) $_SESSION['user']['id'];
         //哪个学期是激活状态那么termId就是哪个
         $termId = 1;
 
         //排课表
         $Schedule = new Schedule;
-        $Schedule->call_id = $callId;
-        $Schedule->role = $_SESSION['user']['role'];
+        $Schedule->teacher_id = $teacherId;
         $Schedule->term_id = $termId;
         $Schedule->course_id = $courseId;
         $Schedule->save();
