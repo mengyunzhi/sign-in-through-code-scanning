@@ -16,9 +16,14 @@ class Term extends Model {
         return isset($this->data['start_time']) ? $this->data['start_time'] : null;
     }
 
-    static public function getStartTimeString()
+    static public function getCurrentStartTimeString()
     {
         return '20210901';
+    }
+
+    static public function getCurrentTermId()
+    {
+        return 1;
     }
 
 }

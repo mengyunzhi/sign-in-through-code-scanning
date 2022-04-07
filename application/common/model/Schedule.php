@@ -24,6 +24,11 @@ class Schedule extends Model {
     {
         return $this->belongsToMany('Klass', 'yunzhi_schedule_klass', 'klass_id', 'schedule_id');
     }
+
+    public function students()
+    {
+        return $this->belongsToMany('Student', 'yunzhi_student_schedule', 'student_id', 'schedule_id');
+    }
     
 
 }
