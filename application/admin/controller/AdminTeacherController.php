@@ -18,25 +18,27 @@ class AdminTeacherController extends IndexController
         // 获取查询信息
         $name = Request::instance()->get('name');
 
-        $pageSize = 5; // 每页显示5条数据
+        // 实例化User
+        $User = new User; 
 
-        // 实例化Teacher
-        $Teacher = new Teacher; 
-
-        // 定制查询信息
+        // 定制查询信息,查询user表中的数据
         if (!empty($name)) {
-            $Teacher->where('name', 'like', '%' . $name . '%');
+            $User->where('name', 'like', '%' . $name . '%');
         }
 
+        // 每页显示5条数据
+        $pageSize = 5;
+
         // 按条件查询数据并调用分页
-        $teachers = $Teacher->paginate($pageSize, false, [
-           'query'=>[
+        $users = $User->paginate($pageSize, false, [
+            'query'=>[
                 'name' => $name,
-                ],
+                    ],
             ]);
 
+
         // 向V层传数据
-        $this->assign('teachers', $teachers);
+        $this->assign('teachers', $users);
 
         // 取回打包后的数据
         $htmls = $this->fetch();
@@ -60,14 +62,21 @@ class AdminTeacherController extends IndexController
 
     public function update() 
     {
+        // 接收V层数据
         $teacher = Request::instance()->post();
+        // 获取该条数据在Teacher表中的id
         $id = Request::instance()->post('id/d');
+        // 通过id获取该条数据
         $Teacher = Teacher::get($id);
-        $Teacher = new Teacher;
-        $state = $Teacher->validate(true)->isUpdate(true)->save($teacher);
+        // 获取该条数据的user_id
+        $user_id = $Teacher->getUserId();
+        // 找出user表中的对应数据
+        $User = User::get($user_id);
+        // 进行数据更改
+        $state = $User->validate(true)->isUpdate(true)->save($teacher);
         if ($state === false) 
         {
-            $message = '操作失败:' . $Teacher->getError();
+            $message = '操作失败:' . $User->getError();
             return $this->error($message);
         }
         return $this->success('操作成功', url('index'));
