@@ -117,17 +117,31 @@ class AdminTeacherController extends IndexController
                 throw new \Exception('未获取到ID信息', 1);
             }
 
-            // 获取要删除的对象
+            // 获取要删除的Teacher对象
             $Teacher = Teacher::get($id);
-
-            // 要删除的对象存在
+            // 获取要删除对象的user_id
+            $user_id = $Teacher->getUserId();
+            // 获取要删除的User对象
+            $User = User::get($user_id);
+            
+            // 要删除的对象在Teacher表中存在
             if (is_null($Teacher)) {
                 throw new \Exception('不存在id为' . $id . '的教师，删除失败', 1);
             }
 
-            // 删除对象
+            // 删除Teacher表中的对象
             if (!$Teacher->delete()) {
                 return $this->error('删除失败:' . $Teacher->getError());
+            }
+
+            // 要删除的对象在User表中存在
+            if (is_null($User)) {
+                throw new \Exception('不存在id为' . $id . '的教师，删除失败', 1);
+            }
+
+            // 删除User表中的对象
+            if (!$User->delete()) {
+                return $this->error('删除失败:' . $User->getError());
             }
 
         // 获取到ThinkPHP的内置异常时，直接向上抛出，交给ThinkPHP处理
