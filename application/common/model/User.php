@@ -3,6 +3,7 @@ namespace app\common\model;
 use app\common\model\Student;
 use think\Model;
 use think\Exception;
+use think\Db;   // 引用数据库操作类
 
 class User extends Model {
 
