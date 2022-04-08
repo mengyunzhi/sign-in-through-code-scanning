@@ -27,7 +27,16 @@
                     <?php
                         foreach($Dispatches as $key => $Dispatch) {
                             if($Dispatch->day === $col && $Dispatch->lesson === $row) {
-                                echo 'A301';
+                                echo $Dispatch->getSchedule()->getCourse()->name;
+                                echo '<br>';
+                                foreach($Dispatch->getSchedule()->Klasses as $key => $Klass) {
+                                    echo $Klass->name;
+                                }
+                                echo '<br>';
+                                var_dump($Dispatch->Rooms);
+                                foreach($Dispatch->Rooms as $key => $Room) {
+                                    echo $Room->name;
+                                }
                             }
                         }
                     ?>

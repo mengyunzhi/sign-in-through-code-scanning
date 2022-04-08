@@ -58,23 +58,20 @@
 
                                 <!-- 周 -->
                                 <div id="time_{:$_Row * 11 + $_Col + 1}" class="content col-md-6">
-                                    <?php foreach($Weeks as $_Week): ?>
-                                    <input type="checkbox" name="course_{:$_Row * 11 + $_Col + 1}[]" value="{:$_Week + 1}" id="{$_Row * 11 + $_Col + 1}_{$_Week+1}">
-                                    <label for="{$_Row * 11 + $_Col + 1}_{$_Week+1}">第{:$_Week + 1}周</label>
+                                    <label>上课周</label>
+                                    <?php foreach(range(1, 11) as $_Week): ?>
+                                    <input type="checkbox" name="course_{:$_Row * 11 + $_Col + 1}[]" value="{:$_Week}" id="klass_{$_Row * 11 + $_Col + 1}_{$_Week}">
+                                    <label for="klass_{$_Row * 11 + $_Col + 1}_{$_Week}">第{:$_Week}周</label>
                                     <?php endforeach; ?>
                                 </div>
 
                                 <!-- 教室 -->
                                 <div id="time_{:$_Row * 11 + $_Col + 1}" class="content col-sm-6">
                                     <label>选择教室</label>
-                                    <select name="room_{:$_Row * 11 + $_Col + 1}">
-                                        <option value=""></option>
-                                        {volist name="Rooms" id="_Room"}
-                                        <option value="{:$_Room->getId()}">
-                                            {:$_Room->getName()}
-                                        </option>
-                                        {/volist}
-                                    </select>
+                                    <?php foreach($Rooms as $key => $_Room): ?>
+                                    <input type="checkbox" name="room_{:$_Row * 11 + $_Col + 1}[]" value="{:$_Room->getId()}" id="room_{:$_Row * 11 + $_Col + 1 .'_'. ($key+1)}">
+                                    <label for="room_{:$_Row * 11 + $_Col + 1 .'_'. ($key+1)}">{:$_Room->name}</label>
+                                    <?php endforeach; ?>
                                 </div>
                             </li>
                         </ul>
