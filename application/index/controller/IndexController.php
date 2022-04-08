@@ -131,10 +131,9 @@ class IndexController extends Controller
 
     public function courseSchedule()
     {
-        $Dispatches = Dispatch::where('schedule_id', 'eq', 171)->select();
-        $DispatchesInSomeWeek = Teacher::getDispatchesInSomeWeek($Dispatches, 1);
-        $this->assign('Dispatches', $DispatchesInSomeWeek);
-        // var_dump($DispatchesInSomeWeek);
+        $Dispatches = Dispatch::where('schedule_id', 'eq', 171)->where('week', 'eq', 1)->select();
+        $this->assign('Dispatches', $Dispatches);
+        // var_dump($Dispatches);
         return $this->fetch();
     }
 
