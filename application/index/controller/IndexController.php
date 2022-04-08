@@ -68,8 +68,10 @@ class IndexController extends Controller
 
     public function courseDetail() 
     {
+        $scheduleId = Request::instance()->param('schedule_id');
+        $Schedule = Schedule::get($scheduleId);
+        $this->assign('Schedule', $Schedule);
         $htmls = $this->fetch();
-
         return $htmls;
     }
 
@@ -125,6 +127,14 @@ class IndexController extends Controller
             return $this->error('操作失败');
         }
         return $this->success('操作成功', url('courseSort'));
+    }
+
+    public function courseSchedule()
+    {
+        $Dispatches = Dispatch::where('schedule_id', 'eq', 171)->where('week', 'eq', 1)->select();
+        $this->assign('Dispatches', $Dispatches);
+        // var_dump($Dispatches);
+        return $this->fetch();
     }
 
     public function courseSort()

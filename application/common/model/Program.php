@@ -12,6 +12,10 @@ class Program extends Model {
         return isset($this->data['name']) ? $this->data['name'] : null;
     }
 
+    public function getLesson() {
+        return isset($this->data['lesson']) ? $this->data['lesson'] : null;
+    }
+
     public function getCourseId() {
         return isset($this->data['course_id']) ? (int)$this->data['course_id'] : null;
     }
