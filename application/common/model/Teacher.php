@@ -15,7 +15,7 @@ class Teacher extends Model {
         //array 班级              n个
         $klass_ids = $postData['klass_id'];
         //teacher_id 教师id       1个
-        $Teacher = Teacher::where('user_id', 'eq', $_SESSION['user']['id']);
+        $Teacher = Teacher::where('user_id', 'eq', $_SESSION['user']['id'])->find();
         $teacherId = (int) $Teacher->getId();
         //已激活学期
         $term = Term::getCurrentTerm();
@@ -91,6 +91,23 @@ class Teacher extends Model {
         $primaryDateStamp = strtotime($primaryDateString);
         $dateStamp = $primaryDateStamp + $seconds;
         return date('Ymd', $dateStamp);
+    }
+
+    static public function getDispatchInCourseSchedule($day, $lesson)
+    {
+
+    }
+
+    static public function getDispatchesInSomeWeek($Dispatches, $week)
+    {
+        $DispatchesInSomeWeek = [];
+
+        foreach ($Dispatches as $key => $Dispatch) {
+            if ($Dispatch['week'] === $week) {
+                array_push($DispatchesInSomeWeek, $Dispatch);
+            }
+        }
+        return $DispatchesInSomeWeek;
     }
 
     /**

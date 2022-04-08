@@ -129,6 +129,15 @@ class IndexController extends Controller
         return $this->success('操作成功', url('courseSort'));
     }
 
+    public function courseSchedule()
+    {
+        $Dispatches = Dispatch::where('schedule_id', 'eq', 171)->select();
+        $DispatchesInSomeWeek = Teacher::getDispatchesInSomeWeek($Dispatches, 1);
+        $this->assign('Dispatches', $DispatchesInSomeWeek);
+        // var_dump($DispatchesInSomeWeek);
+        return $this->fetch();
+    }
+
     public function courseSort()
     {
         $teacherId = $_SESSION['user']['id'];
