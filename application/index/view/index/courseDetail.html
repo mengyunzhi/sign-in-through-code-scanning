@@ -9,7 +9,7 @@
     <div class="col col-md-8">
         <div class="col-sm-12">
             <a href="{:url('courseSort')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>&nbsp&nbsp
-            <a href="{:url('courseProgramAdd')}" class="btn btn-info"><i class="glyphicon"></i>&nbsp;添加项目</a>&nbsp&nbsp
+            <a href="{:url('courseProgramAdd?scheduleId=')}" class="btn btn-info"><i class="glyphicon"></i>&nbsp;添加项目</a>&nbsp&nbsp
             <a href="{:url('courseTimeAdd')}" class="btn btn-success">&nbsp;添加上课时间</a>&nbsp;
             <a href="{:url('courseKlassAdd')}" class="btn btn-success">&nbsp;添加上课班级</a>&nbsp;
         </div>
@@ -25,73 +25,65 @@
             <tbody>
                 <tr>
                     <td>课程名称</td>
-                    <td>程序设计</td>
+                    <td>{:$Schedule->getCourse()->getName()}</td>
                     <td>
                         <a class="btn btn-success" href="{:url('courseEdit')}"><i class="glyphicon"></i>&nbsp;编辑</a>
                     </td>
                 </tr>
                 <tr>
                     <td>学时</td>
-                    <td>48</td>
+                    <td>{:$Schedule->getCourse()->getLesson()}</td>
                     <td></td>
                 </tr>
+                {volist name="$Schedule->getCourse()->getProgram()" id="_Program" key="key"}
                 <tr>
-                    <td>项目1</td>
-                    <td>c语言（学时：16）</td>
+                    <td><?php echo '项目'.$key; ?></td>
+                    <td>{:$_Program->name . '名称' . '（学时：' . $_Program->lesson . '）'}</td>
                     <td>
                         <a href="{:url('')}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a>
-                        <a href="{:url('courseProgramEdit')}" class="btn btn-success"><i class="glyphicon"></i>&nbsp;编辑</a>
+                        <a href="{:url('courseProgramEdit?program_id='.$_Program->id)}" class="btn btn-success"><i class="glyphicon"></i>&nbsp;编辑</a>
                         <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;上移</a>
                         <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;下移</a>
                     </td>
                 </tr>
+                {/volist}
+
+                <?php foreach ($Schedule->klasses as $key => $_Klass): ?>
+                <?php if($key === 0): ?>
                 <tr>
-                    <td>项目2</td>
-                    <td>java语言（学时：16）</td>
-                    <td>
-                        <a href="{:url('')}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a>
-                        <a href="{:url('courseProgramEdit')}" class="btn btn-success"><i class="glyphicon"></i>&nbsp;编辑</a>
-                        <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;上移</a>
-                        <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;下移</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>项目3</td>
-                    <td>c++语言（学时：16）</td>
-                    <td>
-                        <a href="{:url('')}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a>
-                        <a href="{:url('courseProgramEdit')}" class="btn btn-success"><i class="glyphicon"></i>&nbsp;编辑</a>
-                        <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;上移</a>
-                        <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;下移</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td rowspan="2">上课班级</td>
-                    <td>计2021班</td>
+                    <td rowspan="{:count($Schedule->klasses)}">上课班级</td>
+                    <td>{:$_Klass->name}</td>
                     <td><a href="{:url('')}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a></td>
                 </tr>
+                <?php else: ?>
                 <tr>
-                    <td>计2022班</td>
+                    <td>{:$_Klass->name}</td>
                     <td><a href="{:url('')}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a></td>
                 </tr>
+                <?php endif; ?>
+                <?php endforeach; ?>
+
+                <!-- <?php foreach ($Schedule->getDispatches() as $key => $_Room): ?>
+                <?php if($key === 0): ?>
                 <tr>
-                    <td rowspan="2">上课时间/地点</td>
+                    <td rowspan="{:count($Schedule->getDispatches())}">上课时间/地点</td>
                     <td>1-12周>>星期二>>3-4节,教室A301</td>
                     <td><a href="{:url('')}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a></td>
                 </tr>
+                <?php else: ?>
                 <tr>
                     <td>1-12周>>星期三>>5-6节,教室A302</td>
                     <td><a href="{:url('')}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a></td>
                 </tr>
+                <?php endif; ?>
+                <?php endforeach; ?> -->
+
                 <tr>
                     <td>教师</td>
-                    <td>张三</td>
+                    <td>{:$Schedule->getTeacher()->getName()}</td>
                     <td>
                     </td>
                 </tr>
-                <!-- <tr>
-              <td colspan="2">Larry the Bird</td>
-            </tr> -->
             </tbody>
         </table>
     </div>

@@ -16,4 +16,9 @@ class Course extends Model {
         return isset($this->data['lesson']) ? $this->data['lesson'] : null;
     }
 
+    public function getProgram()
+    {
+        return isset($this->data['program']) ? $this->data['program'] : $this->data['program'] = Program::where('course_id', 'eq', $this->getId())->select();
+    }
+
 }

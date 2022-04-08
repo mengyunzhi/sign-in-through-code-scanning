@@ -68,8 +68,10 @@ class IndexController extends Controller
 
     public function courseDetail() 
     {
+        $scheduleId = Request::instance()->param('schedule_id');
+        $Schedule = Schedule::get($scheduleId);
+        $this->assign('Schedule', $Schedule);
         $htmls = $this->fetch();
-
         return $htmls;
     }
 
