@@ -18,25 +18,27 @@ class AdminTeacherController extends IndexController
         // 获取查询信息
         $name = Request::instance()->get('name');
 
-        $pageSize = 5; // 每页显示5条数据
+        // 实例化User
+        $User = new User; 
 
-        // 实例化Teacher
-        $Teacher = new Teacher; 
-
-        // 定制查询信息
+        // 定制查询信息,查询user表中的数据
         if (!empty($name)) {
-            $Teacher->where('name', 'like', '%' . $name . '%');
+            $User->where('name', 'like', '%' . $name . '%');
         }
 
+        // 每页显示5条数据
+        $pageSize = 5;
+
         // 按条件查询数据并调用分页
-        $teachers = $Teacher->paginate($pageSize, false, [
-           'query'=>[
+        $users = $User->paginate($pageSize, false, [
+            'query'=>[
                 'name' => $name,
-                ],
+                    ],
             ]);
 
+
         // 向V层传数据
-        $this->assign('teachers', $teachers);
+        $this->assign('teachers', $users);
 
         // 取回打包后的数据
         $htmls = $this->fetch();
@@ -60,14 +62,21 @@ class AdminTeacherController extends IndexController
 
     public function update() 
     {
+        // 接收V层数据
         $teacher = Request::instance()->post();
+        // 获取该条数据在Teacher表中的id
         $id = Request::instance()->post('id/d');
+        // 通过id获取该条数据
         $Teacher = Teacher::get($id);
-        $Teacher = new Teacher;
-        $state = $Teacher->validate(true)->isUpdate(true)->save($teacher);
+        // 获取该条数据的user_id
+        $user_id = $Teacher->getUserId();
+        // 找出user表中的对应数据
+        $User = User::get($user_id);
+        // 进行数据更改
+        $state = $User->validate(true)->isUpdate(true)->save($teacher);
         if ($state === false) 
         {
-            $message = '操作失败:' . $Teacher->getError();
+            $message = '操作失败:' . $User->getError();
             return $this->error($message);
         }
         return $this->success('操作成功', url('index'));
@@ -117,17 +126,31 @@ class AdminTeacherController extends IndexController
                 throw new \Exception('未获取到ID信息', 1);
             }
 
-            // 获取要删除的对象
+            // 获取要删除的Teacher对象
             $Teacher = Teacher::get($id);
-
-            // 要删除的对象存在
+            // 获取要删除对象的user_id
+            $user_id = $Teacher->getUserId();
+            // 获取要删除的User对象
+            $User = User::get($user_id);
+            
+            // 要删除的对象在Teacher表中存在
             if (is_null($Teacher)) {
                 throw new \Exception('不存在id为' . $id . '的教师，删除失败', 1);
             }
 
-            // 删除对象
+            // 删除Teacher表中的对象
             if (!$Teacher->delete()) {
                 return $this->error('删除失败:' . $Teacher->getError());
+            }
+
+            // 要删除的对象在User表中存在
+            if (is_null($User)) {
+                throw new \Exception('不存在id为' . $id . '的教师，删除失败', 1);
+            }
+
+            // 删除User表中的对象
+            if (!$User->delete()) {
+                return $this->error('删除失败:' . $User->getError());
             }
 
         // 获取到ThinkPHP的内置异常时，直接向上抛出，交给ThinkPHP处理

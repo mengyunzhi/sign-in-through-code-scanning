@@ -144,6 +144,14 @@ class Teacher extends Model {
     {
         return isset($this->data['id']) ? $this->data['id'] : null;
     }
+
+    /**
+     * 获取user_id字段
+     */
+    public function getUserId() 
+    {
+        return isset($this->data['user_id']) ? $this->data['user_id'] : null;
+    }
     
     /**
      *获取教师的number字段
