@@ -94,18 +94,6 @@ class Teacher extends Model {
         return date('Ymd', $dateStamp);
     }
 
-    static public function getDispatchesInSomeWeek($Dispatches, $week)
-    {
-        $DispatchesInSomeWeek = [];
-
-        foreach ($Dispatches as $key => $Dispatch) {
-            if ($Dispatch['week'] === $week) {
-                array_push($DispatchesInSomeWeek, $Dispatch);
-            }
-        }
-        return $DispatchesInSomeWeek;
-    }
-
     /**
      * @param  [int] $lesson    [第几节课]
      * @param  [int] $week [第几周的课]
