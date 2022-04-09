@@ -24,6 +24,9 @@ class IndexController extends Controller
         if (!User::checkAccessByRole(User::$ROLE_TEACHER)) {
             return $this->error('您并不拥有操作当前模块的权限');
         }
+        $dispatchTime = Teacher::getDispatchTimeFromTermBegin(time());
+        $week = $dispatchTime['week'];
+        $this->assign('week', $week);
     }
 
     public function add() 
@@ -155,7 +158,7 @@ class IndexController extends Controller
     public function courseSort()
     {
         $teacherId = $_SESSION['user']['id'];
-        $Schedules = Schedule::where('teacher_id', 'eq', $teacherId)->paginate();
+        $Schedules = Schedule::where('teacher_id', 'eq', $teacherId)->order('id desc')->paginate();
         $this->assign('Schedules', $Schedules);
         return $this->fetch();
     }
@@ -202,10 +205,7 @@ class IndexController extends Controller
 
     public function index()
     {
-        // 取回打包后的数据
         $htmls = $this->fetch();
-
-        // 将数据返回给用户
         return $htmls;
     }
 

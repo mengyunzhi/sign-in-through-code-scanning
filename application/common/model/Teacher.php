@@ -94,7 +94,48 @@ class Teacher extends Model {
         return date('Ymd', $dateStamp);
     }
 
-    
+    static public function getDispatchTimeFromTermBegin($timestamp)
+    {
+        $termBeginTimeStamp = Term::getCurrentTerm()->getStartTime();
+        $seconds = $timestamp - $termBeginTimeStamp;
+        $days = (int)($seconds / 86400);
+        $seconds = $seconds % 86400;
+        $dispatchTime['week'] = (int) ($days / 7) + 1;
+        $dispatchTime['day'] = $days % 7 + 1;
+        $dispatchTime['lesson'] = self::getLessonBySeconds($seconds);
+        if ($dispatchTime['lesson'] === 6) {
+            $dispatchTime['week'] = (int)(($dispatchTime['day'] + 1) / 7);
+            $dispatchTime['day'] = ($dispatchTime['day'] + 1) % 7;
+            $dispatchTime['lesson'] = 1;
+        }
+        return $dispatchTime;
+    }
+
+    static public function getLessonBySeconds($seconds)
+    {
+        $seconds = (int)$seconds % 86400;
+        if ($seconds < 7500 ) {
+            return 1;
+        } elseif ($seconds < 14400) {
+            return 2;
+        } elseif ($seconds < 27300) {
+            return 3;
+        } elseif ($seconds < 34200) {
+            return 4;
+        } elseif ($seconds < 47100) {
+            return 5;
+        } else {
+            return 6;
+        }
+        // 1 : 1800-7500  第一节课
+        // 2 : 8700-14400  第二节课
+        // 3 : 21600-27300  第三节课
+        // 4 : 28500-34200  第四节课
+        // 5 : 38400-47100  第五节课
+        // 获取周 天 节 然后courseSort页面根据相减排序
+    }
+
+
 
     /**
      * @param  [int] $lesson    [第几节课]
