@@ -7,9 +7,11 @@ use app\common\model\User;
 use app\common\model\Course;
 use app\common\model\Klass;
 use app\common\model\Room;
+use app\common\model\Term;
 use app\common\model\Schedule;
 use app\common\model\Dispatch;
 use think\Controller;
+use think\Db;
 use think\Request;
 class IndexController extends Controller
 {
@@ -129,9 +131,22 @@ class IndexController extends Controller
         return $this->success('操作成功', url('courseSort'));
     }
 
-    public function courseSchedule()
+    public function courseScheduleTerm()
     {
-        $Dispatches = Dispatch::where('schedule_id', 'eq', 171)->where('week', 'eq', 1)->select();
+        $currentTerm = Term::getCurrentTerm();
+        $scheduleIds = Schedule::where('term_id', 'eq', $currentTerm->getId())->column('id');
+        $Dispatches = Dispatch::where('schedule_id', 'in', $scheduleIds)->order('week')->select();
+        $this->assign('currentTerm', $currentTerm);
+        $this->assign('Dispatches', $Dispatches);
+        return $this->fetch();
+    }
+
+    public function courseScheduleWeek()
+    {
+        $teacherId = $_SESSION['user']['id'];
+        $scheduleIds = Schedule::where('teacher_id', 'eq', $teacherId)->column('id');
+        $week = Request::instance()->param('week');
+        $Dispatches = Dispatch::where('schedule_id', 'in', $scheduleIds)->where('week', 'eq', $week)->select();
         $this->assign('Dispatches', $Dispatches);
         // var_dump($Dispatches);
         return $this->fetch();

@@ -94,6 +94,8 @@ class Teacher extends Model {
         return date('Ymd', $dateStamp);
     }
 
+    
+
     /**
      * @param  [int] $lesson    [第几节课]
      * @param  [int] $week [第几周的课]
@@ -123,6 +125,8 @@ class Teacher extends Model {
         $date['day'] = (int)substr($string, 6, 2);
         return $date;
     }
+
+    
 
 	/**
      *通过user_id获取教师用户
