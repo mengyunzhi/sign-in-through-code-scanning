@@ -21,6 +21,7 @@ class Teacher extends Model {
         //已激活学期
         $term = Term::getCurrentTerm();
 
+
         //存入排课信息
         $Schedule = new Schedule;
         $Schedule->teacher_id = $teacherId;
@@ -54,8 +55,7 @@ class Teacher extends Model {
                     //只选了第几周，没选教室
                     throw new Exception('room_' . $i .'中无数据');
                 }
-                //room_$i是字符串(一节课可以在多个教室之后改成数组)
-                $roomId = $postData['room_'.$i];
+                
 
                 //course_$i是一个数组 
                 foreach ($postData['course_'. $i] as $key => $week) {
@@ -70,8 +70,9 @@ class Teacher extends Model {
                     if (!$status) {
                         throw new Exception('dispatch表添加失败');
                     }
-
-                    $status = $Dispatch[$i][$key]->Rooms()->save($roomId);
+                    //room_$i是数组
+                    $roomId = $postData['room_'.$i];
+                    $status = $Dispatch[$i][$key]->Rooms()->saveAll($roomId);
                     if (!$status) {
                         throw new Exception('dispatch_room表添加失败');
                     }
@@ -93,6 +94,8 @@ class Teacher extends Model {
         $dateStamp = $primaryDateStamp + $seconds;
         return date('Ymd', $dateStamp);
     }
+
+    
 
     /**
      * @param  [int] $lesson    [第几节课]
@@ -123,6 +126,8 @@ class Teacher extends Model {
         $date['day'] = (int)substr($string, 6, 2);
         return $date;
     }
+
+    
 
 	/**
      *通过user_id获取user表中的教师对象

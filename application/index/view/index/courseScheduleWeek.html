@@ -1,0 +1,74 @@
+{extend name="index"/}
+{block name="title"}
+添加教室
+{/block}
+{block name="search"}
+{/block}
+{block name="content"}
+<form>
+    <div class="form-group row">
+        <div class="col-sm-3">
+            <select class="selectpicker form-control col-sm-12" name="week" id="course_id">
+                <?php foreach(range(1,16) as $value): ?>
+                <option value="{:$value}" <?php if(input('get.week/d') === $value){ echo 'selected'; } ?>>第{:$value}周</option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn">确定</button>
+        </div>
+        <div class="col-md-7 text-right">
+            <a href="{:url('courseScheduleTerm')}" class="btn btn-primary">查看学期课程表</a>
+            <a href="javascript:history.go(-1)" class="btn btn-primary">返回</a>
+        </div>
+    </div>
+        
+</form>
+
+<div class="row">
+    <div class="col-md-12">
+        <table>
+            <thead>
+                <tr>
+                    <td class="col-md-1">第{:input('get.week/d')}周</td>
+                    <td class="col-md-1">周一</td>
+                    <td class="col-md-1">周二</td>
+                    <td class="col-md-1">周三</td>
+                    <td class="col-md-1">周四</td>
+                    <td class="col-md-1">周五</td>
+                    <td class="col-md-1">周六</td>
+                    <td class="col-md-1">周日</td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach (range(1,5) as $row): ?>
+                <tr>
+                    <td style="border:solid 0.2px #999999;"><p>第{:$row}节</p></td>
+                    <?php foreach (range(1,7) as $col): ?>
+                    <td style="border:solid 0.2px #999999;">
+                            <?php
+                                foreach($Dispatches as $key => $Dispatch) {
+                                    if($Dispatch->day === $col && $Dispatch->lesson === $row) {
+                                        echo '<div style="color:#EC5F66;">'.$Dispatch->getSchedule()->getCourse()->name.'</div>';
+                                        foreach($Dispatch->getSchedule()->Klasses as $key => $Klass) {
+                                            echo $Klass->name.'&nbsp';
+                                        }
+                                        echo '<br>';
+                                        foreach($Dispatch->Rooms as $key => $Room) {
+                                            echo $Room->name.'&nbsp';
+                                        }
+                                        echo ';'.';<br>';
+                                    }
+                                }
+                            ?>
+                    </td>
+                    <?php endforeach; ?>
+                </tr>
+                <?php endforeach ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+{/block}
+{block name="page"}
+{/block}
