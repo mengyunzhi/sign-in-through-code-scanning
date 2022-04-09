@@ -64,6 +64,17 @@ class User extends Model {
         return isset($this->data['sex']) ? $this->sex : null;
     }
 
+    /**
+     *通过user_id获取到学生对象
+     */
+    public function getStudentByUserId() 
+    {
+        $id = $this->getId();
+        $student_id = Db::query("select * from yunzhi_student where user_id=" . $id);
+        $student = Student::get($student_id[0]['id']);
+        return $student;
+    }
+
     public function getSexAttr($value) 
     {
         $status = [

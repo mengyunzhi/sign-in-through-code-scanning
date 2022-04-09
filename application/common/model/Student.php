@@ -1,5 +1,6 @@
 <?php
 namespace app\common\model;
+use app\common\model\Klass;
 use think\Model;
 
 class Student extends Model {
@@ -24,6 +25,26 @@ class Student extends Model {
     public function getId() 
     {
         return isset($this->data['id']) ? $this->data['id'] : null;
+    }
+
+    /**
+     * 获取klass_id字段
+     */
+    public function getKlassId() 
+    {
+        return $this->data['klass_id'];
+    }
+
+    /**
+     * 获取学生所在班级的名称
+     */
+    public function getKlassName() 
+    {
+        $klass_id = $this->data['klass_id'];
+        $klass = new Klass;
+        $name = $klass::get($klass_id)->getName();
+        return $name;
+
     }
     
     /**
