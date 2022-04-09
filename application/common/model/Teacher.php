@@ -6,6 +6,45 @@ use think\Model;
 use think\Exception;
 class Teacher extends Model {
 
+    static public function courseKlassSave($scheduleId, $klassIds)
+    {
+        return Schedule::get($scheduleId)->Klasses()->saveAll($klassIds);
+    }
+
+    static public function courseProgramSave($name, $lesson, $courseId)
+    {
+        $Program = new Program;
+        $Program->name = $name;
+        $Program->lesson = $lesson;
+        $Program->course_id = $courseId;
+        $status = $Program->save();
+        return $status;
+    }
+
+    static public function courseProgramUpdate($programId, $name, $lesson)
+    {
+        $Program = Program::get($programId);
+        $Program->name = $name;
+        $Program->lesson = $lesson;
+        return $Program->save();
+    }
+
+    static public function courseTimeSave($postData)
+    {
+        return self::dispatchSave($postData, );
+    }
+
+    static public function excludeKlasses($excludedKlasses)
+    {
+        $excludedKlassIds = [];
+        foreach ($excludedKlasses as $key => $excludedKlass) {
+            $excludedKlassIds[$key] = $excludedKlass->id;
+        }
+
+        $Klasses = Klass::where('id', 'not in', $excludedKlassIds)->select();
+        return $Klasses;
+    }
+
     /**
      * 添加课程
      */
@@ -44,10 +83,16 @@ class Teacher extends Model {
             throw new Exception('student_schedule表添加失败');
         }
 
-        //当前有week_XX, room_XX
-        $Dispatch = [];
-        //学期开始时间,从term表获取
-        $startTimeString = date('Ymd', $term->getStartTime());
+        $status = self::dispatchSave($postData, $Schedule->getId());
+        return $status;
+    }
+
+    static public function dispatchSave($postData, $scheduleId = null)
+    {
+        $status = false;
+        if (isset($postData['schedule_id'])) {
+            $scheduleId = $postData['schedule_id'];
+        }
         for ($i=1;$i <= 77; $i++) { 
             if (isset($postData['course_'. $i])) {
                 if (empty($postData['room_' . $i])) {
@@ -55,11 +100,10 @@ class Teacher extends Model {
                     throw new Exception('room_' . $i .'中无数据');
                 }
                 
-
                 //course_$i是一个数组 
                 foreach ($postData['course_'. $i] as $key => $week) {
                     $Dispatch[$i][$key] = new Dispatch;
-                    $Dispatch[$i][$key]->schedule_id = $Schedule->getId();
+                    $Dispatch[$i][$key]->schedule_id = $scheduleId;
                     $Dispatch[$i][$key]->week = $week;
                     $Dispatch[$i][$key]->day = $i / 11 + 1;
                     $Dispatch[$i][$key]->lesson = $i % 11;
@@ -70,8 +114,8 @@ class Teacher extends Model {
                         throw new Exception('dispatch表添加失败');
                     }
                     //room_$i是数组
-                    $roomId = $postData['room_'.$i];
-                    $status = $Dispatch[$i][$key]->Rooms()->saveAll($roomId);
+                    $roomIds = $postData['room_'.$i];
+                    $status = $Dispatch[$i][$key]->Rooms()->saveAll($roomIds);
                     if (!$status) {
                         throw new Exception('dispatch_room表添加失败');
                     }

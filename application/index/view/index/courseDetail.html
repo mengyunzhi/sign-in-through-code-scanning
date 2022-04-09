@@ -9,9 +9,9 @@
     <div class="col col-md-8">
         <div class="col-sm-12">
             <a href="{:url('courseSort')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>&nbsp&nbsp
-            <a href="{:url('courseProgramAdd?scheduleId=')}" class="btn btn-info"><i class="glyphicon"></i>&nbsp;添加项目</a>&nbsp&nbsp
-            <a href="{:url('courseTimeAdd')}" class="btn btn-success">&nbsp;添加上课时间</a>&nbsp;
-            <a href="{:url('courseKlassAdd')}" class="btn btn-success">&nbsp;添加上课班级</a>&nbsp;
+            <a href="{:url('courseProgramAdd?schedule_id='.input('param.schedule_id'))}" class="btn btn-info"><i class="glyphicon"></i>&nbsp;添加项目</a>&nbsp&nbsp
+            <a href="{:url('courseTimeAdd?schedule_id='.input('param.schedule_id'))}" class="btn btn-success">&nbsp;添加上课时间</a>&nbsp;
+            <a href="{:url('courseKlassAdd?schedule_id='.input('param.schedule_id'))}" class="btn btn-success">&nbsp;添加上课班级</a>&nbsp;
         </div>
         <hr>
         <table class="table table-bordered">
@@ -41,7 +41,7 @@
                     <td>{:$_Program->name . '名称' . '（学时：' . $_Program->lesson . '）'}</td>
                     <td>
                         <a href="{:url('')}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a>
-                        <a href="{:url('courseProgramEdit?program_id='.$_Program->id)}" class="btn btn-success"><i class="glyphicon"></i>&nbsp;编辑</a>
+                        <a href="{:url('courseProgramEdit?program_id='.$_Program->id.'&schedule_id='.$Schedule->id)}" class="btn btn-success"><i class="glyphicon"></i>&nbsp;编辑</a>
                         <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;上移</a>
                         <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;下移</a>
                     </td>

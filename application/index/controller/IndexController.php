@@ -9,6 +9,7 @@ use app\common\model\Klass;
 use app\common\model\Room;
 use app\common\model\Term;
 use app\common\model\Schedule;
+use app\common\model\Program;
 use app\common\model\Dispatch;
 use think\Controller;
 use think\Db;
@@ -94,18 +95,37 @@ class IndexController extends Controller
 
     public function courseKlassAdd() 
     {
+        $scheduleId = Request::instance()->param('schedule_id');
+        $Schedule = Schedule::get($scheduleId);
+        $existKlasses = $Schedule->Klasses;
+        $Klasses = Teacher::excludeKlasses($existKlasses);
+        $this->assign('Klasses', $Klasses);
+        $this->assign('Schedule', $Schedule);
         $htmls = $this->fetch();
-
         return $htmls;
     }
 
     public function courseKlassSave()
     {
-        return $this->success('操作成功', url('courseDetail'));
+        $postData = Request::instance()->post();
+        if (!isset($postData['schedule_id'])) {
+            return $this->error('无课程调度id');
+        } elseif (!isset($postData['klass_id'])) {
+            return $this->error('未选择班级');
+        }
+
+        $status = Teacher::courseKlassSave($postData['schedule_id'], $postData['klass_id']);
+        if (!$status) {
+            return $this->error('保存失败');
+        }
+        return $this->success('操作成功', url('courseDetail?schedule_id='.$postData['schedule_id']));
     }
 
     public function courseProgramAdd() 
     {
+        $scheduleId = Request::instance()->param('schedule_id');
+        $Schedule = Schedule::get($scheduleId);
+        $this->assign('Schedule', $Schedule);
         return $this->fetch();
     }
 
@@ -116,12 +136,41 @@ class IndexController extends Controller
 
     public function courseProgramSave()
     {
-        return $this->success('操作成功', url('courseDetail'));
+        $postData = Request::instance()->post();
+        if (!isset($postData['schedule_id'])) {
+            $this->error('无课程调度id');
+        } elseif(!isset($postData['name'])) {
+            $this->error('请输入姓名');
+        } elseif(!isset($postData['lesson'])) {
+            $this->error('请输入课时');
+        }
+
+        $Schedule = Schedule::get($postData['schedule_id']);
+        $status = Teacher::courseProgramSave($postData['name'], $postData['lesson'], $Schedule->course_id);
+
+        if (!$status) {
+            return $this->error('保存失败');
+        }
+        return $this->success('操作成功', url('courseDetail?schedule_id='.$Schedule->id));
     }
 
     public function courseProgramUpdate()
     {
-        return $this->success('操作成功', url('courseDetail'));
+        $postData = Request::instance()->post();
+        if (!isset($postData['program_id'])) {
+            return $this->error('无项目id');
+        } elseif (!isset($postData['name'])) {
+            return $this->error('未输入姓名称');
+        } elseif (!isset($postData['lesson'])) {
+            return $this->error('未输入学时');
+        } elseif (!isset($postData['schedule_id'])) {
+            return $this->error('无课程调度id');
+        }
+        $status = Teacher::courseProgramUpdate($postData['program_id'], $postData['name'], $postData['lesson']);
+        if (!$status) {
+            return $this->error('保存失败');
+        }
+        return $this->success('操作成功', url('courseDetail?schedule_id='.$postData['schedule_id']));
     }
 
     public function courseSave()
@@ -171,12 +220,28 @@ class IndexController extends Controller
 
     public function courseTimeAdd() 
     {
+        //周几
+        $dayArray = ['一','二','三','四','五','六','日'];
+        //所有教室
+        $Rooms = Room::all();
+        $scheduleId = Request::instance()->param('schedule_id');
+        $Schedule = Schedule::get($scheduleId);
+
+        $this->assign('Schedule', $Schedule);
+        $this->assign('Rooms', $Rooms);
+        $this->assign('dayArray', $dayArray);
         return $this->fetch();
     }
 
     public function courseTimeSave()
     {
-        return $this->success('操作成功', url('courseDetail'));
+        $postData = Request::instance()->post();
+
+        $status = Teacher::courseTimeSave($postData);
+        if (!$status) {
+            return $this->success('保存失败');
+        }
+        return $this->success('操作成功', url('courseDetail?schedule_id='.$postData['schedule_id']));
     }
 
     public function courseUpdate()
