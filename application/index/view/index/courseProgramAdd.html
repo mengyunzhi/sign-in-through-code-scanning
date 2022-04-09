@@ -5,18 +5,18 @@
 {block name="search"}
 {/block}
 {block name="content"}
-<form action="courseProgramSave" method="post">
-    <input type="hidden" name="">
+<form action="{:url('courseProgramSave')}" method="post">
+    <input type="hidden" name="schedule_id" value="{:$Schedule->id}">
     <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">项目名称</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="name" name="name">
+            <input type="text" class="form-control" id="name" name="name" required>
         </div>
     </div>
     <div class="form-group row">
-        <label for="hour" class="col-sm-2 col-form-label">项目课时</label>
+        <label for="lesson" class="col-sm-2 col-form-label">项目课时</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="hour" name="hour">
+            <input type="text" class="form-control" id="lesson" name="lesson" required>
         </div>
     </div>
     <div class="form-group row">

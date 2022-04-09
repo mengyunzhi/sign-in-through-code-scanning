@@ -6,6 +6,8 @@
 {/block}
 {block name="content"}
 <form class="" action="{:url('courseProgramUpdate')}" method="post">
+    <input type="hidden" name="schedule_id" value="{:input('param.schedule_id')}">
+    <input type="hidden" name="program_id" value="{:input('param.program_id')}">
     <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">项目名称</label>
         <div class="col-sm-4">
@@ -13,9 +15,9 @@
         </div>
     </div>
     <div class="form-group row">
-        <label for="hour" class="col-sm-2 col-form-label">项目课时</label>
+        <label for="lesson" class="col-sm-2 col-form-label">项目课时</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="hour" name="hour" value="16">
+            <input type="text" class="form-control" id="lesson" name="lesson" value="16">
         </div>
     </div>
     <div class="form-group row">

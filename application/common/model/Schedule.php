@@ -26,7 +26,7 @@ class Schedule extends Model {
 
     public function getTerm()
     {
-        return isset($this->data['term']) ? $this->data['term'] : $this->data['term'] = Term::get($this->getTeacherId());
+        return isset($this->data['term']) ? $this->data['term'] : $this->data['term'] = Term::get($this->getTermId());
     }
 
     public function getTermId() 

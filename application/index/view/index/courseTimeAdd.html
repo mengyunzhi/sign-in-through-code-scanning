@@ -6,22 +6,17 @@
 {/block}
 {block name="content"}
 <form class="" action="{:url('courseTimeSave')}" method="post">
+    <input type="hidden" name="schedule_id" value="{:$Schedule->id}">
     <div class="form-group row">
         <label for="" class="col-sm-2 col-form-label">课程名称</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="" value="程序设计" disabled>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="hour" class="col-sm-2 col-form-label">学时</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" value="48" disabled>
+            <input type="text" class="form-control" id="" value="{:$Schedule->getCourse()->name}" disabled>
         </div>
     </div>
     <div class="form-group row">
         <label for="" class="col-sm-2 col-form-label">上课时间：</label>
     </div>
-    <!-- 上课时间 -->
+    <!-- 添加课程 -->
     <div class="row">
         <div class="col-sm-12">
             <table class="table table-hover table-bordered">
@@ -39,332 +34,38 @@
                     <th class="">10</th>
                     <th class="">11</th>
                 </tr>
+                <?php foreach(range(0, 6) as $_Row): ?>
                 <tr>
-                    <td>周一</td>
+                    <td>周{:$dayArray[$_Row]}</td>
+                    <?php foreach(range(0, 10) as $_Col): ?>
                     <td>
                         <ul class="accordion" data-accordion>
                             <li class="accordion-navigation">
-                                <form>
-                                    <a href="#klass_1">课程(clickMe)</a>
-                                    <div id="klass_1" class="content col-sm-6">
-                                        <input type="checkbox" name="">
-                                        <label>第一周</label>
-                                        <input type="checkbox" name="">
-                                        <label>第二周</label>
-                                        <input type="checkbox" name="">
-                                        <label>第三周</label>
-                                        <input type="checkbox" name="">
-                                        <label>第四周</label>
-                                        <input type="checkbox" name="">
-                                        <label>第五周</label>
-                                        <input type="checkbox" name="">
-                                        <label>第六周</label>
-                                        <input type="checkbox" name="">
-                                        <label>第七周</label>
-                                        <input type="checkbox" name="">
-                                        <label>第八周</label>
-                                        <input type="checkbox" name="">
-                                        <label>第九周</label>
-                                        <input type="checkbox" name="">
-                                        <label>第十周</label>
-                                        <input type="checkbox" name="">
-                                        <label>十一周</label>
-                                        <input type="checkbox" name="">
-                                        <label>十二周</label>
-                                        <input type="checkbox" name="">
-                                        <label>十三周</label>
-                                        <input type="checkbox" name="">
-                                        <label>十四周</label>
-                                    </div>
-                                    <div id="klass_1" class="content col-sm-6">
-                                        <label>选择教室</label>
-                                        <select name="">
-                                            <option></option>
-                                            <option>A101</option>
-                                            <option>A102</option>
-                                            <option>A103</option>
-                                            <option>A104</option>
-                                        </select>
-                                    </div>
-                                </form>
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="accordion" data-accordion>
-                            <li class="accordion-navigation">
-                                <a href="#klass_2">课程</a>
-                                <div id="klass_2" class="content">
-                                    <input type="checkbox" name="">
-                                    <label>第一周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第二周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第三周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第四周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第五周</label>
+                                <a href="#time_{:$_Row * 11 + $_Col + 1}">课程</a>
+
+                                <!-- 周 -->
+                                <div id="time_{:$_Row * 11 + $_Col + 1}" class="content col-md-6">
+                                    <label>上课周</label>
+                                    <?php foreach(range(1, 11) as $_Week): ?>
+                                    <input type="checkbox" name="course_{:$_Row * 11 + $_Col + 1}[]" value="{:$_Week}" id="klass_{$_Row * 11 + $_Col + 1}_{$_Week}">
+                                    <label for="klass_{$_Row * 11 + $_Col + 1}_{$_Week}">第{:$_Week}周</label>
+                                    <?php endforeach; ?>
+                                </div>
+
+                                <!-- 教室 -->
+                                <div id="time_{:$_Row * 11 + $_Col + 1}" class="content col-sm-6">
+                                    <label>选择教室</label>
+                                    <?php foreach($Rooms as $key => $_Room): ?>
+                                    <input type="checkbox" name="room_{:$_Row * 11 + $_Col + 1}[]" value="{:$_Room->getId()}" id="room_{:$_Row * 11 + $_Col + 1 .'_'. ($key+1)}">
+                                    <label for="room_{:$_Row * 11 + $_Col + 1 .'_'. ($key+1)}">{:$_Room->name}</label>
+                                    <?php endforeach; ?>
                                 </div>
                             </li>
                         </ul>
                     </td>
-                    <td>
-                        <ul class="accordion" data-accordion>
-                            <li class="accordion-navigation">
-                                <a href="#klass_3">课程</a>
-                                <div id="klass_3" class="content">
-                                    <input type="checkbox" name="">
-                                    <label>第一周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第二周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第三周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第四周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第五周</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="accordion" data-accordion>
-                            <li class="accordion-navigation">
-                                <a href="#klass_4">课程</a>
-                                <div id="klass_4" class="content">
-                                    <input type="checkbox" name="">
-                                    <label>第一周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第二周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第三周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第四周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第五周</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="accordion" data-accordion>
-                            <li class="accordion-navigation">
-                                <a href="#klass_5">课程</a>
-                                <div id="klass_5" class="content">
-                                    <input type="checkbox" name="">
-                                    <label>第一周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第二周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第三周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第四周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第五周</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="accordion" data-accordion>
-                            <li class="accordion-navigation">
-                                <a href="#klass_6">课程</a>
-                                <div id="klass_6" class="content">
-                                    <input type="checkbox" name="">
-                                    <label>第一周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第二周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第三周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第四周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第五周</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="accordion" data-accordion>
-                            <li class="accordion-navigation">
-                                <a href="#klass_7">课程</a>
-                                <div id="klass_7" class="content">
-                                    <input type="checkbox" name="">
-                                    <label>第一周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第二周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第三周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第四周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第五周</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="accordion" data-accordion>
-                            <li class="accordion-navigation">
-                                <a href="#klass_8">课程</a>
-                                <div id="klass_8" class="content">
-                                    <input type="checkbox" name="">
-                                    <label>第一周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第二周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第三周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第四周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第五周</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="accordion" data-accordion>
-                            <li class="accordion-navigation">
-                                <a href="#klass_9">课程</a>
-                                <div id="klass_9" class="content">
-                                    <input type="checkbox" name="">
-                                    <label>第一周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第二周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第三周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第四周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第五周</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="accordion" data-accordion>
-                            <li class="accordion-navigation">
-                                <a href="#klass_10">课程</a>
-                                <div id="klass_10" class="content">
-                                    <input type="checkbox" name="">
-                                    <label>第一周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第二周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第三周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第四周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第五周</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul class="accordion" data-accordion>
-                            <li class="accordion-navigation">
-                                <a href="#klass_11">课程</a>
-                                <div id="klass_11" class="content">
-                                    <input type="checkbox" name="">
-                                    <label>第一周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第二周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第三周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第四周</label>
-                                    <input type="checkbox" name="">
-                                    <label>第五周</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </td>
+                    <?php endforeach; ?>
                 </tr>
-                <tr>
-                    <td>周二</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                </tr>
-                <tr>
-                    <td>周三</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                </tr>
-                <tr>
-                    <td>周四</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                </tr>
-                <tr>
-                    <td>周五</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                </tr>
-                <tr>
-                    <td>周六</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                </tr>
-                <tr>
-                    <td>周日</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                    <td><input type="checkbox" name="">课程</td>
-                </tr>
+                <?php endforeach; ?>
             </table>
         </div>
     </div>

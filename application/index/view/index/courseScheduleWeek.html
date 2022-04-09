@@ -24,13 +24,13 @@
     </div>
         
 </form>
-
 <div class="row">
     <div class="col-md-12">
         <table>
             <thead>
                 <tr>
-                    <td class="col-md-1">第{:input('get.week/d')}周</td>
+                    <td class="col-md-1">
+                    <?php if(empty(!input('param.week/d'))) {echo '第'.input('param.week/d').'周';} else {echo '请确认';}?></td>
                     <td class="col-md-1">周一</td>
                     <td class="col-md-1">周二</td>
                     <td class="col-md-1">周三</td>
