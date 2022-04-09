@@ -17,6 +17,8 @@ class AdminTeacherController extends IndexController
     {
         // 获取查询信息
         $name = Request::instance()->get('name');
+        $number = Request::instance()->get('number');
+        $role = User::$ROLE_TEACHER;
 
         // 实例化User
         $User = new User; 
@@ -26,6 +28,14 @@ class AdminTeacherController extends IndexController
             $User->where('name', 'like', '%' . $name . '%');
         }
 
+        if (!empty($number)) {
+            $User->where('number', 'like', '%' . $number . '%');
+        }
+
+        if (!empty($role)) {
+            $User->where('role', 'like', '%' . $role . '%');
+        }
+
         // 每页显示5条数据
         $pageSize = 5;
 
@@ -33,24 +43,15 @@ class AdminTeacherController extends IndexController
         $users = $User->paginate($pageSize, false, [
             'query'=>[
                 'name' => $name,
+                'number' => $number,
+                'role' => $role,
                     ],
             ]);
-        // 获取用户数组的长度
-        $users_length = count($users);
-        // 新建数组，该数组为最终传入V层的数据
-        $array_users = [];
-
-        // 权限判断，role === 1 时才将对应数据存入
-        for ($i = 0; $i < $users_length; $i = $i + 1) {
-            if ((int)$users[$i]['role'] === User::$ROLE_TEACHER){
-                $array_users[$i] = $users[$i];
-            }
-        }
 
         // 向V层传数据
-        $this->assign('teachers', $array_users);
-        // 分页数据
-        $this->assign('page', $users);
+        $this->assign('teachers', $users);
+        $this->assign('name', $name);
+        $this->assign('number', $number);
 
         // 取回打包后的数据
         $htmls = $this->fetch();
@@ -66,9 +67,11 @@ class AdminTeacherController extends IndexController
 
     public function edit() 
     {
+        $backUrl = $_SERVER["HTTP_REFERER"];
         $id = Request::instance()->param('id/d');
         $User = User::get($id);
         $this->assign('Teacher', $User);
+        $this->assign('backUrl', $backUrl);
         return $this->fetch();
     }
 
