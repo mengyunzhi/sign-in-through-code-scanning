@@ -4,12 +4,33 @@
 {/block}
 {block name="search"}
 <hr />
-<div class="row">
-    <div class="col-md-3">
-        <a href="{:url('courseAdd')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加课程</a>&nbsp;&nbsp;
-        <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;导出所有课程</a>
+<form>
+    <div class="form-group row">
+        <div class="col-sm-3">
+            <select class="selectpicker form-control col-sm-12" name="course_id">
+                <option></option>
+                {volist name="Courses" id="_Course" key="key"}
+                <option value="{:$_Course->id}">{:$_Course->name}</option>
+                {/volist}
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <select class="selectpicker form-control col-sm-12" name="term_id">
+                <option></option>
+                {volist name="Terms" id="_Term" key="key"}
+                <option value="{:$_Term->id}">{:$_Term->name}</option>
+                {/volist}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn">确定</button>
+        </div>
+        <div class="col-md-4 text-right">
+            <a href="{:url('courseAdd')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加课程</a>&nbsp;&nbsp;
+            <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;导出所有课程</a>
+        </div>
     </div>
-</div>
+</form>
 <hr />
 {/block}
 {block name="content"}
@@ -35,7 +56,7 @@
          ?></td>
         <td>
             <a class="btn btn-info" href="{:url('courseDetail?schedule_id='.$_Schedule->getId())}"><i class="glyphicon"></i>&nbsp;编辑</a>
-            <a class="btn btn-danger" href=""><i class="glyphicon"></i>&nbsp;删除</a>
+            <a class="btn btn-danger" href="{:url('courseDelete?schedule_id='.$_Schedule->getId())}"><i class="glyphicon"></i>&nbsp;删除</a>
         </td>
     </tr>
     {/volist}

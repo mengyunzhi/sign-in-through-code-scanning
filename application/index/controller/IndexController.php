@@ -74,11 +74,27 @@ class IndexController extends Controller
 
     public function courseDetail() 
     {
+
         $scheduleId = Request::instance()->param('schedule_id');
         $Schedule = Schedule::get($scheduleId);
         $this->assign('Schedule', $Schedule);
         $htmls = $this->fetch();
         return $htmls;
+    }
+
+    public function courseDelete()
+    {
+        $scheduleId = (int)Request::instance()->param('schedule_id');
+        if (!$scheduleId) {
+            return $this->error('无排课id');
+        }
+
+        $status = Teacher::courseDelete($scheduleId);
+
+        if (!$status) {
+            return $this->error('删除失败');
+        }
+        return $this->success('删除成功');
     }
 
     public function courseEdit() 
@@ -105,6 +121,21 @@ class IndexController extends Controller
         return $htmls;
     }
 
+    public function courseKlassDelete()
+    {
+        $data = Request::instance()->param();
+        if (!isset($data['schedule_id'])) {
+            return $this->error('无排课id');
+        } elseif (!isset($data['klass_id'])) {
+            return $this->error('无班级id');
+        }
+        $status = Teacher::courseKlassDelete($data['schedule_id'], $data['klass_id']);
+        if (!$status) {
+            return $this->error('删除失败');
+        }
+        return $this->success('删除成功');
+    }
+
     public function courseKlassSave()
     {
         $postData = Request::instance()->post();
@@ -129,6 +160,19 @@ class IndexController extends Controller
         return $this->fetch();
     }
 
+    public function courseProgramDelete()
+    {
+        $programId = Request::instance()->param('program_id');
+        if (!$programId) {
+            return $this->error('无项目id');
+        }
+        $status = Teacher::courseProgramDelete($programId);
+        if (!$status) {
+            return $this->error('删除失败');
+        }
+        return $this->success('删除成功');
+    }
+
     public function courseProgramEdit() 
     {
         return $this->fetch();
@@ -147,6 +191,7 @@ class IndexController extends Controller
 
         $Schedule = Schedule::get($postData['schedule_id']);
         $status = Teacher::courseProgramSave($postData['name'], $postData['lesson'], $Schedule->course_id);
+
 
         if (!$status) {
             return $this->error('保存失败');
@@ -168,9 +213,9 @@ class IndexController extends Controller
         }
         $status = Teacher::courseProgramUpdate($postData['program_id'], $postData['name'], $postData['lesson']);
         if (!$status) {
-            return $this->error('保存失败');
+            return $this->error('更新失败');
         }
-        return $this->success('操作成功', url('courseDetail?schedule_id='.$postData['schedule_id']));
+        return $this->success('更新成功', url('courseDetail?schedule_id='.$postData['schedule_id']));
     }
 
     public function courseSave()
@@ -206,8 +251,30 @@ class IndexController extends Controller
 
     public function courseSort()
     {
+        $data = Request::instance()->param();
         $teacherId = $_SESSION['user']['id'];
-        $Schedules = Schedule::where('teacher_id', 'eq', $teacherId)->order('id desc')->paginate();
+        $map['teacher_id'] = $teacherId;
+
+        $Courses = Course::all();
+        $Terms = Term::all();
+        $courseId = $termId = '';
+
+        if (isset($data['course_id'])) {
+            $courseId = $map['course_id'] = $data['course_id'];
+        }
+
+        if (isset($data['term_id'])) {
+            $termId = $map['term_id'] = $data['term_id'];
+        }
+
+        
+        $Schedules = Schedule::where($map)->order('id desc')->paginate(1, false, [
+            'query'=>[
+                'course_id' =>  $courseId,
+                'term_id' => $termId
+            ]]);
+        $this->assign('Courses', $Courses);
+        $this->assign('Terms', $Terms);
         $this->assign('Schedules', $Schedules);
         return $this->fetch();
     }
