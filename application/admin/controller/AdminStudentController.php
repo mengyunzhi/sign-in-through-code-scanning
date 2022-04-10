@@ -6,6 +6,8 @@ use app\common\model\Student;
 use app\common\model\Klass;
 use think\Request;
 use think\Controller;
+use think\Db;   // 引用数据库操作类
+
 
 /**
  * 管理端
@@ -20,6 +22,15 @@ class AdminStudentController extends IndexController
         $sno = Request::instance()->get('sno');
         $role = User::$ROLE_STUDENT;
 
+        if (((int)$sno) !== 0) {
+            $user_id =  Student::getUserIdBySno($sno);
+            if (is_null($user_id)) {
+                $message = '不存在学号为' . $sno . '的学生';
+            }
+        } else {
+            $message = null;
+        }
+
         // 实例化User
         $User = new User; 
 
@@ -28,9 +39,10 @@ class AdminStudentController extends IndexController
             $User->where('name', 'like', '%' . $name . '%');
         }
 
-        if (!empty($sno)) {
-            $User->where('sno', 'like', '%' . $sno . '%');
+        if (!empty($user_id)) {
+            $User->where('id', 'like', '%' . $user_id . '%');
         }
+
 
         if (!empty($role)) {
             $User->where('role', 'like', '%' . $role . '%');
@@ -43,7 +55,7 @@ class AdminStudentController extends IndexController
         $users = $User->paginate($pageSize, false, [
             'query'=>[
                 'name' => $name,
-                'sno' => $sno,
+                'id' => $user_id,
                 'role' => $role,
                     ],
             ]);
@@ -51,6 +63,11 @@ class AdminStudentController extends IndexController
         // 向V层传数据
         $this->assign('students', $users);
         $this->assign('name', $name);
+
+        if (!is_null($message))
+        {
+            $sno = $message;
+        }
         $this->assign('sno', $sno);
 
         // 取回打包后的数据
@@ -135,7 +152,7 @@ class AdminStudentController extends IndexController
                 throw new \Exception('未获取到ID信息', 1);
             }
 
-            // 获取要要删除对象的teacher_id
+            // 获取要要删除对象的student_id
             $student_id = Student::getStudentIdByUserId($user_id);
             // 获取要删除的Teacher对象
             $Student = Student::get($student_id);
