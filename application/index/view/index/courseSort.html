@@ -10,15 +10,16 @@
             <select class="selectpicker form-control col-sm-12" name="course_id">
                 <option></option>
                 {volist name="Courses" id="_Course" key="key"}
-                <option value="{:$_Course->id}">{:$_Course->name}</option>
+                <option value="{:$_Course->id}" <?php if($_Course->id == input('param.course_id')){echo 'selected';} ?>>{:$_Course->name}</option>
                 {/volist}
             </select>
         </div>
+
         <div class="col-sm-3">
             <select class="selectpicker form-control col-sm-12" name="term_id">
                 <option></option>
                 {volist name="Terms" id="_Term" key="key"}
-                <option value="{:$_Term->id}">{:$_Term->name}</option>
+                <option value="{:$_Term->id}" <?php if($_Term->id == input('param.term_id')){echo 'selected';} ?>>{:$_Term->name}</option>
                 {/volist}
             </select>
         </div>

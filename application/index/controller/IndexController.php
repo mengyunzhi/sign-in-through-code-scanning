@@ -253,22 +253,24 @@ class IndexController extends Controller
     {
         $data = Request::instance()->param();
         $teacherId = $_SESSION['user']['id'];
-        $map['teacher_id'] = $teacherId;
+
+        $Schedule = new Schedule;
 
         $Courses = Course::all();
         $Terms = Term::all();
         $courseId = $termId = '';
 
-        if (isset($data['course_id'])) {
-            $courseId = $map['course_id'] = $data['course_id'];
+        if (!empty($data['course_id'])) {
+            $courseId = $data['course_id'];
+            $Schedule->where('course_id', 'eq', $courseId);
         }
 
-        if (isset($data['term_id'])) {
-            $termId = $map['term_id'] = $data['term_id'];
+        if (!empty($data['term_id'])) {
+            $termId = $data['term_id'];
+            $Schedule->where('term_id', 'eq', $termId);
         }
 
-        
-        $Schedules = Schedule::where($map)->order('id desc')->paginate(1, false, [
+        $Schedules = $Schedule->order('id desc')->paginate(2, false, [
             'query'=>[
                 'course_id' =>  $courseId,
                 'term_id' => $termId
