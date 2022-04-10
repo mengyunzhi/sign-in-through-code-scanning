@@ -3,6 +3,7 @@ namespace app\common\model;
 use app\common\model\User;
 use app\common\model\Term;
 use think\Model;
+use think\Db;   // 引用数据库操作类
 use think\Exception;
 class Teacher extends Model {
 
@@ -259,7 +260,7 @@ class Teacher extends Model {
     
 
 	/**
-     *通过user_id获取教师用户
+     *通过user_id获取user表中的教师对象
      */
     public function getUser() 
     {
@@ -319,6 +320,15 @@ class Teacher extends Model {
     public function getSex() 
     {
         return !is_null($this->getUser()) ? $this->getUser()->getSex() : null;
+    }
+
+    /**
+     *通过user_id字段获取teacher表中的教师对象的id
+     */
+    static public function getTeacherIdByUserId($user_id) 
+    {
+        $teacher = Db::query("select * from yunzhi_teacher where user_id=" . $user_id);
+        return $teacher[0]['id'];
     }
 
 

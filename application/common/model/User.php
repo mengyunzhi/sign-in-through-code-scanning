@@ -3,6 +3,7 @@ namespace app\common\model;
 use app\common\model\Student;
 use think\Model;
 use think\Exception;
+use think\Db;   // 引用数据库操作类
 
 class User extends Model {
 
@@ -61,6 +62,17 @@ class User extends Model {
     public function getSex() 
     {
         return isset($this->data['sex']) ? $this->sex : null;
+    }
+
+    /**
+     *通过user_id获取到学生对象
+     */
+    public function getStudentByUserId() 
+    {
+        $id = $this->getId();
+        $student_id = Db::query("select * from yunzhi_student where user_id=" . $id);
+        $student = Student::get($student_id[0]['id']);
+        return $student;
     }
 
     public function getSexAttr($value) 

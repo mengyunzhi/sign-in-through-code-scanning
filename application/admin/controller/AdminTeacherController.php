@@ -17,6 +17,8 @@ class AdminTeacherController extends IndexController
     {
         // 获取查询信息
         $name = Request::instance()->get('name');
+        $number = Request::instance()->get('number');
+        $role = User::$ROLE_TEACHER;
 
         // 实例化User
         $User = new User; 
@@ -26,6 +28,14 @@ class AdminTeacherController extends IndexController
             $User->where('name', 'like', '%' . $name . '%');
         }
 
+        if (!empty($number)) {
+            $User->where('number', 'like', '%' . $number . '%');
+        }
+
+        if (!empty($role)) {
+            $User->where('role', 'like', '%' . $role . '%');
+        }
+
         // 每页显示5条数据
         $pageSize = 5;
 
@@ -33,12 +43,15 @@ class AdminTeacherController extends IndexController
         $users = $User->paginate($pageSize, false, [
             'query'=>[
                 'name' => $name,
+                'number' => $number,
+                'role' => $role,
                     ],
             ]);
 
-
         // 向V层传数据
         $this->assign('teachers', $users);
+        $this->assign('name', $name);
+        $this->assign('number', $number);
 
         // 取回打包后的数据
         $htmls = $this->fetch();
@@ -54,9 +67,11 @@ class AdminTeacherController extends IndexController
 
     public function edit() 
     {
+        $backUrl = $_SERVER["HTTP_REFERER"];
         $id = Request::instance()->param('id/d');
-        $Teacher = Teacher::get($id);
-        $this->assign('Teacher', $Teacher);
+        $User = User::get($id);
+        $this->assign('Teacher', $User);
+        $this->assign('backUrl', $backUrl);
         return $this->fetch();
     }
 
@@ -64,12 +79,8 @@ class AdminTeacherController extends IndexController
     {
         // 接收V层数据
         $teacher = Request::instance()->post();
-        // 获取该条数据在Teacher表中的id
-        $id = Request::instance()->post('id/d');
-        // 通过id获取该条数据
-        $Teacher = Teacher::get($id);
-        // 获取该条数据的user_id
-        $user_id = $Teacher->getUserId();
+        // 获取该条数据在User表中的id
+        $user_id = Request::instance()->post('id/d');
         // 找出user表中的对应数据
         $User = User::get($user_id);
         // 进行数据更改
@@ -119,23 +130,24 @@ class AdminTeacherController extends IndexController
         try {
             // 获取get数据
             $Request = Request::instance();
-            $id = Request::instance()->param('id/d');
+            // 获取要删除对象在User表中的id
+            $user_id = Request::instance()->param('id/d');
             
             // 判断是否成功接收
-            if (is_null($id) || 0 === $id) {
+            if (is_null($user_id) || 0 === $user_id) {
                 throw new \Exception('未获取到ID信息', 1);
             }
 
+            // 获取要要删除对象的teacher_id
+            $teacher_id = Teacher::getTeacherIdByUserId($user_id);
             // 获取要删除的Teacher对象
-            $Teacher = Teacher::get($id);
-            // 获取要删除对象的user_id
-            $user_id = $Teacher->getUserId();
+            $Teacher = Teacher::get($teacher_id);
             // 获取要删除的User对象
             $User = User::get($user_id);
             
             // 要删除的对象在Teacher表中存在
             if (is_null($Teacher)) {
-                throw new \Exception('不存在id为' . $id . '的教师，删除失败', 1);
+                throw new \Exception('不存在id为' . $user_id . '的教师，删除失败', 1);
             }
 
             // 删除Teacher表中的对象
@@ -145,7 +157,7 @@ class AdminTeacherController extends IndexController
 
             // 要删除的对象在User表中存在
             if (is_null($User)) {
-                throw new \Exception('不存在id为' . $id . '的教师，删除失败', 1);
+                throw new \Exception('不存在id为' . $user_id . '的教师，删除失败', 1);
             }
 
             // 删除User表中的对象
