@@ -9,7 +9,9 @@ class Teacher extends Model {
 
     static public function courseDelete($scheduleId)
     {
-
+        if (empty($scheduleId)) {
+            throw new Exception('无排课id');
+        }
         //删除scheduleId对应的调度表 调度room表 klass表 学生排课表 
         $Schedule = Schedule::get($scheduleId);
 
@@ -41,6 +43,11 @@ class Teacher extends Model {
 
     static public function courseKlassDelete($scheduleId, $klassId)
     {
+        if (empty($scheduleId)) {
+            throw new Exception('无排课id');
+        } elseif (empty($klassId)) {
+            throw new Exception('无班级id')
+        }
         //detach方法返回值为null
         Schedule::get($scheduleId)->Klasses()->detach($klassId);
         return true;
