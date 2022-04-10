@@ -46,7 +46,7 @@ class Teacher extends Model {
         if (empty($scheduleId)) {
             throw new Exception('无排课id');
         } elseif (empty($klassId)) {
-            throw new Exception('无班级id')
+            throw new Exception('无班级id');
         }
         //detach方法返回值为null
         Schedule::get($scheduleId)->Klasses()->detach($klassId);

@@ -8,7 +8,7 @@
     <div class="form-group row">
         <div class="col-sm-3">
             <select class="selectpicker form-control col-sm-12" name="course_id">
-                <option></option>
+                <option>课程</option>
                 {volist name="Courses" id="_Course" key="key"}
                 <option value="{:$_Course->id}" <?php if($_Course->id == input('param.course_id')){echo 'selected';} ?>>{:$_Course->name}</option>
                 {/volist}
@@ -17,7 +17,7 @@
 
         <div class="col-sm-3">
             <select class="selectpicker form-control col-sm-12" name="term_id">
-                <option></option>
+                <option>学期</option>
                 {volist name="Terms" id="_Term" key="key"}
                 <option value="{:$_Term->id}" <?php if($_Term->id == input('param.term_id')){echo 'selected';} ?>>{:$_Term->name}</option>
                 {/volist}
