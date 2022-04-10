@@ -7,9 +7,61 @@ use think\Db;   // 引用数据库操作类
 use think\Exception;
 class Teacher extends Model {
 
+    static public function courseDelete($scheduleId)
+    {
+        if (empty($scheduleId)) {
+            throw new Exception('无排课id');
+        }
+        //删除scheduleId对应的调度表 调度room表 klass表 学生排课表 
+        $Schedule = Schedule::get($scheduleId);
+
+        if (is_null($Schedule)) {
+            throw new Exception('无排课信息');
+        }
+
+        //删除dispatch表 diapatch_room表
+        $Dispatches = $Schedule->getDispatches();
+        $roomIds = Room::column('id');
+        foreach ($Dispatches as $key => $Dispatch) {
+            $Dispatch->rooms()->detach($roomIds);
+            $status = $Dispatch->delete();
+            if (!$status) {
+                throw new Exception('调度表删除失败');
+            }
+        }
+
+        //删除schedule_klass表
+        $klassIds = Klass::column('id');
+        $Schedule->Klasses()->detach($klassIds);
+        //删除student_schedule表
+        $studentIds = Student::column('id');
+        $status = $Schedule->Students()->detach($studentIds);
+        //删除排课表
+        $status = $Schedule->delete();
+        return $status;
+    }
+
+    static public function courseKlassDelete($scheduleId, $klassId)
+    {
+        if (empty($scheduleId)) {
+            throw new Exception('无排课id');
+        } elseif (empty($klassId)) {
+            throw new Exception('无班级id');
+        }
+        //detach方法返回值为null
+        Schedule::get($scheduleId)->Klasses()->detach($klassId);
+        return true;
+    }
+
     static public function courseKlassSave($scheduleId, $klassIds)
     {
         return Schedule::get($scheduleId)->Klasses()->saveAll($klassIds);
+    }
+
+    static public function courseProgramDelete($programId)
+    {
+        $status = Program::where('id', 'eq', (int)$programId)->delete();
+        return $status;
     }
 
     static public function courseProgramSave($name, $lesson, $courseId)
@@ -149,8 +201,8 @@ class Teacher extends Model {
         $dispatchTime['day'] = $days % 7 + 1;
         $dispatchTime['lesson'] = self::getLessonBySeconds($seconds);
         if ($dispatchTime['lesson'] === 6) {
-            $dispatchTime['week'] = (int)(($dispatchTime['day'] + 1) / 7);
-            $dispatchTime['day'] = ($dispatchTime['day'] + 1) % 7;
+            $dispatchTime['week'] += (int)(($dispatchTime['day'] ) / 7);
+            $dispatchTime['day'] = ($dispatchTime['day']) % 7  + 1;
             $dispatchTime['lesson'] = 1;
         }
         return $dispatchTime;
