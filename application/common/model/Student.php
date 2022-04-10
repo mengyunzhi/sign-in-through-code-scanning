@@ -1,6 +1,7 @@
 <?php
 namespace app\common\model;
 use app\common\model\Klass;
+use think\Db;   // 引用数据库操作类
 use think\Model;
 
 class Student extends Model {
@@ -94,6 +95,15 @@ class Student extends Model {
     public function getSex() 
     {
         return !is_null($this->getUser()) ? $this->getUser()->getSex() : null;
+    }
+
+    /**
+     *通过user_id字段获取student表中的教师对象的id
+     */
+    static public function getStudentIdByUserId($user_id) 
+    {
+        $student = Db::query("select * from yunzhi_student where user_id=" . $user_id);
+        return $student[0]['id'];
     }
 
     /**
