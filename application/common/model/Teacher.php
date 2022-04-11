@@ -107,7 +107,7 @@ class Teacher extends Model {
         //array 班级              n个
         $klass_ids = $postData['klass_id'];
         //teacher_id 教师id       1个
-        $Teacher = Teacher::where('user_id', 'eq', $_SESSION['user']['id'])->find();
+        $Teacher = Teacher::where('user_id', 'eq', $_SESSION[User::$SESSION_KEY_USER]['id'])->find();
         $teacherId = (int) $Teacher->getId();
         //已激活学期
         $term = Term::getCurrentTerm();
