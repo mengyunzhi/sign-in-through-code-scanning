@@ -12,7 +12,7 @@ class CourseScore extends Model {
         return isset($this->data['student_id']) ? (int)$this->data['student_id'] : null;
     }
 
-    public function getCourseId() {
+    public function getScheduleId() {
         return isset($this->data['Course_id']) ? (int)$this->data['Course_id'] : null;
     }
 
