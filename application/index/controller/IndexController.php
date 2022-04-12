@@ -23,7 +23,7 @@ class IndexController extends Controller
             return $this->error('请先进行登录', url('login/index'));
         }
         if (!User::checkAccessByRole(User::$ROLE_TEACHER)) {
-            return $this->error('您并不拥有操作当前模块的权限');
+            return $this->error('您并不拥有操作当前模块的权限', url('login/index'));
         }
         $dispatchTime = Teacher::getDispatchTimeFromTermBegin(time());
         $week = $dispatchTime['week'];
@@ -339,6 +339,8 @@ class IndexController extends Controller
 
     public function index()
     {
+        $Schedules = Schedule::where('teacher_id', 'eq', $_SESSION[User::$SESSION_KEY_USER]['id'])->paginate();
+        $this->assign('Schedules', $Schedules);
         $htmls = $this->fetch();
         return $htmls;
     }
@@ -428,10 +430,11 @@ class IndexController extends Controller
 
     public function student()
     {
-        // 取回打包后的数据
-        $htmls = $this->fetch();
+        $scheduleId = Request::instance()->param('schedule_id');
+        $Schedule = Schedule::get($scheduleId);
 
-        // 将数据返回给用户
+        $this->assign('Schedule', $Schedule);
+        $htmls = $this->fetch();
         return $htmls;
     }
 

@@ -37,15 +37,11 @@ class Student extends Model {
     }
 
     /**
-     * 获取学生所在班级的名称
+     * 获取学生所在班级
      */
-    public function getKlassName() 
+    public function getKlass() 
     {
-        $klass_id = $this->data['klass_id'];
-        $klass = new Klass;
-        $name = $klass::get($klass_id)->getName();
-        return $name;
-
+        return isset($this->data['klass']) ? $this->data['klass'] : $this->data['klass'] = Klass::get($this->getKlassId());
     }
     
     /**
