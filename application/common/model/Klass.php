@@ -18,12 +18,4 @@ class Klass extends Model {
         return isset($this->data['course_id']) ? (int)$this->data['course_id'] : null;
     }
 
-    /*
-    * 通过班级名称获取到班级id
-    */
-    public function getKlassIdByName($KlassName) {
-        $Klass = Db::table('yunzhi_klass')->where('name',$KlassName)->select();
-        return $Klass[0]['id'];
-    }
-
 }

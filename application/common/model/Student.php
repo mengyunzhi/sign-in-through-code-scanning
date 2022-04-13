@@ -94,24 +94,6 @@ class Student extends Model {
     }
 
     /**
-     *通过user_id字段获取student表中的对象的id
-     */
-    static public function getStudentIdByUserId($user_id) 
-    {
-        $student = Db::query("select * from yunzhi_student where user_id=" . $user_id);
-        return $student[0]['id'];
-    }
-
-    /**
-     *通过sno字段获取student表中对象的user_id
-     */
-    static public function getUserIdBySno($sno) 
-    {
-        $student = Db::table('yunzhi_student')->where('sno',$sno)->select();
-        return $student[0]['user_id'];
-    }
-
-    /**
      * 判断密码是否正确
      * 进行密码加密
      * */

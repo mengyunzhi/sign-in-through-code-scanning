@@ -23,9 +23,9 @@
     <div class="form-group row">
         <label for="klass_id" class="col-sm-2 col-form-label">班级</label>
         <div class="col-sm-4">
-            <select class="selectpicker form-control col-sm-12" name="klass[]" id="klass">
+            <select class="selectpicker form-control col-sm-12" name="klass_id" id="klass">
                 {volist name="klasses" id="_Klass" key="key"}
-                <option>{$_Klass->getName()}</option>
+                <option value="{$_Klass->getId()}">{$_Klass->getName()}</option>
                 {/volist}
             </select>
         </div>

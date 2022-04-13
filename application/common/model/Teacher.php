@@ -84,7 +84,7 @@ class Teacher extends Model {
 
     static public function courseTimeSave($postData)
     {
-        return self::dispatchSave($postData, );
+        return self::dispatchSave($postData);
     }
 
     static public function excludeKlasses($excludedKlasses)
@@ -328,16 +328,6 @@ class Teacher extends Model {
     {
         return !is_null($this->getUser()) ? $this->getUser()->getSex() : null;
     }
-
-    /**
-     *通过user_id字段获取teacher表中的教师对象的id
-     */
-    static public function getTeacherIdByUserId($user_id) 
-    {
-        $teacher = Db::query("select * from yunzhi_teacher where user_id=" . $user_id);
-        return $teacher[0]['id'];
-    }
-
 
 	/**
 	 * 判断密码是否正确
