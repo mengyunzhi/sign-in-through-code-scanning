@@ -62,16 +62,21 @@ class AdminKlassController extends IndexController
     } 
 
     public function save() {
-        $klass = Request::instance()->post();
+        $postData = Request::instance()->post();
+        if (!isset($postData['name'])) {
+            return $this->error('无名称信息');
+        } elseif (!$postData['entrance_date']) {
+            return $this->error('无入学日期信息');
+        } elseif (!$postData['length']) {
+            return $this->error('无学制信息');
+        }
+        $message = '';
+        $status = Klass::klassSave($postData['name'], $postData['entrance_date'], $postData['length'], $message);
 
-        $Klass = new Klass();
-        $Klass->name = $klass['name'];
-        if ($Klass->validate(true)->save() === false) 
-        {
-        $message = '操作失败:' . $Klass->getError();
-        return $this->error($message);
-        } 
-        return $this->success('操作成功', url('index'));
+        if (!$status) {
+            return $this->error('添加失败：'.$message);
+        }
+        return $this->success('添加成功', url('index'));
     }
 
     public function edit() {
@@ -95,30 +100,39 @@ class AdminKlassController extends IndexController
     }
 
     public function klassMembers() {
-        $name = Request::instance()->get('name');
-        $Student = new Student;
-        $students = $Student->where('name', 'like', '%'. $name .'%')->paginate(5);
-        $this->assign('students', $students);
+        $klassId = Request::instance()->param('klass_id');
+        $Students = Student::where('klass_id', 'eq', $klassId)->paginate(5);
+        $this->assign('Students', $Students);
         return $this->fetch();
     }
 
     public function studentAdd() {
+        $klasses = Klass::All();
+        $this->assign('klasses', $klasses);
         return $this->fetch();
     }
-    public function studentSave() {
-        $student = Request::instance()->param();
 
-        $Student = new Student();
-        $Student->name = $student['name'];
-        $Student->sex = $student['sex'];
-        $Student->sno = $student['sno'];
-        $Student->klass_id = $student['klass_id'];
-        if ($Student->validate(true)->save() === false) 
-        {
-            $message = '操作失败:' . $Student->getError();
-            return $this->error($message);
-        } 
-        return $this->success('操作成功', url('klassMembers?id='.$student['klass_id']));
+    public function studentSave() {
+        $postData = Request::instance()->post();
+        if (!isset($postData['name'])) {
+            return $this->error('无姓名信息');
+        } elseif (!isset($postData['sex'])) {
+            return $this->error('无性别信息');
+        } elseif (!isset($postData['klass_id'])) {
+            return $this->error('无班级id信息');
+        } elseif (!isset($postData['sno'])) {
+            return $this->error('无学号信息');
+        } elseif (!isset($postData['number'])) {
+            return $this->error('无电话信息');
+        } elseif (!isset($postData['password'])) {
+            return $this->error('无密码信息');
+        }
+        $message = '';
+        $status = Student::studentSave($postData, $message);
+        if (!$status) {
+            return $this->error('添加失败：'.$message);
+        }
+        return $this->success('添加成功', url('klassMembers?klass_id='.$postData['klass_id']));
     }
 
     public function studentDelete() {
