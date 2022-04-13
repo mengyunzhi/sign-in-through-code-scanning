@@ -1,6 +1,6 @@
 {extend name="index"/}
 {block name="title"}
-学生管理
+管理员端-学生管理
 {/block}
 {block name="search"}
 <hr>
@@ -38,7 +38,7 @@
         <td>{$key}</td>
         <td>{$_Student->getName()}</td>
         <td>{$_Student->getSex()}</td>
-        <td>{$_Student->getStudentByUserId()->getKlassName()}</td>
+        <td>{$_Student->getStudentByUserId()->getKlass()->getName()}</td>
         <td>{$_Student->getStudentByUserId()->getSno()}</td>
         <td>
             <a href="{:url('edit?id=' . $_Student->getId())}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;

@@ -21,11 +21,13 @@ class AdminStudentController extends IndexController
         $name = Request::instance()->get('name');
         $sno = Request::instance()->get('sno');
         $role = User::$ROLE_STUDENT;
+        $student = Student::where('sno', $sno)->find();
 
         if (((int)$sno) !== 0) {
-            $user_id =  Student::getUserIdBySno($sno);
-            if (is_null($user_id)) {
+            if (is_null($student['user_id'])) {
                 $message = '不存在学号为' . $sno . '的学生';
+            } else {
+                $message = null;
             }
         } else {
             $message = null;
@@ -39,8 +41,8 @@ class AdminStudentController extends IndexController
             $User->where('name', 'like', '%' . $name . '%');
         }
 
-        if (!empty($user_id)) {
-            $User->where('id', 'like', '%' . $user_id . '%');
+        if (!empty($student['user_id'])) {
+            $User->where('id', 'like', '%' . $student['user_id'] . '%');
         }
 
 
@@ -55,7 +57,7 @@ class AdminStudentController extends IndexController
         $users = $User->paginate($pageSize, false, [
             'query'=>[
                 'name' => $name,
-                'id' => $user_id,
+                'id' => $student['user_id'],
                 'role' => $role,
                     ],
             ]);
@@ -94,8 +96,6 @@ class AdminStudentController extends IndexController
     {
         // 接收数据
         $postData = Request::instance()->post();
-        // 获取班级id
-        $KlassID = Klass::getKlassIdByName($postData['klass'][0]);
         
         // 实例化User对象
         $User = new User();
@@ -117,7 +117,7 @@ class AdminStudentController extends IndexController
 
         // 将user_id , klass_id , sno 存入student表中
         $Student->user_id = $user_id;
-        $Student->klass_id = $KlassID;
+        $Student->klass_id = $postData['klass_id'];
         $Student->sno = $postData['sno'];
 
         if ($Student->validate(true)->save() === false) 
@@ -152,26 +152,24 @@ class AdminStudentController extends IndexController
                 throw new \Exception('未获取到ID信息', 1);
             }
 
-            // 获取要要删除对象的student_id
-            $student_id = Student::getStudentIdByUserId($user_id);
             // 获取要删除的Teacher对象
-            $Student = Student::get($student_id);
+            $Student = Student::where('user_id', $user_id)->find();
             // 获取要删除的User对象
             $User = User::get($user_id);
             
-            // 要删除的对象在Teacher表中存在
+            // 要删除的对象在studnet表中存在
             if (is_null($Student)) {
-                throw new \Exception('不存在id为' . $user_id . '的教师，删除失败', 1);
+                throw new \Exception('不存在id为' . $user_id . '的学生，删除失败', 1);
             }
 
-            // 删除Student表中的对象
+            // 删除student表中的对象
             if (!$Student->delete()) {
                 return $this->error('删除失败:' . $Student->getError());
             }
 
             // 要删除的对象在User表中存在
             if (is_null($User)) {
-                throw new \Exception('不存在id为' . $user_id . '的教师，删除失败', 1);
+                throw new \Exception('不存在id为' . $user_id . '的学生，删除失败', 1);
             }
 
             // 删除User表中的对象

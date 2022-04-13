@@ -138,10 +138,8 @@ class AdminTeacherController extends IndexController
                 throw new \Exception('未获取到ID信息', 1);
             }
 
-            // 获取要要删除对象的teacher_id
-            $teacher_id = Teacher::getTeacherIdByUserId($user_id);
             // 获取要删除的Teacher对象
-            $Teacher = Teacher::get($teacher_id);
+            $Teacher = Teacher::where('user_id', $user_id)->find();
             // 获取要删除的User对象
             $User = User::get($user_id);
             
