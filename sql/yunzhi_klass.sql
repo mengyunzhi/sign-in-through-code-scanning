@@ -11,7 +11,7 @@
  Target Server Version : 100422
  File Encoding         : 65001
 
- Date: 06/04/2022 13:53:13
+ Date: 13/04/2022 19:10:08
 */
 
 SET NAMES utf8mb4;
@@ -24,17 +24,11 @@ DROP TABLE IF EXISTS `yunzhi_klass`;
 CREATE TABLE `yunzhi_klass`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `entrance_date` int NOT NULL DEFAULT 0,
+  `length` int NOT NULL DEFAULT 0 COMMENT '学制',
   `create_time` int NOT NULL DEFAULT 0,
   `update_time` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of yunzhi_klass
--- ----------------------------
-INSERT INTO `yunzhi_klass` VALUES (1, '1班', 0, 0);
-INSERT INTO `yunzhi_klass` VALUES (2, '2班', 0, 0);
-INSERT INTO `yunzhi_klass` VALUES (3, '3班', 0, 0);
-INSERT INTO `yunzhi_klass` VALUES (4, '4班', 0, 0);
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

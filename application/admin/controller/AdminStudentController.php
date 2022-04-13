@@ -20,19 +20,25 @@ class AdminStudentController extends IndexController
         // 获取查询信息
         $name = Request::instance()->get('name');
         $sno = Request::instance()->get('sno');
-        $role = User::$ROLE_STUDENT;
-        $student = Student::where('sno', $sno)->find();
+        $klass = Request::instance()->get('klass');
 
-        if (((int)$sno) !== 0) {
-            if (is_null($student['user_id'])) {
-                $message = '不存在学号为' . $sno . '的学生';
+        //学号查询
+        $Student = new Student;
+        if (!empty($sno)) {
+            $Student = $Student->where('sno', 'like', '%'.$sno.'%');
+        }
+        
+        //根据班级名称查询
+        if (!empty($klass)) {
+            $klassIds = Klass::where('name', 'like', '%'.$klass.'%')->column('id');
+            if (!empty($klassIds)) {
+                $Student = $Student->where('klass_id', 'in', $klassIds);
             } else {
-                $message = null;
+                $Student = $Student->where('klass_id', 'eq', 0);
             }
-        } else {
-            $message = null;
         }
 
+        $studentUserIds = $Student->column('user_id');
         // 实例化User
         $User = new User; 
 
@@ -41,13 +47,13 @@ class AdminStudentController extends IndexController
             $User->where('name', 'like', '%' . $name . '%');
         }
 
-        if (!empty($student['user_id'])) {
-            $User->where('id', 'like', '%' . $student['user_id'] . '%');
-        }
+        //限定权限
+        $User->where('role', 'eq', User::$ROLE_STUDENT);
 
-
-        if (!empty($role)) {
-            $User->where('role', 'like', '%' . $role . '%');
+        if (!empty($studentUserIds)) {
+            $User->where('id', 'in', $studentUserIds);
+        } else {
+            $User->where('id', 'eq', 0);
         }
 
         // 每页显示5条数据
@@ -56,20 +62,15 @@ class AdminStudentController extends IndexController
         // 按条件查询数据并调用分页
         $users = $User->paginate($pageSize, false, [
             'query'=>[
+                'klass'=> $klass,
                 'name' => $name,
-                'id' => $student['user_id'],
-                'role' => $role,
+                'sno'  => $sno,
                     ],
             ]);
 
         // 向V层传数据
         $this->assign('students', $users);
         $this->assign('name', $name);
-
-        if (!is_null($message))
-        {
-            $sno = $message;
-        }
         $this->assign('sno', $sno);
 
         // 取回打包后的数据

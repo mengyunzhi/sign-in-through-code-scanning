@@ -25,11 +25,11 @@
     <tr>
         <td>{$key}</td>
         <td>{$_klass->name}</td>
-        <td>35</td>
-        <td>2021年9月1日</td>
-        <td>4年制</td>
+        <td>{$_klass->getCount()}</td>
+        <td>{$_klass->getEntranceDate()}</td>
+        <td>{$_klass->length}</td>
         <td>
-            <a href="{:url('klassMembers?id='.$_klass->id)}" class="btn btn-success">查看班级成员</a> &nbsp;&nbsp;
+            <a href="{:url('klassMembers?klass_id='.$_klass->id)}" class="btn btn-success">查看班级成员</a> &nbsp;&nbsp;
             <a href="{:url('edit')}" class="btn btn-primary">编辑</a>&nbsp;&nbsp;
             <a href="{:url('delete?id='.$_klass->id)}" class="btn btn-danger">删除</a>
         </td>

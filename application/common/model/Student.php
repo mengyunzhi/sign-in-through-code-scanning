@@ -128,6 +128,58 @@ class Student extends Model {
         return 0;
     }
 
+    static public function studentSave($data, &$message)
+    {
+        if (count($data) !== 6) {
+            throw new Exception('数据有误');
+        }
+
+        // 实例化User对象
+        $User = new User();
+        // 存入User
+        $User->setAttr('name', $data['name']);
+        $User->number = $data['number'];
+        $User->sex = $data['sex'];
+        $User->password = $data['password'];
+        $User->role = User::$ROLE_STUDENT;
+        $status = $User->validate(true)->save();
+        if (!$status) {
+            $message .= $User->getError();
+            return $status;
+        }
+
+        // 存Student
+        // 数据成功存入User表中后，获取该条数据在User表中的id
+        $userId = $User->getId();
+        // 实例化Student对象
+        $Student = new Student();
+        // 将user_id , klass_id , sno 存入student表中
+        $Student->user_id = $userId;
+        $Student->klass_id = $data['klass_id'];
+        $Student->sno = $data['sno'];
+        $Student->validate(true)->save();
+        if (!$status) {
+            $message .= $Student->getError();
+            return $status;
+        }
+
+        //存student_schedule
+        $studentId = $Student->getId();
+        $scheduleIds = ScheduleKlass::where('klass_id', 'eq', $data['klass_id'])->column('schedule_id');
+        foreach ($scheduleIds as $key => $scheduleId) {
+            $status = $Student->StudentSchedule()->save(['schedule_id'=>$scheduleId]);
+            if (!$status) {
+                $message .= $Student->StudentSchedule()->getError();
+                return $status;
+            }
+        }
+        return $status;
+    }
+
+    public function StudentSchedule()
+    {
+        return $this->hasMany('StudentSchedule');
+    }
     
 
 }
