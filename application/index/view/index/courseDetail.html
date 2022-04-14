@@ -63,7 +63,7 @@
                 <?php endif; ?>
                 <?php endforeach; ?>
 
-                <!-- <?php foreach ($Schedule->getDispatches() as $key => $_Room): ?>
+                <?php foreach ($Schedule->getDispatches() as $key => $_Room): ?>
                 <?php if($key === 0): ?>
                 <tr>
                     <td rowspan="{:count($Schedule->getDispatches())}">上课时间/地点</td>
@@ -76,7 +76,7 @@
                     <td><a href="{:url('')}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a></td>
                 </tr>
                 <?php endif; ?>
-                <?php endforeach; ?> -->
+                <?php endforeach; ?>
 
                 <tr>
                     <td>教师</td>

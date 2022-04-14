@@ -240,12 +240,13 @@ class IndexController extends Controller
 
     public function courseScheduleWeek()
     {
-        $teacherId = $_SESSION['user']['id'];
+        $userId = $_SESSION['user']['id'];
+        $teacher = Teacher::where('user_id', $userId)->find();
+        $teacherId = $teacher->getId();
         $scheduleIds = Schedule::where('teacher_id', 'eq', $teacherId)->column('id');
         $week = Request::instance()->param('week');
         $Dispatches = Dispatch::where('schedule_id', 'in', $scheduleIds)->where('week', 'eq', $week)->select();
         $this->assign('Dispatches', $Dispatches);
-        // var_dump($Dispatches);
         return $this->fetch();
     }
 
@@ -305,7 +306,6 @@ class IndexController extends Controller
     public function courseTimeSave()
     {
         $postData = Request::instance()->post();
-
         $status = Teacher::courseTimeSave($postData);
         if (!$status) {
             return $this->success('保存失败');
@@ -339,7 +339,8 @@ class IndexController extends Controller
 
     public function index()
     {
-        $Schedules = Schedule::where('teacher_id', 'eq', $_SESSION[User::$SESSION_KEY_USER]['id'])->paginate();
+        $teacher = Teacher::where('user_id', $_SESSION[User::$SESSION_KEY_USER]['id'])->find();
+        $Schedules = Schedule::where('teacher_id', 'eq', $teacher->getId())->paginate();
         $this->assign('Schedules', $Schedules);
         $htmls = $this->fetch();
         return $htmls;
