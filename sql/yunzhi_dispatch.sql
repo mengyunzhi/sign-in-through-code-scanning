@@ -25,8 +25,10 @@ CREATE TABLE `yunzhi_dispatch`  (
   `id` int NOT NULL AUTO_INCREMENT,
   `schedule_id` int NOT NULL DEFAULT 0,
   `week` int NOT NULL DEFAULT 0,
-  `day` int NOT NULL,
+  `day` int NOT NULL DEFAULT 0,
   `lesson` int NOT NULL DEFAULT 0,
+  `start_time` int NOT NULL DEFAULT 0,
+  `end_time` int NOT NULL DEFAULT 0,
   `create_time` int NOT NULL DEFAULT 0,
   `update_time` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
