@@ -10,7 +10,9 @@ use app\common\model\Room;
 use app\common\model\Term;
 use app\common\model\Schedule;
 use app\common\model\Program;
+use app\common\model\DispatchRoom;
 use app\common\model\Dispatch;
+use app\common\model\ScheduleKlass;
 use think\Controller;
 use think\Db;
 use think\Request;
@@ -77,7 +79,17 @@ class IndexController extends Controller
 
         $scheduleId = Request::instance()->param('schedule_id');
         $Schedule = Schedule::get($scheduleId);
+        $DispatchArr = $Schedule->getDispatches();
+        $roomArr = [];
+        for ($key = 0; $key < count($DispatchArr); $key++) {
+            $dispatchRoom = DispatchRoom::where('dispatch_id', $DispatchArr[$key]['id'])->find();
+            $roomId = $dispatchRoom->getRoomId();
+            $room = Room::get($roomId);
+            $roomArr[$key] = $room->getName();
+        }
         $this->assign('Schedule', $Schedule);
+        $this->assign('DispatchArr', $DispatchArr);
+        $this->assign('roomArr', $roomArr);
         $htmls = $this->fetch();
         return $htmls;
     }
@@ -124,12 +136,14 @@ class IndexController extends Controller
     public function courseKlassDelete()
     {
         $data = Request::instance()->param();
-        if (!isset($data['schedule_id'])) {
+        $scheduleKlass = new ScheduleKlass;
+        $scheduleKlassId = $scheduleKlass->where('klass_id', $data['klass_id'])->find()->getScheduleId();
+        if (!isset($scheduleKlassId)) {
             return $this->error('无排课id');
         } elseif (!isset($data['klass_id'])) {
             return $this->error('无班级id');
         }
-        $status = Teacher::courseKlassDelete($data['schedule_id'], $data['klass_id']);
+        $status = Teacher::courseKlassDelete($scheduleKlassId, $data['klass_id']);
         if (!$status) {
             return $this->error('删除失败');
         }

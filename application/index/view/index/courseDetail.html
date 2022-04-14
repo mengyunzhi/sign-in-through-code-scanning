@@ -38,7 +38,7 @@
                 {volist name="$Schedule->getCourse()->getProgram()" id="_Program" key="key"}
                 <tr>
                     <td><?php echo '项目'.$key; ?></td>
-                    <td>{:$_Program->name . '名称' . '（学时：' . $_Program->lesson . '）'}</td>
+                    <td>{:$_Program->getName() . '（学时：' . $_Program->lesson . '）'}</td>
                     <td>
                         <a href="{:url('courseProgramDelete?program_id='.$_Program->id)}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a>
                         <a href="{:url('courseProgramEdit?program_id='.$_Program->id.'&schedule_id='.$Schedule->id)}" class="btn btn-success"><i class="glyphicon"></i>&nbsp;编辑</a>
@@ -63,16 +63,16 @@
                 <?php endif; ?>
                 <?php endforeach; ?>
 
-                <?php foreach ($Schedule->getDispatches() as $key => $_Room): ?>
+                <?php foreach ($DispatchArr as $key => $_Room): ?>
                 <?php if($key === 0): ?>
                 <tr>
-                    <td rowspan="{:count($Schedule->getDispatches())}">上课时间/地点</td>
-                    <td>1-12周>>星期二>>3-4节,教室A301</td>
+                    <td rowspan="{:count($DispatchArr)}">上课时间/地点</td>
+                    <td>第{:$DispatchArr[$key]->getWeek()}周>>星期{:$DispatchArr[$key]->getDay()}>>第{:$DispatchArr[$key]->getLesson()}节,教室<?php echo $roomArr[$key] ?></td>
                     <td><a href="{:url('')}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a></td>
                 </tr>
                 <?php else: ?>
                 <tr>
-                    <td>1-12周>>星期三>>5-6节,教室A302</td>
+                    <td>第{:$DispatchArr[$key]->getWeek()}周>>星期{:$DispatchArr[$key]->getDay()}>>第{:$DispatchArr[$key]->getLesson()}节,教室<?php echo $roomArr[$key] ?></td>
                     <td><a href="{:url('')}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a></td>
                 </tr>
                 <?php endif; ?>
