@@ -36,7 +36,7 @@ class Schedule extends Model {
 
     public function getCourse()
     {
-        return isset($this->data['course']) ? $this->data['course'] : $this->data['course'] = Course::get($this->getTeacherId());
+        return isset($this->data['course']) ? $this->data['course'] : $this->data['course'] = Course::get($this->getCourseId());
     }
 
     public function getCourseId() 

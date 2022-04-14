@@ -93,7 +93,9 @@ class Teacher extends Model {
         foreach ($excludedKlasses as $key => $excludedKlass) {
             $excludedKlassIds[$key] = $excludedKlass->id;
         }
-
+        if (empty($excludedKlassIds)) {
+            $excludedKlassIds = 0;
+        }
         $Klasses = Klass::where('id', 'not in', $excludedKlassIds)->select();
         return $Klasses;
     }
