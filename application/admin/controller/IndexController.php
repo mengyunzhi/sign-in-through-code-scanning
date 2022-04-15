@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 use app\common\model\Teacher;
 use app\common\model\User;
+use app\common\model\Term;
 use think\Request;
 use think\Controller;
 
@@ -24,6 +25,8 @@ class IndexController extends Controller
 
     public function index()
     {
+        $Terms = Term::paginate(2);
+        $this->assign('Terms', $Terms);
         return $this->fetch('admin_term/index');
     }
 
