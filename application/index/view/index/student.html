@@ -36,7 +36,7 @@
         <th>性别</th>
         <th>操作</th>
     </tr>
-    {volist name="$Schedule->Students" id="_Student" key="key"}
+    {volist name="$Students" id="_Student" key="key"}
     <tr>
         <td>{:$key}</td>
         <td>{:$_Student->getSno()}</td>
@@ -52,4 +52,5 @@
 </table>
 {/block}
 {block name="page"}
+
 {/block}

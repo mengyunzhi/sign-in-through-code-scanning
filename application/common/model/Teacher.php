@@ -103,7 +103,7 @@ class Teacher extends Model {
     /**
      * 添加课程
      */
-    static public function courseSave($postData) {
+    static public function scheduleSave($postData) {
         //string 对应课程         1个
         $courseId = (int) $postData['course_id'];
         //array 班级              n个
@@ -197,11 +197,11 @@ class Teacher extends Model {
     {
         $term = Term::getCurrentTerm();
         if (!is_null($term)) {
-            $termBeginTimeStamp = $term->getStartTime();
+            $termBeginTimeStamp = strtotime($term->getStartTime());
         } else {
             $termBeginTimeStamp = null;
         }
-        
+
         $seconds = $timestamp - $termBeginTimeStamp;
         $days = (int)($seconds / 86400);
         $seconds = $seconds % 86400;

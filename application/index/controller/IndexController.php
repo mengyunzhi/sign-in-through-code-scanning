@@ -13,6 +13,7 @@ use app\common\model\Program;
 use app\common\model\DispatchRoom;
 use app\common\model\Dispatch;
 use app\common\model\ScheduleKlass;
+use app\common\model\StudentSchedule;
 use think\Controller;
 use think\Db;
 use think\Request;
@@ -37,41 +38,9 @@ class IndexController extends Controller
         return $this->success('操作成功', url('index'));
     }
 
-    public function courseAdd() 
+    public function courseAdd()
     {
-        //获取课程
-        $Courses = Course::all();
-        $this->assign('Courses', $Courses);
-        //获取班级
-        $Klasses = Klass::all();
-        $this->assign('Klasses', $Klasses);
-        //7行
-        $Rows = [];
-        for ($i=0; $i < 7; $i++) { 
-            $Rows[$i] = $i;
-        }
-        //11列
-        $Cols = [];
-        for ($i=0; $i < 11; $i++) { 
-            $Cols[$i] = $i;
-        }
-        //周几
-        $dayArray = ['一','二','三','四','五','六','日'];
-        //多少周 可以通过term的start和end计算
-        $Weeks = [];
-        for ($i=0; $i < 11; $i++) { 
-            $Weeks[$i] = $i;
-        }
-        //所有教室
-        $Rooms = Room::all();
-        //传参
-        $this->assign('Weeks', $Weeks);
-        $this->assign('Rooms', $Rooms);
-        $this->assign('dayArray', $dayArray);
-        $this->assign('Rows', $Rows);
-        $this->assign('Cols', $Cols);
-        $htmls = $this->fetch();
-        return $htmls;
+        return $this->fetch();
     }
 
     public function courseDetail() 
@@ -235,13 +204,25 @@ class IndexController extends Controller
     public function courseSave()
     {
         $postData = Request::instance()->post();
-        $status = Teacher::courseSave($postData);
-        if (!$status) {
-            return $this->error('操作失败');
+        if (!isset($postData['name'])) {
+            return $this->error('无课程名称');
+        } elseif (!isset($postData['lesson'])) {
+            return $this->error('无课时信息');
         }
-        return $this->success('操作成功', url('courseSort'));
+
+        $Course = new Course;
+        $Course->setAttr('name', $postData['name']);
+        $Course->lesson = $postData['lesson'];
+        $status = $Course->validate(true)->save();
+
+        if (!$status) {
+            return $this->error('添加失败：'.$Course->getError());
+        }
+        return $this->success('添加成功', url('courseSort'));
+
     }
 
+    
     public function courseScheduleTerm()
     {
         $currentTerm = Term::getCurrentTerm();
@@ -259,6 +240,9 @@ class IndexController extends Controller
         $teacherId = $teacher->getId();
         $scheduleIds = Schedule::where('teacher_id', 'eq', $teacherId)->column('id');
         $week = Request::instance()->param('week');
+        if (empty($scheduleIds)) {
+            $scheduleIds = [0];
+        }
         $Dispatches = Dispatch::where('schedule_id', 'in', $scheduleIds)->where('week', 'eq', $week)->select();
         $this->assign('Dispatches', $Dispatches);
         return $this->fetch();
@@ -355,6 +339,7 @@ class IndexController extends Controller
     {
         $teacher = Teacher::where('user_id', $_SESSION[User::$SESSION_KEY_USER]['id'])->find();
         $Schedules = Schedule::where('teacher_id', 'eq', $teacher->getId())->paginate();
+
         $this->assign('Schedules', $Schedules);
         $htmls = $this->fetch();
         return $htmls;
@@ -409,6 +394,60 @@ class IndexController extends Controller
         return $this->success('操作成功', url('fraction'));
     }
 
+    public function scheduleAdd() 
+    {
+        //获取课程
+        $Courses = Course::all();
+        $this->assign('Courses', $Courses);
+        //获取班级
+        $Klasses = Klass::all();
+        $this->assign('Klasses', $Klasses);
+        //7行
+        $Rows = [];
+        for ($i=0; $i < 7; $i++) { 
+            $Rows[$i] = $i;
+        }
+        //11列
+        $Cols = [];
+        for ($i=0; $i < 11; $i++) { 
+            $Cols[$i] = $i;
+        }
+        //周几
+        $dayArray = ['一','二','三','四','五','六','日'];
+        //多少周 可以通过term的start和end计算
+        $Weeks = [];
+        for ($i=0; $i < 11; $i++) { 
+            $Weeks[$i] = $i;
+        }
+        //所有教室
+        $Rooms = Room::all();
+        //传参
+        $this->assign('Weeks', $Weeks);
+        $this->assign('Rooms', $Rooms);
+        $this->assign('dayArray', $dayArray);
+        $this->assign('Rows', $Rows);
+        $this->assign('Cols', $Cols);
+        $htmls = $this->fetch();
+        return $htmls;
+    }
+
+    public function scheduleSave()
+    {
+        $postData = Request::instance()->post();
+        if (empty($postData['klass_id'][0])) {
+            return $this->error('无班级信息');
+        } elseif (empty($postData['course_id'])) {
+            return $this->error('无课程信息');
+        }
+        
+        $status = Teacher::scheduleSave($postData);
+        if (!$status) {
+            return $this->error('操作失败');
+        }
+        return $this->success('操作成功', url('courseSort'));
+    }
+
+
     public function signInSeat() 
     {
         $htmls = $this->fetch();
@@ -447,7 +486,13 @@ class IndexController extends Controller
     {
         $scheduleId = Request::instance()->param('schedule_id');
         $Schedule = Schedule::get($scheduleId);
+        $studentIds = StudentSchedule::where('schedule_id', 'eq', $scheduleId)->column('student_id');
+        if (empty($studentIds)) {
+            $studentIds = [0];
+        }
+        $Students = Student::where('id', 'in', $studentIds)->select();
 
+        $this->assign('Students', $Students);
         $this->assign('Schedule', $Schedule);
         $htmls = $this->fetch();
         return $htmls;
@@ -455,6 +500,8 @@ class IndexController extends Controller
 
     public function studentAdd() 
     {
+        $klasses = Klass::all();
+        $this->assign('klasses', $klasses);
         $htmls = $this->fetch();
 
         return $htmls;
@@ -462,7 +509,26 @@ class IndexController extends Controller
 
     public function studentSave()
     {
-        return $this->success('操作成功', url('student'));
+        $postData = Request::instance()->post();
+        if (!isset($postData['name'])) {
+            return $this->error('无姓名信息');
+        } elseif (!isset($postData['sex'])) {
+            return $this->error('无性别信息');
+        } elseif (!isset($postData['klass_id'])) {
+            return $this->error('无班级id信息');
+        } elseif (!isset($postData['sno'])) {
+            return $this->error('无学号信息');
+        } elseif (!isset($postData['number'])) {
+            return $this->error('无电话信息');
+        } elseif (!isset($postData['password'])) {
+            return $this->error('无密码信息');
+        }
+        $message = '';
+        $status = Student::studentSave($postData, $message);
+        if (!$status) {
+            return $this->error('添加失败：'.$message);
+        }
+        return $this->success('添加成功', url('student'));
     }
 
     public function randomCode()

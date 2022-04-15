@@ -2,7 +2,7 @@
 namespace app\common\validate;
 use think\Validate;
 
-class Teacher extends Validate
+class Course extends Validate
 {
     protected $rule = [
     ];
