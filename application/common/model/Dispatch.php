@@ -9,7 +9,16 @@ class Dispatch extends Model {
     }
 
     public function getDay() {
-        return isset($this->data['day']) ? $this->data['day'] : null;
+        if (!isset($this->data['day'])) {
+            return null;
+        }
+        if ($this->data['day'] === 1) {return '一';}
+        if ($this->data['day'] === 2) {return '二';}
+        if ($this->data['day'] === 3) {return '三';}
+        if ($this->data['day'] === 4) {return '四';}
+        if ($this->data['day'] === 5) {return '五';}
+        if ($this->data['day'] === 6) {return '六';}
+        if ($this->data['day'] === 7) {return '日';}
     }
 
     public function getLesson() {

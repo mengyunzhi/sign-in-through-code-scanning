@@ -67,7 +67,7 @@ class Teacher extends Model {
     static public function courseProgramSave($name, $lesson, $courseId)
     {
         $Program = new Program;
-        $Program->name = $name;
+        $Program->setAttr('name', $name);
         $Program->lesson = $lesson;
         $Program->course_id = $courseId;
         $status = $Program->save();
@@ -195,7 +195,13 @@ class Teacher extends Model {
 
     static public function getDispatchTimeFromTermBegin($timestamp)
     {
-        $termBeginTimeStamp = Term::getCurrentTerm()->getStartTime();
+        $term = Term::getCurrentTerm();
+        if (!is_null($term)) {
+            $termBeginTimeStamp = $term->getStartTime();
+        } else {
+            $termBeginTimeStamp = null;
+        }
+        
         $seconds = $timestamp - $termBeginTimeStamp;
         $days = (int)($seconds / 86400);
         $seconds = $seconds % 86400;
