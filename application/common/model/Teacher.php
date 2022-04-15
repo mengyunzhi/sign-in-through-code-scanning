@@ -160,9 +160,23 @@ class Teacher extends Model {
                     $Dispatch[$i][$key] = new Dispatch;
                     $Dispatch[$i][$key]->schedule_id = $scheduleId;
                     $Dispatch[$i][$key]->week = $week;
-                    $Dispatch[$i][$key]->day = $i / 11 + 1;
-                    $Dispatch[$i][$key]->lesson = $i % 11;
-
+                    if ( (1 <= $i && $i <= 5) || 
+                        (11*1 + 1 <= $i && $i <= 11*1 + 5) ||
+                        (11*2 + 1 <= $i && $i <= 11*2 + 5) ||
+                        (11*3 + 1 <= $i && $i <= 11*3 + 5) ||
+                        (11*4 + 1 <= $i && $i <= 11*4 + 5) ||
+                        (11*5 + 1 <= $i && $i <= 11*5 + 5) ||
+                        (11*6 + 1 <= $i && $i <= 11*6 + 5)  )  {
+                        $Dispatch[$i][$key]->day = $i / 11 + 1;
+                    } else {
+                        $Dispatch[$i][$key]->day = $i / 11;
+                    }
+                    if ($i % 11 !== 0) {
+                        $Dispatch[$i][$key]->lesson = $i % 11;
+                    } else {
+                        $Dispatch[$i][$key]->lesson = 11;
+                    }
+                    
                     //调度表中存时间  
                     $status = $Dispatch[$i][$key]->save();
                     if (!$status) {
