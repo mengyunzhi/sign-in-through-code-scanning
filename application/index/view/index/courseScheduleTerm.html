@@ -38,19 +38,25 @@
                     <td style="border:solid 0.2px #999999;">
                             <?php
                                 $lastWeek = 0;
-                                foreach($Dispatches as $key => $Dispatch) {
-                                    if($Dispatch->day === $col && $Dispatch->lesson === $row) {
+                                foreach($Dispatches as $key => $Dispatch) 
+                                {
+                                    if($Dispatch->day === $col && $Dispatch->lesson === $row) 
+                                    {
                                         $thisWeek =  $Dispatch->getWeek();
-                                        if($thisWeek !== $lastWeek) {
+                                        if($thisWeek !== $lastWeek) 
+                                        {
                                             $lastWeek = $thisWeek;
                                             echo '<div style="font-size:20px;color:green;">第'.$Dispatch->getWeek().'周</div>';
                                         }
                                         echo '<div style="color:#EC5F66;">'.$Dispatch->getSchedule()->getCourse()->name.'</div>';
-                                        foreach($Dispatch->getSchedule()->Klasses as $key => $Klass) {
+                                        foreach($Dispatch->getSchedule()->Klasses as $key => $Klass) 
+                                        {
                                             echo $Klass->name.'&nbsp';
                                         }
-                                        foreach($Dispatch->Rooms as $key => $Room) {
-                                            if($key === 0) {
+                                        foreach($Dispatch->Rooms as $key => $Room) 
+                                        {
+                                            if($key === 0) 
+                                            {
                                                 echo '<br>';
                                             }
                                             echo $Room->name.'&nbsp';
