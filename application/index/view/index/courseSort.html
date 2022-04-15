@@ -6,7 +6,7 @@
 <hr />
 <form>
     <div class="form-group row">
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <select class="selectpicker form-control col-sm-12" name="course_id">
                 <option value="">课程</option>
                 {volist name="Courses" id="_Course" key="key"}
@@ -15,7 +15,7 @@
             </select>
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <select class="selectpicker form-control col-sm-12" name="term_id">
                 <option value="">学期</option>
                 {volist name="Terms" id="_Term" key="key"}
@@ -26,8 +26,9 @@
         <div class="col-md-2">
             <button class="btn">确定</button>
         </div>
-        <div class="col-md-4 text-right">
+        <div class="col-md-6 text-right">
             <a href="{:url('courseAdd')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加课程</a>&nbsp;&nbsp;
+            <a href="{:url('scheduleAdd')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加排课</a>&nbsp;&nbsp;
             <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;导出所有课程</a>
         </div>
     </div>

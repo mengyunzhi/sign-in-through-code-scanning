@@ -2,8 +2,9 @@
 namespace app\common\validate;
 use think\Validate;
 
-class Teacher extends Validate
+class Term extends Validate
 {
     protected $rule = [
+        'name'      => 'require|length:1,25',
     ];
 }

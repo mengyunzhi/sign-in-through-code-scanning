@@ -10,7 +10,7 @@
         <div class="col-sm-3">
             <select class="selectpicker form-control col-sm-12" name="week" id="course_id">
                 <?php foreach(range(1,16) as $value): ?>
-                <option value="{:$value}" <?php if(input('get.week/d') === $value){ echo 'selected'; } ?>>第{:$value}周</option>
+                <option value="{:$value}" <?php if(input('param.week/d') === $value){ echo 'selected'; } ?>>第{:$value}周</option>
                 <?php endforeach; ?>
             </select>
         </div>

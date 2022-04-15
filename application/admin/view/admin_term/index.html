@@ -16,35 +16,26 @@
         <th>序号</th>
         <th>名称</th>
         <th>开始日期</th>
+        <th>结束日期</th>
         <th>状态</th>
-        <th>时长</th>
         <th>操作</th>
     </tr>
+    {volist name="Terms" id="_Term" key="key"}
     <tr>
-        <td>1</td>
-        <td>2021年秋季学期</td>
-        <td>2021-09-01</td>
-        <td><span class="label">已激活</span></td>
-        <td>17周</td>
+        <td>{:$key}</td>
+        <td>{:$_Term->getName()}</td>
+        <td>{:$_Term->getStartTime()}</td>
+        <td>{:$_Term->getEndTime()}</td>
+        <td><span class="label">{:$_Term->getState()}</span></td>
         <td>
             <a href="{:url()}" class="btn btn-warning">激活</a> &nbsp;&nbsp;
-            <a href="{:url('edit?id=')}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
+            <a href="{:url('edit?term_id='.$_Term->getId())}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
             <a href="{:url()}" class="btn btn-danger">删除</a>
         </td>
     </tr>
-    <tr>
-        <td>2</td>
-        <td>2022年春季学期</td>
-        <td>2022-02-21</td>
-        <td>未激活</td>
-        <td>17周</td>
-        <td>
-            <a href="{:url()}" class="btn btn-warning">激活</a> &nbsp;&nbsp;
-            <a href="{:url('edit?id=')}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
-            <a href="{:url('')}" class="btn btn-danger">删除</a>
-        </td>
-    </tr>
+    {/volist}
 </table>
 {/block}
 {block name="page"}
+    {:$Terms->render()}
 {/block}
