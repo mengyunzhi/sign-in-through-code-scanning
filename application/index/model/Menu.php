@@ -19,11 +19,11 @@ class Menu {
 
     public function getClass() {
         $url = self::getUrl();
-        //当前有只有一个控制器
-        //如果实现active显示应该需要判断action是不是在某个数组
-
-        //目前希望把教师端分成多个控制器
-        //比如管理端的 AdminTerm  AdminKlass  ...
+        $arrayIndex = ['index', ''];
+        $arraySchedule = [];
+        $arrayCourse = [];
+        $arrayCourseSchedule = [];
+        $arrayPersonal = [];
     }
 
     static public function getUrl() {
