@@ -9,19 +9,20 @@
     <div class="form-group row">
         <label for="name" class="col-sm-1 col-form-label">课程名称</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="name" name="name" value="数学分析">
+            <input type="text" class="form-control" id="name" name="name" value="{$Course->getName}">
+            <input type="hidden" class="form-control" id="id" name="id" value="{$Course->getId}">
         </div>
     </div>
     <div class="form-group row">
-        <label for="teacher_id" class="col-sm-1 col-form-label">教师</label>
+        <label for="lesson" class="col-sm-1 col-form-label">学时</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="teacher_id" name="teacher_id" value="张三">
+            <input type="text" class="form-control" id="lesson" name="lesson" value="{$Course->getLesson}">
         </div>
     </div>
     <div class="form-group row">
         <div class="col-sm-10">
             <button type="submit" class="btn btn-primary">确定</button>
-            <a href="{:url('courseDetail')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>
+            <a href="{:$backUrl}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>
         </div>
     </div>
 </form>

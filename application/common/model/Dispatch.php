@@ -1,5 +1,7 @@
 <?php
 namespace app\common\model;
+use app\common\model\Dispatch;
+use app\common\model\DispatchRoom;
 use think\Model;
 
 class Dispatch extends Model {
@@ -39,6 +41,32 @@ class Dispatch extends Model {
 
     public function Rooms() {
         return $this->belongsToMany('Room', 'yunzhi_dispatch_room', 'room_id', 'dispatch_id');
+    }
+
+    static public function courseTimeAndRoomDelete($dispatchId) {
+        if (empty($dispatchId)) {
+            throw new Exception('无调度id');
+        }
+        $dispatch = Dispatch::get($dispatchId);
+
+        if (is_null($dispatch)) {
+            throw new Exception('无调度信息');
+        }
+
+        $status = $dispatch->delete();
+        if (!$status) {
+            throw new Exception('调度表删除失败');
+        }
+
+        $dispatchRooms = new DispatchRoom();
+
+        $dispatchRoom = $dispatchRooms->where('dispatch_id', $dispatchId)->find();
+
+        $status = $dispatchRoom->delete();
+        if (!$status) {
+            throw new Exception('调度表删除失败');
+        }
+        return $status;
     }
 
 }
