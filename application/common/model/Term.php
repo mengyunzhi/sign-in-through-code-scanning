@@ -4,6 +4,28 @@ use think\Model;
 
 class Term extends Model {
 
+    static public function activate($termId, &$msg = '') {
+        if (is_null($termId) || empty($termId)) {
+            throw new \Exception('未接收到学期id');
+        }
+
+        $Term = new Term;
+
+        $status = $Term->where('state=1')->update(['state'=>0]);
+        if (!$status) {
+            $msg .= $Term->getError();
+            throw new \Exception('激活失败:'.$Term->getError());
+        }
+
+        $status = $Term->where("id=$termId")->update(['state'=>1]);
+        if (!$status) {
+            $msg .= $Term->getError();
+            throw new \Exception('激活失败:'.$Term->getError());
+        }
+
+        return $status;
+    }
+
     public function getId() {
         return isset($this->data['id']) ? (int)$this->data['id'] : null;
     }
@@ -37,7 +59,7 @@ class Term extends Model {
         return self::where('state', 'eq', 1)->find();
     }
 
-    static public function termSave($name, $startTime, $endTime, $state, &$msg)
+    static public function termSave($name, $startTime, $endTime, $state, &$msg = '')
     {
         //检查数据
         if (is_null($name)) {
@@ -49,15 +71,15 @@ class Term extends Model {
         } elseif (is_null($state)) {
             throw new \Exception('state');
         }
+        
         //保存
         $Term = new Term;
-        $Term->setAttr('name', $name);
         $Term->start_time = strtotime($startTime);
         $Term->end_time = strtotime($endTime);
         $Term->state = $state;
-        $status = $Term->validate()->save();
-        //失败信息
-        $msg = $Term->getError();
+        $status = $Term->validate()->save() && self::activate($Term->getId, $msg);
+        
+        $msg .= $Term->getError();
 
         return $status;
     }

@@ -10,7 +10,7 @@ use app\common\model\Term;
  */
 class AdminTermController extends IndexController
 {
-    
+
     public function add()
     {
         return $this->fetch();
@@ -23,7 +23,13 @@ class AdminTermController extends IndexController
 
     public function index() 
     {
-        $Terms = Term::paginate(2);
+        $termId = Request()->param('term_id/d');
+
+        if (!empty($termId) && $termId) {
+            Term::activate($termId);
+        }
+
+        $Terms = Term::order(['state desc', 'id desc'])->paginate(5);
         $this->assign('Terms', $Terms);
         return $this->fetch();
     }

@@ -5,9 +5,9 @@ use think\Validate;
 class User extends Validate
 {
     protected $rule = [
-        'name'      => 'require|length:2,25',
+        'number'    => 'require|length:4,40|number',
+        'password'  => 'require|length:4,40|',
+        'name'      => 'require|length:2,40|unique',
         'sex'       => 'require|in:0,1',
-        'number'       => 'require|length:2,25',
-        'password'       => 'require|length:2,25',
     ];
 }

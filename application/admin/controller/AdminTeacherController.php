@@ -40,7 +40,7 @@ class AdminTeacherController extends IndexController
         $pageSize = 5;
 
         // 按条件查询数据并调用分页
-        $users = $User->paginate($pageSize, false, [
+        $users = $User->order('id desc')->paginate($pageSize, false, [
             'query'=>[
                 'name' => $name,
                 'number' => $number,
@@ -97,15 +97,22 @@ class AdminTeacherController extends IndexController
     {     
         // 接收数据
         $postData = Request::instance()->post();
+        if (!isset($postData['name']) || empty($postData['name'])) {
+            return $this->error('无姓名信息');
+        } elseif (!isset($postData['sex'])) {
+            return $this->error('无姓别信息');
+        } elseif (!isset($postData['number']) || empty($postData['number'])) {
+            return $this->error('无手机号信息');
+        }
         // 实例化对User象
         $User = new User();
         // 将数据存入User表中
         $User->name = $postData['name'];
         $User->number = $postData['number'];
         $User->sex = $postData['sex'];
-        $User->password = $postData['password'];
-        $User->role = $postData['role'];
-        if ($User->validate(true)->save() === false) 
+        $User->password = '111111';
+        $User->role = User::$ROLE_TEACHER;
+        if ($User->validate(true)->save() == false) 
         {
             $message = '操作失败:' . $User->getError();
             return $this->error($message);
