@@ -61,9 +61,32 @@ class ScheduleController extends IndexController {
 
     public function courseEdit() 
     {
+        $backUrl = $_SERVER["HTTP_REFERER"];
+        $data = Request::instance()->param();
+        $Course = Course::get($data['course_id']);
+        $this->assign('backUrl', $backUrl);
+        $this->assign('Course', $Course);
         $htmls = $this->fetch();
 
         return $htmls;
+    }
+
+    public function courseUpdate() 
+    {
+        // 接收V层数据
+        $course = Request::instance()->post();
+        // 获取该条数据在Course表中的id
+        $course_id = Request::instance()->post('id');
+        // 找出Course表中的对应数据
+        $Course = Course::get($course_id);
+        // 进行数据更改
+        $state = $Course->validate(true)->isUpdate(true)->save($course);
+        if ($state === false) 
+        {
+            $message = '操作失败:' . $Course->getError();
+            return $this->error($message);
+        }
+        return $this->success('操作成功', url('coursesort'));
     }
 
     public function courseKlassAdd() 
@@ -200,7 +223,7 @@ class ScheduleController extends IndexController {
             $Schedule->where('term_id', 'eq', $termId);
         }
 
-        $Schedules = $Schedule->where('teacher_id', 'eq', $Teacher->getId())->order('id desc')->paginate(2, false, [
+        $Schedules = $Schedule->where('teacher_id', 'eq', $Teacher->getId())->order('id desc')->paginate(5, false, [
             'query'=>[
                 'course_id' =>  $courseId,
                 'term_id' => $termId
@@ -224,6 +247,19 @@ class ScheduleController extends IndexController {
         $this->assign('Rooms', $Rooms);
         $this->assign('dayArray', $dayArray);
         return $this->fetch();
+    }
+
+    public function courseTimeAndRoomDelete() 
+    {
+        $dispatchId = Request::instance()->param('dispatch_id');
+        if (!$dispatchId) {
+            return $this->error('调度id');
+        }
+        $status = Dispatch::courseTimeAndRoomDelete($dispatchId);
+        if (!$status) {
+            return $this->error('删除失败');
+        }
+        return $this->success('删除成功');
     }
 
     public function courseTimeSave()
