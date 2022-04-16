@@ -11,8 +11,8 @@ class MenuService {
             //
             //action改成index
             new Menu('index', 'task', 'index', '课程任务', [User::$ROLE_TEACHER]),
-            new Menu('index', 'schedule', 'scheduleSort', '排课管理', [User::$ROLE_TEACHER]),
-            new Menu('index', 'course', 'courseSort', '课程管理', [User::$ROLE_TEACHER]),
+            new Menu('index', 'course', 'index', '课程管理', [User::$ROLE_TEACHER]),
+            new Menu('index', 'schedule', 'courseSort', '排课管理', [User::$ROLE_TEACHER]),
             new Menu('index', 'course_schedule', 'courseScheduleWeek', '课程表', [User::$ROLE_TEACHER]),
             new Menu('index', 'personal', 'index', '个人中心', [User::$ROLE_TEACHER]),
             new Menu('index', 'Login', 'webLogout', '注销', [User::$ROLE_ADMIN, User::$ROLE_TEACHER, User::$ROLE_STUDENT]),
