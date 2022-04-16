@@ -3,6 +3,7 @@ namespace app\admin\controller;
 use app\common\model\Teacher;
 use app\common\model\User;
 use app\common\model\Term;
+use app\index\service\MenuService;
 use think\Request;
 use think\Controller;
 
@@ -15,12 +16,18 @@ class IndexController extends Controller
     public function __construct()
     {
         parent::__construct();
-        if (is_null(User::getCurrentLoginUser())) {
+        $currentUser = User::getCurrentLoginUser();
+        //登录校验
+        if (is_null($currentUser)) {
             return $this->error('请先进行登录', url('login/index'));
         }
+        
+        //权限校验
         if (!User::checkAccessByRole(User::$ROLE_ADMIN)) {
             return $this->error('您并不拥有操作当前模块的权限');
         }
+
+        $this->assign('Menus', MenuService::getCurrentMenus());
     }
 
     public function index()

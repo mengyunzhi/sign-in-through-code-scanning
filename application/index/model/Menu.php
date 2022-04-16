@@ -18,19 +18,14 @@ class Menu {
     }
 
     public function getClass() {
-        $url = self::getUrl();
-        $arrayIndex = ['index', ''];
-        $arraySchedule = [];
-        $arrayCourse = [];
-        $arrayCourseSchedule = [];
-        $arrayPersonal = [];
-    }
-
-    static public function getUrl() {
-        $url = [];
-        $url['module'] = request()->module();
-        $url['controller'] = request()->controller();
-        $url['action'] = request()->action();
-        return $url;
+        $class = '';
+        if ($this->module===strtolower(request()->module()) && str_replace('_', '', $this->controller)===strtolower(request()->controller())) {
+            $class .= 'active';
+        }
+        //注销靠右
+        if ($this->name === '注销') {
+            $class .= ' navbar-right';
+        }
+        return $class;
     }
 }
