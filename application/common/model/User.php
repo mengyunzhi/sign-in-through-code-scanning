@@ -114,7 +114,7 @@ class User extends Model {
      */
     static public function getCurrentLoginUser() 
     {   
-        return isset($_SESSION[User::$SESSION_KEY_USER]) ? $User = $_SESSION[User::$SESSION_KEY_USER]: null;
+        return isset($_SESSION[User::$SESSION_KEY_USER]) ? unserialize($_SESSION[User::$SESSION_KEY_USER]) : null;
     }
 
     /**
@@ -172,8 +172,8 @@ class User extends Model {
             return false;
         }
 
-        //将查出数据以数组形式存入session
-        $_SESSION[self::$SESSION_KEY_USER] = $User->toArray();
+        //将查出数据存入session
+        $_SESSION[self::$SESSION_KEY_USER] = serialize($User);
         return true;
     }
 
