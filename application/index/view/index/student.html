@@ -6,7 +6,7 @@
 <hr>
 <div class="row">
     <div class="col text-right">
-        <a href="{:url('studentAdd')}" class="btn btn-primary">&nbsp;增加</a>
+        <a href="{:url('studentAdd?schedule_id='.input('param.schedule_id'))}" class="btn btn-primary">&nbsp;增加</a>
         <a href="{:url('')}" class="btn btn-primary">&nbsp;生成当前页面学生成绩单</a>
         <a href="/thinkphp/public/static/1813.xls" download="模板文件" class="btn btn-primary">&nbsp;下载Excel模板文件</a>
         <a href="" type="file" class="btn btn-primary">&nbsp;导入学生Excel文件</a>

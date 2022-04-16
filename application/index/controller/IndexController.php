@@ -14,22 +14,33 @@ use app\common\model\DispatchRoom;
 use app\common\model\Dispatch;
 use app\common\model\ScheduleKlass;
 use app\common\model\StudentSchedule;
+use app\index\service\MenuService;
 use think\Controller;
 use think\Db;
 use think\Request;
+
 class IndexController extends Controller
 {
     public function __construct()
     {
         parent::__construct();
-        if (is_null(User::getCurrentLoginUser())) {
+        $currentUser = User::getCurrentLoginUser();
+
+        //登录校验
+        if (is_null($currentUser)) {
             return $this->error('请先进行登录', url('login/index'));
         }
+
+        //权限校验
         if (!User::checkAccessByRole(User::$ROLE_TEACHER)) {
             return $this->error('您并不拥有操作当前模块的权限', url('login/index'));
         }
+
+        //获取学期开始到现在的调度时间  周/天/节
         $dispatchTime = Teacher::getDispatchTimeFromTermBegin(time());
         $week = $dispatchTime['week'];
+        //通过登录用户获取菜单
+        $this->assign('Menus', MenuService::getCurrentMenus());
         $this->assign('week', $week);
     }
 
@@ -235,7 +246,8 @@ class IndexController extends Controller
 
     public function courseScheduleWeek()
     {
-        $userId = $_SESSION['user']['id'];
+        $currentUser = User::getCurrentLoginUser();
+        $userId = $currentUser->getId();
         $teacher = Teacher::where('user_id', $userId)->find();
         $teacherId = $teacher->getId();
         $scheduleIds = Schedule::where('teacher_id', 'eq', $teacherId)->column('id');
@@ -251,8 +263,10 @@ class IndexController extends Controller
     public function courseSort()
     {
         $data = Request::instance()->param();
-        $teacherId = $_SESSION['user']['id'];
+        $currentUser = User::getCurrentLoginUser();
 
+        $userId = $currentUser->getId();
+        $Teacher = Teacher::where('user_id', 'eq', $userId)->find();
         $Schedule = new Schedule;
 
         $Courses = Course::all();
@@ -269,7 +283,7 @@ class IndexController extends Controller
             $Schedule->where('term_id', 'eq', $termId);
         }
 
-        $Schedules = $Schedule->order('id desc')->paginate(2, false, [
+        $Schedules = $Schedule->where('teacher_id', 'eq', $Teacher->getId())->order('id desc')->paginate(2, false, [
             'query'=>[
                 'course_id' =>  $courseId,
                 'term_id' => $termId
@@ -337,7 +351,8 @@ class IndexController extends Controller
 
     public function index()
     {
-        $teacher = Teacher::where('user_id', $_SESSION[User::$SESSION_KEY_USER]['id'])->find();
+        $currentUser = User::getCurrentLoginUser();
+        $teacher = Teacher::where('user_id', 'eq', $currentUser->getId())->find();
         $Schedules = Schedule::where('teacher_id', 'eq', $teacher->getId())->paginate();
 
         $this->assign('Schedules', $Schedules);

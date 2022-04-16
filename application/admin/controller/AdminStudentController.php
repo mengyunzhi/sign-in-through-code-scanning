@@ -97,7 +97,9 @@ class AdminStudentController extends IndexController
     {
         // 接收数据
         $postData = Request::instance()->post();
-        
+        if (empty($postData['sno'])) {
+            return $this->error('学号不能为空');
+        }
         // 实例化User对象
         $User = new User();
         // 将数据存入User表中

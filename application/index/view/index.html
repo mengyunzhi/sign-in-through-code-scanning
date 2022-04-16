@@ -27,16 +27,9 @@
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
-                                <li class=""><a href="{:url('index')}">课程管理</a></li>
-                            </ul>
-                            <ul class="nav navbar-nav">
-                                <li class=""><a href="{:url('courseSort')}">排课管理</a></li>
-                            </ul>
-                            <ul class="nav navbar-nav">
-                                <li class=""><a href="{:url('courseScheduleWeek?week='.$week)}">课程表</a></li>
-                            </ul>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="{:url('index/Login/webLogout')}">注销</a></li>
+                                {volist name="Menus" id="_Menu" key="key"}
+                                <li class="{:$_Menu->getClass()}"><a href='{:url($_Menu->module."/".$_Menu->controller."/".$_Menu->action)}'>{:$_Menu->name}</a></li>
+                                {/volist}
                             </ul>
                         </div>
                     </div>
