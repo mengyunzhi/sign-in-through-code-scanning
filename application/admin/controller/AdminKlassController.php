@@ -14,7 +14,7 @@ class AdminKlassController extends IndexController
     
     public function index() 
     {
-        $klasses = Klass::paginate();
+        $klasses = Klass::order('id desc')->paginate();
         $this->assign('klasses', $klasses);
         return $this->fetch();
     }

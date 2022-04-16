@@ -1,9 +1,12 @@
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:103:"C:\Users\DELL\Desktop\yunzhi\lampp\htdocs\thinkphp\public/../application/admin\view\admin_room\add.html";i:1650092293;s:113:"C:\Users\DELL\Desktop\yunzhi\lampp\htdocs\thinkphp\public/../application/admin\view\.\..\..\index\view\index.html";i:1650095877;}*/ ?>
 <!DOCTYPE html>
 <html lang="zh-cn">
 
 <head>
     <meta charset="UTF-8">
-    <title>{block name="title"}标题{/block}</title>
+    <title>
+添加教室
+</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.staticfile.org/foundation/5.5.3/css/foundation.min.css">
@@ -28,7 +31,7 @@
     <!-- 菜单导航 -->
     <div class="row">
         <div class="col-md-12">
-            {block name="nav"}
+            
             <!-- 菜单导航 -->
                 <nav class="navbar navbar-default" role="navigation">
                     <div class="container-fluid">
@@ -37,29 +40,48 @@
                         </div>
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                {volist name="Menus" id="_Menu" key="key"}
-                                <ul class="nav navbar-nav {:$_Menu->getClass()}">
-                                    <li class="{:$_Menu->getClass()}">
-                                        <a href='{:url($_Menu->module."/".$_Menu->controller."/".$_Menu->action)}'>{:$_Menu->name}</a>
+                                <?php if(is_array($Menus) || $Menus instanceof \think\Collection): $key = 0; $__LIST__ = $Menus;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$_Menu): $mod = ($key % 2 );++$key;?>
+                                <ul class="nav navbar-nav <?php echo $_Menu->getClass(); ?>">
+                                    <li class="<?php echo $_Menu->getClass(); ?>">
+                                        <a href='<?php echo url($_Menu->module."/".$_Menu->controller."/".$_Menu->action); ?>'><?php echo $_Menu->name; ?></a>
                                     </li>
                                 </ul>
-                                {/volist}
+                                <?php endforeach; endif; else: echo "" ;endif; ?>
                         </div>
                     </div>
                 </nav>
             <!-- /菜单导航 -->
-            {/block}
+            
         </div>
     </div>
     
     <div class="row">
         <div class="col-md-12">
-            {block name="search"}
-            {/block}
-            {block name="content"}
-            {/block}
-            {block name="page"}
-            {/block}
+            
+
+            
+<form class="" action="insert" method="post">
+    <div class="form-group row">
+        <label for="name" class="col-sm-2 col-form-label">教室名称</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="capacity" class="col-sm-2 col-form-label">座位数</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="capacity" name="capacity">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">保存</button>
+        </div>
+    </div>
+</form>
+
+            
+
         </div>
     </div>
 

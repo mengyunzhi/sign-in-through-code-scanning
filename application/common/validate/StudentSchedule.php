@@ -2,9 +2,9 @@
 namespace app\common\validate;
 use think\Validate;
 
-class Room extends Validate
+class StudentSchedule extends Validate
 {
     protected $rule = [
-        'capacity'  => 'require',
+        'name'      => 'require|length:1,25',
     ];
 }

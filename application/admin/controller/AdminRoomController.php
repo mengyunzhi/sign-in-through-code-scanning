@@ -14,7 +14,7 @@ class AdminRoomController extends IndexController
     {
         $pageSize = 5;
 
-        $rooms = Room::paginate($pageSize, false);
+        $rooms = Room::order('id desc')->paginate($pageSize, false);
         $this->assign('rooms', $rooms);
         return $this->fetch();
     }

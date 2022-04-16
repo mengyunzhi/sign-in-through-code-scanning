@@ -60,7 +60,7 @@ class AdminStudentController extends IndexController
         $pageSize = 5;
 
         // 按条件查询数据并调用分页
-        $users = $User->paginate($pageSize, false, [
+        $users = $User->order('id desc')->paginate($pageSize, false, [
             'query'=>[
                 'klass'=> $klass,
                 'name' => $name,
@@ -97,6 +97,15 @@ class AdminStudentController extends IndexController
     {
         // 接收数据
         $postData = Request::instance()->post();
+        if (!isset($postData['name']) || empty($postData['name'])) {
+            return $this->error('无姓名信息');
+        } elseif (!isset($postData['sex'])) {
+            return $this->error('无姓别信息');
+        } elseif (!isset($postData['klass_id']) || empty($postData['klass_id'])) {
+            return $this->error('无班级信息');
+        } elseif (!isset($postData['sno']) || empty($postData['sno'])) {
+            return $this->error('无学号信息');
+        }
         if (empty($postData['sno'])) {
             return $this->error('学号不能为空');
         }
@@ -104,10 +113,10 @@ class AdminStudentController extends IndexController
         $User = new User();
         // 将数据存入User表中
         $User->name = $postData['name'];
-        $User->number = $postData['number'];
         $User->sex = $postData['sex'];
-        $User->password = $postData['password'];
-        $User->role = $postData['role'];
+        $User->number = $postData['sno'];
+        $User->password = '222222';
+        $User->role = User::$ROLE_STUDENT;
         if ($User->validate(true)->save() === false) 
         {
             $message = '操作失败:' . $User->getError();
