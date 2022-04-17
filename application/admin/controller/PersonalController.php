@@ -19,5 +19,5 @@ class PersonalController extends IndexController
         $this->assign('currentUser', $currentUser);
         return $this->fetch();
     }
-
+    
 }
