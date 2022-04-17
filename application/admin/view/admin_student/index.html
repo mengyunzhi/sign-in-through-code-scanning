@@ -33,21 +33,22 @@
         <th>学号</th>
         <th>操作</th>
     </tr>
-    {volist name="students" id="_Student" key="key"}
+    {volist name="Users" id="_User" key="key"}
     <tr>
         <td>{$key}</td>
-        <td>{$_Student->getName()}</td>
-        <td>{$_Student->getSex()}</td>
-        <td>{$_Student->getStudentByUserId()->getKlass()->getName()}</td>
-        <td>{$_Student->getStudentByUserId()->getSno()}</td>
+        <td>{$_User->getName()}</td>
+        <td>{$_User->getSex()}</td>
+        <td>{$_User->getName()}</td>
+        <td>{$_User->getStudent()->getSno()}</td>
         <td>
-            <a href="{:url('edit?id=' . $_Student->getId())}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
-            <a href="{:url('delete?id=' . $_Student->getId())}" class="btn btn-danger">删除</a>
+            <a href="{:url('edit?id=' . $_User->getId())}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
+            <a href="{:url('passwordEdit?id=' . $_User->getId())}" class="btn btn-success">修改密码</a> &nbsp;&nbsp;
+            <a href="{:url('delete?id=' . $_User->getId())}" class="btn btn-danger">删除</a>
         </td>
     </tr>
     {/volist}
 </table>
 {/block}
 {block name="page"}
-{$students->render()}
+{$Users->render()}
 {/block}

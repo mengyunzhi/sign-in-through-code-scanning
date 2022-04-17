@@ -31,20 +31,21 @@
         <th>手机号</th>
         <th>操作</th>
     </tr>
-    {volist name="teachers" id="_Teacher" key="key"}
+    {volist name="Users" id="_User" key="key"}
     <tr>
         <td>{$key}</td>
-        <td>{$_Teacher->getName()}</td>
-        <td>{$_Teacher->getSex()}</td>
-        <td>{$_Teacher->getNumber()}</td>
+        <td>{$_User->getName()}</td>
+        <td>{$_User->getSex()}</td>
+        <td>{$_User->getNumber()}</td>
         <td>
-            <a href="{:url('edit?id='. $_Teacher->getId())}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
-            <a href="{:url('delete?id='. $_Teacher->getId())}" class="btn btn-danger">删除</a>
+            <a href="{:url('edit?user_id='. $_User->getId())}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
+            <a href="{:url('passwordEdit?user_id='. $_User->getId())}" class="btn btn-success">修改密码</a>&nbsp;&nbsp;
+            <a href="{:url('delete?user_id='. $_User->getId())}" class="btn btn-danger">删除</a>
         </td>
     </tr>
     {/volist}
 </table>
 {/block}
 {block name="page"}
-{$teachers->render()}
+{$Users->render()}
 {/block}

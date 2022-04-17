@@ -15,6 +15,77 @@ use think\Db;   // 引用数据库操作类
 class AdminStudentController extends IndexController
 {
     
+    
+
+    public function add()
+    {
+        $Klass = new Klass;
+        $klasses = $Klass->All();
+        $this->assign('klasses', $klasses);
+        return $this->fetch();
+    }
+
+    public function delete() 
+    {
+        try {
+            // 获取get数据
+            $Request = Request::instance();
+            // 获取要删除对象在User表中的id
+            $user_id = Request::instance()->param('id/d');
+            
+            // 判断是否成功接收
+            if (is_null($user_id) || 0 === $user_id) {
+                throw new \Exception('未获取到ID信息', 1);
+            }
+
+            // 获取要删除的Teacher对象
+            $Student = Student::where('user_id', $user_id)->find();
+            // 获取要删除的User对象
+            $User = User::get($user_id);
+            
+            // 要删除的对象在studnet表中存在
+            if (is_null($Student)) {
+                throw new \Exception('不存在id为' . $user_id . '的学生，删除失败', 1);
+            }
+
+            // 删除student表中的对象
+            if (!$Student->delete()) {
+                return $this->error('删除失败:' . $Student->getError());
+            }
+
+            // 要删除的对象在User表中存在
+            if (is_null($User)) {
+                throw new \Exception('不存在id为' . $user_id . '的学生，删除失败', 1);
+            }
+
+            // 删除User表中的对象
+            if (!$User->delete()) {
+                return $this->error('删除失败:' . $User->getError());
+            }
+
+        // 获取到ThinkPHP的内置异常时，直接向上抛出，交给ThinkPHP处理
+        } catch (\think\Exception\HttpResponseException $e) {
+            throw $e;
+
+        // 获取到正常的异常时，输出异常
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        } 
+
+        // 进行跳转
+        return $this->success('删除成功', $Request->header('referer'));
+    }
+
+    public function edit()
+    {
+        return $this->fetch();
+    }
+
+    public function insert()
+    {
+        return $this->success('保存成功', url('index'));
+    }
+
     public function index()
     {
         // 获取查询信息
@@ -69,7 +140,7 @@ class AdminStudentController extends IndexController
             ]);
 
         // 向V层传数据
-        $this->assign('students', $users);
+        $this->assign('Users', $users);
         $this->assign('name', $name);
         $this->assign('sno', $sno);
 
@@ -80,17 +151,27 @@ class AdminStudentController extends IndexController
         return $htmls;
     }
 
-    public function add()
-    {
-        $Klass = new Klass;
-        $klasses = $Klass->All();
-        $this->assign('klasses', $klasses);
-        return $this->fetch();
+    public function passwordEdit() {
+        $userId = Request()->param('user_id/d');
+        $User = User::get($userId);
+        $this->assign('User', $User);
+        return $this->fetch('admin_teacher/passwordEdit');
     }
 
-    public function update()
-    {
-        return $this->success('操作成功', url('index'));
+     public function passwordChange() {
+        $postData = Request()->param();
+        if (!isset($postData['user_id']) || empty($postData['user_id'])) {
+            return $this->error('未接收到用户信息');
+        } elseif (!isset($postData['password']) || empty($postData['password'])) {
+            return $this->error('未接收到密码信息');
+        }
+        $msg = '';
+        $status = User::passwordChange($postData['user_id'], $postData['password'], $msg);
+
+        if (!$status) {
+            return $this->error('保存失败：'.$msg);
+        }
+        return $this->success('保存成功', url('index'));
     }
 
     public function save() 
@@ -141,65 +222,9 @@ class AdminStudentController extends IndexController
         return $this->success('操作成功', url('index'));
     }
 
-    public function edit()
+    public function update()
     {
-        return $this->fetch();
-    }
-
-    public function insert()
-    {
-        return $this->success('保存成功', url('index'));
-    }
-
-    public function delete() 
-    {
-        try {
-            // 获取get数据
-            $Request = Request::instance();
-            // 获取要删除对象在User表中的id
-            $user_id = Request::instance()->param('id/d');
-            
-            // 判断是否成功接收
-            if (is_null($user_id) || 0 === $user_id) {
-                throw new \Exception('未获取到ID信息', 1);
-            }
-
-            // 获取要删除的Teacher对象
-            $Student = Student::where('user_id', $user_id)->find();
-            // 获取要删除的User对象
-            $User = User::get($user_id);
-            
-            // 要删除的对象在studnet表中存在
-            if (is_null($Student)) {
-                throw new \Exception('不存在id为' . $user_id . '的学生，删除失败', 1);
-            }
-
-            // 删除student表中的对象
-            if (!$Student->delete()) {
-                return $this->error('删除失败:' . $Student->getError());
-            }
-
-            // 要删除的对象在User表中存在
-            if (is_null($User)) {
-                throw new \Exception('不存在id为' . $user_id . '的学生，删除失败', 1);
-            }
-
-            // 删除User表中的对象
-            if (!$User->delete()) {
-                return $this->error('删除失败:' . $User->getError());
-            }
-
-        // 获取到ThinkPHP的内置异常时，直接向上抛出，交给ThinkPHP处理
-        } catch (\think\Exception\HttpResponseException $e) {
-            throw $e;
-
-        // 获取到正常的异常时，输出异常
-        } catch (\Exception $e) {
-            return $e->getMessage();
-        } 
-
-        // 进行跳转
-        return $this->success('删除成功', $Request->header('referer'));
+        return $this->success('操作成功', url('index'));
     }
 
 }

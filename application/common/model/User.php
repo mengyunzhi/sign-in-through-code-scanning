@@ -65,14 +65,11 @@ class User extends Model {
     }
 
     /**
-     *通过user_id获取到学生对象
+     *获取学生对象
      */
-    public function getStudentByUserId() 
+    public function getStudent() 
     {
-        $id = $this->getId();
-        $student_id = Db::query("select * from yunzhi_student where user_id=" . $id);
-        $student = Student::get($student_id[0]['id']);
-        return $student;
+        return isset($this->data['student']) ? $this->data['student'] : $this->data['student'] = Student::where('user_id', 'eq', $this->getId())->find(); 
     }
 
     public function getSexAttr($value) 
@@ -180,6 +177,33 @@ class User extends Model {
     static public function logout()
     {
         session_unset();
+    }
+
+    /**
+     * 管理端的  教师管理和学生管理 的修改密码
+     * @author chenshihang 858190647@qq.com
+     * @param  $userId   [User表id]
+     * @param  $password [密码]
+     * @param  &$msg     [返回报错信息]
+     * @return [bool]   成功 true； 失败 false
+     */
+    static public function passwordChange($userId, $password, &$msg) {
+        if (is_null($userId) || empty($userId)) {
+            throw new Exception('无user_id');
+        } elseif (is_null($password) || empty($password)) {
+            throw new Exception('无password');
+        }
+        $User = self::get($userId);
+        if (is_null($User)) {
+            throw new Exception('该user_id无对应用户');
+        }
+        $User->password = $password;
+        $status = $User->validate(['password' => 'min:5|max:20'])->save();
+        if (!$status) {
+            $msg .= $User->getError();
+        }
+
+        return $status;
     }
 
     /**

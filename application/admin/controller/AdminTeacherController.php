@@ -49,7 +49,7 @@ class AdminTeacherController extends IndexController
             ]);
 
         // 向V层传数据
-        $this->assign('teachers', $users);
+        $this->assign('Users', $users);
         $this->assign('name', $name);
         $this->assign('number', $number);
 
@@ -65,73 +65,7 @@ class AdminTeacherController extends IndexController
         return $this->fetch();
     }
 
-    public function edit() 
-    {
-        $backUrl = $_SERVER["HTTP_REFERER"];
-        $id = Request::instance()->param('id/d');
-        $User = User::get($id);
-        $this->assign('Teacher', $User);
-        $this->assign('backUrl', $backUrl);
-        return $this->fetch();
-    }
-
-    public function update() 
-    {
-        // 接收V层数据
-        $teacher = Request::instance()->post();
-        // 获取该条数据在User表中的id
-        $user_id = Request::instance()->post('id/d');
-        // 找出user表中的对应数据
-        $User = User::get($user_id);
-        // 进行数据更改
-        $state = $User->validate(true)->isUpdate(true)->save($teacher);
-        if ($state === false) 
-        {
-            $message = '操作失败:' . $User->getError();
-            return $this->error($message);
-        }
-        return $this->success('操作成功', url('index'));
-    }
-
-    public function save() 
-    {     
-        // 接收数据
-        $postData = Request::instance()->post();
-        if (!isset($postData['name']) || empty($postData['name'])) {
-            return $this->error('无姓名信息');
-        } elseif (!isset($postData['sex'])) {
-            return $this->error('无姓别信息');
-        } elseif (!isset($postData['number']) || empty($postData['number'])) {
-            return $this->error('无手机号信息');
-        }
-        // 实例化对User象
-        $User = new User();
-        // 将数据存入User表中
-        $User->name = $postData['name'];
-        $User->number = $postData['number'];
-        $User->sex = $postData['sex'];
-        $User->password = '111111';
-        $User->role = User::$ROLE_TEACHER;
-        if ($User->validate(true)->save() == false) 
-        {
-            $message = '操作失败:' . $User->getError();
-            return $this->error($message);
-        }
-        // 数据成功存入User表中后，获取该条数据在User表中的id
-        $user_id = $User->getId();
-        // 实例化Teacher对象
-        $Teacher = new Teacher();
-        // 将该条数据在User表中的id值存入Teacher表中的user_id字段中
-        $Teacher->user_id = $user_id;
-        if ($Teacher->validate(true)->save() === false) 
-        {
-            $message = '操作失败:' . $Teacher->getError();
-            return $this->error($message);
-        }
-
-        return $this->success('操作成功', url('index'));
-    }
-
+    
     public function delete() 
     {
         try {
@@ -182,6 +116,97 @@ class AdminTeacherController extends IndexController
         // 进行跳转
         return $this->success('删除成功', $Request->header('referer'));
     }
+
+    public function edit() 
+    {
+        $backUrl = $_SERVER["HTTP_REFERER"];
+        $id = Request::instance()->param('id/d');
+        $User = User::get($id);
+        $this->assign('Teacher', $User);
+        $this->assign('backUrl', $backUrl);
+        return $this->fetch();
+    }
+
+    public function passwordChange() {
+        $postData = Request()->param();
+        if (!isset($postData['user_id']) || empty($postData['user_id'])) {
+            return $this->error('未接收到用户信息');
+        } elseif (!isset($postData['password']) || empty($postData['password'])) {
+            return $this->error('未接收到密码信息');
+        }
+        
+        $msg = '';
+        $status = User::passwordChange($postData['user_id'], $postData['password'], $msg);
+
+        if (!$status) {
+            return $this->error('保存失败：'.$msg);
+        }
+        return $this->success('保存成功', url('index'));
+    }
+
+    public function passwordEdit() {
+        $userId = Request()->param('user_id/d');
+        $User = User::get($userId);
+        $this->assign('User', $User);
+        return $this->fetch();
+    }
     
+    public function save() 
+    {     
+        // 接收数据
+        $postData = Request::instance()->post();
+        if (!isset($postData['name']) || empty($postData['name'])) {
+            return $this->error('无姓名信息');
+        } elseif (!isset($postData['sex'])) {
+            return $this->error('无姓别信息');
+        } elseif (!isset($postData['number']) || empty($postData['number'])) {
+            return $this->error('无手机号信息');
+        }
+        // 实例化对User象
+        $User = new User();
+        // 将数据存入User表中
+        $User->name = $postData['name'];
+        $User->number = $postData['number'];
+        $User->sex = $postData['sex'];
+        $User->password = '111111';
+        $User->role = User::$ROLE_TEACHER;
+        if ($User->validate(true)->save() == false) 
+        {
+            $message = '操作失败:' . $User->getError();
+            return $this->error($message);
+        }
+        // 数据成功存入User表中后，获取该条数据在User表中的id
+        $user_id = $User->getId();
+        // 实例化Teacher对象
+        $Teacher = new Teacher();
+        // 将该条数据在User表中的id值存入Teacher表中的user_id字段中
+        $Teacher->user_id = $user_id;
+        if ($Teacher->validate(true)->save() === false) 
+        {
+            $message = '操作失败:' . $Teacher->getError();
+            return $this->error($message);
+        }
+
+        return $this->success('操作成功', url('index'));
+    }
+    
+    public function update() 
+    {
+        // 接收V层数据
+        $teacher = Request::instance()->post();
+        // 获取该条数据在User表中的id
+        $user_id = Request::instance()->post('id/d');
+        // 找出user表中的对应数据
+        $User = User::get($user_id);
+        // 进行数据更改
+        $state = $User->validate(true)->isUpdate(true)->save($teacher);
+        if ($state === false) 
+        {
+            $message = '操作失败:' . $User->getError();
+            return $this->error($message);
+        }
+        return $this->success('操作成功', url('index'));
+    }
+
 
 }
