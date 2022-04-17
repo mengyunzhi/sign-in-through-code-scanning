@@ -4,6 +4,33 @@ use think\Model;
 
 class Dispatch extends Model {
 
+      static public function courseTimeAndRoomDelete($dispatchId) {
+        if (empty($dispatchId)) {
+            throw new Exception('无调度id');
+        }
+        $dispatch = Dispatch::get($dispatchId);
+
+        if (is_null($dispatch)) {
+            throw new Exception('无调度信息');
+        }
+
+        $status = $dispatch->delete();
+        if (!$status) {
+            throw new Exception('调度表删除失败');
+        }
+
+        $dispatchRooms = new DispatchRoom();
+
+        $dispatchRoom = $dispatchRooms->where('dispatch_id', $dispatchId)->find();
+
+        $status = $dispatchRoom->delete();
+        if (!$status) {
+            throw new Exception('调度表删除失败');
+        }
+        return $status;
+    }
+
+
     public function getId() {
         return isset($this->data['id']) ? (int)$this->data['id'] : null;
     }

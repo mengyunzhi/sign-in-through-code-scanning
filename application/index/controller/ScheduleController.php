@@ -24,5 +24,5 @@ use think\Request;
  */
 class ScheduleController extends IndexController {
 
-   
+    
 }
