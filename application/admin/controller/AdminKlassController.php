@@ -3,6 +3,7 @@ namespace app\admin\controller;
 use app\common\model\Admin;
 use app\common\model\Klass;
 use app\common\model\Student;
+use app\common\model\User;
 use think\Controller;
 use think\Request;
 
@@ -179,13 +180,15 @@ class AdminKlassController extends IndexController
         $student = Request::instance()->post();
         $id = Request::instance()->post('id/d');
         $Student = Student::get($id);
-        $state = $Student->validate(true)->isUpdate(true)->save($student);
+        $User = User::get($Student->user_id);
+
+        $state = $Student->validate(true)->isUpdate(true)->allowField(true)->save($student) && $User->validate(true)->isUpdate(true)->allowField(true)->save($student);
         if ($state === false) 
         {
-            $message = '操作失败:' . $Student->getError();
+            $message = '操作失败:' . $Student->getError() . $User->getError() ;
             return $this->error($message);
         }
-            return $this->success('操作成功', url('klassMembers?id='.$student['klass_id']));
+            return $this->success('操作成功', url('klassMembers?klass_id='.$student['klass_id']));
     }
 
     public function excelAdd()

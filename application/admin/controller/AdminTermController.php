@@ -56,5 +56,11 @@ class AdminTermController extends IndexController
         }
         return $this->success('操作成功', url('index'));
     }
+
+    public function update() {
+        $postData = Request()->post();
+        var_dump($postData);
+        return $this->success('保存成功', url('index'));
+    }
     
 }

@@ -74,10 +74,17 @@ class Term extends Model {
         
         //保存
         $Term = new Term;
-        $Term->start_time = strtotime($startTime);
-        $Term->end_time = strtotime($endTime);
+        $Term->setAttr('name', $name);
+        $startTimeStamp = strtotime($startTime);
+        $endTimeStamp = strtotime($endTime);
+        if ($startTimeStamp > $endTimeStamp) {
+            $msg .= '开始时间晚于结束时间';
+            return false;
+        }        
+        $Term->start_time = $startTimeStamp;
+        $Term->end_time = $endTimeStamp;
         $Term->state = $state;
-        $status = $Term->validate()->save() && self::activate($Term->getId, $msg);
+        $status = $Term->validate(true)->save() && self::activate($Term->getId, $msg);
         
         $msg .= $Term->getError();
 

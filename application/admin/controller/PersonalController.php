@@ -13,11 +13,18 @@ use app\common\model\User;
 class PersonalController extends IndexController
 {
     
-    public function index() 
-    {
+    public function index() {
         $currentUser = User::getCurrentLoginUser();
         $this->assign('currentUser', $currentUser);
         return $this->fetch();
+    }
+
+    public function edit() {
+        return $this->fetch();
+    }
+
+    public function update() {
+        return $this->success('操作成功', url('index'));
     }
     
 }

@@ -198,7 +198,12 @@ class AdminStudentController extends IndexController
         $User->number = $postData['sno'];
         $User->password = '222222';
         $User->role = User::$ROLE_STUDENT;
-        if ($User->validate(true)->save() === false) 
+        $rule = [
+            'password'  => 'require|length:4,40',
+            'name'      => 'require|length:2,40',
+            'sex'       => 'require|in:0,1',
+        ];
+        if ($User->validate($rule)->save() === false) 
         {
             $message = '操作失败:' . $User->getError();
             return $this->error($message);
