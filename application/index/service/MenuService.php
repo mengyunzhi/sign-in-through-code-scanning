@@ -5,8 +5,8 @@ use app\common\model\User;
 
 class MenuService {
 
-    static public function Menus() {
-        return $Menus = [
+    static public function getMenus() {
+        return isset($this->data['Menus'] ? $this->data['Menus'] : $this->data['Menus'] = [
             //教师端 web
             //
             //action改成index
@@ -35,7 +35,7 @@ class MenuService {
      */
     static public function getAllowMenus($role) {
         $allowMenus = [];
-        foreach (self::Menus() as $Menu) {
+        foreach (self::getMenus() as $Menu) {
             if (in_array($role, $Menu->roles)) {
                 array_push($allowMenus, $Menu);
             }
