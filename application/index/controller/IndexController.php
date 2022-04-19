@@ -26,9 +26,10 @@ class IndexController extends Controller
         //获取学期开始到现在的调度时间  周/天/节
         $dispatchTime = Teacher::getDispatchTimeFromTermBegin(time());
         $week = $dispatchTime['week'];
-        
+        $MenuService = new MenuService;
+
         //通过登录用户获取菜单
-        $this->assign('Menus', MenuService::getCurrentMenus());
+        $this->assign('Menus', $MenuService->getCurrentMenus());
         $this->assign('week', $week);
     }
 
