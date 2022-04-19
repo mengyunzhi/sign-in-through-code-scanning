@@ -5,13 +5,13 @@ use app\common\model\User;
 
 class MenuService {
 
-    static public function Menus() {
-        return $Menus = [
+    public function getMenus() {
+        return isset($this->data['Menus']) ? $this->data['Menus'] : $this->data['Menus'] = [
             //教师端 web
             //
             //action改成index
             new Menu('index', 'task', 'index', '课程任务', [User::$ROLE_TEACHER]),
-            new Menu('index', 'schedule', 'scheduleSort', '排课管理', [User::$ROLE_TEACHER]),
+            new Menu('index', 'schedule', 'courseSort', '排课管理', [User::$ROLE_TEACHER]),
             new Menu('index', 'course', 'courseSort', '课程管理', [User::$ROLE_TEACHER]),
             new Menu('index', 'course_schedule', 'courseScheduleWeek', '课程表', [User::$ROLE_TEACHER]),
             new Menu('index', 'personal', 'index', '个人中心', [User::$ROLE_TEACHER]),
@@ -33,9 +33,9 @@ class MenuService {
      * @param  [int] $role [权限]
      * @return [array]    [导航栏菜单]
      */
-    static public function getAllowMenus($role) {
+    public function getAllowMenus($role) {
         $allowMenus = [];
-        foreach (self::Menus() as $Menu) {
+        foreach ($this->getMenus() as $Menu) {
             if (in_array($role, $Menu->roles)) {
                 array_push($allowMenus, $Menu);
             }
@@ -43,9 +43,9 @@ class MenuService {
         return $allowMenus;
     }
 
-    static public function getCurrentMenus() {
+    public function getCurrentMenus() {
         $currentUser = User::getCurrentLoginUser();
-        return self::getAllowMenus($currentUser->getRole());
+        return $this->getAllowMenus($currentUser->getRole());
     }
 
 }

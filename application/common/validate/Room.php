@@ -6,5 +6,6 @@ class Room extends Validate
 {
     protected $rule = [
         'capacity'  => 'require',
+        'name'      => 'unique:room|require'
     ];
 }

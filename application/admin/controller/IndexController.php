@@ -26,8 +26,8 @@ class IndexController extends Controller
         if (!User::checkAccessByRole(User::$ROLE_ADMIN)) {
             return $this->error('您并不拥有操作当前模块的权限');
         }
-
-        $this->assign('Menus', MenuService::getCurrentMenus());
+        $MenuService = new MenuService;
+        $this->assign('Menus', $MenuService->getCurrentMenus());
     }
 
     public function index()
