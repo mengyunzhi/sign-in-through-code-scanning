@@ -28,6 +28,7 @@ class CourseScheduleController extends IndexController {
     {
         $currentTerm = Term::getCurrentTerm();
         $scheduleIds = Schedule::where('term_id', 'eq', $currentTerm->getId())->column('id');
+        if(empty($scheduleIds)) $scheduleIds = [0];
         $Dispatches = Dispatch::where('schedule_id', 'in', $scheduleIds)->order('week')->select();
         $this->assign('currentTerm', $currentTerm);
         $this->assign('Dispatches', $Dispatches);
