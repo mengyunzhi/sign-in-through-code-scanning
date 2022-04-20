@@ -6,23 +6,24 @@
 {/block}
 {block name="content"}
 <form class="" action="{:url('update')}" method="post">
+    <input type="hidden" class="form-control" name="id" value="{:$User->id}">
     <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">姓名</label>
         <div class="col-sm-4">
-            <input type="text" class="form-control" id="name" name="name" value="小明">
+            <input type="text" class="form-control" id="name" name="name" value="{:$User->getName()}">
         </div>
     </div>
     <div class="form-group row">
         <label for="sex" class="col-sm-2 col-form-label">性别</label>
         <div class="col-sm-4">
             <input type="radio" name="sex" value="0" id="sex0" checked /><label for="sex0">男</label>
-            <input type="radio" name="sex" value="1" id="sex1" /><label for="sex1">女</label>
+            <input type="radio" name="sex" value="1" id="sex1" {eq name="$User->getSex()" value="女"} checked {/eq} /><label for="sex1">女</label>
         </div>
     </div>
     <div class="form-group row">
         <label for="klass_id" class="col-sm-2 col-form-label">班级</label>
         <div class="col-sm-4">
-            <select class="selectpicker form-control col-sm-12" name="klass[]" id="klass">
+            <select class="selectpicker form-control col-sm-12" name="klass_id[]" id="klass_id">
                 <option>1班</option>
                 <option>2班</option>
                 <option>3班</option>

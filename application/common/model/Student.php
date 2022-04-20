@@ -128,6 +128,27 @@ class Student extends Model {
         return 0;
     }
 
+    /**
+     * 存学生用户时被user表调用
+     * @author chenshihang 858190647@qq.com
+     * @param  string $msg     [报错信息]
+     * @return [bool]        成功 true ；失败 false
+     */
+    static public function saveStudent($userId, $klassId, $sno, &$msg='') {
+        $Student = new Student;
+        $Student->user_id = $userId;
+        $Student->klass_id = $klassId;
+        $Student->sno = $sno;
+        $status = $Student->validate(true)->save();
+        $msg .= $Student->getError();
+        //存学生排课
+        if (!empty($Student->getError())) {
+            return false;
+        }
+        $status = StudentSchedule::studentScheduleSave($Student->id, $klassId, $msg);
+        return $status;
+    }
+
     static public function studentSave($data, &$message)
     {
         if (count($data) !== 6) {

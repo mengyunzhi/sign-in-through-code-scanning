@@ -244,4 +244,38 @@ class User extends Model {
 
         return true;
     }
+
+    /**
+     * 插入用户
+     * @author chenshihang 858190647@qq.com
+     * @param  array    $data   保存的数据 可能没有密码或者角色
+     * @param  int      $role   角色
+     * @param  string   &$msg   报错信息
+     * @param  int      $userId 用户id， 区分新增和更新
+     * @return boolean     成功 true；失败 false
+     */
+    static public function userSave($data, $role, &$msg='', $userId=null) {
+        if (is_null($userId)) {
+            $User = new User();
+        } else {
+            $User = self::get($userId);
+        }
+        if (!isset($data['password'])) {
+            switch ($role) {
+                case User::$ROLE_ADMIN :
+                    $data['password'] = '000000';break;
+                case User::$ROLE_TEACHER :
+                    $data['password'] = '111111';break;
+                case User::$ROLE_STUDENT :
+                    $data['password'] = '222222';break;
+            }
+        }
+        $data['role'] = $role;
+        $status = $User->validate(true)->allowField(true)->save($data);
+        $msg .= $User->getError();
+        if ($role === User::$ROLE_STUDENT) {
+            $status = Student::saveStudent($User->id, $data['klass_id'], $data['sno'], $msg);
+        }
+        return $status;
+    }
 }
