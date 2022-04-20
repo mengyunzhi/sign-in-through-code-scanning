@@ -78,6 +78,9 @@ class AdminStudentController extends IndexController
 
     public function edit()
     {
+        $userId = Request()->param('id/d');
+        $User = User::get($userId);
+        $this->assign('User', $User);
         return $this->fetch();
     }
 
@@ -187,48 +190,18 @@ class AdminStudentController extends IndexController
         } elseif (!isset($postData['sno']) || empty($postData['sno'])) {
             return $this->error('无学号信息');
         }
-        if (empty($postData['sno'])) {
-            return $this->error('学号不能为空');
+        $msg = '';
+        $status = User::userSave($postData, User::$ROLE_STUDENT, $msg);
+        if (!$status) {
+            return $this->error('操作失败：'.$msg);
         }
-        // 实例化User对象
-        $User = new User();
-        // 将数据存入User表中
-        $User->name = $postData['name'];
-        $User->sex = $postData['sex'];
-        $User->number = $postData['sno'];
-        $User->password = '222222';
-        $User->role = User::$ROLE_STUDENT;
-        $rule = [
-            'password'  => 'require|length:4,40',
-            'name'      => 'require|length:2,40',
-            'sex'       => 'require|in:0,1',
-        ];
-        if ($User->validate($rule)->save() === false) 
-        {
-            $message = '操作失败:' . $User->getError();
-            return $this->error($message);
-        }
-        // 数据成功存入User表中后，获取该条数据在User表中的id
-        $user_id = $User->getId();
-        // 实例化Student对象
-        $Student = new Student();
-
-        // 将user_id , klass_id , sno 存入student表中
-        $Student->user_id = $user_id;
-        $Student->klass_id = $postData['klass_id'];
-        $Student->sno = $postData['sno'];
-
-        if ($Student->validate(true)->save() === false) 
-        {
-            $message = '操作失败:' . $Student->getError();
-            return $this->error($message);
-        }
-
         return $this->success('操作成功', url('index'));
     }
 
     public function update()
     {
+        $postData = Request()->post();
+
         return $this->success('操作成功', url('index'));
     }
 

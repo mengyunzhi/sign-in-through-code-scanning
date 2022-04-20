@@ -11,7 +11,11 @@ use think\Controller;
  */
 class AdminTeacherController extends IndexController
 {
-    
+
+    public function add() 
+    {
+        return $this->fetch();
+    }
 
     public function index()
     {
@@ -47,7 +51,6 @@ class AdminTeacherController extends IndexController
                 'role' => $role,
                     ],
             ]);
-
         // 向V层传数据
         $this->assign('Users', $users);
         $this->assign('name', $name);
@@ -59,12 +62,6 @@ class AdminTeacherController extends IndexController
         // 将数据返回给用户
         return $htmls;
     }
-
-    public function add() 
-    {
-        return $this->fetch();
-    }
-
     
     public function delete() 
     {
@@ -120,9 +117,9 @@ class AdminTeacherController extends IndexController
     public function edit() 
     {
         $backUrl = $_SERVER["HTTP_REFERER"];
-        $id = Request::instance()->param('id/d');
+        $id = Request::instance()->param('user_id/d');
         $User = User::get($id);
-        $this->assign('Teacher', $User);
+        $this->assign('User', $User);
         $this->assign('backUrl', $backUrl);
         return $this->fetch();
     }
@@ -195,18 +192,18 @@ class AdminTeacherController extends IndexController
         // 接收V层数据
         $teacher = Request::instance()->post();
         // 获取该条数据在User表中的id
-        $user_id = Request::instance()->post('id/d');
+        $user_id = Request::instance()->post('user_id/d');
         // 找出user表中的对应数据
         $User = User::get($user_id);
+        $teacher['password'] = $User->password;
         // 进行数据更改
-        $state = $User->validate(true)->isUpdate(true)->save($teacher);
-        if ($state === false) 
+        $state = $User->validate(true)->save($teacher);
+        if ($state === false)
         {
             $message = '操作失败:' . $User->getError();
             return $this->error($message);
         }
         return $this->success('操作成功', url('index'));
     }
-
 
 }

@@ -18,6 +18,9 @@ class AdminTermController extends IndexController
 
     public function edit()
     {
+        $termId = Request()->param('term_id');
+        $Term = Term::get($termId);
+        $this->assign('Term', $Term);
         return $this->fetch();
     }
 
@@ -59,7 +62,20 @@ class AdminTermController extends IndexController
 
     public function update() {
         $postData = Request()->post();
-        var_dump($postData);
+        if (!isset($postData['term_id']) || empty($postData['term_id'])) {
+            return $this->error('无学期id');
+        } elseif (!isset($postData['name']) || empty($postData['name'])) {
+            return $this->error('无学期名称');
+        } elseif (!isset($postData['start_time']) || empty($postData['start_time'])) {
+            return $this->error('无学期开始日期');
+        } elseif (!isset($postData['end_time']) || empty($postData['end_time'])) {
+            return $this->error('无学期结束日期');
+        } 
+        $msg = '';
+        $status = Term::termUpdate($postData['term_id'] ,$postData['name'], $postData['start_time'], $postData['end_time'], $msg);
+        if (!$status) {
+            return $this->error('操作失败：'. $msg);
+        }
         return $this->success('保存成功', url('index'));
     }
     
