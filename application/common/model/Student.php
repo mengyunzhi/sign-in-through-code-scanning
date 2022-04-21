@@ -129,14 +129,17 @@ class Student extends Model {
     }
 
     /**
-     * 存学生用户时被user表调用
+     * 存student表和 student_schedule表
      * @author chenshihang 858190647@qq.com
      * @param  string $msg     [报错信息]
      * @return [bool]        成功 true ；失败 false
      */
     static public function saveStudent($userId, $klassId, $sno, &$msg='') {
-        $Student = new Student;
-        $Student->user_id = $userId;
+        $Student = Student::where('user_id', 'eq', $userId)->find();
+        if (is_null($Student)) {
+            $Student = new Student;
+            $Student->user_id = $userId;
+        }
         $Student->klass_id = $klassId;
         $Student->sno = $sno;
         $status = $Student->validate(true)->save();
@@ -145,7 +148,7 @@ class Student extends Model {
         if (!empty($Student->getError())) {
             return false;
         }
-        $status = StudentSchedule::studentScheduleSave($Student->id, $klassId, $msg);
+        $status = StudentSchedule::saveStudentSchedule($Student->id, $klassId, $msg);
         return $status;
     }
 

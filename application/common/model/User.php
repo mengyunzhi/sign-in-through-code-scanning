@@ -122,6 +122,19 @@ class User extends Model {
         return is_null(self::getCurrentLoginUser()) ? null : (int)self::getCurrentLoginUser()['role'];
     }
 
+    static public function getDefaultPassword($role) {
+        $password = '';
+        switch ($role) {
+            case User::$ROLE_ADMIN :
+                $password = '000000';break;
+            case User::$ROLE_TEACHER :
+                $password = '111111';break;
+            case User::$ROLE_STUDENT :
+                $password = '222222';break;
+        }
+        return $password;
+    }
+
     /**
      * @param $username 用户名（学生是学号，其他用户是手机号; $password密码;
      * @param $role 权限判断;
@@ -246,36 +259,56 @@ class User extends Model {
     }
 
     /**
-     * 插入用户
+     * 存User表
      * @author chenshihang 858190647@qq.com
-     * @param  array    $data   保存的数据 可能没有密码或者角色
+     * @param  array $data   需要存入的信息
+     * @param  string   $msg   报错信息
+     * @param  int $userId 如果非空代表修改；空代表新增
+     * @return object         成功 object; 失败 null
+     */
+    static public function saveUser($data, &$msg, $userId=null) {
+        if (!is_null($userId)) {
+            $User = self::get($userId);
+        } else {
+            $User = new User;
+        }
+        $status = $User->validate(true)->allowField(true)->save($data);
+        $msg .= $User->getError();
+        if ($status) {
+            return $User;
+        }
+        return null;
+    }
+
+    /**
+     * 存用户
+     * @author chenshihang 858190647@qq.com
+     * @param  array    $data   保存的数据 
+     * 含学生  姓名/性别/学号/班级 
+     * 可能有  手机号/密码 
+     * 没有    角色/学生状态
      * @param  int      $role   角色
      * @param  string   &$msg   报错信息
      * @param  int      $userId 用户id， 区分新增和更新
      * @return boolean     成功 true；失败 false
      */
     static public function userSave($data, $role, &$msg='', $userId=null) {
-        if (is_null($userId)) {
-            $User = new User();
-        } else {
-            $User = self::get($userId);
-        }
+        //如果不是修改的时候传入密码则获取默认密码
         if (!isset($data['password'])) {
-            switch ($role) {
-                case User::$ROLE_ADMIN :
-                    $data['password'] = '000000';break;
-                case User::$ROLE_TEACHER :
-                    $data['password'] = '111111';break;
-                case User::$ROLE_STUDENT :
-                    $data['password'] = '222222';break;
-            }
+            $data['password'] = self::getDefaultPassword($role);
         }
+        //存User表 (先将角色值存入)
         $data['role'] = $role;
-        $status = $User->validate(true)->allowField(true)->save($data);
-        $msg .= $User->getError();
+        $User = self::saveUser($data, $msg, $userId);
+        if (is_null($User)) {
+            var_dump($msg);
+            throw new Exception('存User表失败');
+        }
+        //学生=>存student表； ......(之后可能存管理员、教师)
         if ($role === User::$ROLE_STUDENT) {
             $status = Student::saveStudent($User->id, $data['klass_id'], $data['sno'], $msg);
         }
         return $status;
     }
+
 }

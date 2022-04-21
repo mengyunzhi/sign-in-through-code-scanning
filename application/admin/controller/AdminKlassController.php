@@ -81,21 +81,27 @@ class AdminKlassController extends IndexController
     }
 
     public function edit() {
-        $id = Request::instance()->param('id/d');
+        $id = Request::instance()->param('klass_id/d');
         $Klass = Klass::get($id);
         $this->assign('Klass', $Klass);
         return $this->fetch();
     }
 
     public function update() {
-        $klass = Request::instance()->post();
+        $postData = Request::instance()->post();
+        if (!isset($postData['name']) || empty($postData['name'])) {
+            return $this->error('未接收到名称信息');
+        } elseif (!isset($postData['entrance_date']) || empty($postData['entrance_date'])) {
+            return $this->error('未接收到入学日期信息');
+        } elseif (!isset($postData['length']) || empty($postData['length'])) {
+            return $this->error('未接收到学制信息');
+        } 
         $id = Request::instance()->post('id/d');
         $Klass = Klass::get($id);
-        $state = $Klass->validate(true)->isUpdate(true)->save($klass);
-        if ($state === false) 
-        {
-        $message = '操作失败:' . $Klass->getError();
-        return $this->error($message);
+        $state = $Klass->validate(true)->save($postData);
+        if ($state === false) {
+            $message = '操作失败:' . $Klass->getError();
+            return $this->error($message);
         }
         return $this->success('操作成功', url('index'));
     }
@@ -108,30 +114,24 @@ class AdminKlassController extends IndexController
     }
 
     public function studentAdd() {
-        $klasses = Klass::All();
-        $this->assign('klasses', $klasses);
         return $this->fetch();
     }
 
     public function studentSave() {
         $postData = Request::instance()->post();
-        if (!isset($postData['name'])) {
+        if (!isset($postData['name']) || empty($postData['name'])) {
             return $this->error('无姓名信息');
         } elseif (!isset($postData['sex'])) {
             return $this->error('无性别信息');
-        } elseif (!isset($postData['klass_id'])) {
+        } elseif (!isset($postData['klass_id']) || empty($postData['klass_id'])) {
             return $this->error('无班级id信息');
-        } elseif (!isset($postData['sno'])) {
+        } elseif (!isset($postData['sno']) || empty($postData['sno'])) {
             return $this->error('无学号信息');
-        } elseif (!isset($postData['number'])) {
-            return $this->error('无电话信息');
-        } elseif (!isset($postData['password'])) {
-            return $this->error('无密码信息');
         }
-        $message = '';
-        $status = Student::studentSave($postData, $message);
+        $msg = '';
+        $status = User::userSave($postData, User::$ROLE_STUDENT, $msg);
         if (!$status) {
-            return $this->error('添加失败：'.$message);
+            return $this->error('添加失败：'.$msg);
         }
         return $this->success('添加成功', url('klassMembers?klass_id='.$postData['klass_id']));
     }
@@ -170,25 +170,24 @@ class AdminKlassController extends IndexController
     }
 
     public function studentEdit() {
-        $id = Request::instance()->param('id/d');
+        $id = Request::instance()->param('student_id/d');
         $Student = Student::get($id);
         $this->assign('Student', $Student);
         return $this->fetch();
     }
 
     public function studentUpdate() {
-        $student = Request::instance()->post();
-        $id = Request::instance()->post('id/d');
-        $Student = Student::get($id);
-        $User = User::get($Student->user_id);
-
-        $state = $Student->validate(true)->isUpdate(true)->allowField(true)->save($student) && $User->validate(true)->isUpdate(true)->allowField(true)->save($student);
-        if ($state === false) 
-        {
-            $message = '操作失败:' . $Student->getError() . $User->getError() ;
-            return $this->error($message);
+        //数据校验
+        //
+        //
+        $postData = Request::instance()->post();
+        $msg = '';
+        $Stduent = Student::get($postData['id']);
+        $status = User::userSave($postData, User::$ROLE_STUDENT, $msg, $Stduent->user_id);
+        if ($status === false) {
+            return $this->error('操作失败:'.$msg);
         }
-            return $this->success('操作成功', url('klassMembers?klass_id='.$student['klass_id']));
+        return $this->success('操作成功', url('klassMembers?klass_id='.$postData['klass_id']));
     }
 
     public function excelAdd()

@@ -6,7 +6,7 @@
 <hr />
 <div class="row">
     <div class="col-md-12 text-right">
-        <a href="{:url('studentAdd?klass_id='.input('param.id'))}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加学生</a>
+        <a href="{:url('studentAdd?klass_id='.input('param.klass_id'))}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加学生</a>
         <a href="/thinkphp/public/static/1813.xls" download="模板文件" class="btn btn-primary">&nbsp;下载Excel模板文件</a>
         <a href="{:url('excelAdd')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;导入学生Excel文件</a>
         <a href="{:url('index')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回主界面</a>
@@ -41,8 +41,8 @@
         <td>{$_Student->getSno()}</td>
         <td>{$_Student->getSex()}</td>
         <td>
-            <a class="btn btn-sm btn-primary" href="{:url('studentEdit?id='.$_Student->id.'&klass_id='.input('param.klass_id'))}">&nbsp;编辑</a>
-            <a class="btn btn-sm btn-danger" href="{:url('studentDelete?id='.$_Student->id)}">&nbsp;删除</a>
+            <a class="btn btn-sm btn-primary" href="{:url('studentEdit?student_id='.$_Student->id.'&klass_id='.input('param.klass_id'))}">&nbsp;编辑</a>
+            <a class="btn btn-sm btn-danger" href="{:url('studentDelete?student_id='.$_Student->id)}">&nbsp;删除</a>
         </td>
     </tr>
     {/volist}
