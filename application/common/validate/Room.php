@@ -5,7 +5,7 @@ use think\Validate;
 class Room extends Validate
 {
     protected $rule = [
-        'capacity'  => 'require',
+        'capacity'  => 'require|number',
         'name'      => 'unique:room|require'
     ];
 }

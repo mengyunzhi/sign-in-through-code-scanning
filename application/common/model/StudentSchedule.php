@@ -21,11 +21,19 @@ class StudentSchedule extends Model {
      * @param  string $msg       报错信息
      * @return boolean         成功 true；失败 false
      */
-    static public function studentScheduleSave($studentId, $klassId, $msg='') {
+    static public function saveStudentSchedule($studentId, $klassId, $msg='') {
         $scheduleIds = ScheduleKlass::where('klass_id', 'eq', $klassId)->column('schedule_id');
         $data = [];
         foreach ($scheduleIds as $scheduleId) {
             array_push($data, ['student_id'=>$studentId, 'schedule_id'=>$scheduleId]);
+        }
+        //如果已经有数据，先删掉原来的数据再新增
+        $StudentSchedules = StudentSchedule::where('student_id', 'eq', $studentId)->select();
+        if (!empty($StudentSchedules)) {
+            foreach ($StudentSchedules as $StudentSchedule) {
+                $StudentSchedule->delete();
+                $msg .= $StudentSchedule->getError();
+            }
         }
         $StudentSchedule = new StudentSchedule;
         //返回数组 元素为对象

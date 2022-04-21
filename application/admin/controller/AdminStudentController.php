@@ -80,6 +80,8 @@ class AdminStudentController extends IndexController
     {
         $userId = Request()->param('id/d');
         $User = User::get($userId);
+        $Klasses = Klass::all();
+        $this->assign('Klasses', $Klasses);
         $this->assign('User', $User);
         return $this->fetch();
     }
@@ -201,7 +203,20 @@ class AdminStudentController extends IndexController
     public function update()
     {
         $postData = Request()->post();
-
+        if (!isset($postData['name']) || empty($postData['name'])) {
+            return $this->error('未接收到姓名信息');
+        } elseif (!isset($postData['sex']) || empty($postData['sex'])) {
+            return $this->error('未接收到性别信息');
+        } elseif (!isset($postData['klass_id']) || empty($postData['klass_id'])) {
+            return $this->error('未接收到班级信息');
+        } elseif (!isset($postData['sno']) || empty($postData['sno'])) {
+            return $this->error('未接收到学号信息');
+        }
+        $msg = '';
+        $status = User::userSave($postData, User::$ROLE_STUDENT, $msg, $postData['id']);
+        if (!$status) {
+            return $this->error('保存失败：'.$msg);
+        }
         return $this->success('操作成功', url('index'));
     }
 

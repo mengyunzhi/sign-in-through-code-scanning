@@ -5,7 +5,7 @@
 {block name="search"}
 {/block}
 {block name="content"}
-<form class="" action="{:url('update')}" method="post">
+<form action="{:url('update')}" method="post">
     <input type="hidden" class="form-control" name="id" value="{:$User->id}">
     <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">姓名</label>
@@ -23,11 +23,11 @@
     <div class="form-group row">
         <label for="klass_id" class="col-sm-2 col-form-label">班级</label>
         <div class="col-sm-4">
-            <select class="selectpicker form-control col-sm-12" name="klass_id[]" id="klass_id">
-                <option>1班</option>
-                <option>2班</option>
-                <option>3班</option>
-                <option>4班</option>
+            <select class="selectpicker form-control col-sm-12" name="klass_id" id="klass_id">
+                <option value="">选择班级</option>
+                {volist name="Klasses" id="_Klass" key="key"}
+                <option value="{:$_Klass->id}" {eq name="$_Klass->id" value="$User->getStudent()->klass_id"}selected{/eq}>{:$_Klass->name}</option>
+                {/volist}
             </select>
         </div>
     </div>

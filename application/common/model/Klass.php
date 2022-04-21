@@ -36,7 +36,7 @@ class Klass extends Model {
         return count($this->getStudents());
     }
 
-    static public function klassSave($name, $entranceDate, $length, &$message)
+    static public function klassSave($name, $entranceDate, $length, &$message='')
     {
         if (is_null($name)) {
             throw new Exception('无班级名称');
@@ -45,8 +45,8 @@ class Klass extends Model {
         } elseif (is_null($length)) {
             throw new Exception('无学制');
         }
-
         $Klass = new Klass;
+
         $Klass->setAttr('name', $name);
         $Klass->entrance_date = $entranceDate;
         $Klass->length = $length;
