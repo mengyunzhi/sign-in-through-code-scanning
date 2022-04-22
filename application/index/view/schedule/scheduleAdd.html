@@ -30,7 +30,7 @@
     </div>
     
     <!-- 添加课程 -->
-    <div class="row">
+    <div class="row" id="app">
         <div class="col-sm-12">
             <table class="table table-hover table-bordered">
                 <tr>
@@ -54,7 +54,7 @@
                     <td>
                         <ul class="accordion" data-accordion>
                             <li class="accordion-navigation">
-                                <a href="#time_{:$_Row * 11 + $_Col + 1}">课程</a>
+                                <a href="#time_{:$_Row * 11 + $_Col + 1}" @click="A">课程</a>
 
                                 <!-- 周 -->
                                 <div id="time_{:$_Row * 11 + $_Col + 1}" class="content col-md-6">
@@ -97,6 +97,25 @@ $(document).ready(function() {
 </form>
 <div style="height: 100px;">
 </div>
+
+<script>
+const app = {
+  data() {
+    return {
+      number: 123
+    }
+  },
+  methods: {
+    A() {
+      axios.get('http://localhost/thinkphp5/public/index/schedule/A').then((response) => {
+        console.log(response.data)
+      })
+    }
+  }
+}
+Vue.createApp(app).mount('#app')
+</script>
+
 {/block}
 {block name="page"}
 {/block}
