@@ -24,6 +24,20 @@ use think\Request;
  */
 class ScheduleController extends IndexController {
 
+    public function A() 
+    {
+        $teacher_id = Teacher::get(1)->getId();
+        $schedule = new Schedule;
+        $dispatch = new Dispatch;
+        $scheduleIds =  $schedule->where('teacher_id', $teacher_id)->column('id');
+        for ($i = 0; $i < count($scheduleIds); $i++) {
+            $weeks[$i] = $dispatch->where('schedule_id', $scheduleIds[$i])->column('week');
+            $days[$i] = $dispatch->where('schedule_id', $scheduleIds[$i])->column('day');
+            $lessons[$i] = $dispatch->where('schedule_id', $scheduleIds[$i])->column('lesson');
+        }
+        return json($weeks);
+    }
+
     public function courseDetail() 
     {
 

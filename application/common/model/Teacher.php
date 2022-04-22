@@ -7,7 +7,6 @@ use think\Db;   // 引用数据库操作类
 use think\Exception;
 class Teacher extends Model {
 
-    
     static public function courseDelete($scheduleId)
     {
         if (empty($scheduleId)) {
