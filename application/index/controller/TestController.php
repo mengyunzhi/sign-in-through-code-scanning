@@ -12,6 +12,11 @@ class TestController extends IndexController
         return $this->fetch();
     }
 
+    public function test() 
+    {
+        return $this->fetch();
+    }
+
     public function A() 
     {
         return 'lllll';
