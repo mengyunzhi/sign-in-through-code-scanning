@@ -205,7 +205,7 @@ class AdminStudentController extends IndexController
         $postData = Request()->post();
         if (!isset($postData['name']) || empty($postData['name'])) {
             return $this->error('未接收到姓名信息');
-        } elseif (!isset($postData['sex']) || empty($postData['sex'])) {
+        } elseif (!isset($postData['sex'])) {
             return $this->error('未接收到性别信息');
         } elseif (!isset($postData['klass_id']) || empty($postData['klass_id'])) {
             return $this->error('未接收到班级信息');

@@ -15,6 +15,12 @@ class User extends Model {
     public static $ROLE_STUDENT = 2;
     //登录用户信息的session索引
     public static $SESSION_KEY_USER = 'user';
+    //web 
+    public static $EQUIP_WEB = 1;
+    //mobile
+    public static $EQUIP_MOBILE = 2;
+
+
 
     /**
      * 获取id字段
@@ -135,56 +141,97 @@ class User extends Model {
         return $password;
     }
 
+    static public function getUrlByRole($role) {
+        if ($role == User::$ROLE_ADMIN) {
+            return 'admin/admin_term/index';
+        } elseif ($role == User::$ROLE_TEACHER) {
+            //移动端
+            if (self::is_mobile_request()) {
+                return 'index/mobile/index';
+            //web端
+            } else {
+                return 'index/index/index';
+            }
+        } elseif ($role == User::$ROLE_STUDENT) {
+            return 'student/index/index';
+        }
+    }
+
+    static public function is_mobile_request() {
+        $_SERVER['ALL_HTTP'] = isset($_SERVER['ALL_HTTP'])?$_SERVER['ALL_HTTP'] : '';
+        $mobile_browser = 0;
+        if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i',
+        strtolower($_SERVER['HTTP_USER_AGENT'])))
+            $mobile_browser++;
+        if((isset($_SERVER['HTTP_ACCEPT'])) and
+        (strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') !== false))
+            $mobile_browser++;
+        if(isset($_SERVER['HTTP_X_WAP_PROFILE']))
+            $mobile_browser++;
+        if(isset($_SERVER['HTTP_PROFILE']))
+            $mobile_browser++;
+        $mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'],0,4));
+        $mobile_agents = array(
+        'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
+        'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
+        'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
+        'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
+        'newt','noki','oper','palm','pana','pant','phil','play','port','prox',
+        'qwap','sage','sams','sany','sch-','sec-','send','seri','sgh-','shar',
+        'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
+        'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
+        'wapr','webc','winw','winw','xda','xda-'
+        );
+        if(in_array($mobile_ua, $mobile_agents))
+            $mobile_browser++;
+        if(strpos(strtolower($_SERVER['ALL_HTTP']), 'operamini') !== false)
+            $mobile_browser++;
+        // Pre-final check to reset everything if the user is on Windows
+        if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows') !== false)
+            $mobile_browser=0;
+        // But WP7 is also Windows, with a slightly different characteristic
+        if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows phone') !== false)
+            $mobile_browser++;
+        if($mobile_browser>0)
+            return true;
+        else
+            return false;
+    }
+
     /**
-     * @param $username 用户名（学生是学号，其他用户是手机号; $password密码;
-     * @param $role 权限判断;
-     * @return 登录失败 false; 登录成功 true;
-     *
-     * 登录成功后存入session的是数组
+     * @param $username 用户名; $password密码;
+     * @param $msg 报错信息;
+     * @return 登录失败 null; 登录成功 role;
      */
-    static public function login($username, $password, $role)
+    static public function login($username, $password, &$msg='')
     {
         //传入数据存在null
         if (is_null($username) || is_null($password)) {
             throw new Exception('用户名或密码为空');
-            return false;
+            return null;
         }
-        //不是学生使用手机号查
-        if ($role != self::$ROLE_STUDENT) {
-            $User = self::get(['number' => $username]);
-        } else {
-        //是学生使用学号查
-            $Student = Student::get(['sno' => $username]);
-            //无数据
-            if (is_null($Student)) {
-                // throw new Exception('学号不存在');
-                return false;
-            }
-            //未注册
-            if ($Student->state === 0) {
-                // throw new Exception('未注册');
-                return false;
-            }
-            $User = self::get(['id' => $Student->user_id]);
-        }
+
+        $User = self::get(['number' => $username]);
         //找不到数据
         if (is_null($User)) {
             // throw new Exception('该用户不存在');
-            return false;
+            return null;
         }
-        //查出的数据和角色不匹配
-        if ($User->role != $role) {
-            // throw new Exception("权限错误");
-            return false;
+        //检查学生是否注册
+        if ($User->role === User::$ROLE_STUDENT) {
+            $status = Student::isRegisterByUserId($User->id);
+            if (!$status) {
+                $msg .= '该学号尚未进行注册';
+                return null;
+            }
         }
         //密码校验
         if (!$User->checkPassword($password)) {
-            return false;
+            return null;
         }
-
         //将查出数据存入session
         $_SESSION[self::$SESSION_KEY_USER] = serialize($User);
-        return true;
+        return $User->role;
     }
 
     static public function logout()
@@ -272,6 +319,15 @@ class User extends Model {
         } else {
             $User = new User;
         }
+        //将学生的手机号存为学号
+        //data无number，role为student；对象的number为空
+        if (!isset($data['number']) && empty($User->number) && $data['role'] === User::$ROLE_STUDENT) {
+            $data['number'] = $data['sno'];
+        }
+        //更新时如果sno和number相等，同时修改number
+        if (!is_null($User->getStudent())) {
+            if ($User->getStudent()->sno === $User->number) $data['number'] = $data['sno'];
+        }
         $status = $User->validate(true)->allowField(true)->save($data);
         $msg .= $User->getError();
         if ($status) {
@@ -301,8 +357,8 @@ class User extends Model {
         $data['role'] = $role;
         $User = self::saveUser($data, $msg, $userId);
         if (is_null($User)) {
-            var_dump($msg);
-            throw new Exception('存User表失败');
+            // throw new Exception('存User表失败');
+            return false;
         }
         //学生=>存student表； ......(之后可能存管理员、教师)
         if ($role === User::$ROLE_STUDENT) {

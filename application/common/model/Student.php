@@ -107,6 +107,14 @@ class Student extends Model {
         return isset($_SESSION[Student::$user]);
     }
 
+    static public function isRegisterByUserId($userId) {
+        $Student = Student::get(['user_id'=>$userId]);
+        if ($Student->getState() === 0) {
+            return false;
+        }
+        return true;
+    }
+
     /*
      * 学生登录
      * 登录成功就设置 $_SESSION[Student::$user] 并将id存入

@@ -1,0 +1,57 @@
+{extend name="index"/}
+{block name="title"}
+课程管理
+{/block}
+{block name="search"}
+{/block}
+{block name="content"}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<div id="app">
+
+</div>
+<script type="text/javascript">
+    const app = Vue.createApp(root);
+    app.
+    const root = {
+        data() {
+            return {
+                courses: [],
+                selectCourse: null,
+            }
+        },
+        template:`
+        {{ selectCourse }}
+        <form class="" action="{:url('scheduleSave')}" method="post">
+            <div class="form-group row">
+                <label for="course_id" class="col-sm-2 col-form-label" style="width: 162px">课程</label>
+                <div class="col-sm-4">
+                    <select v-model="selectCourse" class="selectpicker form-control col-sm-12" name="course_id" id="course_id" required>
+                        <option value="">请选择课程</option>
+                        <option v-for="course in courses" :value="course">
+                            {{course.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+        </form>
+        `,
+        emits: ['onSelect'],
+        methods : {
+            onSelect() {
+
+            }
+        },
+        mounted () {
+            axios
+              .get("{:url('schedule/getAllCoursesJson')}")
+              .then(response => this.courses = response.data)
+              .catch(function (error) { // 请求失败处理
+                console.log(error);
+            });
+        }
+    }
+    app.mount('#app');
+</script>
+
+{/block}
