@@ -109,10 +109,7 @@ class Student extends Model {
 
     static public function isRegisterByUserId($userId) {
         $Student = Student::get(['user_id'=>$userId]);
-        if ($Student->getState() === 0) {
-            return false;
-        }
-        return true;
+        return $Student->getState() !== 0;
     }
 
     /*

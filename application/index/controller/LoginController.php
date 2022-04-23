@@ -25,11 +25,11 @@ class LoginController extends Controller
         } elseif (!isset($postData['password']) || empty($postData['password'])) {
             return $this->error('未接收到密码');
         }
-        $role = User::login($postData['number'], $postData['password'], $msg);
-        if (is_null($role)) {
+        $User = User::login($postData['number'], $postData['password'], $msg);
+        if (is_null($User)) {
             return $this->error('登录失败：'.$msg);
         }
-        $url = User::getUrlByRole($role);
+        $url = User::getUrlByRole((int)$User->role);
         return $this->success('登录成功', url($url));
     }
 

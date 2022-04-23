@@ -136,9 +136,9 @@ class User extends Model {
     }
 
     static public function getUrlByRole($role) {
-        if ($role == User::$ROLE_ADMIN) {
+        if ($role === User::$ROLE_ADMIN) {
             return 'admin/admin_term/index';
-        } elseif ($role == User::$ROLE_TEACHER) {
+        } elseif ($role === User::$ROLE_TEACHER) {
             //移动端
             if (self::is_mobile_request()) {
                 return 'index/mobile/index';
@@ -146,7 +146,7 @@ class User extends Model {
             } else {
                 return 'index/index/index';
             }
-        } elseif ($role == User::$ROLE_STUDENT) {
+        } elseif ($role === User::$ROLE_STUDENT) {
             return 'student/index/index';
         }
     }
@@ -154,16 +154,20 @@ class User extends Model {
     static public function is_mobile_request() {
         $_SERVER['ALL_HTTP'] = isset($_SERVER['ALL_HTTP'])?$_SERVER['ALL_HTTP'] : '';
         $mobile_browser = 0;
-        if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i',
-        strtolower($_SERVER['HTTP_USER_AGENT'])))
+        //preg_match('/(foo)(bar)(baz)/', 'foobarbaz', array);
+        //在第二个参数中匹配第一个参数项，有第三个array参数存入
+        if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i',strtolower($_SERVER['HTTP_USER_AGENT'])))
             $mobile_browser++;
-        if((isset($_SERVER['HTTP_ACCEPT'])) and
-        (strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') !== false))
+
+        if((isset($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') !== false))
             $mobile_browser++;
-        if(isset($_SERVER['HTTP_X_WAP_PROFILE']))
+
+        if(isset($_SERVER['HTTP_X_WAP_PROFILE'])) 
             $mobile_browser++;
-        if(isset($_SERVER['HTTP_PROFILE']))
+
+        if(isset($_SERVER['HTTP_PROFILE'])) 
             $mobile_browser++;
+
         $mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'],0,4));
         $mobile_agents = array(
         'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
@@ -176,16 +180,22 @@ class User extends Model {
         'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
         'wapr','webc','winw','winw','xda','xda-'
         );
+
         if(in_array($mobile_ua, $mobile_agents))
             $mobile_browser++;
+        //strpos(string $haystack, mixed $needle, int $offset = 0): int
+        //返回 needle 在 haystack 中首次出现的数字位置。
         if(strpos(strtolower($_SERVER['ALL_HTTP']), 'operamini') !== false)
             $mobile_browser++;
+
         // Pre-final check to reset everything if the user is on Windows
         if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows') !== false)
             $mobile_browser=0;
+
         // But WP7 is also Windows, with a slightly different characteristic
         if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows phone') !== false)
             $mobile_browser++;
+
         if($mobile_browser>0)
             return true;
         else
@@ -195,7 +205,7 @@ class User extends Model {
     /**
      * @param $username 用户名; $password密码;
      * @param $msg 报错信息;
-     * @return 登录失败 null; 登录成功 role;
+     * @return 登录失败 null; 登录成功 User;
      */
     static public function login($username, $password, &$msg='')
     {
@@ -225,7 +235,7 @@ class User extends Model {
         }
         //将查出数据存入session
         $_SESSION[self::$SESSION_KEY_USER] = serialize($User);
-        return $User->role;
+        return $User;
     }
 
     static public function logout()
