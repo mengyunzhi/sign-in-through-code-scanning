@@ -301,7 +301,7 @@ class ScheduleController extends IndexController {
         }
         //11列
         $Cols = [];
-        for ($i=0; $i < 11; $i++) { 
+        for ($i=0; $i < 5; $i++) { 
             $Cols[$i] = $i;
         }
         //周几

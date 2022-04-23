@@ -27,4 +27,13 @@ class KlassController extends IndexController {
     public function getAllKlassesJson() {
         return json(Klass::All());
     }
+
+    public function getAllScheduleKlassesJson() {
+        return json(ScheduleKlass::All());
+    }
+
+    public function getAllSchedulesJson() {
+        return json(Schedule::All());
+    }
+
 }
