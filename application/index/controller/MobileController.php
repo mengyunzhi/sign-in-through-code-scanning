@@ -5,18 +5,8 @@ use app\common\model\User;
 use think\Controller;
 use think\Request;
 
-class MobileController extends Controller
+class MobileController extends IndexController
 {
-    public function __construct()
-    {
-        parent::__construct();
-        if (is_null(User::getCurrentLoginUser())) {
-            return $this->error('请先进行登录', url('login/mobileLogin'));
-        }
-        if (!User::checkAccessByRole(User::$ROLE_TEACHER)) {
-            return $this->error('您并不拥有操作当前模块的权限');
-        }
-    }
 
     public function index()
     {

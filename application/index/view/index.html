@@ -4,18 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{block name="title"}标题{/block}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/foundation/5.5.3/css/foundation.min.css">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/foundation/5.5.3/js/foundation.min.js"></script>
-    <script src="https://cdn.staticfile.org/foundation/5.5.3/js/vendor/modernizr.js"></script>
-    <script src="https://unpkg.com/vue@next"></script>
-
-    <!-- 引用Vue -->
-    <script src="https://unpkg.com/vue@next"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
+    <?php echo app\index\controller\IndexController::getHeadHtmls(); ?>
     <style type="text/css">
         .badge-primary {
             color: #fff;
