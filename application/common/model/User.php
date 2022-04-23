@@ -135,7 +135,8 @@ class User extends Model {
         return $password;
     }
 
-    static public function getUrlByRole($role) {
+    static public function getUrlByUser($User) {
+        $role = (int)$User->role;
         if ($role === User::$ROLE_ADMIN) {
             return 'admin/admin_term/index';
         } elseif ($role === User::$ROLE_TEACHER) {
@@ -222,10 +223,10 @@ class User extends Model {
             return null;
         }
         //检查学生是否注册
-        if ($User->role === User::$ROLE_STUDENT) {
+        if ((int)$User->role === User::$ROLE_STUDENT) {
             $status = Student::isRegisterByUserId($User->id);
             if (!$status) {
-                $msg .= '该学号尚未进行注册';
+                $msg .= '该学号尚未绑定手机号，请注册绑定';
                 return null;
             }
         }
@@ -271,12 +272,12 @@ class User extends Model {
     }
 
     /**
+     * 注册，即修改手机号码和state
      * @param   $sno      用来获取数据
      * @param   $number   存入user的手机号
-     * @param   $password 存入user的密码
-     * @return  不同错误返回不同信息
+     * @return  boolean 成功 true；失败 false
      */
-    static public function register($sno, $number, $password, $verificationCode)
+    static public function register($sno, $number, $password, $verificationCode, &$msg='')
     {
         //传入数据存在空值
         if (is_null($sno)) {
@@ -284,8 +285,8 @@ class User extends Model {
         } elseif (is_null($number)) {
             throw new Exception("手机号为空");
             return false;
-        } elseif (is_null($password)) {
-            throw new Exception("密码为空");
+        } elseif (is_null($verificationCode)) {
+            throw new Exception("验证码为空");
             return false;
         }
         //学生表中查询数据
@@ -293,19 +294,25 @@ class User extends Model {
         //学号不存在
         if (is_null($Student)) {
             // throw new Exception("学号错误");
+            $msg .= '学号错误';
             return false;
         }
         if ($Student->state === 1) {
             // throw new Exception("已注册");
-            return false;
-        }
-        //student表中state改成1，user表中存入number和password
-        $User = self::get(['id' => $Student->user_id]);
-        $status = $Student->save(['state' => 1]) && $User->save(['number' => $number, 'password' => $password]);
-        if (!$status) {
+            $msg .= '该学号已注册';
             return false;
         }
 
+        //student表中state改成1，user表中存入number和password
+        $User = self::get(['id' => $Student->user_id]);
+        $status = $User->save(['number' => $number, 'password' => $password]);
+        //手机可能已存在
+        $msg .= $User->getError();
+        if (!$status) return false;
+
+        $status = $Student->save(['state' => 1]);
+        $msg .= $Student->getError();
+        if (!$status) return false;
         return true;
     }
 
