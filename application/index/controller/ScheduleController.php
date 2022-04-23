@@ -319,7 +319,7 @@ class ScheduleController extends IndexController {
         $this->assign('dayArray', $dayArray);
         $this->assign('Rows', $Rows);
         $this->assign('Cols', $Cols);
-        $htmls = $this->fetch('test/test');
+        $htmls = $this->fetch();
         return $htmls;
     }
 
