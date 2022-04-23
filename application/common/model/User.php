@@ -15,12 +15,6 @@ class User extends Model {
     public static $ROLE_STUDENT = 2;
     //登录用户信息的session索引
     public static $SESSION_KEY_USER = 'user';
-    //web 
-    public static $EQUIP_WEB = 1;
-    //mobile
-    public static $EQUIP_MOBILE = 2;
-
-
 
     /**
      * 获取id字段
