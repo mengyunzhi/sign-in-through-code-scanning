@@ -245,7 +245,7 @@ class ScheduleController extends IndexController {
         $this->assign('Courses', $Courses);
         $this->assign('Terms', $Terms);
         $this->assign('Schedules', $Schedules);
-        return $this->fetch('test/test');
+        return $this->fetch();
     }
 
     public function courseTimeAdd() 
