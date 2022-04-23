@@ -135,10 +135,11 @@ class User extends Model {
         return $password;
     }
 
-    static public function getUrlByRole($role) {
-        if ($role == User::$ROLE_ADMIN) {
+    static public function getUrlByUser($User) {
+        $role = (int)$User->role;
+        if ($role === User::$ROLE_ADMIN) {
             return 'admin/admin_term/index';
-        } elseif ($role == User::$ROLE_TEACHER) {
+        } elseif ($role === User::$ROLE_TEACHER) {
             //移动端
             if (self::is_mobile_request()) {
                 return 'index/mobile/index';
@@ -146,7 +147,7 @@ class User extends Model {
             } else {
                 return 'index/index/index';
             }
-        } elseif ($role == User::$ROLE_STUDENT) {
+        } elseif ($role === User::$ROLE_STUDENT) {
             return 'student/index/index';
         }
     }
@@ -154,16 +155,20 @@ class User extends Model {
     static public function is_mobile_request() {
         $_SERVER['ALL_HTTP'] = isset($_SERVER['ALL_HTTP'])?$_SERVER['ALL_HTTP'] : '';
         $mobile_browser = 0;
-        if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i',
-        strtolower($_SERVER['HTTP_USER_AGENT'])))
+        //preg_match('/(foo)(bar)(baz)/', 'foobarbaz', array);
+        //在第二个参数中匹配第一个参数项，有第三个array参数存入
+        if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i',strtolower($_SERVER['HTTP_USER_AGENT'])))
             $mobile_browser++;
-        if((isset($_SERVER['HTTP_ACCEPT'])) and
-        (strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') !== false))
+
+        if((isset($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') !== false))
             $mobile_browser++;
-        if(isset($_SERVER['HTTP_X_WAP_PROFILE']))
+
+        if(isset($_SERVER['HTTP_X_WAP_PROFILE'])) 
             $mobile_browser++;
-        if(isset($_SERVER['HTTP_PROFILE']))
+
+        if(isset($_SERVER['HTTP_PROFILE'])) 
             $mobile_browser++;
+
         $mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'],0,4));
         $mobile_agents = array(
         'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
@@ -176,16 +181,22 @@ class User extends Model {
         'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
         'wapr','webc','winw','winw','xda','xda-'
         );
+
         if(in_array($mobile_ua, $mobile_agents))
             $mobile_browser++;
+        //strpos(string $haystack, mixed $needle, int $offset = 0): int
+        //返回 needle 在 haystack 中首次出现的数字位置。
         if(strpos(strtolower($_SERVER['ALL_HTTP']), 'operamini') !== false)
             $mobile_browser++;
+
         // Pre-final check to reset everything if the user is on Windows
         if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows') !== false)
             $mobile_browser=0;
+
         // But WP7 is also Windows, with a slightly different characteristic
         if(strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows phone') !== false)
             $mobile_browser++;
+
         if($mobile_browser>0)
             return true;
         else
@@ -195,7 +206,7 @@ class User extends Model {
     /**
      * @param $username 用户名; $password密码;
      * @param $msg 报错信息;
-     * @return 登录失败 null; 登录成功 role;
+     * @return 登录失败 null; 登录成功 User;
      */
     static public function login($username, $password, &$msg='')
     {
@@ -212,10 +223,10 @@ class User extends Model {
             return null;
         }
         //检查学生是否注册
-        if ($User->role === User::$ROLE_STUDENT) {
+        if ((int)$User->role === User::$ROLE_STUDENT) {
             $status = Student::isRegisterByUserId($User->id);
             if (!$status) {
-                $msg .= '该学号尚未进行注册';
+                $msg .= '该学号尚未绑定手机号，请注册绑定';
                 return null;
             }
         }
@@ -225,7 +236,7 @@ class User extends Model {
         }
         //将查出数据存入session
         $_SESSION[self::$SESSION_KEY_USER] = serialize($User);
-        return $User->role;
+        return $User;
     }
 
     static public function logout()
@@ -261,12 +272,12 @@ class User extends Model {
     }
 
     /**
+     * 注册，即修改手机号码和state
      * @param   $sno      用来获取数据
      * @param   $number   存入user的手机号
-     * @param   $password 存入user的密码
-     * @return  不同错误返回不同信息
+     * @return  boolean 成功 true；失败 false
      */
-    static public function register($sno, $number, $password, $verificationCode)
+    static public function register($sno, $number, $password, $verificationCode, &$msg='')
     {
         //传入数据存在空值
         if (is_null($sno)) {
@@ -274,8 +285,8 @@ class User extends Model {
         } elseif (is_null($number)) {
             throw new Exception("手机号为空");
             return false;
-        } elseif (is_null($password)) {
-            throw new Exception("密码为空");
+        } elseif (is_null($verificationCode)) {
+            throw new Exception("验证码为空");
             return false;
         }
         //学生表中查询数据
@@ -283,19 +294,25 @@ class User extends Model {
         //学号不存在
         if (is_null($Student)) {
             // throw new Exception("学号错误");
+            $msg .= '学号错误';
             return false;
         }
         if ($Student->state === 1) {
             // throw new Exception("已注册");
-            return false;
-        }
-        //student表中state改成1，user表中存入number和password
-        $User = self::get(['id' => $Student->user_id]);
-        $status = $Student->save(['state' => 1]) && $User->save(['number' => $number, 'password' => $password]);
-        if (!$status) {
+            $msg .= '该学号已注册';
             return false;
         }
 
+        //student表中state改成1，user表中存入number和password
+        $User = self::get(['id' => $Student->user_id]);
+        $status = $User->save(['number' => $number, 'password' => $password]);
+        //手机可能已存在
+        $msg .= $User->getError();
+        if (!$status) return false;
+
+        $status = $Student->save(['state' => 1]);
+        $msg .= $Student->getError();
+        if (!$status) return false;
         return true;
     }
 
