@@ -24,6 +24,20 @@ use think\Request;
  */
 class ScheduleController extends IndexController {
 
+    public function A() 
+    {
+        $teacher_id = Teacher::get(1)->getId();
+        $schedule = new Schedule;
+        $dispatch = new Dispatch;
+        $scheduleIds =  $schedule->where('teacher_id', $teacher_id)->column('id');
+        for ($i = 0; $i < count($scheduleIds); $i++) {
+            $weeks[$i] = $dispatch->where('schedule_id', $scheduleIds[$i])->column('week');
+            $days[$i] = $dispatch->where('schedule_id', $scheduleIds[$i])->column('day');
+            $lessons[$i] = $dispatch->where('schedule_id', $scheduleIds[$i])->column('lesson');
+        }
+        return json($weeks);
+    }
+
     public function courseDetail() 
     {
 
@@ -231,7 +245,7 @@ class ScheduleController extends IndexController {
         $this->assign('Courses', $Courses);
         $this->assign('Terms', $Terms);
         $this->assign('Schedules', $Schedules);
-        return $this->fetch();
+        return $this->fetch('test/test');
     }
 
     public function courseTimeAdd() 
@@ -305,7 +319,7 @@ class ScheduleController extends IndexController {
         $this->assign('dayArray', $dayArray);
         $this->assign('Rows', $Rows);
         $this->assign('Cols', $Cols);
-        $htmls = $this->fetch();
+        $htmls = $this->fetch('test/test');
         return $htmls;
     }
 

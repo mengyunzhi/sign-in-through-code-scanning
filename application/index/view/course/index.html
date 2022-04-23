@@ -3,25 +3,46 @@
 教师端
 {/block}
 {block name="search"}
+<hr />
+<div class="row">
+    <div class="col-md-12" style="float-right">
+        <a href="{:url('courseAdd')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加课程</a>
+    </div>
+    <div class="col-md-10">
+        <form class="form-inline">
+            <div class="form-group">
+                <input name="name" type="text" class="form-control" placeholder="名称" style="margin-top: 20px" value="{$name}">
+                <input name="lesson" type="text" class="form-control" placeholder="学时" style="margin-top: 20px" value="{$lesson}">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-default" style="height: 30px"><i class="glyphicon glyphicon-search"></i>&nbsp;查询</button>
+            </div>
+        </form>
+    </div>
+</div>
+<hr />
 {/block}
 {block name="content"}
 <table class="table table-hover table-bordered">
     <tr class="info">
         <th>序号</th>
         <th>课程名称</th>
+        <th>学时</th>
         <th>操作</th>
     </tr>
-    {volist name="Schedules" id="_Schedule" key="key"}
+    {volist name="Courses" id="_Course" key="key"}
     <tr>
         <td>{:$key}</td>
-        <td>{:$_Schedule->getCourse()->name}</td>
+        <td>{:$_Course->getName()}</td>
+        <td>{:$_Course->getLesson()}</td>
         <td>
-            <a class="btn btn-success" href="{:url('student?schedule_id='.$_Schedule->id)}"><i class="glyphicon"></i>&nbsp;查看学生</a>
-            <a class="btn btn-warning" href="{:url('courseStart')}"><i class="glyphicon"></i>&nbsp;开始上课</a>
+            <a class="btn btn-success" href="{:url('courseEdit?id='. $_Course->getId())}"><i class="glyphicon"></i>&nbsp;编辑</a>
+            <a class="btn btn-danger" href="{:url('courseDelete?id='. $_Course->getId())}"><i class="glyphicon"></i>&nbsp;删除</a>
         </td>
     </tr>
     {/volist}
 </table>
 {/block}
 {block name="page"}
+{$Courses->render()}
 {/block}

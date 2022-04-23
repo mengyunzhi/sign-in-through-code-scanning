@@ -5,53 +5,92 @@
 {block name="search"}
 {/block}
 {block name="content"}
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<div id="app">
+<div id="main"></div>
 
-</div>
-<script type="text/javascript">
-    const app = Vue.createApp(root);
-    app.
-    const root = {
-        data() {
-            return {
-                courses: [],
-                selectCourse: null,
-            }
-        },
-        template:`
-        {{ selectCourse }}
-        <form class="" action="{:url('scheduleSave')}" method="post">
-            <div class="form-group row">
-                <label for="course_id" class="col-sm-2 col-form-label" style="width: 162px">课程</label>
-                <div class="col-sm-4">
-                    <select v-model="selectCourse" class="selectpicker form-control col-sm-12" name="course_id" id="course_id" required>
-                        <option value="">请选择课程</option>
-                        <option v-for="course in courses" :value="course">
-                            {{course.name}}
-                        </option>
-                    </select>
-                </div>
-            </div>
+<script>
 
-        </form>
-        `,
-        emits: ['onSelect'],
-        methods : {
-            onSelect() {
-
-            }
-        },
-        mounted () {
-            axios
-              .get("{:url('schedule/getAllCoursesJson')}")
-              .then(response => this.courses = response.data)
-              .catch(function (error) { // 请求失败处理
-                console.log(error);
-            });
+const RootComponent = {
+    data() {
+        return {
+            selectCourse123: null,
         }
+    },
+
+    methods: {
+        onCourseSelect(course) {
+            console.log(course);
+            this.selectCourse123 = course;
+        }
+    },
+    template: `
+    <form class="" action="{:url('scheduleSave')}" method="post">
+
+        <course-select @on-select="onCourseSelect"></course-select>
+
+        <div class="form-group row" v-if="selectCourse123" >
+            <label for="klass_id" class="col-sm-2 col-form-label" style="width: 162px">上课班级<br>(可多选)</label>
+            <div class="col-sm-4">
+                <select class="selectpicker form-control col-sm-12" multiple name="klass_id[]" id="klass_id" required>
+                    <option value="">请选择班级</option>
+                    {volist name="Klasses" id="_Klass" key="key"}
+                    <option value="{$_Klass->getId()}">{$_Klass->getName()}</option>
+                    {/volist}
+                </select>
+            </div>
+        </div>
+    </form>
+    `,
+    mounted () {
+        axios
+            .get('{:url("Course/getAllCoursesJson")}')
+            .then(response => this.courses = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
     }
-    app.mount('#app');
+}
+const app = Vue.createApp(RootComponent);
+
+
+
+app.component('course-select', {
+    data() {
+        return {
+            courses: [],
+            selectCourse: null
+        }
+    },
+
+    template: `
+        <div class="form-group row">
+            <label for="course_id" class="col-sm-2 col-form-label" style="width: 162px">课程</label>
+            <div class="col-sm-4">
+                <select @change="onChange" v-model="selectCourse" class="selectpicker form-control col-sm-12" name="course_id" id="course_id" required>
+                    <option value="">请选择课程</option>
+                    <option v-for="course in courses" :value="course">{{course.name}}</option>
+                </select>
+            </div>
+        </div>
+    `,
+    emits: ['onSelect'],
+    methods: {
+        onChange() {
+            console.log(this.selectCourse);
+            this.$emit('onSelect', this.selectCourse)
+        },
+    },
+
+    mounted () {
+        axios
+            .get('{:url("Course/getAllCoursesJson")}')
+            .then(response => this.courses = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+    }
+
+})
+app.mount('#main');
 </script>
 
 {/block}

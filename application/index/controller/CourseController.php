@@ -23,6 +23,10 @@ use think\Request;
  * 管理端
  */
 class CourseController extends IndexController {
+
+    public function getAllCoursesJson() {
+        return json(Course::All());
+    }
 	
 	public function courseAdd()
     {
