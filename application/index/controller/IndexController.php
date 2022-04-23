@@ -55,7 +55,6 @@ class IndexController extends Controller
     <script src="https://unpkg.com/vue@next"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     ';
-
         } else {
             return '<meta charset="utf-8">
     <meta name="keywords" content="" />
@@ -66,7 +65,6 @@ class IndexController extends Controller
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">';
         }
-
     }
 
 }
