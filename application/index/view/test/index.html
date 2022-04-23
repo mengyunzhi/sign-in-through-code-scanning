@@ -1,37 +1,204 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
-
-<script src="https://unpkg.com/vue@next"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-</head>
-<body>
-<div id="app">
-  <button @click="A" id="">点我</button>
-  <p id="Q"></p>
-</div>
+{extend name="index"/}
+{block name="title"}
+课程管理
+{/block}
+{block name="search"}
+{/block}
+{block name="content"}
+<div id="main"></div>
 
 <script>
-const app = {
-  data() {
-    return {
-      number: 123
-    }
-  },
-  methods: {
-    A() {
-      axios.get('http://localhost/thinkphp5/public/index/test/A').then((response) => {
-        console.log(response.data)
-        if (response.data == 'true') {
-            //让按钮变灰
+// 初始化 Foundation JS
+$(document).ready(function() {
+$(document).foundation();
+})
+
+// 班级选择
+const RootComponent = {
+    data() {
+        return {
+            isSelectCourse: null,
+            isSelectKlass: null,
         }
-      })
+    },
+
+    methods: {
+        onCourseSelect(course) {
+            console.log(course);
+            this.isSelectCourse = course;
+        },
+
+        onKlassSelect(klass) {
+            console.log(klass);
+            this.isSelectKlass = klass;
+        }
+    },
+    template: `
+    <form class="" action="{:url('scheduleSave')}" method="post">
+
+        <course-select @on-course-select="onCourseSelect"></course-select>
+
+        <div class="form-group row" v-if="isSelectCourse" >
+            <klass-select @on-klass-select="onKlassSelect"></klass-select>
+        </div>
+
+        <div class="row" v-if="isSelectKlass">
+            <course-time-select></course-time-select>
+        </div>
+
+            
+    </form>
+    `,
+    mounted () {
+        axios
+            .get('{:url("Course/getAllCoursesJson")}')
+            .then(response => this.courses = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
     }
-  }
 }
-Vue.createApp(app).mount('#app')
+const app = Vue.createApp(RootComponent);
+
+// 上课时间选择
+app.component('course-time-select',{
+    data() {
+        
+    },
+    template: `
+    <div class="col-sm-12">
+        <table class="table table-hover table-bordered">
+            <tr>
+                <th class="">周几\课序</th>
+                <th class="">1</th>
+                <th class="">2</th>
+                <th class="">3</th>
+                <th class="">4</th>
+                <th class="">5</th>
+                <th class="">6</th>
+                <th class="">7</th>
+                <th class="">8</th>
+                <th class="">9</th>
+                <th class="">10</th>
+                <th class="">11</th>
+            </tr>
+            <?php foreach($Rows as $_Row): ?>
+            <tr>
+                <td>周{:$dayArray[$_Row]}</td>
+                <?php foreach($Cols as $_Col): ?>
+                <td>
+                    <ul class="accordion" data-accordion>
+                        <li class="accordion-navigation">
+                            <a href="#time_{:$_Row * 11 + $_Col + 1}" @click="A">课程</a>
+
+                            <!-- 周 -->
+                            <div id="time_{:$_Row * 11 + $_Col + 1}" class="content col-md-6">
+                                <label>上课周</label>
+                                <?php foreach(range(1, 11) as $_Week): ?>
+                                <input type="checkbox" name="course_{:$_Row * 11 + $_Col + 1}[]" value="{:$_Week}" id="klass_{$_Row * 11 + $_Col + 1}_{$_Week}">
+                                <label for="klass_{$_Row * 11 + $_Col + 1}_{$_Week}">第{:$_Week}周</label>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <!-- 教室 -->
+                            <div id="time_{:$_Row * 11 + $_Col + 1}" class="content col-sm-6">
+                                <label>选择教室</label>
+                                <?php foreach($Rooms as $key => $_Room): ?>
+                                <input type="checkbox" name="room_{:$_Row * 11 + $_Col + 1}[]" value="{:$_Room->getId()}" id="room_{:$_Row * 11 + $_Col + 1 .'_'. ($key+1)}">
+                                <label for="room_{:$_Row * 11 + $_Col + 1 .'_'. ($key+1)}">{:$_Room->name}</label>
+                                <?php endforeach; ?>
+                            </div>
+                        </li>
+                    </ul>
+                </td>
+                <?php endforeach; ?>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+    `,
+})
+
+
+// 班级选择
+app.component('klass-select', {
+    data() {
+        return {
+            klasses: [],
+            selectKlass: null
+        }
+    },
+    template: `
+    <label for="klass_id" class="col-sm-2 col-form-label" style="width: 162px">上课班级<br>(可多选)</label>
+        <div class="col-sm-4">
+            <select class="selectpicker form-control col-sm-12" multiple name="klass_id[]" id="klass_id" @change="onChange" v-model="selectKlass" required>
+                <option value="">请选择班级</option>
+                {volist name="Klasses" id="_Klass" key="key"}
+                <option value="{$_Klass->getId()}">{$_Klass->getName()}</option>
+                {/volist}
+            </select>
+        </div>
+    `,
+
+    emits: ['onKlassSelect'],
+    
+    methods: {
+        onChange() {
+            console.log(this.selectKlass);
+            this.$emit('onKlassSelect', this.selectKlass)
+        },
+    },
+
+    mounted () {
+        axios
+            .get('{:url("Klass/getAllKlassesJson")}')
+            .then(response => this.klasses = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+    }
+})
+
+
+// 课程选择
+app.component('course-select', {
+    data() {
+        return {
+            courses: [],
+            selectCourse: null
+        }
+    },
+
+    template: `
+        <div class="form-group row">
+            <label for="course_id" class="col-sm-2 col-form-label" style="width: 162px">课程</label>
+            <div class="col-sm-4">
+                <select @change="onChange" v-model="selectCourse" class="selectpicker form-control col-sm-12" name="course_id" id="course_id" required>
+                    <option value="">请选择课程</option>
+                    <option v-for="course in courses" :value="course">{{course.name}}</option>
+                </select>
+            </div>
+        </div>
+    `,
+    emits: ['onCourseSelect'],
+    methods: {
+        onChange() {
+            console.log(this.selectCourse);
+            this.$emit('onCourseSelect', this.selectCourse)
+        },
+    },
+
+    mounted () {
+        axios
+            .get('{:url("Course/getAllCoursesJson")}')
+            .then(response => this.courses = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+    }
+
+})
+app.mount('#main');
 </script>
-</body>
-</html>
+
+{/block}
