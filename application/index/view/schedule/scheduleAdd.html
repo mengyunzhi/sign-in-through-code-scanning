@@ -102,22 +102,35 @@ const app = Vue.createApp(RootComponent);
 // 上课时间选择
 app.component('course-time-select',{
     data() {
-        
+        return {
+            isShow: 0,
+        }
     },
     template: `
-        <a class="btn btn-primary" @click="">课程</a>
+    <a @click="Show">课程</a>
+    <div v-if="isShow">
         <!-- 周 -->
-        <div id="time_{:$_Row * 5 + $_Col + 1}" class="content col-md-6">
-            <!--选择周数-->
-            <week-select></week-select>
-        </div>
+    <div id="time_{:$_Row * 5 + $_Col + 1}" class="content col-md-6">
+        <!--选择周数-->
+        <week-select></week-select>
+    </div>
 
-        <!-- 教室 -->
-        <div id="time_{:$_Row * 5 + $_Col + 1}" class="content col-sm-6">
-            <!--选择教室-->
-            <room-select></room-select>
-        </div>
+    <!-- 教室 -->
+    <div id="time_{:$_Row * 5 + $_Col + 1}" class="content col-sm-6">
+        <!--选择教室-->
+        <room-select></room-select>
+    </div>
+    </div>
     `,
+    methods: {
+        Show() {
+            if (this.isShow == 0) {
+                this.isShow++;
+            } else {
+                this.isShow--;
+            }
+        },
+    },
 })
 
 //  上课时间选择-周
