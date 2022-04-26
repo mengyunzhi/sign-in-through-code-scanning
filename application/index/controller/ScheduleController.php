@@ -35,7 +35,7 @@ class ScheduleController extends IndexController {
             $days[$i] = $dispatch->where('schedule_id', $scheduleIds[$i])->column('day');
             $lessons[$i] = $dispatch->where('schedule_id', $scheduleIds[$i])->column('lesson');
         }
-        return json($weeks);
+        return '111111111';
     }
 
     public function courseDetail() 
