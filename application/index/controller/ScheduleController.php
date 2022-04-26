@@ -313,7 +313,11 @@ class ScheduleController extends IndexController {
         }
         //所有教室
         $Rooms = Room::all();
+
+        $currentUser = unserialize($_SESSION[User::$SESSION_KEY_USER]);
+        $Teacher = Teacher::get(['user_id'=>$currentUser->id]);
         //传参
+        $this->assign('Teacher', $Teacher);
         $this->assign('Weeks', $Weeks);
         $this->assign('Rooms', $Rooms);
         $this->assign('dayArray', $dayArray);
@@ -325,7 +329,12 @@ class ScheduleController extends IndexController {
 
     public function scheduleSave()
     {
-        $postData = Request::instance()->post();
+        $postData = Request()->post();
+        var_dump($postData);
+        echo '-----------------------------';
+        $postData = json_encode($postData['course_id']);
+        var_dump($postData);
+        die();
         if (empty($postData['klass_id'][0])) {
             return $this->error('无班级信息');
         } elseif (empty($postData['course_id'])) {
