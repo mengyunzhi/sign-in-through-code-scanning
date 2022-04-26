@@ -22,7 +22,7 @@ use think\Request;
 /**
  * 管理端
  */
-class KlassController extends IndexController {
+class VueController extends IndexController {
 
     public function getAllKlassesJson() {
         return json(Klass::All());
@@ -35,4 +35,15 @@ class KlassController extends IndexController {
     public function getAllSchedulesJson() {
         return json(Schedule::All());
     }
+
+    public function getAllDispatchesJson() {
+        return json(Dispatch::All());
+    }
+
+    public function getTeacherId() {
+        $User = User::getCurrentLoginUser();
+        $Teacher = Teacher::where('user_id', 'eq', $User->getId())->find();
+        return json($Teacher);
+    }
+
 }
