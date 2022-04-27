@@ -40,6 +40,10 @@ class VueController extends IndexController {
         return json(Dispatch::All());
     }
 
+    public function getAllRoomsJson() {
+        return json(Room::All());
+    }
+
     public function getTeacherJson() {
         $User = User::getCurrentLoginUser();
         $Teacher = Teacher::where('user_id', 'eq', $User->getId())->find();

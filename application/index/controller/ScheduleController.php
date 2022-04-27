@@ -24,19 +24,6 @@ use think\Request;
  */
 class ScheduleController extends IndexController {
 
-    public function A() 
-    {
-        $teacher_id = Teacher::get(1)->getId();
-        $schedule = new Schedule;
-        $dispatch = new Dispatch;
-        $scheduleIds =  $schedule->where('teacher_id', $teacher_id)->column('id');
-        for ($i = 0; $i < count($scheduleIds); $i++) {
-            $weeks[$i] = $dispatch->where('schedule_id', $scheduleIds[$i])->column('week');
-            $days[$i] = $dispatch->where('schedule_id', $scheduleIds[$i])->column('day');
-            $lessons[$i] = $dispatch->where('schedule_id', $scheduleIds[$i])->column('lesson');
-        }
-        return '111111111';
-    }
 
     public function courseDetail() 
     {
@@ -330,11 +317,6 @@ class ScheduleController extends IndexController {
     public function scheduleSave()
     {
         $postData = Request()->post();
-        var_dump($postData);
-        echo '-----------------------------';
-        $postData = json_encode($postData['course_id']);
-        var_dump($postData);
-        die();
         if (empty($postData['klass_id'][0])) {
             return $this->error('无班级信息');
         } elseif (empty($postData['course_id'])) {
