@@ -317,6 +317,8 @@ class ScheduleController extends IndexController {
     public function scheduleSave()
     {
         $postData = Request()->post();
+        dump($postData);
+        die();
         if (empty($postData['klass_id'][0])) {
             return $this->error('无班级信息');
         } elseif (empty($postData['course_id'])) {
