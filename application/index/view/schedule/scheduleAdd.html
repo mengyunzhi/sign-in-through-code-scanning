@@ -13,39 +13,76 @@
 const RootComponent = {
     data() {
         return {
-            schedules: [],
-            klasses: [],
+            schedules: 123,
             scheduleKlasses: [],
             dispatches: [],
             teacher: null,
+            conflictTime: [],
+            term: null,
 
             isSelectCourse: null,
             isSelectKlass: null,
             weekName: ['一', '二', '三', '四', '五', '六', '日'],
         }
     },
-
     methods: {
         onCourseSelect(course) {
-            console.log(course);
+            // console.log(course);
             this.isSelectKlass = null;
             this.isSelectCourse = course;
         },
         onKlassSelect(klass) {
-            console.log(klass);
+            // console.log(klass);
             this.isSelectKlass = klass;
-            if (klass.length == 1 && !klass[0]) {
+            if (klass.length === 1 && !klass[0]) {
                 this.isSelectKlass = null;
             }
-            this.$options.methods.conflictTime();
+            this.conflictTime = this.$options.methods.conflictTime(this.schedules,  this.isSelectKlass,  this.scheduleKlasses,  this.dispatches,  this.teacher, this.term);
         },
-        conflictTime() {
-            // console.log('schedules',this.schedules);
-            // console.log('klasses',this.klasses);
-            // console.log('scheduleKlasses',this.scheduleKlasses);
-            // console.log('dispatches',this.dispatches);
-            // console.log('teacher',this.teacher);
-            return 123123123;
+        //通过选择的班级和当前的教师获取冲突的时间，即不允许选择的时间
+        conflictTime(schedules,  klasses,  scheduleKlasses,  dispatches,  teacher, term) {
+            // console.log('------------------------');
+            // console.log('班级，班级表，表，教室，调度', klasses, scheduleKlasses,  schedules,  teacher,  dispatches, term);
+            // console.log('------------------------');
+            scheduleIds = [];
+            //通过选择的班级获取scheduleIds
+            for (var i = klasses.length - 1; i >= 0; i--) {
+                for (var j = scheduleKlasses.length - 1; j >= 0; j--) {
+                    if(scheduleKlasses[j].klass_id === klasses[i]) {
+                        scheduleIds.push(scheduleKlasses[j].schedule_id);
+                    }
+                }
+            }
+            //学期认证，验证冲突是否是当前学期
+            for (var i = schedules.length - 1; i >= 0; i--) {
+                for (var j = scheduleIds.length - 1; j >= 0; j--) {
+                    if (scheduleIds[j] === schedules[i].id && schedules[i].term_id !== term.id) {
+                        scheduleIds.splice(j, 1);
+                    }
+                }
+            }
+
+            // console.log('scheduleIds by selectklasses', scheduleIds);
+            //通过当前的教师获取scheduleIds
+            for (var i = schedules.length - 1; i >= 0; i--) {
+                if (schedules[i].teacher_id === teacher.id && schedules[i].term_id === term.id) {
+                    scheduleIds.push(schedules[i].id);
+                }
+            }
+            // console.log('scheduleIds by teacherid + ↑', scheduleIds);
+
+
+            conflictTime = [];
+            //通过已获取的scheduleIds来获取dispatches
+            for (var i = scheduleIds.length - 1; i >= 0; i--) {
+                for (var j = dispatches.length - 1; j >= 0; j--) {
+                    if (dispatches[j].schedule_id === scheduleIds[i]) {
+                        conflictTime.push(dispatches[j]);
+                    }
+                }
+            }
+            // console.log('冲突时间：', conflictTime);
+            return conflictTime;
         }
     },
 
@@ -56,7 +93,7 @@ const RootComponent = {
 
         <!--选择班级-->
         <div class="form-group row" v-if="isSelectCourse">
-            <klass-select @on-klass-select="onKlassSelect"></klass-select>
+            <klass-select @on-klass-select="onKlassSelect" :isSelectCourse="isSelectCourse"></klass-select>
         </div>
         <h5>{{isSelectCourse}}</h5>
         <h5>{{isSelectKlass}}</h5>
@@ -79,7 +116,7 @@ const RootComponent = {
                             <ul class="accordion" data-accordion>
                                 <li class="accordion-navigation">
                                 <!--选择时间-->
-                                    <course-time-select :day="row" :lesson="col"></course-time-select>
+                                    <course-time-select :day="row" :lesson="col" :conflictTime="conflictTime"></course-time-select>
                                 </li>
                             </ul>
                         </td>
@@ -107,20 +144,23 @@ const RootComponent = {
                 .get('{:url("Vue/getAllScheduleKlassesJson")}')
                 .then(res => res.data),
             axios
-                .get('{:url("Vue/getAllScheduleKlassesJson")}')
+                .get('{:url("Vue/getAllDispatchesJson")}')
                 .then(res => res.data),
             axios
-                .get('{:url("Vue/getAllScheduleKlassesJson")}')
+                .get('{:url("Vue/getTeacherJson")}')
+                .then(res => res.data),
+            axios
+                .get('{:url("Vue/getTermJson")}')
                 .then(res => res.data)
         ]).then(
-            axios.spread((val1, val2, val3, val4, val5) => {
+            axios.spread((val1, val2, val3, val4, val5, val6) => {
                 this.schedules = val1;
                 this.klasses = val2;
                 this.scheduleKlasses = val3;
                 this.dispatches = val4;
                 this.teacher = val5;
-                // val 是数组中每个接口返回的值 res.data
-                console.log('根组件接口全部加载完成',this.schedules, this.klasses, this.scheduleKlasses, this.dispatches, this.teacher) ;  // 1,2
+                this.term = val6;
+                // console.log('根组件接口全部加载完成',this.schedules, this.klasses, this.scheduleKlasses, this.dispatches, this.teacher) ;
             })
         ).catch(err => {
             console.log(err) ;
@@ -144,6 +184,7 @@ app.component('course-time-select',{
     props: {
         day: 0,
         lesson: 0,
+        conflictTime: [],
     },
     template: `
         <a class="btn btn-primary" @click="onChange">{{day+1}}天{{lesson+1}}节</a>
@@ -158,7 +199,7 @@ app.component('course-time-select',{
     methods: {
         onChange() {
             this.isShow = !this.isShow;
-            console.log(this.clickCount)
+            console.log(this.conflictTime);
         },
         filterRoom(filterRoom) {
             if (this.filter_room == null) {
@@ -265,13 +306,13 @@ app.component('klass-select', {
             selectKlass: null,
         }
     },
-    props : [],
+    props : ['isSelectCourse'],
     template: `
     <label for="klass_id" class="col-sm-2 col-form-label" style="width: 162px">上课班级<br>(可多选)</label>
     <div class="col-sm-4">
         <select  @change="onChange" v-model="selectKlass" class="selectpicker form-control col-sm-12" multiple name="klass_id[]" id="klass_id" required>
             <option value=''>请选择班级</option>
-            <option v-for="klass in getKlassesAfterFilter(4)" :value="klass.id" >{{klass.name}}</option>
+            <option v-for="klass in getKlassesAfterFilter(isSelectCourse)" :value="klass.id" >{{klass.name}}</option>
         </select>
     </div>
     `,
@@ -280,8 +321,13 @@ app.component('klass-select', {
     
     methods: {
         onChange() {
-            console.log(this.selectKlass);
+            // console.log(this.selectKlass);
             this.$emit('onKlassSelect', this.selectKlass)
+            // console.log('11111111111111111111111111111');
+            // console.log(this.schedules);
+            // console.log(this.scheduleKlasses);
+            // console.log(this.klasses);
+            // console.log('11111111111111111111111111111');
         },
             //去除掉已经有上该门课的班级
         getKlassesAfterFilter(courseId) {
@@ -310,7 +356,7 @@ app.component('klass-select', {
                     klassesAfterFilter.push(this.klasses[i]);
                 }
             }
-            console.log('处理后的班级：'+ klassesAfterFilter);
+            // console.log('处理后的班级：'+ klassesAfterFilter);
             return klassesAfterFilter;
         }
     },
@@ -331,7 +377,7 @@ app.component('klass-select', {
                 this.klasses = val2;
                 this.scheduleKlasses = val3;
                 // val 是数组中每个接口返回的值 res.data
-                console.log('三个接口全部加载完成',val1, val2, val3) ;  // 1,2
+                // console.log('三个接口全部加载完成',val1, val2, val3) ;  // 1,2
             })
         ).catch(err => {
             console.log(err) ;
@@ -363,7 +409,7 @@ app.component('course-select', {
     emits: ['onCourseSelect'],
     methods: {
         onChange() {
-            console.log(this.selectCourse);
+            // console.log(this.selectCourse);
             this.$emit('onCourseSelect', this.selectCourse)
         },
     },
@@ -380,12 +426,6 @@ app.component('course-select', {
 
 })
 app.mount('#main');
-
-//求交集
-var mix = [1,2,3,4,8,6].filter(function(item){
-    return [8,10,6,7,8].indexOf(item) != -1
-});
-console.log(mix)
 </script>
 
 {/block}

@@ -44,10 +44,14 @@ class VueController extends IndexController {
         return json(Room::All());
     }
 
-    public function getTeacherId() {
+    public function getTeacherJson() {
         $User = User::getCurrentLoginUser();
         $Teacher = Teacher::where('user_id', 'eq', $User->getId())->find();
         return json($Teacher);
+    }
+    
+    public function getTermJson() {
+        return json(Term::getCurrentTerm());
     }
 
 }
