@@ -87,6 +87,7 @@ const RootComponent = {
     },
 
     template: `
+    {{conflictTime}}
     <form class="" action="{:url('scheduleSave')}" method="post">
         <!--选择课程-->
         <course-select @on-course-select="onCourseSelect"></course-select>
@@ -178,7 +179,9 @@ app.component('course-time-select',{
             isShow: false,
             selectCourseTime: 0,
             filter_room: null,
-            filter_week: null
+            filter_week: null,
+            dispatchWeeks: null,
+            dispatchRooms: null,
         }
     },
     props: {
@@ -193,7 +196,6 @@ app.component('course-time-select',{
             <week-select @filter-room="filterRoom" :filter_week="filter_week"></week-select>
             <!--选择教室-->
             <room-select :filter_room="filter_room" @filter-week="filterWeek"></room-select>
-            
         </div>
     `,
     methods: {
@@ -201,22 +203,39 @@ app.component('course-time-select',{
             this.isShow = !this.isShow;
             console.log(this.conflictTime);
         },
-        filterRoom(filterRoom) {
-            if (this.filter_room == null) {
-                this.filter_room = filterRoom;
-            } else {
-                this.filter_room = null;
+        filterRoom(selectWeek) {
+            if (selectWeek == this.dispatchWeeks) {
+                if (this.filter_room == null) {
+                    this.filter_room = this.dispatchRooms;
+                } else {
+                    this.filter_room = null;
+                }
             }
         },
-        filterWeek(filterWeek) {
-            if (this.filter_week == null) {
-                this.filter_week = filterWeek;
-            } else {
-                this.filter_week = null;
+        filterWeek(selectRoom) {
+            if (selectRoom == this.dispatchRooms) {
+                if (this.filter_week == null) {
+                    this.filter_week = this.dispatchWeeks;
+                } else {
+                    this.filter_week = null;
+                }
             }
-            
         }
     },
+        mounted () {
+        axios
+            .get('{:url("Vue/getAllDispatchsWeekJson")}')
+            .then(response => this.dispatchWeeks = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+        axios
+            .get('{:url("Vue/getAllDispatchsRoomJson")}')
+            .then(response => this.dispatchRooms = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+    }
 })
 
 //  上课时间选择-周
@@ -224,6 +243,7 @@ app.component('week-select', {
     data() {
         return {
             weeks: [1, 2, 3, 4, 5],
+            selectWeek: null,
         }
     },
     props: {
@@ -233,24 +253,18 @@ app.component('week-select', {
         <label>上课周</label>
         <div class="row" v-for="week in weeks">
             <div class="col" v-if="week != filter_week">
-                    <div v-if="week == 1">
-                        <input type="checkbox" name="" value="" id="" @change="filterRoom">
-                        <label for="">第{{week}}周</label>
-                    </div>
-                    <div v-if="week != 1">
-                        <input type="checkbox" name="" value="" id="">
-                        <label for="">第{{week}}周</label>
-                    </div>
+                <input type="checkbox" name="" value="" id="" @change="filterRoom(week)">
+                <label for="">第{{week}}周</label>
             </div>
         </div>
         <slot></slot>
     `,
     emits: ['filterRoom'],
     methods: {
-        filterRoom() {
-            this.$emit('filterRoom', 1);
+        filterRoom(week) {
+            this.$emit('filterRoom', week);
         }
-    }
+    },
 })
 
 //  上课时间选择-教室
@@ -267,21 +281,16 @@ app.component('room-select', {
     <label>选择教室</label>
     <div class="row" v-for="room in rooms">
         <div class="col" v-if="room.id != filter_room">
-            <div v-if="room.id == 2">
-                <input type="checkbox" name="" value="" id="" @change="filterWeek">
-                <label for="">{{room.name}}</label>
-            </div>
-            <div v-if="room.id != 2">
-                <input type="checkbox" name="" value="" id="">
-                <label for="">{{room.name}}</label>
-            </div>
+            <input type="checkbox" name="" value="" id="" @change="filterWeek(room.id)">
+            <label for="">{{room.name}}</label>
         </div>
     </div>
     `,
     emits: ['filterWeek'],
     methods: {
-        filterWeek() {
-            this.$emit('filterWeek', 5);
+        filterWeek(roomId) {
+            console.log(roomId);
+            this.$emit('filterWeek', roomId);
         }
     },
     mounted () {
