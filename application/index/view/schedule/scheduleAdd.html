@@ -87,7 +87,6 @@ const RootComponent = {
     },
 
     template: `
-    {{conflictTime}}
     <form class="" action="{:url('scheduleSave')}" method="post">
         <!--选择课程-->
         <course-select @on-course-select="onCourseSelect"></course-select>
@@ -182,6 +181,8 @@ app.component('course-time-select',{
             filter_week: null,
             dispatchWeeks: null,
             dispatchRooms: null,
+            dispatchs: null,
+            dispatchRos: null,
         }
     },
     props: {
@@ -201,23 +202,45 @@ app.component('course-time-select',{
     methods: {
         onChange() {
             this.isShow = !this.isShow;
-            console.log(this.conflictTime);
+            console.log(this.dispatchWeeks);
         },
         filterRoom(selectWeek) {
-            if (selectWeek == this.dispatchWeeks) {
-                if (this.filter_room == null) {
-                    this.filter_room = this.dispatchRooms;
-                } else {
-                    this.filter_room = null;
+            var status = false;
+            for (var i = 0; i < this.dispatchs.length; i++) {
+                if (selectWeek == this.dispatchs[i].week) {
+                    status = true;
+                    break;
+                }
+            }
+            if (status) {
+                for (var j = 0 ; j < this.dispatchRos.length; j++) {
+                    if (this.dispatchs[i].id == this.dispatchRos[j].dispatch_id) {
+                        if (this.filter_room == null) {
+                            this.filter_room = this.dispatchRos[j].room_id;
+                        } else {
+                            this.filter_room = null;
+                        }
+                    }
                 }
             }
         },
         filterWeek(selectRoom) {
-            if (selectRoom == this.dispatchRooms) {
-                if (this.filter_week == null) {
-                    this.filter_week = this.dispatchWeeks;
-                } else {
-                    this.filter_week = null;
+            var status = false;
+            for (var i = 0; i < this.dispatchRos.length; i++) {
+                if (selectRoom == this.dispatchRos[i].room_id) {
+                    status = true;
+                    break;
+                }
+            }
+            if (status) {
+                for (var j = 0; j < this.dispatchs.length; j++) {
+                    if (this.dispatchRos[i].dispatch_id == this.dispatchs[j].id) {
+                        if (this.filter_week == null) {
+                            this.filter_week = this.dispatchs[j].week;
+                        } else {
+                            this.filter_week = null;
+                        }
+                    }
                 }
             }
         }
@@ -232,6 +255,18 @@ app.component('course-time-select',{
         axios
             .get('{:url("Vue/getAllDispatchsRoomJson")}')
             .then(response => this.dispatchRooms = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+        axios
+            .get('{:url("Vue/getAllDispatchRosJson")}')
+            .then(response => this.dispatchRos = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+        axios
+            .get('{:url("Vue/getAllDispatchsJson")}')
+            .then(response => this.dispatchs = response.data)
             .catch(function (error) { // 请求失败处理
             console.log(error);
         });
