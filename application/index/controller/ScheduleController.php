@@ -293,6 +293,7 @@ class ScheduleController extends IndexController {
         }
         //周几
         $dayArray = ['一','二','三','四','五','六','日'];
+
         //多少周 可以通过term的start和end计算
         $Weeks = [];
         for ($i=0; $i < 11; $i++) { 

@@ -13,12 +13,7 @@
 const RootComponent = {
     data() {
         return {
-            schedules: 123,
-            scheduleKlasses: [],
             dispatches: [],
-            teacher: null,
-            conflictTime: [],
-            term: null,
 
             isSelectCourse: null,
             isSelectKlass: null,
@@ -37,56 +32,12 @@ const RootComponent = {
             if (klass.length === 1 && !klass[0]) {
                 this.isSelectKlass = null;
             }
-            this.conflictTime = this.$options.methods.conflictTime(this.schedules,  this.isSelectKlass,  this.scheduleKlasses,  this.dispatches,  this.teacher, this.term);
         },
-        //通过选择的班级和当前的教师获取冲突的时间，即不允许选择的时间
-        conflictTime(schedules,  klasses,  scheduleKlasses,  dispatches,  teacher, term) {
-            // console.log('------------------------');
-            // console.log('班级，班级表，表，教室，调度', klasses, scheduleKlasses,  schedules,  teacher,  dispatches, term);
-            // console.log('------------------------');
-            scheduleIds = [];
-            //通过选择的班级获取scheduleIds
-            for (var i = klasses.length - 1; i >= 0; i--) {
-                for (var j = scheduleKlasses.length - 1; j >= 0; j--) {
-                    if(scheduleKlasses[j].klass_id === klasses[i]) {
-                        scheduleIds.push(scheduleKlasses[j].schedule_id);
-                    }
-                }
-            }
-            //学期认证，验证冲突是否是当前学期
-            for (var i = schedules.length - 1; i >= 0; i--) {
-                for (var j = scheduleIds.length - 1; j >= 0; j--) {
-                    if (scheduleIds[j] === schedules[i].id && schedules[i].term_id !== term.id) {
-                        scheduleIds.splice(j, 1);
-                    }
-                }
-            }
-
-            // console.log('scheduleIds by selectklasses', scheduleIds);
-            //通过当前的教师获取scheduleIds
-            for (var i = schedules.length - 1; i >= 0; i--) {
-                if (schedules[i].teacher_id === teacher.id && schedules[i].term_id === term.id) {
-                    scheduleIds.push(schedules[i].id);
-                }
-            }
-            // console.log('scheduleIds by teacherid + ↑', scheduleIds);
-
-
-            conflictTime = [];
-            //通过已获取的scheduleIds来获取dispatches
-            for (var i = scheduleIds.length - 1; i >= 0; i--) {
-                for (var j = dispatches.length - 1; j >= 0; j--) {
-                    if (dispatches[j].schedule_id === scheduleIds[i]) {
-                        conflictTime.push(dispatches[j]);
-                    }
-                }
-            }
-            // console.log('冲突时间：', conflictTime);
-            return conflictTime;
-        }
     },
 
     template: `
+    {{dispatches}}
+
     <form class="" action="{:url('scheduleSave')}" method="post">
         <!--选择课程-->
         <course-select @on-course-select="onCourseSelect"></course-select>
@@ -116,7 +67,7 @@ const RootComponent = {
                             <ul class="accordion" data-accordion>
                                 <li class="accordion-navigation">
                                 <!--选择时间-->
-                                    <course-time-select :day="row" :lesson="col" :conflictTime="conflictTime"></course-time-select>
+                                    <course-time-select :day="row" :lesson="col" :dispatches="dispatches" :weeks="weeks" :isSelectCourse="isSelectCourse" :isSelectKlass="isSelectKlass"></course-time-select>
                                 </li>
                             </ul>
                         </td>
@@ -133,36 +84,10 @@ const RootComponent = {
     </form>
     `,
     mounted () {
-        axios.all([
-            axios
-                .get('{:url("Vue/getAllSchedulesJson")}')
-                .then(res => res.data),
-            axios
-                .get('{:url("Vue/getAllKlassesJson")}')
-                .then(res => res.data),
-            axios
-                .get('{:url("Vue/getAllScheduleKlassesJson")}')
-                .then(res => res.data),
-            axios
-                .get('{:url("Vue/getAllDispatchesJson")}')
-                .then(res => res.data),
-            axios
-                .get('{:url("Vue/getTeacherJson")}')
-                .then(res => res.data),
-            axios
-                .get('{:url("Vue/getTermJson")}')
-                .then(res => res.data)
-        ]).then(
-            axios.spread((val1, val2, val3, val4, val5, val6) => {
-                this.schedules = val1;
-                this.klasses = val2;
-                this.scheduleKlasses = val3;
-                this.dispatches = val4;
-                this.teacher = val5;
-                this.term = val6;
-                // console.log('根组件接口全部加载完成',this.schedules, this.klasses, this.scheduleKlasses, this.dispatches, this.teacher) ;
-            })
-        ).catch(err => {
+        axios.
+        get(['{:url("Vue/getDispatchesJson")}']).
+        then(response => this.dispatches = response.data).
+        catch(err => {
             console.log(err) ;
         })
     }
@@ -174,9 +99,7 @@ const app = Vue.createApp(RootComponent);
 app.component('course-time-select',{
     data() {
         return {
-            week: [],
             isShow: false,
-            selectCourseTime: 0,
             filter_room: null,
             filter_week: null
         }
@@ -184,16 +107,20 @@ app.component('course-time-select',{
     props: {
         day: 0,
         lesson: 0,
-        conflictTime: [],
+        dispatches: [],
+        weeks: [],
+        //已选择的课程
+        isSelectCourse: null,
+        //已选择的班级
+        isSelectKlass: null,
     },
     template: `
+    {{conflictWeeksAndRooms}}
         <a class="btn btn-primary" @click="onChange">{{day+1}}天{{lesson+1}}节</a>
         <div v-if="isShow">
             <!--选择周数-->
             <week-select @filter-room="filterRoom" :filter_week="filter_week"></week-select>
-            <!--选择教室-->
             <room-select :filter_room="filter_room" @filter-week="filterWeek"></room-select>
-            
         </div>
     `,
     methods: {
@@ -214,7 +141,37 @@ app.component('course-time-select',{
             } else {
                 this.filter_week = null;
             }
-            
+        }
+    },
+    computed: {
+        conflictWeeksAndRooms() {
+            conflictWeeksAndRooms = [];
+            dispatches = this.dispatches;
+
+            console.log(this.dispatches);
+            for (var i = this.dispatches.length - 1; i >= 0; i--) {
+                //挑选出当前day和lesson的
+                if (dispatches[i].day===this.day && dispatches[i].lesson===this.lesson) {
+                    console.log('周几和第几节课已验证通过');
+                    for (var j = this.isSelectKlass.length - 1; j >= 0; j--) {
+                    //如果调度中包括选择的班级就说明当前周不能用,即存入conflictWeeksAndRooms(不包括直接排除)
+                        if (dispatches[i].klassIds.includes(this.isSelectKlass[j])) {
+                            console.log('当前班级在此时段已有课,周数为:'+dispatches[i].week);
+                            console.log(dispatches[i]);
+                            conflictWeeksAndRooms.push(dispatches[i]);
+                            //有一个班级被包含就足够了
+                            break;
+                        }
+                    }
+                }
+            }
+            weeksAndRooms = [];
+
+            for (var i = conflictWeeksAndRooms.length - 1; i >= 0; i--) {
+                weeksAndRooms.push({week:conflictWeeksAndRooms[i].week, roomIds:conflictWeeksAndRooms[i].roomIds});
+            }
+
+            return weeksAndRooms;
         }
     },
 })
@@ -363,13 +320,13 @@ app.component('klass-select', {
     mounted () {
         axios.all([
             axios
-                .get('{:url("Klass/getAllSchedulesJson")}')
+                .get('{:url("Vue/getAllSchedulesJson")}')
                 .then(res => res.data),
             axios
-                .get('{:url("Klass/getAllKlassesJson")}')
+                .get('{:url("Vue/getAllKlassesJson")}')
                 .then(res => res.data),
             axios
-                .get('{:url("Klass/getAllScheduleKlassesJson")}')
+                .get('{:url("Vue/getAllScheduleKlassesJson")}')
                 .then(res => res.data)
         ]).then(
             axios.spread((val1, val2, val3) => {
