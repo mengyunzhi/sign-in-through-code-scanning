@@ -28,6 +28,43 @@ class VueController extends IndexController {
         return json(Klass::All());
     }
 
+    public function getAllDispatchsWeekJson() {
+        $result = [];
+        $dispatches = Dispatch::All();
+        foreach ($dispatches as $dispatch) {
+            array_push($result, $dispatch->getWeek());
+        }
+        return json($result);
+    }
+
+    public function getAllDispatchRosJson() {
+        $result = [];
+        $dispatcheRos = DispatchRoom::All();
+        foreach ($dispatcheRos as $dispatchRo) {
+            array_push($result, $dispatchRo);
+        }
+        return json($result);
+    }
+
+    public function getAllDispatchsJson() {
+        $result = [];
+        $dispatches = Dispatch::All();
+        foreach ($dispatches as $dispatch) {
+            array_push($result, $dispatch);
+        }
+        return json($result);
+    }
+
+    public function getAllDispatchsRoomJson() {
+        $dispatchRoomes = [];
+        $dispatchRoom = new DispatchRoom;
+        $dispatches = Dispatch::All();
+        foreach ($dispatches as $dispatch) {
+            array_push($dispatchRoomes, $dispatchRoom->where('dispatch_id', $dispatch->getId())->find()->getRoomId());
+        }
+        return json($dispatchRoomes);
+    }
+
     public function getAllScheduleKlassesJson() {
         return json(ScheduleKlass::All());
     }
