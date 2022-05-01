@@ -32,6 +32,27 @@ class VueController extends IndexController {
         return json(ScheduleKlass::All());
     }
 
+    public function getAllCoursesJson() {
+        //学期暂不考虑
+        $courses = Course::column('id, name, lesson');
+        $coursesWithScheduleIds = [];
+
+        foreach ($courses as $course) {
+            $course['schedule_ids'] = Schedule::where('course_id', 'eq', $course['id'])->column('id');
+            $coursesWithScheduleIds[] = $course;
+        }
+        $coursesWithScheduleIdsAndKlassIds = [];
+        foreach ($coursesWithScheduleIds as $coursesWithScheduleId) {
+            if (empty($coursesWithScheduleId['schedule_ids'])) {
+                $coursesWithScheduleId['schedule_ids'] = [0];
+            }
+            $coursesWithScheduleId['klassIds'] = ScheduleKlass::where('schedule_id', 'in', $coursesWithScheduleId['schedule_ids'])->column('klass_id');
+            unset($coursesWithScheduleId['schedule_ids']);
+            $coursesWithScheduleIdsAndKlassIds[] = $coursesWithScheduleId;
+        }
+        return json($coursesWithScheduleIdsAndKlassIds); 
+    }
+
     public function getAllSchedulesJson() {
         return json(Schedule::All());
     }
