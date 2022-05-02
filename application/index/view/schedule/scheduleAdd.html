@@ -106,11 +106,14 @@ app.component('course-time-select',{
             dispatchs: null,
             dispatchRos: null,
             conflictData: [
-                {week: 1, roomIds: [0, 1]}, 
-                {week: 2, roomIds: [2, 3]}
+                {week: 1, roomIds: [1, 2]}, 
+                {week: 2, roomIds: [2, 3]},
+                {week: 3, roomIds: [3, 4, 5]},
             ],
             selectWeeks: [],
             selectRoomIds: [],
+            disableWeeks: [],
+            disableRoomIds: [],
         }
     },
     props: {
@@ -130,7 +133,7 @@ app.component('course-time-select',{
             <!--选择周数-->
             <week-select @add-select-weeks="addSelectWeeks"></week-select>
             <!--选择教室-->
-            <room-select @add-select-room-ids="addSelectRoomIds"></room-select>
+            <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds"></room-select>
         </div>
     `,
     methods: {
@@ -138,6 +141,7 @@ app.component('course-time-select',{
             this.isShow = !this.isShow;
         },
         addSelectWeeks(selectWeek) {
+            // 添加selectWeek
             var status = true;
             for (var i = 0; i < this.selectWeeks.length; i++) {
                 if (selectWeek == this.selectWeeks[i]) {
@@ -148,9 +152,46 @@ app.component('course-time-select',{
             if (status) {
                 this.selectWeeks.push(selectWeek);
             } else {
+                var d = this.selectWeeks[i];
                 this.selectWeeks.splice(i, 1);
             }
+
+            // 添加disableRoomIds
+            var sta = false;
+            for (var n = 0; n < this.selectWeeks.length; n++) {
+                if (selectWeek == this.selectWeeks[n]) {
+                    sta = !sta;
+                    break;
+                }
+            }
+            if (this.selectWeeks.length > 0 && sta) {
+                for (var i = 0; i < this.conflictData.length; i++) {
+                    if (this.selectWeeks[this.selectWeeks.length-1] == this.conflictData[i].week) {
+                        for (var j = 0; j < this.conflictData[i].roomIds.length; j++) {
+                            // 求并集
+                            this.disableRoomIds.push(this.conflictData[i].roomIds[j]);
+                        }
+                    }
+                }
+            } else {
+                console.log(d);
+                for (var a = 0; a < this.conflictData.length; a++) {
+                    if (d == this.conflictData[a].week) {
+                        for (var c = 0; c < this.conflictData[a].roomIds.length; c++) {
+                            for (var b = 0; b < this.disableRoomIds.length; b++) {
+                                if (this.conflictData[a].roomIds[c] == this.disableRoomIds[b]) {
+                                    this.disableRoomIds.splice(b, 1);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         },
+
+
+
         addSelectRoomIds(selectRoomId) {
             var status = true;
             for (var i = 0; i < this.selectRoomIds.length; i++) {
@@ -164,7 +205,7 @@ app.component('course-time-select',{
             } else {
                 this.selectRoomIds.splice(i, 1);
             }
-        }
+        },
     },
     computed: {
         conflictWeeksAndRooms() {
@@ -239,12 +280,13 @@ app.component('room-select', {
         }
     },
     props: {
-        filter_room: null,
+        disableRoomIds: null,
     },
     template: `
+    {{disableRoomIds}}
     <label>选择教室</label>
     <div class="row" v-for="room in rooms">
-        <div class="col" v-if="room.id != filter_room">
+        <div class="col" v-if="disableRoomId(room.id)">
             <input type="checkbox" name="" value="" id="" @change="addSelectRoomIds(room.id)">
             <label for="">{{room.name}}</label>
         </div>
@@ -254,7 +296,14 @@ app.component('room-select', {
     methods: {
         addSelectRoomIds(selectRoomId) {
             this.$emit('addSelectRoomIds', selectRoomId);
-        }
+        },
+        disableRoomId(roomId) {
+            if (this.disableRoomIds.length == 0) {
+                return true;
+            } else {
+                return this.disableRoomIds.includes(roomId);
+            }
+        },
     },
     mounted () {
         axios
