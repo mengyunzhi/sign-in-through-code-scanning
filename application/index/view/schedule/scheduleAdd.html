@@ -68,7 +68,7 @@ const RootComponent = {
                             <ul class="accordion" data-accordion>
                                 <li class="accordion-navigation">
                                 <!--选择时间-->
-                                    <course-time-select :day="row" :lesson="col" :dispatches="dispatches" :selectCourse="isSelectCourse" :selectKlass="isSelectKlass"></course-time-select>
+                                    <course-time-select :day="row" :lesson="col" :dispatches="dispatches" :selectKlass="isSelectKlass"></course-time-select>
                                 </li>
                             </ul>
                         </td>
@@ -101,33 +101,18 @@ app.component('course-time-select',{
     data() {
         return {
             isShow: false,
-            dispatchWeeks: null,
-            dispatchRooms: null,
-            dispatchs: null,
-            dispatchRos: null,
-            conflictData: [
-                {week: 1, roomIds: [1, 2]}, 
-                {week: 2, roomIds: [2, 3]},
-                {week: 3, roomIds: [3, 4, 5]},
-            ],
-            selectWeeks: [],
-            selectRoomIds: [],
-            disableWeeks: [],
-            disableRoomIds: [],
+
         }
     },
     props: {
         day: 0,
         lesson: 0,
-        dispatches: [],
-        //已选择的课程
-        selectCourse: null,
+        dispatches: null,
         //已选择的班级
         selectKlass: null,
     },
     template: `
-        {{selectWeeks}}
-        {{selectRoomIds}}
+
         <a class="btn btn-primary" @click="onChange">{{day+1}}天{{lesson+1}}节</a>
         <div v-if="isShow">
             <!--选择周数-->
@@ -319,6 +304,11 @@ app.component('room-select', {
 
 // 班级选择
 app.component('klass-select', {
+    data() {
+        return {
+            selectKlass: [],
+        }
+    },
     props : ['allowedKlasses'],
     template: `
     <label for="klass_id" class="col-sm-2 col-form-label" style="width: 162px">上课班级<br>(可多选)</label>
