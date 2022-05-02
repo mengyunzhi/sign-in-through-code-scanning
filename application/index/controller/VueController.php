@@ -73,9 +73,9 @@ class VueController extends IndexController {
         //学期暂不考虑
         $courses = Course::column('id, name, lesson');
         $coursesWithScheduleIds = [];
-
+        $term = Term::getCurrentTerm();
         foreach ($courses as $course) {
-            $course['schedule_ids'] = Schedule::where('course_id', 'eq', $course['id'])->column('id');
+            $course['schedule_ids'] = Schedule::where("course_id=".$course['id']." AND term_id=$term->id")->column('id');
             $coursesWithScheduleIds[] = $course;
         }
         $coursesWithScheduleIdsAndKlassIds = [];
@@ -95,14 +95,16 @@ class VueController extends IndexController {
     }
 
     public function getDispatchesJson() {
-        //通过学期 教师 班级 教室 原dispatches 获取数据如下
-        //
-        //学期，教师暂不考虑
-        //
-        //通过dispatches 获取 roomIds 
+        //通过学期，教师获取调度
+        $user = User::getCurrentLoginUser();
+        $teacher = Teacher::get(['user_id'=>$user->id]);
+        $term = Term::getCurrentTerm();
+        $scheduleIds = Schedule::where("term_id=$term->id and teacher_id=$teacher->id")->column('id');
+        $Dispatches = Dispatch::where('schedule_id', 'in', $scheduleIds)->column('id, schedule_id, week, day, lesson');
+
+        //通过dispatches 获取 roomIds
         ///找到每一个对应的roomIds
         $DisWithRoomIds;
-        $Dispatches = Dispatch::column('id, schedule_id, week, day, lesson');
         foreach ($Dispatches as $Dispatch) {
             $Dispatch['roomIds'] = DispatchRoom::where('dispatch_id', 'eq', $Dispatch['id'])->column('room_id'); 
             $DisWithRoomIds[] = $Dispatch;
