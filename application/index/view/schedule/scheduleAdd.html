@@ -101,12 +101,16 @@ app.component('course-time-select',{
     data() {
         return {
             isShow: false,
-            filter_room: null,
-            filter_week: null,
             dispatchWeeks: null,
             dispatchRooms: null,
             dispatchs: null,
             dispatchRos: null,
+            conflictData: [
+                {week: 1, roomIds: [0, 1]}, 
+                {week: 2, roomIds: [2, 3]}
+            ],
+            selectWeeks: [],
+            selectRoomIds: [],
         }
     },
     props: {
@@ -119,57 +123,46 @@ app.component('course-time-select',{
         selectKlass: null,
     },
     template: `
-        {{conflictWeeksAndRooms}}
+        {{selectWeeks}}
+        {{selectRoomIds}}
         <a class="btn btn-primary" @click="onChange">{{day+1}}天{{lesson+1}}节</a>
         <div v-if="isShow">
             <!--选择周数-->
-            <week-select @filter-room="filterRoom" :filter_week="filter_week"></week-select>
-            <room-select :filter_room="filter_room" @filter-week="filterWeek"></room-select>
+            <week-select @add-select-weeks="addSelectWeeks"></week-select>
+            <!--选择教室-->
+            <room-select @add-select-room-ids="addSelectRoomIds"></room-select>
         </div>
     `,
     methods: {
         onChange() {
             this.isShow = !this.isShow;
-            console.log(this.dispatchWeeks);
         },
-        filterRoom(selectWeek) {
-            var status = false;
-            for (var i = 0; i < this.dispatchs.length; i++) {
-                if (selectWeek == this.dispatchs[i].week) {
-                    status = true;
+        addSelectWeeks(selectWeek) {
+            var status = true;
+            for (var i = 0; i < this.selectWeeks.length; i++) {
+                if (selectWeek == this.selectWeeks[i]) {
+                    status = !status;
                     break;
                 }
             }
             if (status) {
-                for (var j = 0 ; j < this.dispatchRos.length; j++) {
-                    if (this.dispatchs[i].id == this.dispatchRos[j].dispatch_id) {
-                        if (this.filter_room == null) {
-                            this.filter_room = this.dispatchRos[j].room_id;
-                        } else {
-                            this.filter_room = null;
-                        }
-                    }
-                }
+                this.selectWeeks.push(selectWeek);
+            } else {
+                this.selectWeeks.splice(i, 1);
             }
         },
-        filterWeek(selectRoom) {
-            var status = false;
-            for (var i = 0; i < this.dispatchRos.length; i++) {
-                if (selectRoom == this.dispatchRos[i].room_id) {
-                    status = true;
+        addSelectRoomIds(selectRoomId) {
+            var status = true;
+            for (var i = 0; i < this.selectRoomIds.length; i++) {
+                if (selectRoomId == this.selectRoomIds[i]) {
+                    status = !status;
                     break;
                 }
             }
             if (status) {
-                for (var j = 0; j < this.dispatchs.length; j++) {
-                    if (this.dispatchRos[i].dispatch_id == this.dispatchs[j].id) {
-                        if (this.filter_week == null) {
-                            this.filter_week = this.dispatchs[j].week;
-                        } else {
-                            this.filter_week = null;
-                        }
-                    }
-                }
+                this.selectRoomIds.push(selectRoomId);
+            } else {
+                this.selectRoomIds.splice(i, 1);
             }
         }
     },
@@ -200,7 +193,7 @@ app.component('course-time-select',{
             }
 
             return weeksAndRooms;
-        }
+        },
     },
         mounted () {
         axios
@@ -217,26 +210,23 @@ app.component('week-select', {
     data() {
         return {
             weeks: [1, 2, 3, 4, 5],
-            selectWeek: null,
+            a: null,
         }
-    },
-    props: {
-        filter_week: null,
     },
     template: `
         <label>上课周</label>
         <div class="row" v-for="week in weeks">
-            <div class="col" v-if="week != filter_week">
-                <input type="checkbox" name="" value="" id="" @change="filterRoom(week)">
+            <div class="col" v-if="week != a">
+                <input type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)">
                 <label for="">第{{week}}周</label>
             </div>
         </div>
         <slot></slot>
     `,
-    emits: ['filterRoom'],
+    emits: ['addSelectWeeks'],
     methods: {
-        filterRoom(week) {
-            this.$emit('filterRoom', week);
+        addSelectWeeks(selectWeek) {
+            this.$emit('addSelectWeeks', selectWeek);
         }
     },
 })
@@ -255,16 +245,15 @@ app.component('room-select', {
     <label>选择教室</label>
     <div class="row" v-for="room in rooms">
         <div class="col" v-if="room.id != filter_room">
-            <input type="checkbox" name="" value="" id="" @change="filterWeek(room.id)">
+            <input type="checkbox" name="" value="" id="" @change="addSelectRoomIds(room.id)">
             <label for="">{{room.name}}</label>
         </div>
     </div>
     `,
-    emits: ['filterWeek'],
+    emits: ['addSelectRoomIds'],
     methods: {
-        filterWeek(roomId) {
-            console.log(roomId);
-            this.$emit('filterWeek', roomId);
+        addSelectRoomIds(selectRoomId) {
+            this.$emit('addSelectRoomIds', selectRoomId);
         }
     },
     mounted () {

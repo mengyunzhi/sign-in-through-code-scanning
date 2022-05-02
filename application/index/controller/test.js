@@ -37,3 +37,5 @@ a = [
     {week: 3, roomIds: [0, 1], klassIds: [1, 2, 3], day: 1, lesson: 1},
 ];
 
+
+
