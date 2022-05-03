@@ -105,11 +105,7 @@ app.component('course-time-select',{
             dispatchRooms: null,
             dispatchs: null,
             dispatchRos: null,
-            conflictData: [
-                {week: 1, roomIds: [1, 2]}, 
-                {week: 2, roomIds: [2, 3]},
-                {week: 3, roomIds: [3, 4, 5]},
-            ],
+            conflictData: [],
             selectWeeks: [],
             selectRoomIds: [],
             disableWeeks: [],
@@ -134,6 +130,9 @@ app.component('course-time-select',{
             <!--选择教室-->
             <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds"></room-select>
         </div>
+        {{conflictData}}
+        <!-- 调用数据对接 -->
+        {{conflictWeeksAndRooms}}
     `,
     methods: {
         onChange() {
@@ -141,6 +140,7 @@ app.component('course-time-select',{
         },
         addSelectWeeks(selectWeek) {
             // 添加selectWeek
+            // 对某个周勾选或取消的判断
             var status = true;
             for (var i = 0; i < this.selectWeeks.length; i++) {
                 if (selectWeek == this.selectWeeks[i]) {
@@ -149,13 +149,17 @@ app.component('course-time-select',{
                 }
             }
             if (status) {
+                // 若勾选，则加入到selectWeeks数组中
                 this.selectWeeks.push(selectWeek);
             } else {
+                // 若取消，则从selectWeeks数组中删去
+                // 变量d，记录当前取消勾选的周数
                 var d = this.selectWeeks[i];
                 this.selectWeeks.splice(i, 1);
             }
 
             // 添加disableRoomIds
+            // 对某个周勾选或取消的判断
             var sta = false;
             for (var n = 0; n < this.selectWeeks.length; n++) {
                 if (selectWeek == this.selectWeeks[n]) {
@@ -163,19 +167,26 @@ app.component('course-time-select',{
                     break;
                 }
             }
+            // 如果selectWeeks的长度大于0，即有勾选周数，且当前勾选的周数能在conflictData中找到，则添加disableRoomIds
             if (this.selectWeeks.length > 0 && sta) {
+                // 遍历conflictData数组
                 for (var i = 0; i < this.conflictData.length; i++) {
+                    // 如果当前勾选的周数能在conflictData中找到
                     if (this.selectWeeks[this.selectWeeks.length-1] == this.conflictData[i].week) {
                         for (var j = 0; j < this.conflictData[i].roomIds.length; j++) {
                             // 求并集
+                            // 则添加对应的disableRoomId进入disableRoomIds中
                             this.disableRoomIds.push(this.conflictData[i].roomIds[j]);
                         }
                     }
                 }
             } else {
-                console.log(d);
+                // 当某个周数取消勾选后，从disableRoomIds中删除对应的roomIds
+                // 遍历conflictData数组
                 for (var a = 0; a < this.conflictData.length; a++) {
+                    // 如果当前取消勾选的周数能在conflictData中找到
                     if (d == this.conflictData[a].week) {
+                        // 从disableRoomIds中删除对应的roomIds
                         for (var c = 0; c < this.conflictData[a].roomIds.length; c++) {
                             for (var b = 0; b < this.disableRoomIds.length; b++) {
                                 if (this.conflictData[a].roomIds[c] == this.disableRoomIds[b]) {
@@ -193,6 +204,7 @@ app.component('course-time-select',{
 
         addSelectRoomIds(selectRoomId) {
             // 添加selectRoomIds
+            // 对某个教室勾选或取消的判断
             var status = true;
             for (var i = 0; i < this.selectRoomIds.length; i++) {
                 if (selectRoomId == this.selectRoomIds[i]) {
@@ -201,13 +213,17 @@ app.component('course-time-select',{
                 }
             }
             if (status) {
+                // 若勾选，则加入到selectRoomIds数组中
                 this.selectRoomIds.push(selectRoomId);
             } else {
+                // 若取消，则从selectRoomIds数组中删去
+                // 变量d，记录当前取消勾选的教室
                 var d = this.selectRoomIds[i];
                 this.selectRoomIds.splice(i, 1);
             }
 
             // 添加disableWeeks
+            // 对某个教室勾选或取消的判断
             var sta = false;
             for (var n = 0; n < this.selectRoomIds.length; n++) {
                 if (selectRoomId == this.selectRoomIds[n]) {
@@ -215,22 +231,33 @@ app.component('course-time-select',{
                     break;
                 }
             }
+            // 如果selectRoomIds的长度大于0，即有勾选教室，且当前勾选的教室id能在conflictData中找到，则添加disableWeeks
             if (this.selectRoomIds.length > 0 && sta) {
+                // 遍历conflictData数组
                 for (var b = 0; b < this.conflictData.length; b++) {
+                    // 遍历conflictData[b].roomIds数组
                     for (var c = 0; c < this.conflictData[b].roomIds.length; c++) {
+                        // 如果当前勾选的教室能在conflictData中找到
                         if (this.selectRoomIds[this.selectRoomIds.length-1] == this.conflictData[b].roomIds[c]) {
                             // 求并集
+                            // 添加对应的disableWeek进入disableWeeks中
                             this.disableWeeks.push(this.conflictData[b].week);
                         }
                     }
                 }
             } else {
-                console.log(d);
+                //  当某个教室取消勾选之后，从disableWeeks中删去对应的week
+                // 遍历conflictData数组
                 for (var j = 0; j < this.conflictData.length; j++) {
+                    // 遍历conflictData[j].roomIds数组
                     for (var m = 0; m < this.conflictData[j].roomIds.length; m++) {
+                        // 如果当前取消勾选的教室能在conflictData中找到
                         if (d == this.conflictData[j].roomIds[m]) {
+                            // 遍历disableWeeks数组
                             for (var x = 0; x < this.disableWeeks.length; x++) {
+                                // 如果conflictData[j]中的week能够在disableWeeks[x]中找到
                                 if (this.conflictData[j].week == this.disableWeeks[x]) {
+                                    // 删去找到的week
                                     this.disableWeeks.splice(x, 1);
                                     break;
                                 }
@@ -266,7 +293,8 @@ app.component('course-time-select',{
             for (var i = conflictWeeksAndRooms.length - 1; i >= 0; i--) {
                 weeksAndRooms.push({week:conflictWeeksAndRooms[i].week, roomIds:conflictWeeksAndRooms[i].roomIds});
             }
-
+            // 数据对接
+            this.conflictData = weeksAndRooms;
             return weeksAndRooms;
         },
     },
