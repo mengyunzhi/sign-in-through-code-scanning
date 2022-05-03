@@ -70,7 +70,6 @@ class VueController extends IndexController {
     }
 
     public function getAllCoursesJson() {
-        //学期暂不考虑
         $courses = Course::column('id, name, lesson');
         $coursesWithScheduleIds = [];
         $term = Term::getCurrentTerm();
