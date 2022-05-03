@@ -37,3 +37,23 @@ a = [
     {week: 3, roomIds: [0, 1], klassIds: [1, 2, 3], day: 1, lesson: 1},
 ];
 
+
+dispatches = [{week: 1, roomIds: [1, 2, 3]}, {week: 2, roomIds: [4, 5]}, {week: 1, roomIds: [0]} ]
+选第一周-》过滤出所有的第一周的数据-》所有第一周数据中roomIds取并集（不可选）
+再选第二周-》过滤出所有的第二周的数据-》所有第二周数据中roomIds取并集（不可选）—》与第一周数据取并集（不可选）
+
+const selectWeeks = [2, 3]; 
+const selectRoomIds = [0, 1];
+disableRoomIds = []; 
+foreach (week in selectWeeks) {
+    //取dispatches中找
+
+}
+
+
+
+选教室0-》过滤出所有roomIds包含教室0的-》所有包含教室0的roomIds的数据中week取并集（不可选）
+再选教室1-》过滤出所有roomIds包含教室1的-》所有包含教室1的roomIds的数据中week取并集（不可选）-》与选了教室0的数据取并集
+
+两个局部变量：1.当前选中的所有的周  2.当前选中的所有的教室  
+
