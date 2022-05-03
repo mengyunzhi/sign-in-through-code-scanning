@@ -101,7 +101,20 @@ app.component('course-time-select',{
     data() {
         return {
             isShow: false,
-
+            dispatchWeeks: null,
+            dispatchRooms: null,
+            dispatchs: null,
+            dispatchRos: null,
+            conflictData: [
+                {week: 1, roomIds: [1, 2]}, 
+                {week: 2, roomIds: [2, 3]},
+                {week: 3, roomIds: [3, 4, 5]},
+            ],
+            selectWeeks: [],
+            selectRoomIds: [],
+            disableWeeks: [],
+            disableRoomIds: [],
+            disableWeeks: [],
         }
     },
     props: {
@@ -112,11 +125,12 @@ app.component('course-time-select',{
         selectKlass: null,
     },
     template: `
-
+        {{selectWeeks}}
+        {{selectRoomIds}}
         <a class="btn btn-primary" @click="onChange">{{day+1}}天{{lesson+1}}节</a>
         <div v-if="isShow">
             <!--选择周数-->
-            <week-select @add-select-weeks="addSelectWeeks"></week-select>
+            <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks"></week-select>
             <!--选择教室-->
             <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds"></room-select>
         </div>
@@ -178,6 +192,7 @@ app.component('course-time-select',{
 
 
         addSelectRoomIds(selectRoomId) {
+            // 添加selectRoomIds
             var status = true;
             for (var i = 0; i < this.selectRoomIds.length; i++) {
                 if (selectRoomId == this.selectRoomIds[i]) {
@@ -188,7 +203,41 @@ app.component('course-time-select',{
             if (status) {
                 this.selectRoomIds.push(selectRoomId);
             } else {
+                var d = this.selectRoomIds[i];
                 this.selectRoomIds.splice(i, 1);
+            }
+
+            // 添加disableWeeks
+            var sta = false;
+            for (var n = 0; n < this.selectRoomIds.length; n++) {
+                if (selectRoomId == this.selectRoomIds[n]) {
+                    sta = !sta;
+                    break;
+                }
+            }
+            if (this.selectRoomIds.length > 0 && sta) {
+                for (var b = 0; b < this.conflictData.length; b++) {
+                    for (var c = 0; c < this.conflictData[b].roomIds.length; c++) {
+                        if (this.selectRoomIds[this.selectRoomIds.length-1] == this.conflictData[b].roomIds[c]) {
+                            // 求并集
+                            this.disableWeeks.push(this.conflictData[b].week);
+                        }
+                    }
+                }
+            } else {
+                console.log(d);
+                for (var j = 0; j < this.conflictData.length; j++) {
+                    for (var m = 0; m < this.conflictData[j].roomIds.length; m++) {
+                        if (d == this.conflictData[j].roomIds[m]) {
+                            for (var x = 0; x < this.disableWeeks.length; x++) {
+                                if (this.conflictData[j].week == this.disableWeeks[x]) {
+                                    this.disableWeeks.splice(x, 1);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
     },
@@ -239,10 +288,14 @@ app.component('week-select', {
             a: null,
         }
     },
+    props: {
+        disableWeeks: null,
+    },
     template: `
+        {{disableWeeks}}
         <label>上课周</label>
         <div class="row" v-for="week in weeks">
-            <div class="col" v-if="week != a">
+            <div class="col" v-if="disableWeek(week)">
                 <input type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)">
                 <label for="">第{{week}}周</label>
             </div>
@@ -253,6 +306,13 @@ app.component('week-select', {
     methods: {
         addSelectWeeks(selectWeek) {
             this.$emit('addSelectWeeks', selectWeek);
+        },
+        disableWeek(week) {
+            if (this.disableWeeks.length == 0) {
+                return true;
+            } else {
+                return !this.disableWeeks.includes(week);
+            }
         }
     },
 })
@@ -286,7 +346,7 @@ app.component('room-select', {
             if (this.disableRoomIds.length == 0) {
                 return true;
             } else {
-                return this.disableRoomIds.includes(roomId);
+                return !this.disableRoomIds.includes(roomId);
             }
         },
     },
