@@ -70,7 +70,6 @@ class VueController extends IndexController {
     }
 
     public function getAllCoursesJson() {
-        //学期暂不考虑
         $courses = Course::column('id, name, lesson');
         $coursesWithScheduleIds = [];
         $term = Term::getCurrentTerm();
@@ -95,31 +94,35 @@ class VueController extends IndexController {
     }
 
     public function getDispatchesJson() {
-        //通过学期，教师获取调度
+        //通过学期获取调度
         $user = User::getCurrentLoginUser();
-        $teacher = Teacher::get(['user_id'=>$user->id]);
         $term = Term::getCurrentTerm();
-        $scheduleIds = Schedule::where("term_id=$term->id and teacher_id=$teacher->id")->column('id');
+        $scheduleIds = Schedule::where("term_id=$term->id")->column('id');
         $Dispatches = Dispatch::where('schedule_id', 'in', $scheduleIds)->column('id, schedule_id, week, day, lesson');
+
+        //通过dispatches 获取 teacherId
+        foreach ($Dispatches as $Dispatch) {
+            $Dispatch['teacherId'] = Schedule::where('id', 'eq', $Dispatch['schedule_id'])->column('teacher_id')[0]; 
+            $DisWithTeacherId[] = $Dispatch;
+        }
 
         //通过dispatches 获取 roomIds
         ///找到每一个对应的roomIds
-        $DisWithRoomIds;
-        foreach ($Dispatches as $Dispatch) {
-            $Dispatch['roomIds'] = DispatchRoom::where('dispatch_id', 'eq', $Dispatch['id'])->column('room_id'); 
+        foreach ($DisWithTeacherId as $Dispatch) {
+            $Dispatch['roomIds'] = DispatchRoom::where('dispatch_id', 'eq', $Dispatch['id'])->column('room_id');
             $DisWithRoomIds[] = $Dispatch;
         }
+
         //通过dispatches 获取 klassIds
         ///找到每一个对应的scheduleId
         ///找到每一个scheduleId对应的klassIds
-        $DisWithRoomIdsAndKlassIds;
         foreach ($DisWithRoomIds as $DisWithRoomId) {
             $DisWithRoomId['klassIds'] = ScheduleKlass::where('schedule_id', 'eq', $DisWithRoomId['schedule_id'])->column('klass_id'); 
             //去除无用项
             unset($DisWithRoomId['id'], $DisWithRoomId['schedule_id']);
-            $DisWithRoomIdsAndScheduleIds[] = $DisWithRoomId;
+            $DisWithRoomIdsAndKlassIds[] = $DisWithRoomId;
         }
-        return json($DisWithRoomIdsAndScheduleIds);
+        return json($DisWithRoomIdsAndKlassIds);
     }
 
     public function getAllRoomsJson() {

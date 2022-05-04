@@ -3,7 +3,7 @@
     通过教师、学期(可以暂不考虑)
     获取dispatches以及牵连数据:
     格式如下
-    [{week: 3, day: 2, lesson: 1, roomIds: [2, 3], klassIds: [4]}]
+    [{week: 3, day: 2, lesson: 1, teacherId: 1, roomIds: [2, 3], klassIds: [4]}]
 
 组件course-time-select: 
     有data为 conflictData[
