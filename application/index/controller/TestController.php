@@ -17,6 +17,15 @@ class TestController extends IndexController
         return $this->fetch();
     }
 
+    public function phpfile() {
+        if( isset($_POST['firstName']) && isset($_POST['lastName'])){
+           echo $_POST['firstName'];
+           echo $_POST['lastName'];      
+        } else {  
+           echo 'Data not received';
+        }
+    }
+
     public function A() 
     {
         return 'lllll';

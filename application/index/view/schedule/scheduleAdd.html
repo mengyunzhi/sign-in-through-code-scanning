@@ -8,6 +8,7 @@
 <div id="main">
 </div>
 <script>
+
 // 班级选择
 const RootComponent = {
     data() {
@@ -16,6 +17,7 @@ const RootComponent = {
             isSelectCourse: null,
             isSelectKlass: null,
             allowedKlasses: [],
+            teacher: null,
             weekName: ['一', '二', '三', '四', '五', '六', '日'],
         }
     },
@@ -34,13 +36,21 @@ const RootComponent = {
             }
         },
         submit() {
-            console.log('数据已提交');
+            console.log('已提交');
+            var params = new URLSearchParams();
+            params.append('username', 'admin');
+            params.append('password', '123456');
+            axios.post("{:url('scheduleSave')}", params).
+            then(res => {
+                   console.log(res)
+            })
         }
     },
 
     template: `
     {{dispatches}}
-
+    {{teacher}}
+    {{submit()}}
     <form>
         <!--选择课程-->
         <course-select @on-course-select="onCourseSelect"></course-select>
@@ -70,7 +80,7 @@ const RootComponent = {
                             <ul class="accordion" data-accordion>
                                 <li class="accordion-navigation">
                                 <!--选择时间-->
-                                    <course-time-select :day="row" :lesson="col" :dispatches="dispatches" :selectKlass="isSelectKlass"></course-time-select>
+                                    <course-time-select :day="row" :lesson="col" :dispatches="dispatches" :selectKlass="isSelectKlass" :teacher="teacher"></course-time-select>
                                 </li>
                             </ul>
                         </td>
@@ -79,7 +89,7 @@ const RootComponent = {
             </div>
             <div class="form-group row">
                 <div class="col-sm-10">
-                    <a type="submit" href="" @click="submit" class="btn btn-primary">确定</a>
+                    <a type="submit" @click="submit" href="{:url('scheduleSave')}" value="123" class="btn btn-primary">确定</a>
                     <a href="{:url('courseSort')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>
                 </div>
             </div>
@@ -87,10 +97,20 @@ const RootComponent = {
     </form>
     `,
     mounted () {
-        axios.
-        get(['{:url("Vue/getDispatchesJson")}']).
-        then(response => this.dispatches = response.data).
-        catch(err => {
+
+        axios.all([
+            axios
+                .get('{:url("Vue/getDispatchesJson")}')
+                .then(res => res.data),
+            axios
+                .get('{:url("Vue/getTeacherJson")}')
+                .then(res => res.data)
+        ]).then(
+            axios.spread((val1, val2) => {
+                this.dispatches = val1;
+                this.teacher = val2;
+            })
+        ).catch(err => {
             console.log(err) ;
         })
     }
@@ -112,7 +132,6 @@ app.component('course-time-select',{
             selectRoomIds: [],
             disableWeeks: [],
             disableRoomIds: [],
-            disableWeeks: [],
         }
     },
     props: {
@@ -121,8 +140,10 @@ app.component('course-time-select',{
         dispatches: null,
         //已选择的班级
         selectKlass: null,
+        teacher: null,
     },
     template: `
+        {{conflictWeeksAndRooms}}
         {{selectWeeks}}
         {{selectRoomIds}}
         <a class="btn btn-primary" @click="onChange">{{day+1}}天{{lesson+1}}节</a>
@@ -132,9 +153,7 @@ app.component('course-time-select',{
             <!--选择教室-->
             <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds"></room-select>
         </div>
-        {{conflictData}}
         <!-- 调用数据对接 -->
-        {{conflictWeeksAndRooms}}
     `,
     methods: {
         onChange() {
@@ -275,6 +294,13 @@ app.component('course-time-select',{
                 //挑选出当前day和lesson的
                 if (dispatches[i].day===this.day && dispatches[i].lesson===this.lesson) {
                     // console.log('周几和第几节课已验证通过');
+                    
+                    //符合当前教师的
+                    if (dispatches[i].teacherId === this.teacher.id) {
+                        conflictWeeksAndRooms.push(dispatches[i]);
+                        continue;
+                    }
+
                     for (var j = this.selectKlass.length - 1; j >= 0; j--) {
                     //如果调度中包括选择的班级就说明当前周不能用,即存入conflictWeeksAndRooms(不包括直接排除)
                         if (dispatches[i].klassIds.includes(this.selectKlass[j])) {
@@ -285,8 +311,11 @@ app.component('course-time-select',{
                             break;
                         }
                     }
+
                 }
             }
+            
+
             weeksAndRooms = [];
 
             for (var i = conflictWeeksAndRooms.length - 1; i >= 0; i--) {
@@ -297,14 +326,6 @@ app.component('course-time-select',{
             return weeksAndRooms;
         },
     },
-        mounted () {
-        axios
-            .get('{:url("Vue/getAllDispatchsWeekJson")}')
-            .then(response => this.dispatchWeeks = response.data)
-            .catch(function (error) { // 请求失败处理
-            console.log(error);
-        });
-    }
 })
 
 //  上课时间选择-周
@@ -478,27 +499,8 @@ app.component('course-select', {
         ).catch(err => {
             console.log(err) ;
         })
-        // axios
-        //     .get('{:url("Vue/getAllCoursesJson")}')
-        //     .then(response => this.courses = response.data)
-        //     .catch(function (error) { // 请求失败处理
-        //     console.log(error);
-        // });
     }
 })
-        // methods: {
-        //     axios_post:()=> {
-        //         var params = new FormData();
-        //         params.append('UserName', 'xipengheng');
-        //         params.append('msg', '我是一头长颈鹿，我爱上树');
-        //         params.append('msgTime', '2009.09.09');
-        //         axios
-        //             .post('https://www.xipengheng.cn/AAA/liuyan.php',params)
-        //             .then(res => {
-        //                 console.log(res);
-        //             })
-        //     }
-        // },
 app.mount('#main');
 </script>
 
