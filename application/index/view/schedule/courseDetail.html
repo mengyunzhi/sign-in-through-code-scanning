@@ -67,12 +67,12 @@
                 <?php if($key === 0): ?>
                 <tr>
                     <td rowspan="{:count($DispatchArr)}">上课时间/地点</td>
-                    <td>第{:$DispatchArr[$key]->getWeek()}周>>星期{:$DispatchArr[$key]->getDay()}>>第{:$DispatchArr[$key]->getLesson()}节,教室<?php echo $roomArr[$key] ?></td>
+                    <td>第{:$DispatchArr[$key]->getWeek()}周>>星期{:$DispatchArr[$key]->getDay()}>>第{:$DispatchArr[$key]->getLesson()+1}节,教室<?php echo $roomArr[$key] ?></td>
                     <td><a href="{:url('courseTimeAndRoomDelete?dispatch_id='. $DispatchArr[$key]->getId())}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a></td>
                 </tr>
                 <?php else: ?>
                 <tr>
-                    <td>第{:$DispatchArr[$key]->getWeek()}周>>星期{:$DispatchArr[$key]->getDay()}>>第{:$DispatchArr[$key]->getLesson()}节,教室<?php echo $roomArr[$key] ?></td>
+                    <td>第{:$DispatchArr[$key]->getWeek()}周>>星期{:$DispatchArr[$key]->getDay()}>>第{:$DispatchArr[$key]->getLesson()+1}节,教室<?php echo $roomArr[$key] ?></td>
                     <td><a href="{:url('courseTimeAndRoomDelete?dispatch_id='. $DispatchArr[$key]->getId())}" class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a></td>
                 </tr>
                 <?php endif; ?>
