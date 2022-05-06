@@ -24,6 +24,15 @@ use think\Request;
  */
 class VueController extends IndexController {
 
+    public function index() {
+        $postData = Request::instance()->param();
+        if (!empty($postData)) {
+            return json($postData);
+        }else {
+            return '是空';
+        }
+    }
+
     public function getAllKlassesJson() {
         return json(Klass::All());
     }
@@ -105,12 +114,19 @@ class VueController extends IndexController {
             $Dispatch['teacherId'] = Schedule::where('id', 'eq', $Dispatch['schedule_id'])->column('teacher_id')[0]; 
             $DisWithTeacherId[] = $Dispatch;
         }
-
+        $rooms=[];
         //通过dispatches 获取 roomIds
-        ///找到每一个对应的roomIds
+        ///找到每一个对应的roomIds放到rooms
         foreach ($DisWithTeacherId as $Dispatch) {
-            $Dispatch['roomIds'] = DispatchRoom::where('dispatch_id', 'eq', $Dispatch['id'])->column('room_id');
-            $DisWithRoomIds[] = $Dispatch;
+            $roomIds = DispatchRoom::where('dispatch_id', 'eq', $Dispatch['id'])->column('room_id');
+            foreach ($roomIds as $roomId) {
+                $rooms[$Dispatch['week']][$Dispatch['day']*$Dispatch['lesson'] + $Dispatch['lesson']][] = $roomId;
+            }
+        }
+        $DisWithRoomIds = [];
+        foreach ($DisWithTeacherId as $Dispatch) {
+            $Dispatch['roomIds'] = $rooms[$Dispatch['week']][$Dispatch['day']*$Dispatch['lesson'] + $Dispatch['lesson']];
+            $DisWithRoomIds[]=$Dispatch;
         }
 
         //通过dispatches 获取 klassIds
