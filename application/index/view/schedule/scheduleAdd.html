@@ -36,12 +36,11 @@ const RootComponent = {
             }
         },
         submit() {
-            console.log('已提交');
             var params = new URLSearchParams();
             params.append('type', 'test');
             axios.post("{:url('Vue/index')}", '123').
             then(res => {
-               console.log(res)
+               // console.log(res)
             })
         }
     },
@@ -142,7 +141,8 @@ app.component('course-time-select',{
         teacher: null,
     },
     template: `
-        {{conflictWeeksAndRooms}}
+        {{conflictData}}
+        {{dontDisplayWeeks}}
         {{selectWeeks}}
         {{selectRoomIds}}
         <a class="btn btn-primary" @click="onChange">{{day+1}}天{{lesson+1}}节</a>
@@ -292,33 +292,41 @@ app.component('course-time-select',{
             for (var i = this.dispatches.length - 1; i >= 0; i--) {
                 //挑选出当前day和lesson的
                 if (dispatches[i].day===this.day && dispatches[i].lesson===this.lesson) {
-                    // console.log('周几和第几节课已验证通过');
-                    
-                    //符合当前教师的
-                    if (dispatches[i].teacherId === this.teacher.id) {
-                        conflictWeeksAndRooms.push(dispatches[i]);
-                        continue;
-                    }
-                    for (var j = this.selectKlass.length - 1; j >= 0; j--) {
-                    //如果调度中包括选择的班级就说明当前周不能用,即存入conflictWeeksAndRooms(不包括直接排除)
-                        if (dispatches[i].klassIds.includes(this.selectKlass[j])) {
-                            // console.log('当前班级在此时段已有课,周数为:'+dispatches[i].week);
-                            // console.log(dispatches[i]);
-                            conflictWeeksAndRooms.push(dispatches[i]);
-                            //有一个班级被包含就足够了
-                            break;
-                        }
-                    }
+                    conflictWeeksAndRooms.push(dispatches[i]);
                 }
             }
             weeksAndRooms = [];
             for (var i = conflictWeeksAndRooms.length - 1; i >= 0; i--) {
                 weeksAndRooms.push({week:conflictWeeksAndRooms[i].week, roomIds:conflictWeeksAndRooms[i].roomIds});
             }
-            // 数据对接
             this.conflictData = weeksAndRooms;
-            return weeksAndRooms;
+            return conflictWeeksAndRooms;
         },
+        dontDisplayWeeks() {
+            dontDisplayWeeksAndRooms = [];
+            dispatches = this.conflictWeeksAndRooms;
+            for (var i = dispatches.length - 1; i >= 0; i--) {
+                //符合当前教师的
+                if (dispatches[i].teacherId === this.teacher.id) {
+                    dontDisplayWeeksAndRooms.push(dispatches[i]);
+                    continue;
+                }
+                for (var j = this.selectKlass.length - 1; j >= 0; j--) {
+                //如果调度中包括选择的班级就说明当前周不能用,即存入dontDisplayWeeksAndRooms(不包括直接排除)
+                    if (dispatches[i].klassIds.includes(this.selectKlass[j])) {
+                        dontDisplayWeeksAndRooms.push(dispatches[i]);
+                        //有一个班级被包含就足够了
+                        break;
+                    }
+                }
+
+            }
+            dontDisplayWeeks=[];
+            for (var i = dontDisplayWeeksAndRooms.length - 1; i >= 0; i--) {
+                dontDisplayWeeks.push(dontDisplayWeeksAndRooms[i].week);
+            }
+            return dontDisplayWeeks;
+        }
     },
 })
 
