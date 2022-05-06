@@ -337,7 +337,9 @@ app.component('course-time-select',{
 app.component('week-select', {
     data() {
         return {
-            weeks: [1, 2, 3, 4, 5],
+            weeks: [],
+            termStartTime: null,
+            termEndTime: null,
             a: null,
         }
     },
@@ -347,6 +349,9 @@ app.component('week-select', {
     },
     template: `
         {{disableWeeks}}
+        {{termStartTime}}
+        {{termEndTime}}
+        {{calculateTotalWeeks()}}
         {{dontDisplayWeekes}}
         <label>上课周</label>
         <div class="row" v-for="week in weeks">
@@ -368,8 +373,32 @@ app.component('week-select', {
             } else {
                 return !this.disableWeeks.includes(week) && !this.dontDisplayWeekes.includes(week);
             }
+        },
+        calculateTotalWeeks() {
+            var dateStart = new Date(this.termStartTime);
+            var dateEnd = new Date(this.termEndTime);
+            var difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
+            for (var i = 0; i < Math.ceil(difValue / 7); i++) {
+                this.weeks[i] = i+1;
+                console.log(i);
+            }
+            return Math.ceil(difValue / 7);
         }
     },
+    mounted () {
+        axios
+            .get('{:url("Vue/getCurrentTermStartTimeJson")}')
+            .then(response => this.termStartTime = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+        axios
+            .get('{:url("Vue/getCurrentTermEndTimeJson")}')
+            .then(response => this.termEndTime = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+    }
 })
 
 //  上课时间选择-教室
@@ -412,7 +441,6 @@ app.component('room-select', {
             .catch(function (error) { // 请求失败处理
             console.log(error);
         });
-
     }
 })
 
