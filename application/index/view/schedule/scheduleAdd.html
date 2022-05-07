@@ -130,6 +130,7 @@ app.component('course-time-select',{
             selectRoomIds: [],
             disableWeeks: [],
             disableRoomIds: [],
+            dontDisplayWeekes: [],
         }
     },
     props: {
@@ -148,7 +149,7 @@ app.component('course-time-select',{
         <a class="btn btn-primary" @click="onChange">{{day+1}}天{{lesson+1}}节</a>
         <div v-if="isShow">
             <!--选择周数-->
-            <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks"></week-select>
+            <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeekes="dontDisplayWeekes"></week-select>
             <!--选择教室-->
             <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds"></room-select>
         </div>
@@ -325,6 +326,8 @@ app.component('course-time-select',{
             for (var i = dontDisplayWeeksAndRooms.length - 1; i >= 0; i--) {
                 dontDisplayWeeks.push(dontDisplayWeeksAndRooms[i].week);
             }
+            // 对接数据
+            this.dontDisplayWeekes = dontDisplayWeeks;
             return dontDisplayWeeks;
         }
     },
@@ -334,18 +337,25 @@ app.component('course-time-select',{
 app.component('week-select', {
     data() {
         return {
-            weeks: [1, 2, 3, 4, 5],
+            weeks: [],
+            termStartTime: null,
+            termEndTime: null,
             a: null,
         }
     },
     props: {
         disableWeeks: null,
+        dontDisplayWeekes: null,
     },
     template: `
         {{disableWeeks}}
+        {{termStartTime}}
+        {{termEndTime}}
+        {{calculateTotalWeeks()}}
+        {{dontDisplayWeekes}}
         <label>上课周</label>
         <div class="row" v-for="week in weeks">
-            <div class="col" v-if="disableWeek(week)">
+            <div class="col" v-if="disableShowWeek(week)">
                 <input type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)">
                 <label for="">第{{week}}周</label>
             </div>
@@ -357,14 +367,38 @@ app.component('week-select', {
         addSelectWeeks(selectWeek) {
             this.$emit('addSelectWeeks', selectWeek);
         },
-        disableWeek(week) {
+        disableShowWeek(week) {
             if (this.disableWeeks.length == 0) {
-                return true;
+                return !this.dontDisplayWeekes.includes(week);
             } else {
-                return !this.disableWeeks.includes(week);
+                return !this.disableWeeks.includes(week) && !this.dontDisplayWeekes.includes(week);
             }
+        },
+        calculateTotalWeeks() {
+            var dateStart = new Date(this.termStartTime);
+            var dateEnd = new Date(this.termEndTime);
+            var difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
+            for (var i = 0; i < Math.ceil(difValue / 7); i++) {
+                this.weeks[i] = i+1;
+                console.log(i);
+            }
+            return Math.ceil(difValue / 7);
         }
     },
+    mounted () {
+        axios
+            .get('{:url("Vue/getCurrentTermStartTimeJson")}')
+            .then(response => this.termStartTime = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+        axios
+            .get('{:url("Vue/getCurrentTermEndTimeJson")}')
+            .then(response => this.termEndTime = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+    }
 })
 
 //  上课时间选择-教室
@@ -407,7 +441,6 @@ app.component('room-select', {
             .catch(function (error) { // 请求失败处理
             console.log(error);
         });
-
     }
 })
 

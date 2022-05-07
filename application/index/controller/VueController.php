@@ -37,6 +37,14 @@ class VueController extends IndexController {
         return json(Klass::All());
     }
 
+    public function getCurrentTermStartTimeJson() {
+        return json(Term::getCurrentTerm()->getStartTime());
+    }
+
+    public function getCurrentTermEndTimeJson() {
+        return json(Term::getCurrentTerm()->getEndTime());
+    }
+
     public function getAllDispatchsWeekJson() {
         $result = [];
         $dispatches = Dispatch::All();
