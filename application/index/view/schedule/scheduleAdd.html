@@ -152,18 +152,18 @@ app.component('course-time-select',{
     },
     emits: ['changeActive'],
     template: `
+    {{selectWeeks}}
     {{conflictData}}
     {{dontDisplayWeeks}}
         <a class="btn btn-primary" @click="onChange" @>{{day+1}}天{{lesson+1}}节</a>
         <div v-if="isShow()" class="row">
             <div class="col">
                 <!--选择周数-->
-                <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeekes="dontDisplayWeekes"></week-select>
+                <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeekes="dontDisplayWeekes" :alreadySelectWeeks="selectWeeks"></week-select>
             </div>
-            asd
             <div class="col">
                 <!--选择教室-->
-                <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds"></room-select>
+                <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds"></room-select>
             </div>
         </div>
         <!-- 调用数据对接 -->
@@ -365,14 +365,22 @@ app.component('week-select', {
     props: {
         disableWeeks: null,
         dontDisplayWeekes: null,
+        alreadySelectWeeks: null,
     },
     template: `
     {{calculateTotalWeeks()}}
+    {{alreadySelectWeeks}}
         <label>上课周</label>
         <div class="row" v-for="week in weeks">
             <div class="col" v-if="disableShowWeek(week)">
-                <input type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)">
-                <label for="">第{{week}}周</label>
+                <div v-if="isChecked(week)">
+                    <input checked  type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)">
+                    <label for="">第{{week}}周</label>
+                </div>
+                <div v-if="!isChecked(week)">
+                    <input type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)">
+                    <label for="">第{{week}}周</label>
+                </div>
             </div>
         </div>
         <slot></slot>
@@ -395,9 +403,10 @@ app.component('week-select', {
             var difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
             for (var i = 0; i < Math.ceil(difValue / 7); i++) {
                 this.weeks[i] = i+1;
-                console.log(i);
             }
-            return Math.ceil(difValue / 7);
+        },
+        isChecked(week) {
+            return this.alreadySelectWeeks.includes(week);
         }
     },
     mounted () {
@@ -425,14 +434,21 @@ app.component('room-select', {
     },
     props: {
         disableRoomIds: null,
+        alreadySelectRoomIds: null,
     },
     template: `
     {{disableRoomIds}}
     <label>选择教室</label>
     <div class="row" v-for="room in rooms">
         <div class="col" v-if="disableRoomId(room.id)">
-            <input type="checkbox" name="" value="" id="" @change="addSelectRoomIds(room.id)">
-            <label for="">{{room.name}}</label>
+            <div v-if="isChecked(room.id)">
+                    <input checked  type="checkbox" name="" value="" id="" @change="addSelectRoomIds(room.id)">
+                    <label for="">{{room.name}}</label>
+                </div>
+                <div v-if="!isChecked(room.id)">
+                    <input type="checkbox" name="" value="" id="" @change="addSelectRoomIds(room.id)">
+                    <label for="">{{room.name}}</label>
+                </div>
         </div>
     </div>
     `,
@@ -448,6 +464,9 @@ app.component('room-select', {
                 return !this.disableRoomIds.includes(roomId);
             }
         },
+        isChecked(roomId) {
+            return this.alreadySelectRoomIds.includes(roomId);
+        }
     },
     mounted () {
         axios
