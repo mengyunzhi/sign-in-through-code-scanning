@@ -5,7 +5,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
-<body>
+<body class="container">
     <div id="container" class="container">
         <div>
             <label>First name:</label><br/>
@@ -16,7 +16,34 @@
             <input type="text" v-model="newPerson.lastName">
         </div>
         <button v-on:click="sendIdentity()" class="btn btn-primary">Submit</button>       
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h4>1</h4>
+                </div> 
+            </div> 
+            <div class="row">
+                <div class="col">
+                    <h4>2</h4>
+                </div> 
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h4>3</h4>
+                </div> 
+            </div>
+        </div>  
+        <div class="col">
+            <div class="row">
+                <div class="col">
+                    <h4>asd</h4>
+                </div> 
+            </div> 
+        </div>      
     </div>    
+
     <script>
         Vue.createApp({
             el: "#container",
