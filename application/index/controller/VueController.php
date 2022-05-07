@@ -128,12 +128,12 @@ class VueController extends IndexController {
         foreach ($DisWithTeacherId as $Dispatch) {
             $roomIds = DispatchRoom::where('dispatch_id', 'eq', $Dispatch['id'])->column('room_id');
             foreach ($roomIds as $roomId) {
-                $rooms[$Dispatch['week']][$Dispatch['day']*$Dispatch['lesson'] + $Dispatch['lesson']][] = $roomId;
+                $rooms[$Dispatch['week']][$Dispatch['day']*11 + $Dispatch['lesson']][] = $roomId;
             }
         }
         $DisWithRoomIds = [];
         foreach ($DisWithTeacherId as $Dispatch) {
-            $Dispatch['roomIds'] = $rooms[$Dispatch['week']][$Dispatch['day']*$Dispatch['lesson'] + $Dispatch['lesson']];
+            $Dispatch['roomIds'] = $rooms[$Dispatch['week']][$Dispatch['day']*11 + $Dispatch['lesson']];
             $DisWithRoomIds[]=$Dispatch;
         }
 

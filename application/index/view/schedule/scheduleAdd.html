@@ -13,6 +13,7 @@
 const RootComponent = {
     data() {
         return {
+            active: [-1, -1],
             dispatches: [],
             isSelectCourse: null,
             isSelectKlass: null,
@@ -35,6 +36,14 @@ const RootComponent = {
                 this.isSelectKlass = null;
             }
         },
+        changeActive(active) {
+            if (this.active[1] === active) {
+                return ;
+            }
+            this.active[0] = this.active[1];
+            this.active[1] = active;
+            console.log('父组件的active：'+this.active);
+        },
         submit() {
             var params = new URLSearchParams();
             params.append('type', 'test');
@@ -47,8 +56,8 @@ const RootComponent = {
 
     template: `
     {{dispatches}}
+    {{'-----------'}}
     {{teacher}}
-    {{submit()}}
     <form>
         <!--选择课程-->
         <course-select @on-course-select="onCourseSelect"></course-select>
@@ -62,7 +71,7 @@ const RootComponent = {
 
         <!--选择时间-->
         <div class="row" v-if="isSelectKlass">
-            <div class="col-sm-9">
+            <div class="col-sm-12">
                 <table class="table table-hover table-bordered">
                     <tr>
                         <th class="">周几/课序</th>
@@ -78,7 +87,7 @@ const RootComponent = {
                             <ul class="accordion" data-accordion>
                                 <li class="accordion-navigation">
                                 <!--选择时间-->
-                                    <course-time-select :day="row" :lesson="col" :dispatches="dispatches" :selectKlass="isSelectKlass" :teacher="teacher"></course-time-select>
+                                    <course-time-select  @change-active="changeActive"  :day="row" :lesson="col" :dispatches="dispatches" :selectKlass="isSelectKlass" :teacher="teacher" :active="active"></course-time-select>
                                 </li>
                             </ul>
                         </td>
@@ -120,11 +129,10 @@ const app = Vue.createApp(RootComponent);
 app.component('course-time-select',{
     data() {
         return {
-            isShow: false,
+            clickCount: 0,
             dispatchWeeks: null,
             dispatchRooms: null,
             dispatchs: null,
-            dispatchRos: null,
             conflictData: [],
             selectWeeks: [],
             selectRoomIds: [],
@@ -134,6 +142,7 @@ app.component('course-time-select',{
         }
     },
     props: {
+        active: null,
         day: 0,
         lesson: 0,
         dispatches: null,
@@ -141,23 +150,34 @@ app.component('course-time-select',{
         selectKlass: null,
         teacher: null,
     },
+    emits: ['changeActive'],
     template: `
-        {{conflictData}}
-        {{dontDisplayWeeks}}
-        {{selectWeeks}}
-        {{selectRoomIds}}
-        <a class="btn btn-primary" @click="onChange">{{day+1}}天{{lesson+1}}节</a>
-        <div v-if="isShow">
-            <!--选择周数-->
-            <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeekes="dontDisplayWeekes"></week-select>
-            <!--选择教室-->
-            <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds"></room-select>
+    {{conflictData}}
+    {{dontDisplayWeeks}}
+        <a class="btn btn-primary" @click="onChange" @>{{day+1}}天{{lesson+1}}节</a>
+        <div v-if="isShow()" class="row">
+            <div class="col">
+                <!--选择周数-->
+                <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeekes="dontDisplayWeekes"></week-select>
+            </div>
+            asd
+            <div class="col">
+                <!--选择教室-->
+                <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds"></room-select>
+            </div>
         </div>
         <!-- 调用数据对接 -->
     `,
     methods: {
         onChange() {
-            this.isShow = !this.isShow;
+            this.clickCount++;
+            this.$emit('changeActive', this.day * 11 + this.lesson);
+        },
+        isShow() {
+            if (this.active[0] === this.day * 11 + this.lesson && this.clickCount % 2===1) {
+                this.clickCount++;
+            }
+            return (this.day * 11 + this.lesson === this.active[1]) && this.clickCount % 2;
         },
         addSelectWeeks(selectWeek) {
             // 添加selectWeek
@@ -340,7 +360,6 @@ app.component('week-select', {
             weeks: [],
             termStartTime: null,
             termEndTime: null,
-            a: null,
         }
     },
     props: {
@@ -348,11 +367,7 @@ app.component('week-select', {
         dontDisplayWeekes: null,
     },
     template: `
-        {{disableWeeks}}
-        {{termStartTime}}
-        {{termEndTime}}
-        {{calculateTotalWeeks()}}
-        {{dontDisplayWeekes}}
+    {{calculateTotalWeeks()}}
         <label>上课周</label>
         <div class="row" v-for="week in weeks">
             <div class="col" v-if="disableShowWeek(week)">
