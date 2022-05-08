@@ -317,8 +317,9 @@ class ScheduleController extends IndexController {
 
     public function scheduleSave()
     {
-        $str = file_get_contents("php://input");
-        print_r($str);
+        $data = Request::instance()->param();
+        $json_raw = file_get_contents("php://input"); //获取前端传来的json数据
+        echo($json_raw);
         return 1;
         die();
         if (empty($postData['klass_id'][0])) {

@@ -8,7 +8,13 @@
 <div id="main">
 </div>
 <script>
-
+var courseTimes = new Array();   //先声明一维
+for(var i=0;i<7;i++){        //一维长度为7
+    courseTimes[i]=new Array();    //在声明二维
+    for(var j=0;j<11;j++){      //二维长度为11
+        courseTimes[i][j]=[];
+    }
+}
 // 班级选择
 const RootComponent = {
     data() {
@@ -20,6 +26,7 @@ const RootComponent = {
             allowedKlasses: [],
             teacher: null,
             weekName: ['一', '二', '三', '四', '五', '六', '日'],
+            courseTimes: courseTimes,
         }
     },
     methods: {
@@ -51,6 +58,11 @@ const RootComponent = {
             then(res => {
                // console.log(res)
             })
+        },
+        courseTime(day, lesson, selectWeeks, selectRoomIds) {
+            console.log(day, lesson, selectWeeks, selectRoomIds);
+            this.courseTimes[day][lesson][0]= {'weeks': selectWeeks};
+            this.courseTimes[day][lesson][1]= {'room_ids': selectRoomIds};;
         }
     },
 
@@ -58,6 +70,8 @@ const RootComponent = {
     {{dispatches}}
     {{'-----------'}}
     {{teacher}}
+    {{'-----------'}}
+    {{courseTimes}}
     <form>
         <!--选择课程-->
         <course-select @on-course-select="onCourseSelect"></course-select>
@@ -87,7 +101,7 @@ const RootComponent = {
                             <ul class="accordion" data-accordion>
                                 <li class="accordion-navigation">
                                 <!--选择时间-->
-                                    <course-time-select  @change-active="changeActive"  :day="row" :lesson="col" :dispatches="dispatches" :selectKlass="isSelectKlass" :teacher="teacher" :active="active"></course-time-select>
+                                    <course-time-select  @change-active="changeActive" @course-time="courseTime"  :day="row" :lesson="col" :dispatches="dispatches" :selectKlass="isSelectKlass" :teacher="teacher" :active="active"></course-time-select>
                                 </li>
                             </ul>
                         </td>
@@ -96,7 +110,7 @@ const RootComponent = {
             </div>
             <div class="form-group row">
                 <div class="col-sm-10">
-                    <a type="submit" @click="submit"  value="123" class="btn btn-primary">确定</a>
+                    <a type="submit" @click="submit" href="{:url('schedulesave')}" value="123" class="btn btn-primary">确定</a>
                     <a href="{:url('courseSort')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>
                 </div>
             </div>
@@ -119,7 +133,17 @@ const RootComponent = {
             })
         ).catch(err => {
             console.log(err) ;
-        })
+        }),
+        axios
+           .post("{:url('schedulesave')}", {
+             account: "18171895497"
+           })
+           .then(function(response) {
+             console.log(response);
+           })
+           .catch(function(error) {
+             console.log(error);
+           });
     }
 
 }
@@ -138,7 +162,6 @@ app.component('course-time-select',{
             selectRoomIds: [],
             disableWeeks: [],
             disableRoomIds: [],
-            dontDisplayWeekes: [],
         }
     },
     props: {
@@ -154,12 +177,12 @@ app.component('course-time-select',{
     template: `
     {{selectWeeks}}
     {{conflictData}}
-    {{dontDisplayWeeks}}
-        <a class="btn btn-primary" @click="onChange" @>{{day+1}}天{{lesson+1}}节</a>
-        <div v-if="isShow()" class="row">
+    {{conflictWeeksAndRooms}}
+        <a class="btn btn-primary" @click="onChange">{{day+1}}天{{lesson+1}}节</a>
+        <div v-if="isShow()" class="row" @change="courseTime">
             <div class="col">
                 <!--选择周数-->
-                <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeekes="dontDisplayWeekes" :alreadySelectWeeks="selectWeeks"></week-select>
+                <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks"></week-select>
             </div>
             <div class="col">
                 <!--选择教室-->
@@ -169,6 +192,9 @@ app.component('course-time-select',{
         <!-- 调用数据对接 -->
     `,
     methods: {
+        courseTime() {
+            this.$emit('courseTime', this.day, this.lesson, this.selectWeeks, this.selectRoomIds);
+        },
         onChange() {
             this.clickCount++;
             this.$emit('changeActive', this.day * 11 + this.lesson);
@@ -346,8 +372,6 @@ app.component('course-time-select',{
             for (var i = dontDisplayWeeksAndRooms.length - 1; i >= 0; i--) {
                 dontDisplayWeeks.push(dontDisplayWeeksAndRooms[i].week);
             }
-            // 对接数据
-            this.dontDisplayWeekes = dontDisplayWeeks;
             return dontDisplayWeeks;
         }
     },
@@ -364,7 +388,7 @@ app.component('week-select', {
     },
     props: {
         disableWeeks: null,
-        dontDisplayWeekes: null,
+        dontDisplayWeeks: null,
         alreadySelectWeeks: null,
     },
     template: `
@@ -392,9 +416,9 @@ app.component('week-select', {
         },
         disableShowWeek(week) {
             if (this.disableWeeks.length == 0) {
-                return !this.dontDisplayWeekes.includes(week);
+                return !this.dontDisplayWeeks.includes(week);
             } else {
-                return !this.disableWeeks.includes(week) && !this.dontDisplayWeekes.includes(week);
+                return !this.disableWeeks.includes(week) && !this.dontDisplayWeeks.includes(week);
             }
         },
         calculateTotalWeeks() {

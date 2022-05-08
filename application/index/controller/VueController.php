@@ -110,7 +110,7 @@ class VueController extends IndexController {
         return json(Schedule::All());
     }
 
-    public function getDispatchesJson() {
+    public function getDispatchesJson() {;
         //通过学期获取调度
         $user = User::getCurrentLoginUser();
         $term = Term::getCurrentTerm();
