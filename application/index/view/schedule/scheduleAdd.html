@@ -8,6 +8,7 @@
 <div id="main">
 </div>
 <script>
+
 var courseTimes = new Array();   //先声明一维
 for(var i=0;i<7;i++){        //一维长度为7
     courseTimes[i]=new Array();    //在声明二维
@@ -49,15 +50,11 @@ const RootComponent = {
             }
             this.active[0] = this.active[1];
             this.active[1] = active;
-            console.log('父组件的active：'+this.active);
         },
         submit() {
             var params = new URLSearchParams();
-            params.append('type', 'test');
-            axios.post("{:url('Vue/index')}", '123').
-            then(res => {
-               // console.log(res)
-            })
+            axios.
+                post("{:url('schedulesave')}",[1,2,3,4,5,6,7,8,9,123,4,5,67,34])
         },
         courseTime(day, lesson, selectWeeks, selectRoomIds) {
             console.log(day, lesson, selectWeeks, selectRoomIds);
@@ -67,12 +64,13 @@ const RootComponent = {
     },
 
     template: `
-    {{dispatches}}
-    {{'-----------'}}
-    {{teacher}}
-    {{'-----------'}}
-    {{courseTimes}}
     <form>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <a href="{:url('courseSort')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>
+            </div>
+        </div>
+        <br>
         <!--选择课程-->
         <course-select @on-course-select="onCourseSelect"></course-select>
 
@@ -80,8 +78,6 @@ const RootComponent = {
         <div class="form-group row" v-if="isSelectCourse">
             <klass-select @on-klass-select="onKlassSelect" :allowedKlasses="allowedKlasses"></klass-select>
         </div>
-        <h5>{{isSelectCourse}}</h5>
-        <h5>{{isSelectKlass}}</h5>
 
         <!--选择时间-->
         <div class="row" v-if="isSelectKlass">
@@ -111,7 +107,6 @@ const RootComponent = {
             <div class="form-group row">
                 <div class="col-sm-10">
                     <a type="submit" @click="submit" href="{:url('schedulesave')}" value="123" class="btn btn-primary">确定</a>
-                    <a href="{:url('courseSort')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>
                 </div>
             </div>
         </div>
@@ -133,17 +128,17 @@ const RootComponent = {
             })
         ).catch(err => {
             console.log(err) ;
-        }),
-        axios
-           .post("{:url('schedulesave')}", {
-             account: "18171895497"
-           })
-           .then(function(response) {
-             console.log(response);
-           })
-           .catch(function(error) {
-             console.log(error);
-           });
+        })
+        // axios
+        //    .post("{:url('schedulesave')}", {
+        //      account: "18171895497"
+        //    })
+        //    .then(function(response) {
+        //      console.log(response);
+        //    })
+        //    .catch(function(error) {
+        //      console.log(error);
+        //    });
     }
 
 }
@@ -173,11 +168,8 @@ app.component('course-time-select',{
         selectKlass: null,
         teacher: null,
     },
-    emits: ['changeActive'],
+    emits: ['changeActive', 'courseTime'],
     template: `
-    {{selectWeeks}}
-    {{conflictData}}
-    {{conflictWeeksAndRooms}}
         <a class="btn btn-primary" @click="onChange">{{day+1}}天{{lesson+1}}节</a>
         <div v-if="isShow()" class="row" @change="courseTime">
             <div class="col">
@@ -392,8 +384,6 @@ app.component('week-select', {
         alreadySelectWeeks: null,
     },
     template: `
-    {{calculateTotalWeeks()}}
-    {{alreadySelectWeeks}}
         <label>上课周</label>
         <div class="row" v-for="week in weeks">
             <div class="col" v-if="disableShowWeek(week)">
@@ -461,7 +451,6 @@ app.component('room-select', {
         alreadySelectRoomIds: null,
     },
     template: `
-    {{disableRoomIds}}
     <label>选择教室</label>
     <div class="row" v-for="room in rooms">
         <div class="col" v-if="disableRoomId(room.id)">
