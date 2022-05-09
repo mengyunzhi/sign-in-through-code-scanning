@@ -69,7 +69,7 @@ class AdminTeacherController extends IndexController
             // 获取get数据
             $Request = Request::instance();
             // 获取要删除对象在User表中的id
-            $user_id = Request::instance()->param('id/d');
+            $user_id = Request::instance()->param('user_id/d');
             
             // 判断是否成功接收
             if (is_null($user_id) || 0 === $user_id) {
@@ -192,7 +192,7 @@ class AdminTeacherController extends IndexController
         // 接收V层数据
         $teacher = Request::instance()->post();
         // 获取该条数据在User表中的id
-        $user_id = Request::instance()->post('user_id/d');
+        $user_id = Request::instance()->post('id/d');
         // 找出user表中的对应数据
         $User = User::get($user_id);
         $teacher['password'] = $User->password;
