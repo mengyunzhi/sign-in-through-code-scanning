@@ -384,6 +384,7 @@ app.component('week-select', {
         alreadySelectWeeks: null,
     },
     template: `
+        {{calculateTotalWeeks()}}
         <label>上课周</label>
         <div class="row" v-for="week in weeks">
             <div class="col" v-if="disableShowWeek(week)">
