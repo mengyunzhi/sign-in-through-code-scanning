@@ -147,6 +147,7 @@ class AdminStudentController extends IndexController
         // 向V层传数据
         $this->assign('Users', $users);
         $this->assign('name', $name);
+        $this->assign('klass', $klass);
         $this->assign('sno', $sno);
 
         // 取回打包后的数据
