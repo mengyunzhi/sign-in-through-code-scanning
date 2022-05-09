@@ -145,7 +145,7 @@ class User extends Model {
                 return 'index/mobile/index';
             //web端
             } else {
-                return 'index/index/index';
+                return 'index/task/index';
             }
         } elseif ($role === User::$ROLE_STUDENT) {
             return 'student/index/index';
