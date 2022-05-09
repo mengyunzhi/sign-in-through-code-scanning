@@ -151,17 +151,13 @@ class TaskController extends IndexController {
             return $this->error('无班级id信息');
         } elseif (!isset($postData['sno'])) {
             return $this->error('无学号信息');
-        } elseif (!isset($postData['number'])) {
-            return $this->error('无电话信息');
-        } elseif (!isset($postData['password'])) {
-            return $this->error('无密码信息');
         }
         $message = '';
-        $status = Student::studentSave($postData, $message);
+        $status = User::userSave($postData, User::$ROLE_STUDENT, $message);
         if (!$status) {
             return $this->error('添加失败：'.$message);
         }
-        return $this->success('添加成功', url('student'));
+        return $this->success('添加成功', url('student?schedule_id='.$postData['schedule_id']));
     }
 
     public function randomCode()

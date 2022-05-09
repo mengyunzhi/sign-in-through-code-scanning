@@ -7,10 +7,10 @@
 <div class="row">
     <div class="col text-right">
         <a href="{:url('studentAdd?schedule_id='.input('param.schedule_id'))}" class="btn btn-primary">&nbsp;增加</a>
-        <a href="{:url('')}" class="btn btn-primary">&nbsp;生成当前页面学生成绩单</a>
+        <a class="btn btn-primary">&nbsp;生成当前页面学生成绩单</a>
         <a href="/thinkphp/public/static/1813.xls" download="模板文件" class="btn btn-primary">&nbsp;下载Excel模板文件</a>
         <a href="" type="file" class="btn btn-primary">&nbsp;导入学生Excel文件</a>
-        <a href="{:url('klass')}" class="btn btn-primary">&nbsp;返回</a>
+        <a href="{:url('index')}" class="btn btn-primary">&nbsp;返回</a>
     </div>
     <br>&nbsp
     <div class="col-md-10 text-left">
@@ -44,8 +44,8 @@
         <td>{:$_Student->getKlass()->getName()}</td>
         <td>{:$_Student->getSex()}</td>
         <td>
-            <a class="btn btn-sm btn-info" href="{:url('fraction')}">&nbsp;登记成绩</a>
-            <a class="btn btn-sm btn-danger" href="{:url('')}">&nbsp;删除</a>
+            <a class="btn btn-sm btn-info" href="{:url('fraction?schedule_id='.input('schedule_id'))}">&nbsp;登记成绩</a>
+            <a class="btn btn-sm btn-danger">&nbsp;删除</a>
         </td>
     </tr>
     {/volist}

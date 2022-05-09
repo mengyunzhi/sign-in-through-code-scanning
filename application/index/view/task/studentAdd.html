@@ -6,6 +6,7 @@
 {/block}
 {block name="content"}
 <form action="{:url('studentSave')}" method="post">
+    <input type="hidden" class="form-control" name="schedule_id" value="{:input('schedule_id')}">
     <div class="form-group row">
         <label for="name" class="col-sm-2 col-form-label">姓名</label>
         <div class="col-sm-4">
@@ -33,18 +34,6 @@
         <label for="sno" class="col-sm-2 col-form-label">学号</label>
         <div class="col-sm-4">
             <input type="text" class="form-control" id="sno" name="sno" required>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="number" class="col-sm-2 col-form-label">手机号</label>
-        <div class="col-sm-4">
-            <input type="text" class="form-control" id="number" name="number" required>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="password" class="col-sm-2 col-form-label">密码</label>
-        <div class="col-sm-4">
-            <input type="password" class="form-control" id="password" name="password" required>
         </div>
     </div>
     <div class="form-group row">
