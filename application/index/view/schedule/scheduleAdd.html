@@ -12,7 +12,7 @@
 var courseTimes = new Array();   //先声明一维
 for(var i=0;i<7;i++){        //一维长度为7
     courseTimes[i]=new Array();    //在声明二维
-    for(var j=0;j<11;j++){      //二维长度为11
+    for(var j=0;j<5;j++){      //二维长度为11
         courseTimes[i][j]=[];
     }
 }
@@ -52,9 +52,12 @@ const RootComponent = {
             this.active[1] = active;
         },
         submit() {
+            console.log('submit方法已执行');
             var params = new URLSearchParams();
+            params.append('mydata', 'vue需要传给后台的指');
+            console.log(params,'123');
             axios.
-                post("{:url('schedulesave')}",[1,2,3,4,5,6,7,8,9,123,4,5,67,34])
+                post("{:url('schedulesave')}",params)
         },
         courseTime(day, lesson, selectWeeks, selectRoomIds) {
             console.log(day, lesson, selectWeeks, selectRoomIds);
@@ -106,7 +109,7 @@ const RootComponent = {
             </div>
             <div class="form-group row">
                 <div class="col-sm-10">
-                    <a type="submit" @click="submit" href="{:url('schedulesave')}" value="123" class="btn btn-primary">确定</a>
+                    <a type="submit" @click="submit" value="123" class="btn btn-primary">确定</a>
                 </div>
             </div>
         </div>
@@ -416,6 +419,7 @@ app.component('week-select', {
             var dateStart = new Date(this.termStartTime);
             var dateEnd = new Date(this.termEndTime);
             var difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
+            console.log(difValue);
             for (var i = 0; i < Math.ceil(difValue / 7); i++) {
                 this.weeks[i] = i+1;
             }
@@ -535,7 +539,7 @@ app.component('course-select', {
     <div class="form-group row">
         <label for="course_id" class="col-sm-2 col-form-label" style="width: 162px">课程</label>
         <div class="col-sm-4">
-            <select @change="onChange" v-model="selectCourse" class="selectpicker form-control col-sm-12" name="course_id" id="course_id" required>
+            <select @change="onChange()" v-model="selectCourse" class="selectpicker form-control col-sm-12" name="course_id" id="course_id" required>
                 <option value="">请选择课程</option>
                 <option v-for="course in courses" :value="course.id">{{course.name}}</option>
             </select>
@@ -546,7 +550,7 @@ app.component('course-select', {
     methods: {
         onChange() {
             // console.log(this.selectCourse);
-            this.$emit('onCourseSelect', this.selectCourse, this.getAllowedKlasses)
+            this.$emit('onCourseSelect', this.selectCourse, this.getAllowedKlasses);
         },
     },
     computed: {

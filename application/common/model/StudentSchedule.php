@@ -21,7 +21,7 @@ class StudentSchedule extends Model {
      * @param  string $msg       报错信息
      * @return boolean         成功 true；失败 false
      */
-    static public function saveStudentSchedule($studentId, $klassId, $msg='') {
+    static public function saveStudentSchedule($studentId, $klassId, &$msg='') {
         $scheduleIds = ScheduleKlass::where('klass_id', 'eq', $klassId)->column('schedule_id');
         $data = [];
         foreach ($scheduleIds as $scheduleId) {
