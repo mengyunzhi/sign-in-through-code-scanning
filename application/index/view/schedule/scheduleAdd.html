@@ -173,13 +173,13 @@ app.component('course-time-select',{
     },
     emits: ['changeActive', 'courseTime'],
     template: `
-        <a class="btn btn-primary" @click="onChange">{{day+1}}天{{lesson+1}}节</a>
+        <a class="btn btn-primary" @click="onChange">周{{weekday(day+1)}}第{{lesson+1}}节</a>
         <div v-if="isShow()" class="row" @change="courseTime">
-            <div class="col">
+            <div class="col-sm-6">
                 <!--选择周数-->
                 <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks"></week-select>
             </div>
-            <div class="col">
+            <div class="col-sm-6">
                 <!--选择教室-->
                 <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds"></room-select>
             </div>
@@ -193,6 +193,15 @@ app.component('course-time-select',{
         onChange() {
             this.clickCount++;
             this.$emit('changeActive', this.day * 11 + this.lesson);
+        },
+        weekday(day) {
+            if (day === 1) { return "一"; }
+            if (day === 2) { return "二"; }
+            if (day === 3) { return "三"; }
+            if (day === 4) { return "四"; }
+            if (day === 5) { return "五"; }
+            if (day === 6) { return "六"; }
+            if (day === 7) { return "日"; }
         },
         isShow() {
             if (this.active[0] === this.day * 11 + this.lesson && this.clickCount % 2===1) {
@@ -376,7 +385,7 @@ app.component('course-time-select',{
 app.component('week-select', {
     data() {
         return {
-            weeks: [],
+            weeks: null,
             termStartTime: null,
             termEndTime: null,
         }
@@ -392,11 +401,21 @@ app.component('week-select', {
         <div class="row" v-for="week in weeks">
             <div class="col" v-if="disableShowWeek(week)">
                 <div v-if="isChecked(week)">
-                    <input checked  type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)">
+                    <input checked  type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)" >
                     <label for="">第{{week}}周</label>
                 </div>
                 <div v-if="!isChecked(week)">
                     <input type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)">
+                    <label for="">第{{week}}周</label>
+                </div>
+            </div>
+            <div class="col" v-if="!disableShowWeek(week)">
+                <div v-if="isChecked(week)">
+                    <input checked  type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)" >
+                    <label for="">第{{week}}周</label>
+                </div>
+                <div v-if="!isChecked(week)">
+                    <input type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)" disabled>
                     <label for="">第{{week}}周</label>
                 </div>
             </div>
@@ -416,12 +435,35 @@ app.component('week-select', {
             }
         },
         calculateTotalWeeks() {
-            var dateStart = new Date(this.termStartTime);
-            var dateEnd = new Date(this.termEndTime);
-            var difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
-            console.log(difValue);
-            for (var i = 0; i < Math.ceil(difValue / 7); i++) {
-                this.weeks[i] = i+1;
+            if (this.weeks === null) {
+                this.weeks = [];
+                axios
+                    .get('{:url("Vue/getCurrentTermStartTimeJson")}')
+                    .then(response => {
+                        this.termStartTime = response.data;
+                        axios
+                            .get('{:url("Vue/getCurrentTermEndTimeJson")}')
+                            .then(response => {
+                                this.termEndTime = response.data;
+                                console.log(this.termStartTime);
+                                var dateStart = new Date(this.termStartTime);
+                                console.log(dateStart);
+                                var dateEnd = new Date(this.termEndTime);
+                                console.log(dateEnd);
+                                var difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
+                                console.log(Math.ceil(difValue / 7));
+                                for (var i = 0; i < Math.ceil(difValue / 7); i++) {
+                                    console.log(i);
+                                    this.weeks[i] = i+1;
+                                }
+                            })
+                            .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+                    })
+                    .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
             }
         },
         isChecked(week) {
@@ -465,6 +507,16 @@ app.component('room-select', {
                 </div>
                 <div v-if="!isChecked(room.id)">
                     <input type="checkbox" name="" value="" id="" @change="addSelectRoomIds(room.id)">
+                    <label for="">{{room.name}}</label>
+                </div>
+        </div>
+        <div class="col" v-if="!disableRoomId(room.id)">
+            <div v-if="isChecked(room.id)">
+                    <input checked  type="checkbox" name="" value="" id="" @change="addSelectRoomIds(room.id)">
+                    <label for="">{{room.name}}</label>
+                </div>
+                <div v-if="!isChecked(room.id)">
+                    <input type="checkbox" name="" value="" id="" @change="addSelectRoomIds(room.id)" disabled>
                     <label for="">{{room.name}}</label>
                 </div>
         </div>
