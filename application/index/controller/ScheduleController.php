@@ -96,6 +96,8 @@ class ScheduleController extends IndexController {
         $Schedule = Schedule::get($scheduleId);
         $existKlasses = $Schedule->Klasses;
         $Klasses = Teacher::excludeKlasses($existKlasses);
+        $backUrl = $_SERVER["HTTP_REFERER"];
+        $this->assign('backUrl', $backUrl);
         $this->assign('Klasses', $Klasses);
         $this->assign('Schedule', $Schedule);
         $htmls = $this->fetch();
@@ -139,6 +141,8 @@ class ScheduleController extends IndexController {
     {
         $scheduleId = Request::instance()->param('schedule_id');
         $Schedule = Schedule::get($scheduleId);
+        $backUrl = $_SERVER["HTTP_REFERER"];
+        $this->assign('backUrl', $backUrl);
         $this->assign('Schedule', $Schedule);
         return $this->fetch();
     }
@@ -158,6 +162,11 @@ class ScheduleController extends IndexController {
 
     public function courseProgramEdit() 
     {
+        $backUrl = $_SERVER["HTTP_REFERER"];
+        $programId = Request::instance()->param('program_id');
+        $program = Program::get($programId);
+        $this->assign('Program', $program);
+        $this->assign('backUrl', $backUrl);
         return $this->fetch();
     }
 
@@ -243,7 +252,8 @@ class ScheduleController extends IndexController {
         $Rooms = Room::all();
         $scheduleId = Request::instance()->param('schedule_id');
         $Schedule = Schedule::get($scheduleId);
-
+        $backUrl = $_SERVER["HTTP_REFERER"];
+        $this->assign('backUrl', $backUrl);
         $this->assign('Schedule', $Schedule);
         $this->assign('Rooms', $Rooms);
         $this->assign('dayArray', $dayArray);
