@@ -1,92 +1,47 @@
-{extend name="index"/}
-{block name="title"}
-添加上课时间
-{/block}
-{block name="search"}
-{/block}
-{block name="content"}
-<div id="app">
-    <Root></Root>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"> 
+    <title>Bootstrap 实例 - 模态框（Modal）插件</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<!-- 模态框y演示按钮（Modal） -->
+<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    开始演示模态框
+</button>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    模态框（Modal）标题
+                </h4>
+            </div>
+            <div class="modal-body">
+                在这里添加一些文本
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary">
+                    提交更改
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
- 
-<script>
-// 创建一个Vue 应用
-const app = Vue.createApp({})
- 
-// 定义一个名为 Root的新全局组件
-app.component('Root', {
-    data() {
-
-    },
-    template: `
-    <form>
-        <input type="hidden" name="schedule_id" value="{:$Schedule->id}">
-        <div class="form-group row">
-            <label for="" class="col-sm-2 col-form-label">课程名称</label>
-            <div class="col-sm-4">
-                <input type="text" class="form-control" id="" value="{:$Schedule->getCourse()->name}" disabled>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="" class="col-sm-2 col-form-label">上课时间：</label>
-        </div>
-
-        <!--选择时间-->
-        <div class="row" v-if="isSelectKlass">
-            <div class="col-sm-12">
-                <table class="table table-hover table-bordered">
-                    <tr>
-                        <th class="">周几/课序</th>
-                        <th class="">1</th>
-                        <th class="">2</th>
-                        <th class="">3</th>
-                        <th class="">4</th>
-                        <th class="">5</th>
-                    </tr>
-                    <tr v-for="row in [0, 1, 2, 3, 4, 5, 6]">
-                        <td>周{{weekName[row]}}</td>
-                        <td v-for="col in [0, 1, 2, 3, 4]">
-                            <ul class="accordion" data-accordion>
-                                <li class="accordion-navigation">
-                                <!--选择时间-->
-                                    <course-time-select  @change-active="changeActive" @course-time="courseTime"  :day="row" :lesson="col" :dispatches="dispatches" :selectKlass="isSelectKlass" :teacher="teacher" :active="active"></course-time-select>
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="form-group row">
-                <div class="col-sm-10">
-                    <a type="submit" @click="submit" href="{:url('schedulesave')}" value="123" class="btn btn-primary">确定</a>
-                </div>
-            </div>
-        </div>
-    </form>
-    `,
-})
-
-app.mount('#app')
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/block}
-{block name="page"}
-{/block}
+    <script type="text/javascript">
+            
+          $(function(){
+                   $('#myModal').modal('show')
+          });
+   </script>
+</body>
+</html>

@@ -8,6 +8,9 @@
 <div id="main">
 </div>
 <script>
+    $('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})
 
 var courseTimes = new Array();   //先声明一维
 for(var i=0;i<7;i++){        //一维长度为7
@@ -73,13 +76,23 @@ const RootComponent = {
         <br>
         <input type="hidden" name="schedule_id" value="{:$Schedule->id}">
         <div class="form-group row">
-            <label for="" class="col-sm-2 col-form-label">课程名称</label>
+            <label for="" class="col-sm-2 col-form-label">课程名称:</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="" value="{:$Schedule->getCourse()->name}" disabled>
             </div>
         </div>
         <div class="form-group row">
-            <label for="" class="col-sm-2 col-form-label">上课时间：</label>
+            <label for="" class="col-sm-2 col-form-label" rowspan="{:count($Schedule->klasses)}">上课班级:</label>
+        <?php foreach ($Schedule->klasses as $key => $_Klass): ?>
+            <div class="col-sm-1">
+                <input type="text" class="form-control" id="" value="{:$_Klass->name}" disabled>
+            </div>
+        <?php endforeach; ?>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <label for="">上课时间：</label>
+            </div>
         </div>
 
         <!--选择时间-->
@@ -173,16 +186,36 @@ app.component('course-time-select',{
     },
     emits: ['changeActive', 'courseTime'],
     template: `
-        <a class="btn btn-primary" @click="onChange">周{{weekday(day+1)}}第{{lesson+1}}节</a>
-        <div v-if="isShow()" class="row" @change="courseTime">
-            <div class="col-sm-6">
-                <!--选择周数-->
-                <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks"></week-select>
+        <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary" @click="onChange">周{{weekday(day+1)}}第{{lesson+1}}节</a>
+        <!-- 模态框 -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+              {{day+1}}
+              {{lesson+1}}
+                <h5 class="modal-title" id="exampleModalCenterTitle">周{{weekday(day+1)}}第{{lesson+1}}节</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                    <div  class="row" @change="courseTime">
+                    <div class="col-sm-6">
+                        <!--选择周数-->
+                        <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks"></week-select>
+                    </div>
+                    <div class="col-sm-6">
+                        <!--选择教室-->
+                        <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds"></room-select>
+                    </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">保留数据</button>
+              </div>
             </div>
-            <div class="col-sm-6">
-                <!--选择教室-->
-                <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds"></room-select>
-            </div>
+          </div>
         </div>
         <!-- 调用数据对接 -->
     `,
@@ -202,12 +235,6 @@ app.component('course-time-select',{
             if (day === 5) { return "五"; }
             if (day === 6) { return "六"; }
             if (day === 7) { return "日"; }
-        },
-        isShow() {
-            if (this.active[0] === this.day * 11 + this.lesson && this.clickCount % 2===1) {
-                this.clickCount++;
-            }
-            return (this.day * 11 + this.lesson === this.active[1]) && this.clickCount % 2;
         },
         addSelectWeeks(selectWeek) {
             // 添加selectWeek
@@ -445,15 +472,11 @@ app.component('week-select', {
                             .get('{:url("Vue/getCurrentTermEndTimeJson")}')
                             .then(response => {
                                 this.termEndTime = response.data;
-                                console.log(this.termStartTime);
                                 var dateStart = new Date(this.termStartTime);
-                                console.log(dateStart);
                                 var dateEnd = new Date(this.termEndTime);
-                                console.log(dateEnd);
                                 var difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
                                 console.log(Math.ceil(difValue / 7));
                                 for (var i = 0; i < Math.ceil(difValue / 7); i++) {
-                                    console.log(i);
                                     this.weeks[i] = i+1;
                                 }
                             })
