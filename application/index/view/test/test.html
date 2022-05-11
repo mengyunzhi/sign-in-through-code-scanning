@@ -1,121 +1,91 @@
 {extend name="index"/}
 {block name="title"}
-课程管理
+添加上课时间
 {/block}
 {block name="search"}
 {/block}
 {block name="content"}
-<form class="" action="{:url('scheduleSave')}" method="post">
-    <div class="form-group row">
-        <label for="course_id" class="col-sm-2 col-form-label" style="width: 162px">课程</label>
-        <div class="col-sm-4">
-            <select class="selectpicker form-control col-sm-12" name="course_id" id="course_id" required>
-                <option value="">请选择课程</option>
-                {volist name="Courses" id="_Course" key="key"}
-                <option value="{$_Course->getId()}">{$_Course->getName()}</option>
-                {/volist}
-            </select>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="klass_id" class="col-sm-2 col-form-label" style="width: 162px">上课班级<br>(可多选)</label>
-        <div class="col-sm-4">
-            <select class="selectpicker form-control col-sm-12" multiple name="klass_id[]" id="klass_id" required>
-                <option value="">请选择班级</option>
-                {volist name="Klasses" id="_Klass" key="key"}
-                <option value="{$_Klass->getId()}">{$_Klass->getName()}</option>
-                {/volist}
-            </select>
-        </div>
-    </div>
-
-    <!-- 添加课程 -->
-    <div class="row">
-        <div class="col-sm-12">
-            <table class="table table-hover table-bordered">
-                <tr>
-                    <th class="">周几\课序</th>
-                    <th class="">1</th>
-                    <th class="">2</th>
-                    <th class="">3</th>
-                    <th class="">4</th>
-                    <th class="">5</th>
-                    <th class="">6</th>
-                    <th class="">7</th>
-                    <th class="">8</th>
-                    <th class="">9</th>
-                    <th class="">10</th>
-                    <th class="">11</th>
-                </tr>
-                <?php foreach($Rows as $_Row): ?>
-                <tr>
-                    <td>周{:$dayArray[$_Row]}</td>
-                    <?php foreach($Cols as $_Col): ?>
-                    <td>
-                        <ul class="accordion" data-accordion>
-                            <li class="accordion-navigation">
-                                <a href="#time_{:$_Row * 11 + $_Col + 1}" @click="A">课程</a>
-
-                                <!-- 周 -->
-                                <div id="time_{:$_Row * 11 + $_Col + 1}" class="content col-md-6">
-                                    <label>上课周</label>
-                                    <?php foreach(range(1, 11) as $_Week): ?>
-                                    <input type="checkbox" name="course_{:$_Row * 11 + $_Col + 1}[]" value="{:$_Week}" id="klass_{$_Row * 11 + $_Col + 1}_{$_Week}">
-                                    <label for="klass_{$_Row * 11 + $_Col + 1}_{$_Week}">第{:$_Week}周</label>
-                                    <?php endforeach; ?>
-                                </div>
-
-                                <!-- 教室 -->
-                                <div id="time_{:$_Row * 11 + $_Col + 1}" class="content col-sm-6">
-                                    <label>选择教室</label>
-                                    <?php foreach($Rooms as $key => $_Room): ?>
-                                    <input type="checkbox" name="room_{:$_Row * 11 + $_Col + 1}[]" value="{:$_Room->getId()}" id="room_{:$_Row * 11 + $_Col + 1 .'_'. ($key+1)}">
-                                    <label for="room_{:$_Row * 11 + $_Col + 1 .'_'. ($key+1)}">{:$_Room->name}</label>
-                                    <?php endforeach; ?>
-                                </div>
-                            </li>
-                        </ul>
-                    </td>
-                    <?php endforeach; ?>
-                </tr>
-                <?php endforeach; ?>
-            </table>
-        </div>
-    </div>
-<!-- 初始化 Foundation JS -->
-<script>
-$(document).ready(function() {
-    $(document).foundation();
-})
-</script>
-    <div class="form-group row">
-        <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">确定</button>
-            <a href="{:url('courseSort')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>
-        </div>
-    </div>
-</form>
-<div style="height: 100px;">
+<div id="app">
+    <Root></Root>
 </div>
-
+ 
 <script>
-const app = {
-  data() {
-    return {
-      number: ''
-    }
-  },
-  methods: {
-    A() {
-      axios.get('http://localhost/thinkphp5/public/index/schedule/A').then((response) => {
-        console.log(response.data)
-        this.number = response.data[0][3]
-      })
-    }
-  }
-}
-Vue.createApp(app).mount('#app')
+// 创建一个Vue 应用
+const app = Vue.createApp({})
+ 
+// 定义一个名为 Root的新全局组件
+app.component('Root', {
+    data() {
+
+    },
+    template: `
+    <form>
+        <input type="hidden" name="schedule_id" value="{:$Schedule->id}">
+        <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">课程名称</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" id="" value="{:$Schedule->getCourse()->name}" disabled>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="" class="col-sm-2 col-form-label">上课时间：</label>
+        </div>
+
+        <!--选择时间-->
+        <div class="row" v-if="isSelectKlass">
+            <div class="col-sm-12">
+                <table class="table table-hover table-bordered">
+                    <tr>
+                        <th class="">周几/课序</th>
+                        <th class="">1</th>
+                        <th class="">2</th>
+                        <th class="">3</th>
+                        <th class="">4</th>
+                        <th class="">5</th>
+                    </tr>
+                    <tr v-for="row in [0, 1, 2, 3, 4, 5, 6]">
+                        <td>周{{weekName[row]}}</td>
+                        <td v-for="col in [0, 1, 2, 3, 4]">
+                            <ul class="accordion" data-accordion>
+                                <li class="accordion-navigation">
+                                <!--选择时间-->
+                                    <course-time-select  @change-active="changeActive" @course-time="courseTime"  :day="row" :lesson="col" :dispatches="dispatches" :selectKlass="isSelectKlass" :teacher="teacher" :active="active"></course-time-select>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <a type="submit" @click="submit" href="{:url('schedulesave')}" value="123" class="btn btn-primary">确定</a>
+                </div>
+            </div>
+        </div>
+    </form>
+    `,
+})
+
+app.mount('#app')
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 {/block}
 {block name="page"}
