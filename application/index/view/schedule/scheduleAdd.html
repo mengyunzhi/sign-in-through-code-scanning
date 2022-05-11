@@ -54,19 +54,34 @@ const RootComponent = {
         submit() {
             console.log('submit方法已执行');
             var params = new URLSearchParams();
-            params.append('mydata', 'vue需要传给后台的指');
-            console.log(params,'123');
+            params.append('courseId', this.isSelectCourse);
+            params.append('klasseIds', this.isSelectKlass);
+            params.append('test', [{test1:111}, {test2:222}]);
+            params.append('courseTimes', this.courseTimes);
+            data = [];
+            data.push({'courseId': this.isSelectCourse});
+            data.push({'klasseIds': this.isSelectKlass});
+            data.push({'courseTimes': this.courseTimes});
+            const form = new FormData()
+            form.append('courseId', this.isSelectCourse);
+            form.append('klasseIds', this.isSelectKlass);
+            form.append('test', [{test1:111}, {test2:222}]);
+            form.append('courseTimes', this.courseTimes);
+            console.log(form);
             axios.
-                post("{:url('schedulesave')}",params)
+                post("{:url('schedulesave')}",data).
+                then( function(response) {
+                    console.log(response);
+                })
         },
         courseTime(day, lesson, selectWeeks, selectRoomIds) {
-            console.log(day, lesson, selectWeeks, selectRoomIds);
             this.courseTimes[day][lesson][0]= {'weeks': selectWeeks};
             this.courseTimes[day][lesson][1]= {'room_ids': selectRoomIds};;
         }
     },
 
     template: `
+    {{courseTimes}}
     <form>
         <div class="form-group row">
             <div class="col-sm-10">
@@ -445,15 +460,10 @@ app.component('week-select', {
                             .get('{:url("Vue/getCurrentTermEndTimeJson")}')
                             .then(response => {
                                 this.termEndTime = response.data;
-                                console.log(this.termStartTime);
                                 var dateStart = new Date(this.termStartTime);
-                                console.log(dateStart);
                                 var dateEnd = new Date(this.termEndTime);
-                                console.log(dateEnd);
                                 var difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
-                                console.log(Math.ceil(difValue / 7));
                                 for (var i = 0; i < Math.ceil(difValue / 7); i++) {
-                                    console.log(i);
                                     this.weeks[i] = i+1;
                                 }
                             })

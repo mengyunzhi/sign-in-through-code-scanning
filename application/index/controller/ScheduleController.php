@@ -319,9 +319,15 @@ class ScheduleController extends IndexController {
     {
         $data = Request::instance()->param();
         $json_raw = file_get_contents("php://input"); //获取前端传来的json数据
-        echo($json_raw.'123123');
+        print_r(json_decode($json_raw));
+        return json($data);die();
+        return ;
         die();
-        return 1;
+        $array=[];
+        print_r(json_decode($data['courseTimes']));
+        var_dump(($data['courseTimes']));
+        var_dump(($json_raw));
+        return $json_raw;
         die();
         if (empty($postData['klass_id'][0])) {
             return $this->error('无班级信息');
