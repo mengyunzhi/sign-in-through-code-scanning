@@ -16,4 +16,13 @@ class ScheduleKlass extends Model {
         return isset($this->data['klass_id']) ? (int)$this->data['klass_id'] : null;
     }
 
+    static public function saveScheduleKlass($scheduleId, $klassId, &$msg='') {
+        $scheduleKlass = new ScheduleKlass;
+        $scheduleKlass->schedule_id = $scheduleId;
+        $scheduleKlass->klass_id = $klassId;
+        $status = $scheduleKlass->save();
+        $msg .= $scheduleKlass->getError();
+        return $status ? $scheduleKlass : null;
+    }
+
 }

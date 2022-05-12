@@ -52,22 +52,8 @@ const RootComponent = {
             this.active[1] = active;
         },
         submit() {
-            console.log('submit方法已执行');
-            var params = new URLSearchParams();
-            params.append('courseId', this.isSelectCourse);
-            params.append('klasseIds', this.isSelectKlass);
-            params.append('test', [{test1:111}, {test2:222}]);
-            params.append('courseTimes', this.courseTimes);
-            data = [];
-            data.push({'courseId': this.isSelectCourse});
-            data.push({'klasseIds': this.isSelectKlass});
-            data.push({'courseTimes': this.courseTimes});
-            const form = new FormData()
-            form.append('courseId', this.isSelectCourse);
-            form.append('klasseIds', this.isSelectKlass);
-            form.append('test', [{test1:111}, {test2:222}]);
-            form.append('courseTimes', this.courseTimes);
-            console.log(form);
+            data = {'teacherId':this.teacher.id, 'courseId': this.isSelectCourse, 'klassIds': this.isSelectKlass, 'courseTimes': this.courseTimes};
+            
             axios.
                 post("{:url('schedulesave')}",data).
                 then( function(response) {
@@ -75,8 +61,7 @@ const RootComponent = {
                 })
         },
         courseTime(day, lesson, selectWeeks, selectRoomIds) {
-            this.courseTimes[day][lesson][0]= {'weeks': selectWeeks};
-            this.courseTimes[day][lesson][1]= {'room_ids': selectRoomIds};;
+            this.courseTimes[day][lesson]= {'weeks': selectWeeks,'roomIds': selectRoomIds};
         }
     },
 
@@ -424,6 +409,7 @@ app.component('week-select', {
                     <label for="">第{{week}}周</label>
                 </div>
             </div>
+            
             <div class="col" v-if="!disableShowWeek(week)">
                 <div v-if="isChecked(week)">
                     <input checked  type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)" >

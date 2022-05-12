@@ -4,7 +4,4 @@ use think\Validate;
 
 class Schedule extends Validate
 {
-    protected $rule = [
-        'name'      => 'require|length:1,25',
-    ];
 }
