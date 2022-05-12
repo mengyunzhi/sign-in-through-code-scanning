@@ -52,16 +52,45 @@ const RootComponent = {
             this.active[1] = active;
         },
         submit() {
+            var status = this.checkCourseTimes();
+            if (!status) return ;
             data = {'teacherId':this.teacher.id, 'courseId': this.isSelectCourse, 'klassIds': this.isSelectKlass, 'courseTimes': this.courseTimes};
-            
             axios.
                 post("{:url('schedulesave')}",data).
                 then( function(response) {
-                    console.log(response);
+                    if (response) {
+                        window.location.href = "{:url('courseSort')}";
+                    }
                 })
         },
         courseTime(day, lesson, selectWeeks, selectRoomIds) {
             this.courseTimes[day][lesson]= {'weeks': selectWeeks,'roomIds': selectRoomIds};
+            // if (selectWeeks.length === 0 || selectRoomIds.length === 0) {
+            //     this.courseTimes[day][lesson]= [];
+            // }
+        },
+        checkCourseTimes() {
+            var count = 0; //计数器，保证时间不是空
+            for (var i = 0; i < 7; i++) {
+                for (var j = 0; j < 5; j++) {
+                    if(this.courseTimes[i][j].length !== 0) {
+                        console.log('courseTimes不为空',i,j);
+                        if ((this.courseTimes[i][j].weeks.length===0&&this.courseTimes[i][j].roomIds.length !== 0) || (this.courseTimes[i][j].weeks.length!==0&&this.courseTimes[i][j].roomIds.length === 0)) {
+                            alert(`请检查:
+                                周${this.weekName[i]}第${this.weekName[j]}节课
+                                是否少选周或者教室后重新提交`);
+                            return false;
+                        } else if (this.courseTimes[i][j].weeks.length!==0&&this.courseTimes[i][j].roomIds.length !== 0) {
+                            count++;
+                        }
+                    }
+                }
+            }
+            if (count === 0) {
+                alert('请至少选择一项上课时间');
+                return false;
+            }
+            return true;
         }
     },
 
@@ -132,16 +161,6 @@ const RootComponent = {
         ).catch(err => {
             console.log(err) ;
         })
-        // axios
-        //    .post("{:url('schedulesave')}", {
-        //      account: "18171895497"
-        //    })
-        //    .then(function(response) {
-        //      console.log(response);
-        //    })
-        //    .catch(function(error) {
-        //      console.log(error);
-        //    });
     }
 
 }
@@ -160,6 +179,7 @@ app.component('course-time-select',{
             selectRoomIds: [],
             disableWeeks: [],
             disableRoomIds: [],
+            rooms: null
         }
     },
     props: {
@@ -173,7 +193,7 @@ app.component('course-time-select',{
     },
     emits: ['changeActive', 'courseTime'],
     template: `
-        <a class="btn btn-primary" @click="onChange">周{{weekday(day+1)}}第{{lesson+1}}节</a>
+        <a class="btn btn-primary" @click="onChange">{{getContent()}}</a>
         <div v-if="isShow()" class="row" @change="courseTime">
             <div class="col-sm-6">
                 <!--选择周数-->
@@ -187,6 +207,25 @@ app.component('course-time-select',{
         <!-- 调用数据对接 -->
     `,
     methods: {
+        getContent() {
+            if (this.selectWeeks.length===0&&this.selectRoomIds.length===0) {
+                return `周${this.weekday(this.day+1)}第${this.weekday(this.lesson+1)}节`;
+            }
+            var content = '';
+            content += `周:${this.selectWeeks}    `;
+            content += this.getRoomNames();
+            return content;
+        },
+        getRoomNames() {
+            var rooms;
+            var roomNames = '教室:';
+            for (var i = this.rooms.length - 1; i >= 0; i--) {
+                if(this.selectRoomIds.includes(this.rooms[i].id)) {
+                    roomNames += this.rooms[i].name+';';
+                }
+            }
+            return roomNames;
+        },
         courseTime() {
             this.$emit('courseTime', this.day, this.lesson, this.selectWeeks, this.selectRoomIds);
         },
@@ -379,6 +418,14 @@ app.component('course-time-select',{
             return dontDisplayWeeks;
         }
     },
+    mounted () {
+        axios
+            .get('{:url("Vue/getAllRoomsJson")}')
+            .then(response => this.rooms = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+    }
 })
 
 //  上课时间选择-周
