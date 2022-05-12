@@ -325,26 +325,20 @@ class ScheduleController extends IndexController {
         return $htmls;
     }
 
+    public function asd() {
+        return '12321';
+    }
     public function scheduleSave()
     {
-        return $this->success('操作成功', url('courseSort'));
-        die();
-        $data = Request::instance()->param();
         $json_raw = file_get_contents("php://input"); //获取前端传来的json数据
-        echo($json_raw.'123123');
-        return 1;
-        die();
-        if (empty($postData['klass_id'][0])) {
-            return $this->error('无班级信息');
-        } elseif (empty($postData['course_id'])) {
-            return $this->error('无课程信息');
-        }
-        
-        $status = Teacher::scheduleSave($postData);
-        if (!$status) {
-            return $this->error('操作失败');
-        }
-        return $this->success('操作成功', url('courseSort'));
+        $data = json_decode($json_raw);
+        $teacherId = $data->teacherId;
+        $courseId = $data->courseId;
+        $klassIds = $data->klassIds;
+        $courseTimes = $data->courseTimes;
+        $msg='';
+        $status = Schedule::scheduleSave($teacherId , $courseId, $klassIds, $courseTimes, $msg);
+        return $status ? 1 : 0;
     }
 
 }

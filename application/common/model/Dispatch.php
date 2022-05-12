@@ -68,4 +68,15 @@ class Dispatch extends Model {
         return $this->belongsToMany('Room', 'yunzhi_dispatch_room', 'room_id', 'dispatch_id');
     }
 
+    static public function saveDispatch($scheduleId, $week, $day, $lesson, &$msg='') {
+        $dispatch = new Dispatch;
+        $dispatch->schedule_id = $scheduleId;
+        $dispatch->week = $week;
+        $dispatch->day = $day;
+        $dispatch->lesson = $lesson;
+        $status = $dispatch->validate()->save();
+        $msg .= $dispatch->getError();
+        return $status ? $dispatch : null;
+    }
+
 }

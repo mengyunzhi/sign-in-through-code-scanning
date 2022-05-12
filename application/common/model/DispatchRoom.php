@@ -16,4 +16,13 @@ class DispatchRoom extends Model {
         return isset($this->data['room_id']) ? (int)$this->data['room_id'] : null;
     }
 
+    static public function saveDispatchRoom($dispatchId, $roomId, &$msg='') {
+        $dispatchRoom = new DispatchRoom;
+        $dispatchRoom->dispatch_id = $dispatchId;
+        $dispatchRoom->room_id = $roomId;
+        $status = $dispatchRoom->save();
+        $msg .= $dispatchRoom->getError();
+        return $status ? $dispatchRoom : null;
+    }
+
 }

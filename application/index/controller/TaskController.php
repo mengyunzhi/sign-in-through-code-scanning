@@ -120,6 +120,7 @@ class TaskController extends IndexController {
         $scheduleId = Request::instance()->param('schedule_id');
         $Schedule = Schedule::get($scheduleId);
         $studentIds = StudentSchedule::where('schedule_id', 'eq', $scheduleId)->column('student_id');
+
         if (empty($studentIds)) {
             $studentIds = [0];
         }
