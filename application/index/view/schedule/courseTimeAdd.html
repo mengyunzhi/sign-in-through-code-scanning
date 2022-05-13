@@ -186,21 +186,19 @@ app.component('course-time-select',{
     },
     emits: ['changeActive', 'courseTime'],
     template: `
-        <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary" @click="onChange">周{{weekday(day+1)}}第{{lesson+1}}节</a>
-        <!-- 模态框 -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-              {{day+1}}
-              {{lesson+1}}
-                <h5 class="modal-title" id="exampleModalCenterTitle">周{{weekday(day+1)}}第{{lesson+1}}节</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                    <div  class="row" @change="courseTime">
+        <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" @click="onChange">周{{weekday(day+1)}}第{{lesson+1}}节</a>
+        <div v-if="isShow()" class="row" @change="courseTime">
+            <!-- 模态框 -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">周{{weekday(day+1)}}第{{lesson+1}}节</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
                     <div class="col-sm-6">
                         <!--选择周数-->
                         <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks"></week-select>
@@ -209,13 +207,13 @@ app.component('course-time-select',{
                         <!--选择教室-->
                         <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds"></room-select>
                     </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">保留数据</button>
+                  </div>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">保留数据</button>
-              </div>
             </div>
-          </div>
         </div>
         <!-- 调用数据对接 -->
     `,
@@ -235,6 +233,13 @@ app.component('course-time-select',{
             if (day === 5) { return "五"; }
             if (day === 6) { return "六"; }
             if (day === 7) { return "日"; }
+        },
+        isShow() {
+            if (this.active[0] === this.day * 11 + this.lesson && this.clickCount % 2===1) {
+                this.clickCount++;
+            }
+            if (this.clickCount % 2 === 0) { this.clickCount++; }
+            return (this.day * 11 + this.lesson === this.active[1]) && this.clickCount % 2;
         },
         addSelectWeeks(selectWeek) {
             // 添加selectWeek
