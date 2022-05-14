@@ -120,7 +120,9 @@ class VueController extends IndexController {
         //通过dispatches 获取 teacherId
         $DisWithTeacherId = [];
         foreach ($Dispatches as $Dispatch) {
-            $Dispatch['teacherId'] = Schedule::where('id', 'eq', $Dispatch['schedule_id'])->column('teacher_id')[0]; 
+            $fields = Schedule::where('id', 'eq', $Dispatch['schedule_id'])->find();
+            $Dispatch['scheduleId'] = $fields->id;
+            $Dispatch['teacherId'] = $fields->teacher_id;
             $DisWithTeacherId[] = $Dispatch;
         }
         $rooms=[];
