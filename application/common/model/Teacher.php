@@ -77,7 +77,7 @@ class Teacher extends Model {
     static public function courseProgramUpdate($programId, $name, $lesson)
     {
         $Program = Program::get($programId);
-        $Program->name = $name;
+        $Program->setAttr('name', $name);
         $Program->lesson = $lesson;
         return $Program->save();
     }

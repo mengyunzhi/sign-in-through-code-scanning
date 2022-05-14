@@ -118,6 +118,7 @@ class VueController extends IndexController {
         $Dispatches = Dispatch::where('schedule_id', 'in', $scheduleIds)->column('id, schedule_id, week, day, lesson');
 
         //通过dispatches 获取 teacherId
+        $DisWithTeacherId = [];
         foreach ($Dispatches as $Dispatch) {
             $Dispatch['teacherId'] = Schedule::where('id', 'eq', $Dispatch['schedule_id'])->column('teacher_id')[0]; 
             $DisWithTeacherId[] = $Dispatch;
@@ -140,6 +141,7 @@ class VueController extends IndexController {
         //通过dispatches 获取 klassIds
         ///找到每一个对应的scheduleId
         ///找到每一个scheduleId对应的klassIds
+        $DisWithRoomIdsAndKlassIds = [];
         foreach ($DisWithRoomIds as $DisWithRoomId) {
             $DisWithRoomId['klassIds'] = ScheduleKlass::where('schedule_id', 'eq', $DisWithRoomId['schedule_id'])->column('klass_id'); 
             //去除无用项
@@ -151,6 +153,10 @@ class VueController extends IndexController {
 
     public function getAllRoomsJson() {
         return json(Room::All());
+    }
+
+    public function getKlassesJson() {
+        return 1;
     }
 
     public function getTeacherJson() {
