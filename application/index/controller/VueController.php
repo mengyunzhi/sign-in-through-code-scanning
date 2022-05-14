@@ -110,7 +110,9 @@ class VueController extends IndexController {
         return json(Schedule::All());
     }
 
-    public function getDispatchesJson() {;
+    public function getDispatchesJson() {
+        $json_raw = file_get_contents("php://input"); //获取前端传来的json数据
+        $isForEdit = json_decode($json_raw);
         //通过学期获取调度
         $user = User::getCurrentLoginUser();
         $term = Term::getCurrentTerm();
@@ -125,21 +127,7 @@ class VueController extends IndexController {
             $Dispatch['teacherId'] = $fields->teacher_id;
             $DisWithTeacherId[] = $Dispatch;
         }
-        $rooms=[];
-        //通过dispatches 获取 roomIds
-        ///找到每一个对应的roomIds放到rooms
-        foreach ($DisWithTeacherId as $Dispatch) {
-            $roomIds = DispatchRoom::where('dispatch_id', 'eq', $Dispatch['id'])->column('room_id');
-            foreach ($roomIds as $roomId) {
-                $rooms[$Dispatch['week']][$Dispatch['day']*11 + $Dispatch['lesson']][] = $roomId;
-            }
-        }
-        $DisWithRoomIds = [];
-        foreach ($DisWithTeacherId as $Dispatch) {
-            $Dispatch['roomIds'] = $rooms[$Dispatch['week']][$Dispatch['day']*11 + $Dispatch['lesson']];
-            $DisWithRoomIds[]=$Dispatch;
-        }
-
+        $DisWithRoomIds = $this->addRoomIds($DisWithTeacherId, $isForEdit);
         //通过dispatches 获取 klassIds
         ///找到每一个对应的scheduleId
         ///找到每一个scheduleId对应的klassIds
@@ -153,12 +141,42 @@ class VueController extends IndexController {
         return json($DisWithRoomIdsAndKlassIds);
     }
 
+    public function addRoomIds($DisWithTeacherId, $isForEdit=0) {
+        $DisWithRoomIds = [];
+        if($isForEdit) {
+            foreach ($DisWithTeacherId as $Dispatch) {
+                $Dispatch['roomIds'] = DispatchRoom::where('dispatch_id', 'eq', $Dispatch['id'])->column('room_id');
+                $DisWithRoomIds[]=$Dispatch;
+            }
+        } else {
+            $rooms=[];
+            //通过dispatches 获取 roomIds
+            ///找到每一个对应的roomIds放到rooms
+            foreach ($DisWithTeacherId as $Dispatch) {
+                $roomIds = DispatchRoom::where('dispatch_id', 'eq', $Dispatch['id'])->column('room_id');
+                foreach ($roomIds as $roomId) {
+                    $rooms[$Dispatch['week']][$Dispatch['day']*11 + $Dispatch['lesson']][] = $roomId;
+                }
+            }
+            foreach ($DisWithTeacherId as $Dispatch) {
+                // var_dump($Dispatch['week'], $Dispatch['day'], $Dispatch['lesson']);
+                $Dispatch['roomIds'] = $rooms[$Dispatch['week']][$Dispatch['day']*11 + $Dispatch['lesson']];
+                $DisWithRoomIds[]=$Dispatch;
+            }
+        }
+        return $DisWithRoomIds;
+    }
+
     public function getAllRoomsJson() {
         return json(Room::All());
     }
 
     public function getKlassesJson() {
-        return 1;
+        $json_raw = file_get_contents("php://input"); //获取前端传来的json数据
+        $data = json_decode($json_raw);
+        $scheduleId = $data->scheduleId;
+        $klassIds = ScheduleKlass::where('schedule_id','eq',$scheduleId)->column('klass_id');
+        return json($klassIds);
     }
 
     public function getTeacherJson() {

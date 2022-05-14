@@ -27,7 +27,7 @@ const RootComponent = {
             active: [-1, -1],
             dispatches: [],
             isSelectCourse: null,
-            isSelectKlass: null,
+            isSelectKlass: [],
             allowedKlasses: [],
             teacher: null,
             klasses: [],
@@ -139,13 +139,17 @@ const RootComponent = {
                 .get('{:url("Vue/getTeacherJson")}')
                 .then(res => res.data),
             axios
-                .get('{:url("Vue/getKlassesJson")}', scheduleId)
+                .post('{:url("Vue/getKlassesJson")}', {'scheduleId': scheduleId})
+                .then(res => res.data),
+            axios
+                .post('{:url("Vue/getDispatchesJson")}', 1)//显示default
                 .then(res => res.data)
         ]).then(
-            axios.spread((val1, val2, val3) => {
+            axios.spread((val1, val2, val3, val4) => {
                 this.dispatches = val1;
                 this.teacher = val2;
                 this.klasses = val3;
+                console.log(val4);
             })
         ).catch(err => {
             console.log(err) ;
@@ -184,9 +188,8 @@ app.component('course-time-select',{
     },
     emits: ['changeActive', 'courseTime'],
     template: `
-    {{disableWeeks}}
-    {{disableRoomIds}}
     {{defaultCheckedWeeksAndRooms}}
+    {{'aaaaa'}}
     {{defaultCheckedWeeks}}
     {{defaultCheckedRooms}}
         <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary" @click="onChange">周{{weekday(day+1)}}第{{lesson+1}}节</a>
@@ -438,7 +441,7 @@ app.component('week-select', {
         disableWeeks: null,
         dontDisplayWeeks: null,
         alreadySelectWeeks: null,
-        defaultCheckedWeeks: null
+        defaultCheckedWeeks: null,
     },
     template: `
         {{defaultCheckedWeeks}}
@@ -509,6 +512,7 @@ app.component('week-select', {
             }
         },
         isChecked(week) {
+            return true;
             return this.alreadySelectWeeks.includes(week) || this.defaultCheckedWeeks.includes(week);
         }
     },
@@ -538,9 +542,10 @@ app.component('room-select', {
     props: {
         disableRoomIds: null,
         alreadySelectRoomIds: null,
-        defaultCheckedRooms: null
+        defaultCheckedRooms: null,
     },
     template: `
+    {{defaultCheckedRooms}}
     <label>选择教室</label>
     <div class="row" v-for="room in rooms">
         <div class="col" v-if="disableRoomId(room.id)">
