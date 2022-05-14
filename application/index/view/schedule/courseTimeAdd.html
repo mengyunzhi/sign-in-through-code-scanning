@@ -19,7 +19,7 @@ for(var i=0;i<7;i++){        //一维长度为7
         courseTimes[i][j]=[];
     }
 }
-var scheduleId = "{:input('schedule_id')}";
+var scheduleId = {:input('schedule_id')};
 // 班级选择
 const RootComponent = {
     data() {
@@ -142,7 +142,7 @@ const RootComponent = {
                 .get('{:url("Vue/getKlassesJson")}', scheduleId)
                 .then(res => res.data)
         ]).then(
-            axios.spread((val1, val2) => {
+            axios.spread((val1, val2, val3) => {
                 this.dispatches = val1;
                 this.teacher = val2;
                 this.klasses = val3;
@@ -168,6 +168,8 @@ app.component('course-time-select',{
             selectRoomIds: [],
             disableWeeks: [],
             disableRoomIds: [],
+            defaultCheckedWeeks: [],
+            defaultCheckedRooms: [],
         }
     },
     props: {
@@ -178,13 +180,15 @@ app.component('course-time-select',{
         //已选择的班级
         selectKlass: null,
         teacher: null,
-        klasses: [],
+        klasses: null,
     },
     emits: ['changeActive', 'courseTime'],
     template: `
-    {{dontDisplayWeeks}}
     {{disableWeeks}}
     {{disableRoomIds}}
+    {{defaultCheckedWeeksAndRooms}}
+    {{defaultCheckedWeeks}}
+    {{defaultCheckedRooms}}
         <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary" @click="onChange">周{{weekday(day+1)}}第{{lesson+1}}节</a>
         <!-- 模态框 -->
         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -202,11 +206,11 @@ app.component('course-time-select',{
                     <div  class="row" @change="courseTime">
                     <div class="col-sm-6">
                         <!--选择周数-->
-                        <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks"></week-select>
+                        <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks" :defaultCheckedWeeks="defaultCheckedWeeks"></week-select>
                     </div>
                     <div class="col-sm-6">
                         <!--选择教室-->
-                        <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds"></room-select>
+                        <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds" :defaultCheckedRooms="defaultCheckedRooms"></room-select>
                     </div>
                 </div>
               </div>
@@ -403,6 +407,20 @@ app.component('course-time-select',{
                 dontDisplayWeeks.push(dontDisplayWeeksAndRooms[i].week);
             }
             return dontDisplayWeeks;
+        },
+        defaultCheckedWeeksAndRooms() {
+            defaultCheckedWeeksAndRooms = [];
+            //当前day和lesson的数据
+            dispatches = this.conflictWeeksAndRooms;
+            defaultCheckedWeeksAndRooms = dispatches.filter(dispatch => dispatch.scheduleId === scheduleId);
+
+            weeksAndRooms = [];
+            for (var i = defaultCheckedWeeksAndRooms.length - 1; i >= 0; i--) {
+                this.defaultCheckedWeeks.push(defaultCheckedWeeksAndRooms[i].week);
+                for (var j = defaultCheckedWeeksAndRooms[i].roomIds.length - 1; j >= 0; j--) {
+                    this.defaultCheckedRooms.push(defaultCheckedWeeksAndRooms[i].roomIds[j]);
+                }
+            }
         }
     },
 })
@@ -420,8 +438,10 @@ app.component('week-select', {
         disableWeeks: null,
         dontDisplayWeeks: null,
         alreadySelectWeeks: null,
+        defaultCheckedWeeks: null
     },
     template: `
+        {{defaultCheckedWeeks}}
         {{calculateTotalWeeks()}}
         <label>上课周</label>
         <div class="row" v-for="week in weeks">
@@ -489,7 +509,7 @@ app.component('week-select', {
             }
         },
         isChecked(week) {
-            return this.alreadySelectWeeks.includes(week);
+            return this.alreadySelectWeeks.includes(week) || this.defaultCheckedWeeks.includes(week);
         }
     },
     mounted () {
@@ -518,6 +538,7 @@ app.component('room-select', {
     props: {
         disableRoomIds: null,
         alreadySelectRoomIds: null,
+        defaultCheckedRooms: null
     },
     template: `
     <label>选择教室</label>
@@ -557,7 +578,7 @@ app.component('room-select', {
             }
         },
         isChecked(roomId) {
-            return this.alreadySelectRoomIds.includes(roomId);
+            return this.alreadySelectRoomIds.includes(roomId)  || this.defaultCheckedRooms.includes(roomId);
         }
     },
     mounted () {
