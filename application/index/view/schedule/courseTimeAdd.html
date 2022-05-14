@@ -19,6 +19,7 @@ for(var i=0;i<7;i++){        //一维长度为7
         courseTimes[i][j]=[];
     }
 }
+var scheduleId = "{:input('schedule_id')}";
 // 班级选择
 const RootComponent = {
     data() {
@@ -29,6 +30,7 @@ const RootComponent = {
             isSelectKlass: null,
             allowedKlasses: [],
             teacher: null,
+            klasses: [],
             weekName: ['一', '二', '三', '四', '五', '六', '日'],
             courseTimes: courseTimes,
         }
@@ -113,7 +115,7 @@ const RootComponent = {
                             <ul class="accordion" data-accordion>
                                 <li class="accordion-navigation">
                                 <!--选择时间-->
-                                    <course-time-select  @change-active="changeActive" @course-time="courseTime"  :day="row" :lesson="col" :dispatches="dispatches" :selectKlass="isSelectKlass" :teacher="teacher" :active="active"></course-time-select>
+                                    <course-time-select  @change-active="changeActive" @course-time="courseTime"  :day="row" :lesson="col" :dispatches="dispatches" :selectKlass="isSelectKlass" :teacher="teacher" :active="active" :klasses="klasses"></course-time-select>
                                 </li>
                             </ul>
                         </td>
@@ -129,32 +131,25 @@ const RootComponent = {
     </form>
     `,
     mounted () {
-
         axios.all([
             axios
                 .get('{:url("Vue/getDispatchesJson")}')
                 .then(res => res.data),
             axios
                 .get('{:url("Vue/getTeacherJson")}')
+                .then(res => res.data),
+            axios
+                .get('{:url("Vue/getKlassesJson")}', scheduleId)
                 .then(res => res.data)
         ]).then(
             axios.spread((val1, val2) => {
                 this.dispatches = val1;
                 this.teacher = val2;
+                this.klasses = val3;
             })
         ).catch(err => {
             console.log(err) ;
         })
-        // axios
-        //    .post("{:url('schedulesave')}", {
-        //      account: "18171895497"
-        //    })
-        //    .then(function(response) {
-        //      console.log(response);
-        //    })
-        //    .catch(function(error) {
-        //      console.log(error);
-        //    });
     }
 
 }
@@ -183,22 +178,28 @@ app.component('course-time-select',{
         //已选择的班级
         selectKlass: null,
         teacher: null,
+        klasses: [],
     },
     emits: ['changeActive', 'courseTime'],
     template: `
-        <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" @click="onChange">周{{weekday(day+1)}}第{{lesson+1}}节</a>
-        <div v-if="isShow()" class="row" @change="courseTime">
-            <!-- 模态框 -->
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">周{{weekday(day+1)}}第{{lesson+1}}节</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
+    {{dontDisplayWeeks}}
+    {{disableWeeks}}
+    {{disableRoomIds}}
+        <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary" @click="onChange">周{{weekday(day+1)}}第{{lesson+1}}节</a>
+        <!-- 模态框 -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+              {{day+1}}
+              {{lesson+1}}
+                <h5 class="modal-title" id="exampleModalCenterTitle">周{{weekday(day+1)}}第{{lesson+1}}节</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                    <div  class="row" @change="courseTime">
                     <div class="col-sm-6">
                         <!--选择周数-->
                         <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks"></week-select>
@@ -207,13 +208,13 @@ app.component('course-time-select',{
                         <!--选择教室-->
                         <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds"></room-select>
                     </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">保留数据</button>
-                  </div>
                 </div>
               </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">保留数据</button>
+              </div>
             </div>
+          </div>
         </div>
         <!-- 调用数据对接 -->
     `,
@@ -233,13 +234,6 @@ app.component('course-time-select',{
             if (day === 5) { return "五"; }
             if (day === 6) { return "六"; }
             if (day === 7) { return "日"; }
-        },
-        isShow() {
-            if (this.active[0] === this.day * 11 + this.lesson && this.clickCount % 2===1) {
-                this.clickCount++;
-            }
-            if (this.clickCount % 2 === 0) { this.clickCount++; }
-            return (this.day * 11 + this.lesson === this.active[1]) && this.clickCount % 2;
         },
         addSelectWeeks(selectWeek) {
             // 添加selectWeek
@@ -394,7 +388,7 @@ app.component('course-time-select',{
                     dontDisplayWeeksAndRooms.push(dispatches[i]);
                     continue;
                 }
-                for (var j = this.selectKlass.length - 1; j >= 0; j--) {
+                for (var j = this.klasses.length - 1; j >= 0; j--) {
                 //如果调度中包括选择的班级就说明当前周不能用,即存入dontDisplayWeeksAndRooms(不包括直接排除)
                     if (dispatches[i].klassIds.includes(this.selectKlass[j])) {
                         dontDisplayWeeksAndRooms.push(dispatches[i]);
@@ -480,7 +474,7 @@ app.component('week-select', {
                                 var dateStart = new Date(this.termStartTime);
                                 var dateEnd = new Date(this.termEndTime);
                                 var difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
-                                console.log(Math.ceil(difValue / 7));
+                                // console.log(Math.ceil(difValue / 7));
                                 for (var i = 0; i < Math.ceil(difValue / 7); i++) {
                                     this.weeks[i] = i+1;
                                 }
