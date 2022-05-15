@@ -8,10 +8,6 @@
 <div id="main">
 </div>
 <script>
-    $('#myModal').on('shown.bs.modal', function () {
-  $('#myInput').trigger('focus')
-})
-
 var courseTimes = new Array();   //先声明一维
 for(var i=0;i<7;i++){        //一维长度为7
     courseTimes[i]=new Array();    //在声明二维
@@ -178,8 +174,8 @@ app.component('course-time-select',{
     },
     props: {
         active: null,
-        day: 0,
-        lesson: 0,
+        day: null,
+        lesson: null,
         dispatches: null,
         //已选择的班级
         selectKlass: null,
@@ -188,44 +184,65 @@ app.component('course-time-select',{
     },
     emits: ['changeActive', 'courseTime'],
     template: `
+    {{conflictData}}
+    {{dontDisplayWeeks}}
+    {{'-----------------'}}
+    {{klasses}}
     {{defaultCheckedWeeksAndRooms}}
     {{'aaaaa'}}
     {{defaultCheckedWeeks}}
     {{defaultCheckedRooms}}
+
         <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary" @click="onChange">周{{weekday(day+1)}}第{{lesson+1}}节</a>
-        <!-- 模态框 -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-              {{day+1}}
-              {{lesson+1}}
-                <h5 class="modal-title" id="exampleModalCenterTitle">周{{weekday(day+1)}}第{{lesson+1}}节</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                    <div  class="row" @change="courseTime">
-                    <div class="col-sm-6">
-                        <!--选择周数-->
-                        <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks" :defaultCheckedWeeks="defaultCheckedWeeks"></week-select>
-                    </div>
-                    <div class="col-sm-6">
-                        <!--选择教室-->
-                        <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds" :defaultCheckedRooms="defaultCheckedRooms"></room-select>
+        <div v-if="isShow()" class="row" @change="courseTime">
+            <!-- 模态框 -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            {{day+1}}
+                            {{lesson+1}}
+                            <h5 class="modal-title" id="exampleModalCenterTitle">周{{weekday(day+1)}}第{{lesson+1}}节</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {{test()}}
+                        <div class="modal-body">
+                            <div  class="row" @change="courseTime">
+                                <div class="col-sm-6">
+                                    <!--选择周数-->
+                                    <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks" :defaultCheckedWeeks="defaultCheckedWeeks" :day="day" :lesson="lesson"></week-select>
+                                </div>
+                                <div class="col-sm-6">
+                                    <!--选择教室-->
+                                    <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds" :defaultCheckedRooms="defaultCheckedRooms" :day="day" :lesson="lesson"></room-select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">保留数据</button>
+                        </div>
                     </div>
                 </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">保留数据</button>
-              </div>
             </div>
-          </div>
-        </div>
+        <div>
         <!-- 调用数据对接 -->
     `,
     methods: {
+        test() {
+            return '12312312312312312323123123123';
+        },
+        isShow() {
+            if (this.active[0] === this.day * 11 + this.lesson && this.clickCount % 2===1) {
+                this.clickCount++;
+            }
+            
+            if (this.clickCount % 2 === 0) { this.clickCount++; }
+            return (this.day * 11 + this.lesson === this.active[1]) && this.clickCount % 2;
+        },
         courseTime() {
             this.$emit('courseTime', this.day, this.lesson, this.selectWeeks, this.selectRoomIds);
         },
@@ -442,6 +459,8 @@ app.component('week-select', {
         dontDisplayWeeks: null,
         alreadySelectWeeks: null,
         defaultCheckedWeeks: null,
+        day: null,
+        lesson: null,
     },
     template: `
         {{defaultCheckedWeeks}}
@@ -512,8 +531,12 @@ app.component('week-select', {
             }
         },
         isChecked(week) {
-            return true;
-            return this.alreadySelectWeeks.includes(week) || this.defaultCheckedWeeks.includes(week);
+            var status = this.alreadySelectWeeks.includes(week) || this.defaultCheckedWeeks.includes(week);
+            // if(this.day===0&&this.lesson===2) {
+            //     console.log(this.defaultCheckedWeeks,this.day,this.lesson);
+            //     console.log(status);
+            // }
+            return status;
         }
     },
     mounted () {
@@ -543,6 +566,8 @@ app.component('room-select', {
         disableRoomIds: null,
         alreadySelectRoomIds: null,
         defaultCheckedRooms: null,
+        day: null,
+        lesson: null,
     },
     template: `
     {{defaultCheckedRooms}}
@@ -583,7 +608,12 @@ app.component('room-select', {
             }
         },
         isChecked(roomId) {
-            return this.alreadySelectRoomIds.includes(roomId)  || this.defaultCheckedRooms.includes(roomId);
+            var status = this.alreadySelectRoomIds.includes(roomId)  || this.defaultCheckedRooms.includes(roomId);
+            // if(this.day===0&&this.lesson===2) {
+            //     console.log(this.defaultCheckedRooms,this.day,this.lesson);
+            //     console.log(status);
+            // }
+            return status;
         }
     },
     mounted () {
