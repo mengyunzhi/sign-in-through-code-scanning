@@ -186,10 +186,7 @@ app.component('course-time-select',{
     template: `
     {{conflictData}}
     {{dontDisplayWeeks}}
-    {{'-----------------'}}
-    {{klasses}}
     {{defaultCheckedWeeksAndRooms}}
-    {{'aaaaa'}}
     {{defaultCheckedWeeks}}
     {{defaultCheckedRooms}}
 
@@ -201,14 +198,11 @@ app.component('course-time-select',{
 
                     <div class="modal-content">
                         <div class="modal-header">
-                            {{day+1}}
-                            {{lesson+1}}
                             <h5 class="modal-title" id="exampleModalCenterTitle">周{{weekday(day+1)}}第{{lesson+1}}节</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        {{test()}}
                         <div class="modal-body">
                             <div  class="row" @change="courseTime">
                                 <div class="col-sm-6">

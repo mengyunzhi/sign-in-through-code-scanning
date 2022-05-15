@@ -59,4 +59,13 @@ class Klass extends Model {
         return $status;
     }
 
+    static public function findDisableKlassesByIds($ids) {
+        $disableKlasses = [];
+        for ($key = 0; $key < count($ids); $key++) {
+            $klass = Klass::get($ids[$key]);
+            array_push($disableKlasses, $klass);
+        }
+        return $disableKlasses;
+    }
+
 }
