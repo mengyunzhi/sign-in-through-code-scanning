@@ -24,7 +24,6 @@ use think\Request;
  */
 class ScheduleController extends IndexController {
 
-
     public function courseDetail() 
     {
 
@@ -38,6 +37,7 @@ class ScheduleController extends IndexController {
             $room = Room::get($roomId);
             $roomArr[$key] = $room->getName();
         }
+
         $this->assign('Schedule', $Schedule);
         $this->assign('DispatchArr', $DispatchArr);
         $this->assign('roomArr', $roomArr);
@@ -94,8 +94,15 @@ class ScheduleController extends IndexController {
     {
         $scheduleId = Request::instance()->param('schedule_id');
         $Schedule = Schedule::get($scheduleId);
+
+        $DispatchArr = $Schedule->getDispatches();
+        $klassesOfSameTimeScheduleIds = Dispatch::klassesOfSameTimeScheduleIds($DispatchArr);
+        $klassIdsOfSameTime = ScheduleKlass::findklassIdsOfSameTime($klassesOfSameTimeScheduleIds);
+        $disableKlasses = Klass::findDisableKlassesByIds($klassIdsOfSameTime);
         $existKlasses = $Schedule->Klasses;
-        $Klasses = Teacher::excludeKlasses($existKlasses);
+        $disableKlasses = array_merge_recursive($disableKlasses, $existKlasses);
+
+        $Klasses = Teacher::excludeKlasses($disableKlasses);
         $backUrl = $_SERVER["HTTP_REFERER"];
         $this->assign('backUrl', $backUrl);
         $this->assign('Klasses', $Klasses);

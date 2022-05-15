@@ -30,6 +30,24 @@ class Dispatch extends Model {
         return $status;
     }
 
+    public static function klassesOfSameTimeScheduleIds($currentDispatch) {
+        $klassesOfSameTimeScheduleIds = [];
+        $allDispatches = Dispatch::All();
+        foreach($allDispatches as $x=>$x_value) {
+            if ($x_value->day === $currentDispatch[0]->day) {
+                if ($x_value->lesson === $currentDispatch[0]->lesson) {
+                    if ($x_value->week === $currentDispatch[0]->week) {
+                        if ($x_value->id !== $currentDispatch[0]->id) {
+                            array_push($klassesOfSameTimeScheduleIds, $x_value->id);
+                        }
+                    }
+                }
+            }
+
+        }
+        return $klassesOfSameTimeScheduleIds;
+    }
+
 
     public function getId() {
         return isset($this->data['id']) ? (int)$this->data['id'] : null;

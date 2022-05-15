@@ -25,4 +25,13 @@ class ScheduleKlass extends Model {
         return $status ? $scheduleKlass : null;
     }
 
+    static public function findklassIdsOfSameTime($klassesOfSameTimeScheduleIds) {
+        $klassIdsOfSameTime = [];
+        for ($key = 0; $key < count($klassesOfSameTimeScheduleIds); $key++) {
+            $klassId = ScheduleKlass::where('schedule_id', $klassesOfSameTimeScheduleIds[$key])->select();
+            array_push($klassIdsOfSameTime, $klassId[0]['klass_id']);
+        }
+        return $klassIdsOfSameTime;
+    }
+
 }
