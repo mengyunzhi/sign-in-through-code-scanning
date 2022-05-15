@@ -96,6 +96,7 @@ const RootComponent = {
 
     template: `
     {{courseTimes}}
+    {{dispatches}}
     <form>
         <div class="form-group row">
             <div class="col-sm-10">
@@ -156,6 +157,7 @@ const RootComponent = {
         ]).then(
             axios.spread((val1, val2) => {
                 this.dispatches = val1;
+                console.log(val1);
                 this.teacher = val2;
             })
         ).catch(err => {
@@ -193,35 +195,38 @@ app.component('course-time-select',{
     },
     emits: ['changeActive', 'courseTime'],
     template: `
+    ----------
+    {{conflictWeeksAndRooms}}
+    {{dontDisplayWeeks}}
         <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary" @click="onChange">{{getContent()}}</a>
-        <div v-if="isShow()" class="row" @change="courseTime">
-            <!-- 模态框 -->
-            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">周{{weekday(day+1)}}第{{lesson+1}}节</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                        <div class="col-sm-6">
-                            <!--选择周数-->
-                            <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks"></week-select>
-                        </div>
-                        <div class="col-sm-6">
-                            <!--选择教室-->
-                            <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds"></room-select>
-                        </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">保留数据</button>
+            <div v-if="isShow()" class="row" @change="courseTime">
+                <!-- 模态框 -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">周{{weekday(day+1)}}第{{lesson+1}}节</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                            <div class="col-sm-6">
+                                <!--选择周数-->
+                                <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks"></week-select>
+                            </div>
+                            <div class="col-sm-6">
+                                <!--选择教室-->
+                                <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds"></room-select>
+                            </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">保留数据</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
             </div>
-        </div>
         <!-- 调用数据对接 -->
     `,
     methods: {

@@ -117,8 +117,8 @@ class VueController extends IndexController {
         $user = User::getCurrentLoginUser();
         $term = Term::getCurrentTerm();
         $scheduleIds = Schedule::where("term_id=$term->id")->column('id');
+        if (empty($scheduleIds)) $scheduleIds = [0];
         $Dispatches = Dispatch::where('schedule_id', 'in', $scheduleIds)->column('id, schedule_id, week, day, lesson');
-
         //通过dispatches 获取 teacherId
         $DisWithTeacherId = [];
         foreach ($Dispatches as $Dispatch) {
