@@ -48,7 +48,7 @@ class Klass extends Model {
         $Klass = new Klass;
 
         $Klass->setAttr('name', $name);
-        $Klass->entrance_date = $entranceDate;
+        $Klass->entrance_date = strtotime($entranceDate);
         $Klass->length = $length;
         $status = $Klass->validate()->save();
         

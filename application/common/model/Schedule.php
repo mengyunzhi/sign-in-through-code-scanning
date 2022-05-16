@@ -69,26 +69,7 @@ class Schedule extends Model {
             $scheduleKlass = ScheduleKlass::saveScheduleKlass($schedule->id, $klassId, $msg);
             if (is_null($scheduleKlass)) return false;
         }
-        // 3、每个组件的值通过scheduleId、weeks、day、lesson来存dispatch表并获取到dispatchId
-        // 4、通过dispatchIds和roomIds来存dispatch_room表
-        for ($i=0; $i < 7; $i++) {
-            for ($j=0; $j < 5; $j++) { 
-                if ((!empty($courseTimes[$i][$j]->weeks)) && (!empty($courseTimes[$i][$j]->roomIds))) {
-                    $day = $i;
-                    $lesson = $j;
-                    $weeks = $courseTimes[$i][$j]->weeks;
-                    $roomIds = $courseTimes[$i][$j]->roomIds;
-                    foreach ($weeks as $week) {
-                        $dispatch = Dispatch::saveDispatch($schedule->id, $week, $day, $lesson, $msg);
-                        if (is_null($dispatch)) return false;
-                        foreach ($roomIds as $roomId) {
-                            $dispatchRoom = DispatchRoom::saveDispatchRoom($dispatch->id, $roomId, $msg);
-                            if (is_null($dispatchRoom)) return false;
-                        }
-                    }
-                }
-            }
-        }
+        $status = Dispatch::dispatchSave($schedule->id, $courseTimes, $msg);
         return true;
     }
 

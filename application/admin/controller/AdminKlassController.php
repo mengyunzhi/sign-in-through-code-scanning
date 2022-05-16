@@ -182,7 +182,7 @@ class AdminKlassController extends IndexController
         //
         $postData = Request::instance()->post();
         $msg = '';
-        $Stduent = Student::get($postData['id']);
+        $Stduent = Student::get($postData['student_id']);
         $status = User::userSave($postData, User::$ROLE_STUDENT, $msg, $Stduent->user_id);
         if ($status === false) {
             return $this->error('操作失败:'.$msg);
