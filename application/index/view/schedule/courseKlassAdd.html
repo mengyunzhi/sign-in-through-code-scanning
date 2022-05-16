@@ -18,7 +18,7 @@
         <div class="col-sm-4">
             <select class="selectpicker form-control col-sm-12" multiple name="klass_id[]" id="klass">
                 <?php foreach($Klasses as $key => $_Klass): ?>
-                <option value="{:$_Klass->id}">{:$_Klass->name}</option>
+                <option value="{:$_Klass->id}" disabled>{:$_Klass->name}</option>
                 <?php endforeach; ?>
             </select>
         </div>

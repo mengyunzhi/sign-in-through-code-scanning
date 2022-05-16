@@ -94,7 +94,6 @@ class ScheduleController extends IndexController {
     {
         $scheduleId = Request::instance()->param('schedule_id');
         $Schedule = Schedule::get($scheduleId);
-
         $DispatchArr = $Schedule->getDispatches();
         $klassesOfSameTimeScheduleIds = Dispatch::klassesOfSameTimeScheduleIds($DispatchArr);
         $klassIdsOfSameTime = ScheduleKlass::findklassIdsOfSameTime($klassesOfSameTimeScheduleIds);

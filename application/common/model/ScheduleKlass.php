@@ -17,6 +17,16 @@ class ScheduleKlass extends Model {
     }
 
     static public function saveScheduleKlass($scheduleId, $klassId, &$msg='') {
+        $studentIds = Student::where('klass_id', 'eq', $klassId)->column('id');
+        foreach ($studentIds as $studentId) {
+            $studentSchedule = new StudentSchedule;
+            $studentSchedule->student_id = $studentId;
+            $studentSchedule->schedule_id = $scheduleId;
+            $status = $studentSchedule->save();
+            $msg .= $studentSchedule->getError();
+            if (!$status) return null;
+        }
+
         $scheduleKlass = new ScheduleKlass;
         $scheduleKlass->schedule_id = $scheduleId;
         $scheduleKlass->klass_id = $klassId;

@@ -324,7 +324,7 @@ class User extends Model {
      * @param  int $userId 如果非空代表修改；空代表新增
      * @return object         成功 object; 失败 null
      */
-    static public function saveUser($data, &$msg, $userId=null) {
+    static public function saveUser($data, &$msg, &$userId=null) {
         if (!is_null($userId)) {
             $User = self::get($userId);
         } else {
