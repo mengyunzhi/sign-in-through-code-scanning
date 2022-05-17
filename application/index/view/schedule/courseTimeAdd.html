@@ -62,7 +62,7 @@ const RootComponent = {
                 then( function(response) {
                     console.log(response);
                     if (response) {
-                        // window.location.href = "{:url('courseDetail')}";
+                        window.location.href = "{:url('courseDetail?schedule_id='.input('schedule_id'))}";
                     }
                 })
         },
@@ -272,7 +272,7 @@ app.component('course-time-select',{
             return (this.day * 11 + this.lesson === this.active[1]) && this.clickCount % 2;
         },
         courseTime() {
-            // this.selectRoomIds = this.unique(this.selectRoomIds);
+            this.selectRoomIds = this.unique(this.selectRoomIds);
             this.$emit('courseTime', this.day, this.lesson, this.selectWeeks, this.selectRoomIds);
         },
         onChange() {
