@@ -113,14 +113,12 @@ class ScheduleController extends IndexController {
     public function courseKlassDelete()
     {
         $data = Request::instance()->param();
-        $scheduleKlass = new ScheduleKlass;
-        $scheduleKlassId = $scheduleKlass->where('klass_id', $data['klass_id'])->find()->getScheduleId();
-        if (!isset($scheduleKlassId)) {
+        if (!isset($data['schedule_id'])) {
             return $this->error('无排课id');
         } elseif (!isset($data['klass_id'])) {
             return $this->error('无班级id');
         }
-        $status = Teacher::courseKlassDelete($scheduleKlassId, $data['klass_id']);
+        $status = Teacher::courseKlassDelete($data['schedule_id'], $data['klass_id']);
         if (!$status) {
             return $this->error('删除失败');
         }
@@ -281,12 +279,15 @@ class ScheduleController extends IndexController {
 
     public function courseTimeSave()
     {
-        $postData = Request::instance()->post();
-        $status = Teacher::courseTimeSave($postData);
-        if (!$status) {
-            return $this->success('保存失败');
-        }
-        return $this->success('操作成功', url('courseDetail?schedule_id='.$postData['schedule_id']));
+        $json_raw = file_get_contents("php://input"); //获取前端传来的json数据
+        $data = json_decode($json_raw);
+        $teacherId = $data->teacherId;
+        $courseId = $data->courseId;
+        $scheduleId = $data->scheduleId;
+        $courseTimes = $data->courseTimes;
+        $msg='';
+        $status = Schedule::courseTimeSave($teacherId, $courseId, $scheduleId, $courseTimes, $msg);
+        return $status ? 1 : 0;
     }
 
     public function scheduleAdd() 
@@ -331,9 +332,6 @@ class ScheduleController extends IndexController {
         return $htmls;
     }
 
-    public function asd() {
-        return '12321';
-    }
     public function scheduleSave()
     {
         $json_raw = file_get_contents("php://input"); //获取前端传来的json数据

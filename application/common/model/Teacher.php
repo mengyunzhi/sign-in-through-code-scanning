@@ -50,11 +50,22 @@ class Teacher extends Model {
         }
         //detach方法返回值为null
         Schedule::get($scheduleId)->Klasses()->detach($klassId);
+        StudentSchedule::where('schedule_id', 'eq', $scheduleId)->delete();
         return true;
     }
 
     static public function courseKlassSave($scheduleId, $klassIds)
     {
+        foreach ($klassIds as $klassId) {
+            $studentIds = Student::where('klass_id', 'eq', $klassId)->column('id');
+            foreach ($studentIds as $studentId) {
+                $studentSchedule = new StudentSchedule;
+                $studentSchedule->student_id = $studentId;
+                $studentSchedule->schedule_id = $scheduleId;
+                $status = $studentSchedule->save();
+                if(!$status) return false;
+            }
+        }
         return Schedule::get($scheduleId)->Klasses()->saveAll($klassIds);
     }
 
