@@ -31,10 +31,10 @@
             </thead>
             <tbody>
 
-                <?php foreach (range(1,5) as $row): ?>
+                <?php foreach (range(0,4) as $row): ?>
                 <tr>
-                    <td style="border:solid 0.2px #999999;"><p>第{:$row}节</p></td>
-                    <?php foreach (range(1,7) as $col): ?>
+                    <td style="border:solid 0.2px #999999;"><p>第{:$row+1}节</p></td>
+                    <?php foreach (range(0,6) as $col): ?>
                     <td style="border:solid 0.2px #999999;">
                             <?php
                                 $lastWeek = 0;
