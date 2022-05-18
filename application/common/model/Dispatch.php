@@ -34,16 +34,17 @@ class Dispatch extends Model {
         $klassesOfSameTimeScheduleIds = [];
         $allDispatches = Dispatch::All();
         foreach($allDispatches as $x=>$x_value) {
-            if ($x_value->day === $currentDispatch[0]->day) {
-                if ($x_value->lesson === $currentDispatch[0]->lesson) {
-                    if ($x_value->week === $currentDispatch[0]->week) {
-                        if ($x_value->id !== $currentDispatch[0]->id) {
-                            array_push($klassesOfSameTimeScheduleIds, $x_value->id);
+            for ($key = 0; $key < count($currentDispatch); $key++) {
+                if ($x_value->day === $currentDispatch[$key]->day) {
+                    if ($x_value->lesson === $currentDispatch[$key]->lesson) {
+                        if ($x_value->week === $currentDispatch[$key]->week) {
+                            if ($x_value->id !== $currentDispatch[$key]->id) {
+                                array_push($klassesOfSameTimeScheduleIds, $x_value->schedule_id);
+                            }
                         }
                     }
                 }
             }
-
         }
         return $klassesOfSameTimeScheduleIds;
     }

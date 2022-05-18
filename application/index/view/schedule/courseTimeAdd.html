@@ -178,7 +178,6 @@ const RootComponent = {
                 this.dispatches = val1;
                 this.teacher = val2;
                 this.klasses = val3;
-                console.log(val4);
             })
         ).catch(err => {
             console.log(err) ;
@@ -203,6 +202,7 @@ app.component('course-time-select',{
             disableRoomIds: [],
             defaultCheckedWeeks: [],
             defaultCheckedRooms: [],
+            allScheduleKlasses: null,
         }
     },
     props: {
@@ -266,6 +266,7 @@ app.component('course-time-select',{
                 </div>
             </div>
         <div>
+        {{allSchedules}}
         <!-- 调用数据对接 -->
     `,
     methods: {
@@ -472,10 +473,62 @@ app.component('course-time-select',{
                 }
             }
 
+            var klassOfCurrentSchedule = [];
+            var currentScheduleKlasses = [];
+            var p = 0;
+            if (this.allScheduleKlasses !== null) {
+                for (var j = this.allScheduleKlasses.length - 1; j >= 0; j--) {
+                    if (this.allScheduleKlasses[j].schedule_id === scheduleId) {
+                        currentScheduleKlasses[p] = this.allScheduleKlasses[j];
+                        klassOfCurrentSchedule[p] = currentScheduleKlasses[p].klass_id;
+                        p++;
+                    }
+                }
+                console.log(klassOfCurrentSchedule);
+
+                var dispatchScheduleIds = [];
+                var z = 0;
+                for (var t = this.allScheduleKlasses.length - 1; t >= 0; t--) {
+                    for (var e = klassOfCurrentSchedule.length-1; e >=0; e--) {
+                        if (this.allScheduleKlasses[t].klass_id === klassOfCurrentSchedule[e]) {
+                            if (this.allScheduleKlasses[t].schedule_id !== scheduleId) {
+                                dispatchScheduleIds[z] = this.allScheduleKlasses[t].schedule_id;
+                                console.log(dispatchScheduleIds);
+                            }
+                        }
+                    }
+                }
+
+                dispatches = this.dispatches;
+                var dispatchesByDispatchScheduleIds = [];
+                var c = 0;
+                for (var r = this.dispatches.length - 1; r >= 0; r--) {
+                    for (var w = dispatchScheduleIds.length-1; w >= 0; w--) {
+                        if (this.dispatches[r].scheduleId === dispatchScheduleIds[w]) {
+                            dispatchesByDispatchScheduleIds[c] = this.dispatches[r];
+                            console.log(dispatchesByDispatchScheduleIds);
+                        }
+                    }
+                }
+
+                var dontDisplayWeeksByAlreadySelectKlasses = [];
+                for (var i = dispatchesByDispatchScheduleIds.length - 1; i >= 0; i--) {
+                    //挑选出当前day和lesson的
+                    if (dispatchesByDispatchScheduleIds[i].day===this.day && dispatchesByDispatchScheduleIds[i].lesson===this.lesson) {
+                        dontDisplayWeeksByAlreadySelectKlasses.push(dispatchesByDispatchScheduleIds[i].week);
+                    }
+                }
+
+                
+
+            }
+
+
             dontDisplayWeeks=[];
             for (var i = dontDisplayWeeksAndRooms.length - 1; i >= 0; i--) {
                 dontDisplayWeeks.push(dontDisplayWeeksAndRooms[i].week);
             }
+            dontDisplayWeeks = dontDisplayWeeks.concat(dontDisplayWeeksByAlreadySelectKlasses);
             return dontDisplayWeeks;
         },
         defaultCheckedWeeksAndRooms() {
@@ -510,6 +563,14 @@ app.component('course-time-select',{
                 this.courseTime();
             }
         }
+    },
+    mounted () {
+        axios
+            .get('{:url("Vue/getAllScheduleKlassesJson")}')
+            .then(response => this.allScheduleKlasses = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
     },
 })
 

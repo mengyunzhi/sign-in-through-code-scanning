@@ -213,13 +213,15 @@ app.component('course-time-select',{
                             </div>
 
                             <div class="modal-body">
-                                <div class="col-sm-6">
-                                    <!--选择周数-->
-                                    <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks"></week-select>
-                                </div>
-                                <div class="col-sm-6">
-                                    <!--选择教室-->
-                                    <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds"></room-select>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <!--选择周数-->
+                                        <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks"></week-select>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <!--选择教室-->
+                                        <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds"></room-select>
+                                    </div>
                                 </div>
                             </div>
                             
