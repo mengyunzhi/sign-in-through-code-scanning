@@ -30,6 +30,21 @@ class CourseScheduleController extends IndexController {
         $scheduleIds = Schedule::where('term_id', 'eq', $currentTerm->getId())->column('id');
         if(empty($scheduleIds)) $scheduleIds = [0];
         $Dispatches = Dispatch::where('schedule_id', 'in', $scheduleIds)->order('week')->select();
+
+        $currentUser = User::getCurrentLoginUser();
+        $userId = $currentUser->getId();
+        $teacher = Teacher::where('user_id', $userId)->find();
+        $teacherId = $teacher->getId();
+        $scheduleIds1 = Schedule::where('teacher_id', 'eq', $teacherId)->column('id');
+        $week = Request::instance()->param('week');
+        if (empty($scheduleIds1)) {
+            $scheduleIds1 = [0];
+        }
+        $DispatchesByTeacher = Dispatch::where('schedule_id', 'in', $scheduleIds1)->order('week')->select();
+
+
+        $Dispatches =  array_intersect($Dispatches, $DispatchesByTeacher);
+
         $this->assign('currentTerm', $currentTerm);
         $this->assign('Dispatches', $Dispatches);
         return $this->fetch();

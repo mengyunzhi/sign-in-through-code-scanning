@@ -518,6 +518,7 @@ app.component('course-time-select',{
                         if (this.allScheduleKlasses[t].klass_id === klassOfCurrentSchedule[e]) {
                             if (this.allScheduleKlasses[t].schedule_id !== scheduleId) {
                                 dispatchScheduleIds[z] = this.allScheduleKlasses[t].schedule_id;
+                                z++;
                                 console.log(dispatchScheduleIds);
                             }
                         }
@@ -531,6 +532,7 @@ app.component('course-time-select',{
                     for (var w = dispatchScheduleIds.length-1; w >= 0; w--) {
                         if (this.dispatches[r].scheduleId === dispatchScheduleIds[w]) {
                             dispatchesByDispatchScheduleIds[c] = this.dispatches[r];
+                            c++;
                             console.log(dispatchesByDispatchScheduleIds);
                         }
                     }
@@ -543,6 +545,7 @@ app.component('course-time-select',{
                         dontDisplayWeeksByAlreadySelectKlasses.push(dispatchesByDispatchScheduleIds[i].week);
                     }
                 }
+                console.log(dontDisplayWeeksByAlreadySelectKlasses);
 
                 
 
