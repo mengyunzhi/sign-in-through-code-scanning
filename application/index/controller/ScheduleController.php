@@ -39,6 +39,8 @@ class ScheduleController extends IndexController {
         }
 
         $this->assign('Schedule', $Schedule);
+        dump($Schedule->Klasses);
+
         $this->assign('DispatchArr', $DispatchArr);
         $this->assign('roomArr', $roomArr);
         $htmls = $this->fetch();
