@@ -217,12 +217,21 @@ app.component('course-time-select',{
     },
     emits: ['changeActive', 'courseTime'],
     template: `
-    {{'---------------'}}
+    {{'--------conflictdata and dontDisplayWeeks-------'}}
     {{conflictData}}
     {{dontDisplayWeeks}}
-    {{defaultCheckedWeeksAndRooms}}
+    {{'---------------'}}
+    {{'------disabled------'}}
+    {{disableWeeks}}
+    {{disableRoomIds}}
+    {{'-------select---------'}}
+    {{selectWeeks}}
+    {{selectRoomIds}}
+    {{'--------selectEnd-------'}}
     {{defaultCheckedWeeks}}
     {{defaultCheckedRooms}}
+    {{'------------------'}}
+    {{defaultCheckedWeeksAndRooms}}
 
         <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary" @click="onChange">周{{weekday(day+1)}}第{{lesson+1}}节</a>
         <div v-if="isShow()" class="row" @change="courseTime">
@@ -370,7 +379,6 @@ app.component('course-time-select',{
                 var d = this.selectRoomIds[i];
                 this.selectRoomIds.splice(i, 1);
             }
-
             // 添加disableWeeks
             // 对某个教室勾选或取消的判断
             var sta = false;
@@ -462,8 +470,8 @@ app.component('course-time-select',{
                         break;
                     }
                 }
-
             }
+
             dontDisplayWeeks=[];
             for (var i = dontDisplayWeeksAndRooms.length - 1; i >= 0; i--) {
                 dontDisplayWeeks.push(dontDisplayWeeksAndRooms[i].week);
@@ -477,15 +485,27 @@ app.component('course-time-select',{
                 dispatches = this.conflictWeeksAndRooms;
                 defaultCheckedWeeksAndRooms = dispatches.filter(dispatch => dispatch.scheduleId === scheduleId);
 
-                weeksAndRooms = [];
-
+                var weeksAndRooms = [];
+                var selectWeeks = [];
+                var selectRoomIds = [];
                 for (var i = defaultCheckedWeeksAndRooms.length - 1; i >= 0; i--) {
-                    this.selectWeeks.push(defaultCheckedWeeksAndRooms[i].week);
+                    selectWeeks.push(defaultCheckedWeeksAndRooms[i].week);
                     this.defaultCheckedWeeks.push(defaultCheckedWeeksAndRooms[i].week);
                     for (var j = defaultCheckedWeeksAndRooms[i].roomIds.length - 1; j >= 0; j--) {
-                        this.selectRoomIds.push(defaultCheckedWeeksAndRooms[i].roomIds[j]);
+                        selectRoomIds.push(defaultCheckedWeeksAndRooms[i].roomIds[j]);
                         this.defaultCheckedRooms.push(defaultCheckedWeeksAndRooms[i].roomIds[j]);
                     }
+
+                }
+
+                //将默认选择的周和教室通过方法筛选数据
+                //完善 selectRoomIds selectWeeks disabledWeeks disabledRoomIds
+                for (var i = selectWeeks.length - 1; i >= 0; i--) {
+                    this.addSelectWeeks(selectWeeks[i]);
+                }
+                selectRoomIds = this.unique(selectRoomIds);
+                for (var i = selectRoomIds.length - 1; i >= 0; i--) {
+                    this.addSelectRoomIds(selectRoomIds[i]);
                 }
                 this.courseTime();
             }
@@ -580,10 +600,6 @@ app.component('week-select', {
         },
         isChecked(week) {
             var status = this.alreadySelectWeeks.includes(week) || this.defaultCheckedWeeks.includes(week);
-            // if(this.day===0&&this.lesson===2) {
-            //     console.log(this.defaultCheckedWeeks,this.day,this.lesson);
-            //     console.log(status);
-            // }
             return status;
         }
     },
