@@ -5,6 +5,7 @@ import {TermMockApi} from '../../../mock-api/term.mock.api';
 import {MockApiTestingInterceptor} from '@yunzhi/ng-mock-api/testing';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {getTestScheduler} from 'jasmine-marbles';
+import {TermStatePipe} from '../../pipe/term-state.pipe';
 
 fdescribe('TermIndexComponent', () => {
   let component: TermIndexComponent;
@@ -12,7 +13,7 @@ fdescribe('TermIndexComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TermIndexComponent ],
+      declarations: [ TermIndexComponent, TermStatePipe ],
       imports: [HttpClientModule],
       providers: [
         {

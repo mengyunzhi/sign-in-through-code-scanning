@@ -20,11 +20,11 @@
       <td>{{ term.name }}</td>
       <td>{{ term.startTime * 1000 | date: 'yyyy-MM-dd' }}</td>
       <td>{{ term.endTime * 1000 | date: 'yyyy-MM-dd' }}</td>
-      <td><span class="badge" [ngClass]="{ 'badge-primary': term.state, 'badge-secondary': !term.state }">{{ term.state }}</span></td>
+      <td><span class="badge" [ngClass]="{ 'badge-primary': term.state, 'badge-secondary': !term.state }">{{ term.state | termState }}</span></td>
       <td>
-        <a class="btn btn-primary"><i class="fas fa-pen"></i>编辑</a>
-        <a class="btn btn-danger"><i class="far fa-trash-alt"></i>删除</a>
-        <a class="btn btn-success" [ngClass]="{ disabled: term.state }">激活</a>
+        <a class="btn btn-sm btn-primary"><i class="fas fa-pen"></i>编辑</a>
+        <a class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i>删除</a>
+        <a class="btn btn-sm btn-success col-md-2" [ngClass]="{ disabled: term.state }">激活</a>
       </td>
     </tr>
   </tbody>

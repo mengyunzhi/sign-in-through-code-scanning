@@ -9,6 +9,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MockApiInterceptor} from '@yunzhi/ng-mock-api';
 import {TermMockApi} from './mock-api/term.mock.api';
 import { TermEditComponent } from './admin/term/edit/term-edit.component';
+import { TermStatePipe } from './admin/pipe/term-state.pipe';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { TermEditComponent } from './admin/term/edit/term-edit.component';
     TermIndexComponent,
     TermAddComponent,
     TermEditComponent,
+    TermStatePipe,
   ],
   imports: [
     BrowserModule,
