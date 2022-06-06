@@ -35,8 +35,6 @@
             "scripts": [
               "./node_modules/jquery/dist/jquery.slim.min.js",
               "./node_modules/popper.js/dist/umd/popper.min.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
               "./node_modules/@fortawesome/fontawesome-free/js/all.js"
             ]
           },
@@ -104,8 +102,6 @@
               "./node_modules/@fortawesome/fontawesome-free/css/all.css"
             ],
             "scripts": [
-              "./node_modules/jquery/dist/jquery.slim.min.js",
-              "./node_modules/popper.js/dist/umd/popper.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
               "./node_modules/bootstrap/dist/js/bootstrap.min.js",
               "./node_modules/@fortawesome/fontawesome-free/js/all.js"
@@ -140,5 +136,8 @@
       }
     }
   },
-  "defaultProject": "first-app"
+  "defaultProject": "first-app",
+  "cli": {
+    "analytics": "f4d99c8e-031d-460c-a5b9-83bdb53ad091"
+  }
 }

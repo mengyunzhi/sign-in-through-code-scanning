@@ -7,7 +7,7 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {getTestScheduler} from 'jasmine-marbles';
 import {TermStatePipe} from '../../pipe/term-state.pipe';
 
-fdescribe('TermIndexComponent', () => {
+describe('TermIndexComponent', () => {
   let component: TermIndexComponent;
   let fixture: ComponentFixture<TermIndexComponent>;
 
