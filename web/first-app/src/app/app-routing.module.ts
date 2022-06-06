@@ -1,6 +1,10 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {TermIndexComponent} from './admin/term/index/term-index.component';
+import {TeacherIndexComponent} from './admin/teacher/teacher-index/teacher-index.component';
+import {TeacherAddComponent} from './admin/teacher/teacher-add/teacher-add.component';
+import {TeacherEditComponent} from './admin/teacher/teacher-edit/teacher-edit.component';
+import {TeacherUpdatePasswordComponent} from './admin/teacher/teacher-update-password/teacher-update-password.component';
 
 const routes: Routes = [
   {
@@ -10,6 +14,22 @@ const routes: Routes = [
   {
     path: 'admin/term',
     component: TermIndexComponent
+  },
+  {
+    path: 'admin/teacher',
+    component: TeacherIndexComponent
+  },
+  {
+    path: 'admin/teacher/add',
+    component: TeacherAddComponent
+  },
+  {
+    path: 'admin/teacher/edit',
+    component: TeacherEditComponent
+  },
+  {
+    path: 'admin/teacher/updatePassword',
+    component: TeacherUpdatePasswordComponent
   },
   {
     path: 'student',

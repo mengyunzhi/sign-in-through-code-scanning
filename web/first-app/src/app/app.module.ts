@@ -11,6 +11,10 @@ import {MockApiInterceptor} from '@yunzhi/ng-mock-api';
 import {TermMockApi} from './mock-api/term.mock.api';
 import { TermEditComponent } from './admin/term/edit/term-edit.component';
 import { TermStatePipe } from './admin/pipe/term-state.pipe';
+import {TeacherIndexComponent} from './admin/teacher/teacher-index/teacher-index.component';
+import {TeacherEditComponent} from './admin/teacher/teacher-edit/teacher-edit.component';
+import {TeacherAddComponent} from './admin/teacher/teacher-add/teacher-add.component';
+import {TeacherUpdatePasswordComponent} from './admin/teacher/teacher-update-password/teacher-update-password.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +23,10 @@ import { TermStatePipe } from './admin/pipe/term-state.pipe';
     TermAddComponent,
     TermEditComponent,
     TermStatePipe,
+    TeacherIndexComponent,
+    TeacherEditComponent,
+    TeacherAddComponent,
+    TeacherUpdatePasswordComponent
   ],
   imports: [
     BrowserModule,
