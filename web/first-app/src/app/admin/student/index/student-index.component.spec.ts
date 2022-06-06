@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { StudentIndexComponent } from './student-index.component';
+import {StudentIndexComponent} from './student-index.component';
+import {FormsModule} from '@angular/forms';
 
 describe('StudentIndexComponent', () => {
   let component: StudentIndexComponent;
@@ -8,9 +9,10 @@ describe('StudentIndexComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StudentIndexComponent ]
+      declarations: [StudentIndexComponent],
+      imports: []
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +21,8 @@ describe('StudentIndexComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
+    fixture.autoDetectChanges();
   });
 });
