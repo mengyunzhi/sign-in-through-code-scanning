@@ -3,13 +3,13 @@
   <div class="row">
     <div class="col-md-10">
       <form class="form-inline">
-        <input type="text" class="form-control" style="margin-right: 10px">
-        <input type="text" class="form-control" style="margin-right: 10px">
-        <button type="submit" class="btn btn-primary">查询</button>
+        <input type="text" class="form-control" style="margin-right: 10px" placeholder="姓名">
+        <input type="text" class="form-control" style="margin-right: 10px" placeholder="手机号">
+        <button type="submit" class="btn btn-info"><i class="fas fa-search"></i>查询</button>
       </form>
     </div>
     <div class="col-md-2">
-      <a class="btn btn-primary" style="float: right" [routerLink]="'add'">添加教师</a>
+      <a class="btn btn-primary" style="float: right" [routerLink]="'add'"><i class="fas fa-plus"></i>添加教师</a>
     </div>
   </div>
 
@@ -34,9 +34,9 @@
         </td>
         <td>{{teacher.number}}</td>
         <td>
-          <a class="btn btn-primary" [routerLink]="'edit'">编辑</a>&nbsp;&nbsp;
-          <a class="btn btn-success" [routerLink]="'updatePassword'">修改密码</a>&nbsp;&nbsp;
-          <a class="btn btn-danger">删除</a>
+          <a class="btn btn-sm btn-primary" [routerLink]="'edit'"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
+          <a class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i>删除</a>
+          <a class="btn btn-sm btn-success" [routerLink]="'updatePassword'">修改密码</a>&nbsp;&nbsp;
         </td>
       </tr>
     </tbody>
