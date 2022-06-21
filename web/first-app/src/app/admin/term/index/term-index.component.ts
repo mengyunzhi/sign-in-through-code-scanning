@@ -20,6 +20,13 @@ export class TermIndexComponent implements OnInit {
           console.log('已赋值完成');
         },
         error => console.log('mock-api请求失败', error));
+
+    this.httpClient.get('http://localhost/angular/api/public/index/login/test')
+      .subscribe(data => {
+        console.log('请求成功', data);
+      }, error => {
+        console.log('请求失败', error);
+      });
   }
 
 }

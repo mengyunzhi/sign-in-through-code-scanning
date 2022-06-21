@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TermStatePipe implements PipeTransform {
 
-  transform(value: boolean): string {
+  transform(value: number): string {
     if (value === undefined || value === null) {
       return '-';
     }

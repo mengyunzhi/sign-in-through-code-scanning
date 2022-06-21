@@ -15,6 +15,7 @@ import {TeacherIndexComponent} from './admin/teacher/teacher-index/teacher-index
 import {TeacherEditComponent} from './admin/teacher/teacher-edit/teacher-edit.component';
 import {TeacherAddComponent} from './admin/teacher/teacher-add/teacher-add.component';
 import {TeacherUpdatePasswordComponent} from './admin/teacher/teacher-update-password/teacher-update-password.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,13 +32,11 @@ import {TeacherUpdatePasswordComponent} from './admin/teacher/teacher-update-pas
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS, multi: true,
-      useClass: MockApiInterceptor.forRoot([TermMockApi])
-    }
+
   ],
   bootstrap: [AppComponent]
 })
