@@ -16,6 +16,7 @@ import {TeacherEditComponent} from './admin/teacher/teacher-edit/teacher-edit.co
 import {TeacherAddComponent} from './admin/teacher/teacher-add/teacher-add.component';
 import {TeacherUpdatePasswordComponent} from './admin/teacher/teacher-update-password/teacher-update-password.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {DatePipe} from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -33,10 +34,14 @@ import {ReactiveFormsModule} from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
-
+    DatePipe,
+    {
+      provide: HTTP_INTERCEPTORS, multi: true,
+      useClass: MockApiInterceptor.forRoot([TermMockApi]),
+    }
   ],
   bootstrap: [AppComponent]
 })

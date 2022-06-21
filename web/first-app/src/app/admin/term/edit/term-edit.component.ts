@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {Term} from '../../../entity/term';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-term-edit',
@@ -15,7 +16,8 @@ export class TermEditComponent implements OnInit {
   id : number | undefined;
 
   constructor(private activatedRoute: ActivatedRoute,
-              private httpClient: HttpClient) {
+              private httpClient: HttpClient,
+              private datePipe: DatePipe) {
     this.formGroup = new FormGroup({
       name : new FormControl('', Validators.required),
       startTime : new FormControl('', Validators.required),
@@ -34,12 +36,11 @@ export class TermEditComponent implements OnInit {
     console.log('loadData is called');
     this.httpClient.get<Term>('/term/' + id)
       .subscribe(term => {
-        const start = new Date(term.startTime * 1000);
-        const end = new Date(term.endTime * 1000);
         this.formGroup.get('name')?.setValue(term.name);
         this.formGroup.get('state')?.setValue(term.state);
-        this.formGroup.get('startTime')?.setValue('2022-03-01');
-        this.formGroup.get('endTime')?.setValue('2022-05-31');
+        console.log(this.datePipe);
+        this.formGroup.get('startTime')?.setValue(this.datePipe.transform(new Date(term.startTime * 1000), "yyyy-MM-dd"));
+        this.formGroup.get('endTime')?.setValue(this.datePipe.transform(new Date(term.endTime * 1000), "yyyy-MM-dd"));
         console.log(this.formGroup.value);
       })
   }

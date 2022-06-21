@@ -2,23 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea93b6e8-a8cc-4b0e-a2ad-786e2a2dbe8d" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sign-in-through-code-scanning.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sign-in-through-code-scanning.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/application/index/controller/LoginController.php" beforeDir="false" afterPath="$PROJECT_DIR$/api/application/index/controller/LoginController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/pipe/term-state.pipe.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/pipe/term-state.pipe.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/teacher/teacher-add/teacher-add.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/teacher/teacher-add/teacher-add.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/term/add/term-add.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/term/add/term-add.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/term/add/term-add.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/term/add/term-add.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/term/edit/term-edit.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/term/edit/term-edit.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/term/edit/term-edit.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/term/edit/term-edit.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/term/index/term-index.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/term/index/term-index.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/term/index/term-index.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/term/index/term-index.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/app-routing.module.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/first-app/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/entity/term.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/entity/term.spec.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/entity/term.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/entity/term.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/mock-api/term.mock.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/mock-api/term.mock.api.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +48,7 @@
       <updated>1655777373029</updated>
       <workItem from="1655777376730" duration="11460000" />
       <workItem from="1655790705444" duration="40000" />
-      <workItem from="1655790845029" duration="95000" />
+      <workItem from="1655790845029" duration="2105000" />
     </task>
     <servers />
   </component>
