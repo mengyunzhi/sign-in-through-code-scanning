@@ -29,4 +29,6 @@ export class TermIndexComponent implements OnInit {
       });
   }
 
+  // todo: 添加分页
+
 }
