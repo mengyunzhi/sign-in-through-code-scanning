@@ -5,14 +5,12 @@ import {TeacherIndexComponent} from './admin/teacher/teacher-index/teacher-index
 import {TeacherAddComponent} from './admin/teacher/teacher-add/teacher-add.component';
 import {TeacherEditComponent} from './admin/teacher/teacher-edit/teacher-edit.component';
 import {TeacherUpdatePasswordComponent} from './admin/teacher/teacher-update-password/teacher-update-password.component';
+import {TermAddComponent} from './admin/term/add/term-add.component';
+import {TermEditComponent} from './admin/term/edit/term-edit.component';
 
 const routes: Routes = [
   {
     path: 'admin',
-    component: TermIndexComponent
-  },
-  {
-    path: 'admin/term',
     component: TermIndexComponent
   },
   {
@@ -30,6 +28,18 @@ const routes: Routes = [
   {
     path: 'admin/teacher/updatePassword',
     component: TeacherUpdatePasswordComponent
+  },
+  {
+    path: 'admin/term',
+    component: TermIndexComponent
+  },
+  {
+    path: 'admin/term/add',
+    component: TermAddComponent
+  },
+  {
+    path: 'admin/term/edit/:id',
+    component: TermEditComponent
   },
   {
     path: 'student',

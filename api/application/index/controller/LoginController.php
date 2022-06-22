@@ -18,6 +18,10 @@ class LoginController extends Controller
         return $this->fetch();
     }
 
+    public function test() {
+        return 1231233;
+    }
+
     public function login() {
         $postData = Request()->post();
         if (!isset($postData['number']) || empty($postData['number'])) {
