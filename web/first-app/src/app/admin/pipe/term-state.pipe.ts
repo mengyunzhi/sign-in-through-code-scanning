@@ -5,14 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TermStatePipe implements PipeTransform {
 
-  transform(value: number): string {
-    if (value === undefined || value === null) {
-      return '-';
-    }
-    if (value) {
-      return '已激活';
-    } else {
-      return '未激活';
-    }
+  transform(value: unknown, ...args: unknown[]): unknown {
+    return null;
   }
+
 }
