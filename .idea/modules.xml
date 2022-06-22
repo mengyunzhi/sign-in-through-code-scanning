@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../angular/.idea/angular11-guild-step7.7.4.iml" filepath="$PROJECT_DIR$/../angular/.idea/angular11-guild-step7.7.4.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/angular11-guild-step7.7.4.iml" filepath="$PROJECT_DIR$/.idea/angular11-guild-step7.7.4.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../angularguide/first-app/.idea/first-app.iml" filepath="$PROJECT_DIR$/../angularguide/first-app/.idea/first-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/sign-in-through-code-scanning.iml" filepath="$PROJECT_DIR$/.idea/sign-in-through-code-scanning.iml" />
     </modules>
   </component>

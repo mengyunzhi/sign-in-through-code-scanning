@@ -38,10 +38,9 @@ export class TermEditComponent implements OnInit {
       .subscribe(term => {
         this.formGroup.get('name')?.setValue(term.name);
         this.formGroup.get('state')?.setValue(term.state);
-        console.log(this.datePipe);
         this.formGroup.get('startTime')?.setValue(this.datePipe.transform(new Date(term.startTime * 1000), "yyyy-MM-dd"));
         this.formGroup.get('endTime')?.setValue(this.datePipe.transform(new Date(term.endTime * 1000), "yyyy-MM-dd"));
         console.log(this.formGroup.value);
-      })
+      }, error => console.log('加载数据失败', error));
   }
 }

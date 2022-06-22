@@ -17,6 +17,7 @@ import {TeacherAddComponent} from './admin/teacher/teacher-add/teacher-add.compo
 import {TeacherUpdatePasswordComponent} from './admin/teacher/teacher-update-password/teacher-update-password.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {DatePipe} from '@angular/common';
+import { NavComponent } from './nav/nav.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {DatePipe} from '@angular/common';
     TeacherIndexComponent,
     TeacherEditComponent,
     TeacherAddComponent,
-    TeacherUpdatePasswordComponent
+    TeacherUpdatePasswordComponent,
+    NavComponent
   ],
   imports: [
     BrowserModule,
