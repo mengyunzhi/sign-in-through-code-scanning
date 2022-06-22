@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {StudentIndexComponent} from './admin/student/index/student-index.component';
 import { TermIndexComponent } from './admin/term/index/term-index.component';
 import { TermAddComponent } from './admin/term/add/term-add.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
