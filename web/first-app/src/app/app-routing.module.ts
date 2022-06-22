@@ -42,7 +42,7 @@ const routes: Routes = [
     component: TermEditComponent
   },
   {
-    path: 'student',
+    path: 'admin/student',
     // 惰性加载
     loadChildren: () => import('./admin/student/student.module').then(mod => mod.StudentModule)
   }

@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea93b6e8-a8cc-4b0e-a2ad-786e2a2dbe8d" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/term/index/term-index.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/term/index/term-index.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sign-in-through-code-scanning.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sign-in-through-code-scanning.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/application/index/view/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/application/index/view/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/term/edit/term-edit.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/term/edit/term-edit.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/app.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/app.module.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,17 +27,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/DELL/Desktop/sign-in-through-code-scanning/api/application/api",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Users\\DELL\\Desktop\\yunzhi\\lampp\\htdocs\\angular\\web\\first-app\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/DELL/Desktop/sign-in-through-code-scanning/api/application/api&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\DELL\\Desktop\\yunzhi\\lampp\\htdocs\\angularguide\\first-app\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\DELL\Desktop\sign-in-through-code-scanning\api\application\api" />
@@ -46,7 +53,8 @@
       <updated>1655777373029</updated>
       <workItem from="1655777376730" duration="11460000" />
       <workItem from="1655790705444" duration="40000" />
-      <workItem from="1655790845029" duration="2297000" />
+      <workItem from="1655790845029" duration="7444000" />
+      <workItem from="1655861060074" duration="1340000" />
     </task>
     <servers />
   </component>

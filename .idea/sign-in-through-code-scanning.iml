@@ -9,5 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="angular11-guild-step7.7.4" />
+    <orderEntry type="module" module-name="first-app" />
   </component>
 </module>
