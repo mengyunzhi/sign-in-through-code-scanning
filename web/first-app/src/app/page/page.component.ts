@@ -25,7 +25,7 @@ export class PageComponent implements OnInit {
     let begin;
     if (this.inputPage.totalPages > 7) {
       maxCount = 7;
-      begin = this.inputPage.totalPages - 3;
+      begin = this.inputPage.number - 3;
       if (begin < 0) {
         begin = 0;
       } else if (begin > this.inputPage.totalPages - 7) {

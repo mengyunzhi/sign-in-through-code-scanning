@@ -26,13 +26,19 @@ export class Page<T> {
     if (data.last !== undefined) {
       this.last = data.last;
     } else {
-      this.last = (this.number + 1) * this.size >= this.numberOfElements ? true : false;
+      this.last = (this.number + 1) * this.size >= this.numberOfElements;
     }
 
     if (data.first !== undefined) {
       this.first = data.first;
     } else {
-      this.first = this.number === 0 ? true : false;
+      this.first = this.number === 0;
+    }
+
+    if (data.totalPages !== undefined) {
+      this.totalPages = data.totalPages;
+    } else {
+      this.totalPages = Math.ceil(this.numberOfElements / this.size);
     }
 
     if (data.totalPages !== undefined) {
