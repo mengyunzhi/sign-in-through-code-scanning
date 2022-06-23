@@ -79,8 +79,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    TeacherIndexComponent, TeacherAddComponent, TeacherEditComponent, TeacherUpdatePasswordComponent,
-    TermIndexComponent, TermAddComponent, TermEditComponent, TermStatePipe, RoomIndexComponent, RoomAddComponent, RoomEditComponent
+    TermIndexComponent, TermAddComponent, TermEditComponent, TermStatePipe,
+    RoomIndexComponent
   ],
   imports: [
     CommonModule,
