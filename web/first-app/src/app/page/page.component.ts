@@ -7,7 +7,7 @@ import {Page} from '../entity/page';
   styleUrls: ['./page.component.css']
 })
 export class PageComponent implements OnInit {
-  inputPage : Page<any> = new Page({
+  inputPage: Page<any> = new Page({
     content: [],
     number: 0,
     size: 1,
@@ -15,11 +15,11 @@ export class PageComponent implements OnInit {
   });
   // 页数数组
   pages: number[] = [];
-  currentPage: number = 0;
+  currentPage = 0;
 
   @Input()
   set page(page: Page<any>) {
-    console.log('set page被调用','当前页', this.inputPage.number,'总页数', this.inputPage.totalPages);
+    console.log('set page被调用', '当前页', this.inputPage.number, '总页数', this.inputPage.totalPages);
     this.inputPage = page;
     let maxCount;
     let begin;
@@ -37,7 +37,7 @@ export class PageComponent implements OnInit {
     }
 
     this.pages = [];
-    for (let i = 0; i < maxCount; i++, begin++ ) {
+    for (let i = 0; i < maxCount; i++, begin++) {
       this.pages.push(begin);
     }
     // 设置当前页
@@ -52,7 +52,6 @@ export class PageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
   onPage(page: number): void {

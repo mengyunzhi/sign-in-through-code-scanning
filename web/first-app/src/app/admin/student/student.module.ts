@@ -1,10 +1,12 @@
 import {NgModule} from '@angular/core';
-import {StudentIndexComponent} from './index/student-index.component';
-import { StudentAddComponent } from './student-add/student-add.component';
-import { StudentEditComponent } from './student-edit/student-edit.component';
+import {StudentAddComponent} from './student-add/student-add.component';
+import {StudentEditComponent} from './student-edit/student-edit.component';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {RouterModule, Routes} from '@angular/router';
+import {StudentIndexComponent} from './student-index/student-index.component';
+import {StudentUpdatePasswordComponent} from './student-update-password/student-update-password.component';
+import {PageModule} from '../../page/page.module';
 
 /*定义路由*/
 const routes: Routes = [
@@ -15,8 +17,11 @@ const routes: Routes = [
     path: 'add',
     component: StudentAddComponent
   }, {
-    path: 'edit/:id',
+    path: 'edit',
     component: StudentEditComponent
+  }, {
+    path: 'updatePassword',
+    component: StudentUpdatePasswordComponent
   }
 ];
 
@@ -27,12 +32,15 @@ const routes: Routes = [
   declarations: [
     StudentIndexComponent,
     StudentAddComponent,
-    StudentEditComponent
+    StudentEditComponent,
+    StudentUpdatePasswordComponent
   ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
+    PageModule,
+    FormsModule
   ]
 })
 export class StudentModule {
