@@ -1,7 +1,6 @@
 import {ApiInjector, MockApiInterface, randomNumber, RequestOptions} from '@yunzhi/ng-mock-api';
 import {HttpParams} from '@angular/common/http';
 import {Student} from '../entity/student';
-import {randomBoolean, randomString} from '@yunzhi/ng-mock-api/testing';
 import {Page} from '../entity/page';
 
 export class StudentMockApi implements MockApiInterface {
@@ -28,9 +27,9 @@ export class StudentMockApi implements MockApiInterface {
           for (let i = 0; i < size; i++) {
             students.push(new Student({
               id: i,
-              name: randomString('学生'),
-              sex: randomBoolean(),
-              clazzName: randomString('班级'),
+              name: '学生' + randomNumber(100).toString(),
+              sex: !!(randomNumber(100) / 2),
+              clazzName: '班级' + randomNumber(100).toString(),
               sno: randomNumber(),
             }));
           }
