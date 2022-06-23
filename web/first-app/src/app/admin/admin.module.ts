@@ -15,6 +15,7 @@ import {MockApiInterceptor} from '@yunzhi/ng-mock-api';
 import {TermMockApi} from '../mock-api/term.mock.api';
 import {ClazzIndexComponent} from './clazz/clazz-index/clazz-index.component';
 import {PageModule} from '../page/page.module';
+import { RoomIndexComponent } from './room/room-index/room-index.component';
 
 const routes: Routes = [
   {
@@ -58,13 +59,17 @@ const routes: Routes = [
     path: 'term/edit/:id',
     component: TermEditComponent
   },
+  {
+    path: 'room',
+    component: RoomIndexComponent
+  },
 ];
 
 
 @NgModule({
   declarations: [
     TeacherIndexComponent, TeacherAddComponent, TeacherEditComponent, TeacherUpdatePasswordComponent,
-    TermIndexComponent, TermAddComponent, TermEditComponent, TermStatePipe, ClazzIndexComponent
+    TermIndexComponent, TermAddComponent, TermEditComponent, TermStatePipe, ClazzIndexComponent, RoomIndexComponent
   ],
   imports: [
     CommonModule,
