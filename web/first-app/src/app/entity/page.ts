@@ -17,7 +17,7 @@ export class Page<T> {
     size: number,
     numberOfElements: number,
     first?: boolean,
-    totalPages?: number
+    totalPages?: number,
   }) {
     this.content = data.content;
     this.number = data.number;
@@ -38,6 +38,14 @@ export class Page<T> {
     if (data.totalPages !== undefined) {
       this.totalPages = data.totalPages;
     } else {
+      this.totalPages = Math.ceil(this.numberOfElements / this.size);
+    }
+
+    if (data.totalPages !== undefined) {
+      this.totalPages = data.totalPages;
+    } else {
+      // Math.ceil()实现上取整，比如共10条记录，每页6条，则 10 / 6 = 1.x
+      // Math.ceil(1.x) = 2 得出共2页
       this.totalPages = Math.ceil(this.numberOfElements / this.size);
     }
   }

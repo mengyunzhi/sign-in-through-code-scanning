@@ -2,14 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea93b6e8-a8cc-4b0e-a2ad-786e2a2dbe8d" name="变更" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sign-in-through-code-scanning.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sign-in-through-code-scanning.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-index/student-index.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-index/student-index.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-update-password/student-update-password.component.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-update-password/student-update-password.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-update-password/student-update-password.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-update-password/student-update-password.component.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/first-app/src/app/mock-api/student.mock.api.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/application/index/view/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/api/application/index/view/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/term/edit/term-edit.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/term/edit/term-edit.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/app-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/app.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/clazz/clazz-index/clazz-index.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/clazz/clazz-index/clazz-index.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/student/index/student-index.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-index/student-index.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/student/index/student-index.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-index/student-index.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/student/index/student-index.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/student/index/student-index.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-add/student-add.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-add/student-add.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-edit/student-edit.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-edit/student-edit.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/teacher/teacher-edit/teacher-edit.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/teacher/teacher-edit/teacher-edit.component.spec.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/first-app/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/entity/page.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/entity/page.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/entity/student.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/entity/student.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/page/page.component.spec.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/page/page.component.spec.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/page/page.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/page/page.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,13 +37,20 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2Arp4vpdARqOrr2ZjXUqmu2x6ab" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
@@ -42,6 +64,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\DELL\Desktop\sign-in-through-code-scanning\api\application\api" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\DELL\Desktop\yunzhi\lampp\htdocs\angular\web\first-app\src\app\page" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -54,7 +79,9 @@
       <workItem from="1655777376730" duration="11460000" />
       <workItem from="1655790705444" duration="40000" />
       <workItem from="1655790845029" duration="7444000" />
-      <workItem from="1655861060074" duration="1340000" />
+      <workItem from="1655861060074" duration="19120000" />
+      <workItem from="1655904981737" duration="170000" />
+      <workItem from="1655952771411" duration="850000" />
     </task>
     <servers />
   </component>
@@ -71,5 +98,8 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
 </project>
