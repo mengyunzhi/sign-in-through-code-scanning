@@ -7,6 +7,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {StudentIndexComponent} from './student-index/student-index.component';
 import {StudentUpdatePasswordComponent} from './student-update-password/student-update-password.component';
 import {PageModule} from '../../page/page.module';
+import {MockApiTestingModule} from '../../mock-api/mock-api-testing.module';
 
 /*定义路由*/
 const routes: Routes = [
@@ -40,7 +41,8 @@ const routes: Routes = [
     ReactiveFormsModule,
     RouterModule.forChild(routes),
     PageModule,
-    FormsModule
+    FormsModule,
+    MockApiTestingModule
   ]
 })
 export class StudentModule {

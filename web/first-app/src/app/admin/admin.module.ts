@@ -15,6 +15,7 @@ import {MockApiInterceptor} from '@yunzhi/ng-mock-api';
 import {TermMockApi} from '../mock-api/term.mock.api';
 import {ClazzIndexComponent} from './clazz/clazz-index/clazz-index.component';
 import {PageModule} from '../page/page.module';
+import {MockApiTestingModule} from '../mock-api/mock-api-testing.module';
 
 const routes: Routes = [
   {
@@ -23,7 +24,7 @@ const routes: Routes = [
   },
   {
     path: 'clazz',
-    component: ClazzIndexComponent,
+    loadChildren: () => import('./clazz/clazz.module').then(m => m.ClazzModule),
   },
   {
     path: 'student',
@@ -64,7 +65,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     TeacherIndexComponent, TeacherAddComponent, TeacherEditComponent, TeacherUpdatePasswordComponent,
-    TermIndexComponent, TermAddComponent, TermEditComponent, TermStatePipe, ClazzIndexComponent
+    TermIndexComponent, TermAddComponent, TermEditComponent, TermStatePipe
   ],
   imports: [
     CommonModule,
@@ -72,16 +73,13 @@ const routes: Routes = [
     PageModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
-
+    MockApiTestingModule
   ],
   exports: [
     TermStatePipe
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS, multi: true,
-      useClass: MockApiInterceptor.forRoot([TermMockApi]),
-    }
+
   ]
 })
 export class AdminModule { }
