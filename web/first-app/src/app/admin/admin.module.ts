@@ -19,6 +19,7 @@ import { RoomIndexComponent } from './room/room-index/room-index.component';
 import { RoomAddComponent } from './room/room-add/room-add.component';
 import { RoomEditComponent } from './room/room-edit/room-edit.component';
 import {MockApiTestingModule} from '../mock-api/mock-api-testing.module';
+import {TeacherIndexModule} from './teacher/teacher-index/teacher-index.module';
 
 const routes: Routes = [
   {
@@ -79,12 +80,16 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    TermIndexComponent, TermAddComponent, TermEditComponent, TermStatePipe,
+    TermIndexComponent,
+    TermAddComponent,
+    TermEditComponent,
+    TermStatePipe,
     RoomIndexComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
+    TeacherIndexModule,
     PageModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
