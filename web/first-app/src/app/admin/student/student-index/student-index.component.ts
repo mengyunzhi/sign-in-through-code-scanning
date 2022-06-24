@@ -35,7 +35,7 @@ export class StudentIndexComponent implements OnInit {
 
   loadByPage(page = 0): void {
     console.log('触发loadByPage方法');
-    this.studentService.page(this.page, this.size).subscribe(pageDate => {
+    this.studentService.page(page, this.size).subscribe(pageDate => {
         // 请求数据之后设置当前页
         this.page = page;
         console.log('student组件接收到返回数据，重置pageDate');
