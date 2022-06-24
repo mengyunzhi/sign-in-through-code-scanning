@@ -31,5 +31,6 @@ jobs:
         cache: 'npm'
         cache-dependency-path: '**/**/package-lock.json'
     - run: npm install
+    - run: npm install @angular/cli -g
     - run: ng test
     - run: ng build
