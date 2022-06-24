@@ -1,21 +1,8 @@
-export class Term {
-  id: number;
+import {BaseEntity} from './base-entity';
+
+export interface Term extends BaseEntity {
   name: string;
   state: number;
-  startTime: number;
-  endTime: number;
-
-  constructor(data = {} as {
-    id?: number,
-    name?: string,
-    state?: number,
-    startTime?: number,
-    endTime?: number
-  }) {
-    this.id = data.id as number;
-    this.name = data.name as string;
-    this.state = data.state as number;
-    this.startTime = data.startTime as number;
-    this.endTime = data.endTime as number;
-  }
+  start_time: number;
+  end_time: number;
 }

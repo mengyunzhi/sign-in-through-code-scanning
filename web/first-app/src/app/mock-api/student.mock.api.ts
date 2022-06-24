@@ -25,13 +25,13 @@ export class StudentMockApi implements MockApiInterface {
 
           const students = new Array<Student>();
           for (let i = 0; i < size; i++) {
-            students.push(new Student({
+            students.push({
               id: i,
               name: '学生' + randomNumber(100).toString(),
               sex: !!(randomNumber(100) / 2),
               clazzName: '班级' + randomNumber(100).toString(),
               sno: randomNumber(),
-            }));
+            } as Student);
           }
 
           return new Page<Student>({

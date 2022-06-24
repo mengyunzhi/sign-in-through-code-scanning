@@ -1,5 +1,5 @@
-import {BaseEntity} from './base-entity';
+import {User} from './user';
 
-export interface Teacher extends BaseEntity {
-
+export interface Teacher extends User {
+  user_id: number;
 }
