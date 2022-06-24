@@ -4,12 +4,12 @@ import {Student} from '../entity/student';
 import {Page} from '../entity/page';
 
 export class StudentMockApi implements MockApiInterface {
-  getInjectors(): ApiInjector<any>[] {
+  getInjectors(): ApiInjector[] {
     return [
-      // 分页
       {
         method: 'GET',
         url: '/student/page',
+        description: 'page 分页查询',
         result: (urlMatches: string[], option: RequestOptions) => {
           // 初始化两个默认值
           let page = 0;
