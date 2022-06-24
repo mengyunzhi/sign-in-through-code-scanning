@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Student} from '../../../entity/student';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Page} from '../../../entity/page';
+import {StudentService} from '../../../service/student.service';
 
 @Component({
   selector: 'app-student-student-index',
@@ -22,7 +23,7 @@ export class StudentIndexComponent implements OnInit {
     numberOfElements: 0
   });
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private studentService: StudentService) { }
 
   ngOnInit(): void {
     this.loadByPage();
@@ -34,10 +35,7 @@ export class StudentIndexComponent implements OnInit {
 
   loadByPage(page = 0): void {
     console.log('触发loadByPage方法');
-    const httpParams = new HttpParams().append('page', page.toString())
-      .append('size', this.size.toString());
-    this.httpClient.get<Page<Student>>('/student/page', {params: httpParams})
-      .subscribe(pageDate => {
+    this.studentService.page(this.page, this.size).subscribe(pageDate => {
         // 请求数据之后设置当前页
         this.page = page;
         console.log('student组件接收到返回数据，重置pageDate');

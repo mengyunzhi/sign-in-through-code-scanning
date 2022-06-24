@@ -1,4 +1,23 @@
 # FirstApp
+(扫码)签到系统
+
+## 资源
+1. 使用框架：[angular](https://angular.cn/)
+2. 图标库 [fontawesome-free](https://fontawesome.com/v5/search?m=free)
+3. bootstrap [V4.6.0](https://getbootstrap.com/docs/4.6/getting-started/introduction/)
+
+## 环境
+1. node: V14.15.4
+2. NPM: 6.14.10
+3. chrome: 103.0.5060.53
+
+## 启动环境
+0. `npm install @angular/cli -g`
+1. `npm install`
+2. `ng s`启动应用
+3. http://localhost:4200
+4. `ng build`打包应用
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.7.
 

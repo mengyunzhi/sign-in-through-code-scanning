@@ -4,7 +4,7 @@ import {HttpParams} from '@angular/common/http';
 import {Page} from '../entity/page';
 
 export class TermMockApi implements MockApiInterface {
-  getInjectors(): ApiInjector<any>[] {
+  getInjectors(): ApiInjector[] {
     return [
       {
         method: 'GET',

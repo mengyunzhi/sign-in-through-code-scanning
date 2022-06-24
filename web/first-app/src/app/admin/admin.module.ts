@@ -16,7 +16,10 @@ import {TermMockApi} from '../mock-api/term.mock.api';
 import {ClazzIndexComponent} from './clazz/clazz-index/clazz-index.component';
 import {PageModule} from '../page/page.module';
 import { RoomIndexComponent } from './room/room-index/room-index.component';
+import { RoomAddComponent } from './room/room-add/room-add.component';
+import { RoomEditComponent } from './room/room-edit/room-edit.component';
 import {MockApiTestingModule} from '../mock-api/mock-api-testing.module';
+import {TeacherIndexModule} from './teacher/teacher-index/teacher-index.module';
 
 const routes: Routes = [
   {
@@ -64,17 +67,29 @@ const routes: Routes = [
     path: 'room',
     component: RoomIndexComponent
   },
+  {
+    path: 'room/add',
+    component: RoomAddComponent
+  },
+  {
+    path: 'room/Edit',
+    component: RoomEditComponent
+  },
 ];
 
 
 @NgModule({
   declarations: [
-    TeacherIndexComponent, TeacherAddComponent, TeacherEditComponent, TeacherUpdatePasswordComponent,
-    TermIndexComponent, TermAddComponent, TermEditComponent, TermStatePipe, RoomIndexComponent
+    TermIndexComponent,
+    TermAddComponent,
+    TermEditComponent,
+    TermStatePipe,
+    RoomIndexComponent
   ],
   imports: [
     CommonModule,
     HttpClientModule,
+    TeacherIndexModule,
     PageModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
