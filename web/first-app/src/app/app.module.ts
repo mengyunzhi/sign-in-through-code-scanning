@@ -7,6 +7,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule} from '@angular/forms';
 import {DatePipe} from '@angular/common';
 import { NavComponent } from './nav/nav.component';
+import {MockApiTestingModule} from './mock-api/mock-api-testing.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { NavComponent } from './nav/nav.component';
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MockApiTestingModule
   ],
   providers: [
     DatePipe

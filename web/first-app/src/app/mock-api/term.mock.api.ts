@@ -12,7 +12,7 @@ export class TermMockApi implements MockApiInterface {
         result: (urlMatches: string[], options: RequestOptions) => {
           let page = 0;
           let size = 20;
-          const httpParams : HttpParams = options.params as HttpParams;
+          const httpParams: HttpParams = options.params as HttpParams;
           console.log('get/term/page,mockAPi,', httpParams);
           if (httpParams.has('page')) {
             page = +(httpParams.get('page') as string);
@@ -23,35 +23,35 @@ export class TermMockApi implements MockApiInterface {
           }
 
           const terms: Term[] = [];
-          terms.push(new Term({
+          terms.push({
             id: 1,
             state: 1,
             name: '2022春季学期',
-            startTime: 1646928000,
-            endTime: 1654963200
-          }));
-          terms.push(new Term({
+            start_time: 1646928000,
+            end_time: 1654963200
+          } as Term);
+          terms.push({
             id: 2,
             state: 0,
             name: '2021秋季学期',
-            startTime: 1630425600,
-            endTime: 1639756800
-          }));
-          terms.push(new Term({
+            start_time: 1630425600,
+            end_time: 1639756800
+          } as Term);
+          terms.push({
             id: 3,
             state: 0,
             name: '2021春季学期',
-            startTime: 1615478400,
-            endTime: 1623427200
-          }));
+            start_time: 1615478400,
+            end_time: 1623427200
+          } as Term);
           for (let i = 0; i < 7; i++) {
-            terms.push(new Term({
+            terms.push({
               id: i + 3,
               state: 0,
-              name: '测试学期' + (i+3).toString(),
-              startTime: randomNumber(999999999),
-              endTime: randomNumber(999999999),
-            }));
+              name: '测试学期' + (i + 3).toString(),
+              start_time: randomNumber(999999999),
+              end_time: randomNumber(999999999),
+            } as Term);
           }
           return new Page<Term>({
             content: terms,
@@ -69,8 +69,8 @@ export class TermMockApi implements MockApiInterface {
           return {
             id,
             name: '2022春季学期',
-            startTime: 1646928000,
-            endTime: 1654963200,
+            start_time: 1646928000,
+            end_time: 1654963200,
             state: 1,
           } as Term;
         }

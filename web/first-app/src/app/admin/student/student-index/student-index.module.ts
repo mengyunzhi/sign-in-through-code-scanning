@@ -9,7 +9,7 @@ import {RouterModule} from '@angular/router';
   imports: [
     CommonModule,
     PageModule,
-    RouterModule
+    RouterModule,
   ],
   exports: [
     StudentIndexComponent
