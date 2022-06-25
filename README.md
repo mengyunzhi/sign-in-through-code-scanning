@@ -8,7 +8,7 @@
 4、git
 #### 充当angular前端的api
 1、
-### document文件夹<br>
+### document文件夹:<br>
 1、ER图<br>
-### web文件夹<br>
+### web文件夹:<br>
 1、angular文件（三个模块：管理，教师，学生）
