@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TermAddComponent } from './term-add.component';
-import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
+import { LoginComponent } from './login.component';
+import {MockApiTestingModule} from '../mock-api/mock-api-testing.module';
 
-describe('TermAddComponent', () => {
-  let component: TermAddComponent;
-  let fixture: ComponentFixture<TermAddComponent>;
+describe('LoginComponent', () => {
+  let component: LoginComponent;
+  let fixture: ComponentFixture<LoginComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TermAddComponent ],
+      declarations: [ LoginComponent ],
       imports: [
         MockApiTestingModule
       ]
@@ -18,7 +18,7 @@ describe('TermAddComponent', () => {
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TermAddComponent);
+    fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

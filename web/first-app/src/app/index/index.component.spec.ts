@@ -1,26 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PersonalEditComponent } from './personal-edit.component';
+import { IndexComponent } from './index.component';
 
-describe('PersonalEditComponent', () => {
-  let component: PersonalEditComponent;
-  let fixture: ComponentFixture<PersonalEditComponent>;
+describe('IndexComponent', () => {
+  let component: IndexComponent;
+  let fixture: ComponentFixture<IndexComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PersonalEditComponent ]
+      declarations: [ IndexComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PersonalEditComponent);
+    fixture = TestBed.createComponent(IndexComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    fixture.autoDetectChanges();
   });
 });
