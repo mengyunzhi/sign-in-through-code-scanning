@@ -28,8 +28,8 @@ export class StudentMockApi implements MockApiInterface {
             students.push({
               id: i,
               name: '学生' + randomNumber(100).toString(),
-              sex: !!(randomNumber(100) / 2),
-              clazzName: '班级' + randomNumber(100).toString(),
+              sex: (randomNumber(100) % 2),
+              clazz_id: randomNumber(10),
               sno: randomNumber(),
             } as Student);
           }

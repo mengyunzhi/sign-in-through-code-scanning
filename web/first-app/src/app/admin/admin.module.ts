@@ -30,6 +30,10 @@ const routes: Routes = [
     loadChildren: () => import('./clazz/clazz.module').then(m => m.ClazzModule),
   },
   {
+    path: 'personal',
+    loadChildren: () => import('./personal/personal.module').then(m => m.PersonalModule)
+  },
+  {
     path: 'student',
     // 惰性加载
     loadChildren: () => import('./student/student.module').then(mod => mod.StudentModule)
@@ -74,13 +78,6 @@ const routes: Routes = [
     path: 'room/Edit',
     component: RoomEditComponent
   },
-  {
-    path: 'personal',
-    component: PersonalIndexComponent
-  },  {
-    path: 'personal/edit',
-    component: PersonalEditComponent
-  }
 ];
 
 

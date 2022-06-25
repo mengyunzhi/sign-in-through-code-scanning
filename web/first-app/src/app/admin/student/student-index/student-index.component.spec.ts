@@ -27,7 +27,7 @@ describe('admin -> student -> StudentIndexComponent', () => {
     fixture.detectChanges();
   });
 
-  fit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
     getTestScheduler().flush();
     fixture.detectChanges();

@@ -1,12 +1,8 @@
-import {BaseEntity} from './base-entity';
+import {User} from './user';
 
-export interface Student extends BaseEntity {
-  // userId: number;  // todo User
-  // klassId: number; // todo Klass
+export interface Student extends User {
+  user_id: number;
+  clazz_id: number;
   sno: number;
-  state: boolean;
-
-  name: string;
-  sex: boolean;
-  clazzName: string;
+  state: number;
 }
