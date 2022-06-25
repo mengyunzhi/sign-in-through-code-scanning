@@ -17,69 +17,8 @@ import {RoomAddComponent} from './room/room-add/room-add.component';
 import {RoomEditComponent} from './room/room-edit/room-edit.component';
 import {MockApiTestingModule} from '../mock-api/mock-api-testing.module';
 import {TeacherIndexModule} from './teacher/teacher-index/teacher-index.module';
-import {PersonalIndexComponent} from './personal/personal-index/personal-index.component';
-import {PersonalEditComponent} from './personal/personal-edit/personal-edit.component';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: TermIndexComponent
-  },
-  {
-    path: 'clazz',
-    loadChildren: () => import('./clazz/clazz.module').then(m => m.ClazzModule),
-  },
-  {
-    path: 'personal',
-    loadChildren: () => import('./personal/personal.module').then(m => m.PersonalModule)
-  },
-  {
-    path: 'student',
-    // 惰性加载
-    loadChildren: () => import('./student/student.module').then(mod => mod.StudentModule)
-  },
-  {
-    path: 'teacher',
-    component: TeacherIndexComponent
-  },
-  {
-    path: 'teacher/add',
-    component: TeacherAddComponent
-  },
-  {
-    path: 'teacher/edit',
-    component: TeacherEditComponent
-  },
-  {
-    path: 'teacher/updatePassword',
-    component: TeacherUpdatePasswordComponent
-  },
-  {
-    path: 'term',
-    component: TermIndexComponent
-  },
-  {
-    path: 'term/add',
-    component: TermAddComponent
-  },
-  {
-    path: 'term/edit/:id',
-    component: TermEditComponent
-  },
-  {
-    path: 'room',
-    component: RoomIndexComponent
-  },
-  {
-    path: 'room/add',
-    component: RoomAddComponent
-  },
-  {
-    path: 'room/Edit',
-    component: RoomEditComponent
-  },
-];
-
+import {AdminRoutingModule} from './admin-routing.module';
+import {TeacherModule} from './teacher/teacher.module';
 
 @NgModule({
   declarations: [
@@ -91,11 +30,11 @@ const routes: Routes = [
   ],
   imports: [
     CommonModule,
+    TeacherModule,
+    AdminRoutingModule,
     HttpClientModule,
-    TeacherIndexModule,
     PageModule,
     ReactiveFormsModule,
-    RouterModule.forChild(routes),
     MockApiTestingModule
   ],
   exports: [

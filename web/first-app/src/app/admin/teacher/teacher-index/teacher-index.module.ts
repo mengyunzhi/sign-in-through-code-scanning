@@ -5,13 +5,11 @@ import {RouterModule} from '@angular/router';
 
 
 @NgModule({
-  declarations: [TeacherIndexComponent],
+  declarations: [],
   imports: [
     CommonModule,
     RouterModule
   ],
-  exports: [
-    TeacherIndexComponent
-  ]
+  exports: []
 })
 export class TeacherIndexModule { }
