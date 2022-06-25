@@ -17,6 +17,8 @@ import {RoomAddComponent} from './room/room-add/room-add.component';
 import {RoomEditComponent} from './room/room-edit/room-edit.component';
 import {MockApiTestingModule} from '../mock-api/mock-api-testing.module';
 import {TeacherIndexModule} from './teacher/teacher-index/teacher-index.module';
+import {PersonalIndexComponent} from './personal/personal-index/personal-index.component';
+import {PersonalEditComponent} from './personal/personal-edit/personal-edit.component';
 
 const routes: Routes = [
   {
@@ -72,6 +74,13 @@ const routes: Routes = [
     path: 'room/Edit',
     component: RoomEditComponent
   },
+  {
+    path: 'personal',
+    component: PersonalIndexComponent
+  },  {
+    path: 'personal/edit',
+    component: PersonalEditComponent
+  }
 ];
 
 
