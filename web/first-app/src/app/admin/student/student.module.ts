@@ -9,23 +9,7 @@ import {PageModule} from '../../page/page.module';
 import {MockApiTestingModule} from '../../mock-api/mock-api-testing.module';
 import {StudentIndexModule} from './student-index/student-index.module';
 import {StudentIndexComponent} from './student-index/student-index.component';
-
-/*定义路由*/
-const routes: Routes = [
-  {
-    path: '',
-    component: StudentIndexComponent
-  }, {
-    path: 'add',
-    component: StudentAddComponent
-  }, {
-    path: 'edit',
-    component: StudentEditComponent
-  }, {
-    path: 'updatePassword',
-    component: StudentUpdatePasswordComponent
-  }
-];
+import {StudentRoutingModule} from './student-routing.module';
 
 /**
  * 管理端-》学生模块
@@ -39,11 +23,11 @@ const routes: Routes = [
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterModule.forChild(routes),
     PageModule,
     FormsModule,
     MockApiTestingModule,
-    StudentIndexModule
+    StudentIndexModule,
+    StudentRoutingModule
   ]
 })
 export class StudentModule {
