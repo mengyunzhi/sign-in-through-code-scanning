@@ -3,11 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ea93b6e8-a8cc-4b0e-a2ad-786e2a2dbe8d" name="变更" comment="变更">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-index/student-index.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/admin/student/student-index/student-index.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/entity/student.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/entity/student.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/entity/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/entity/user.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/mock-api/student.mock.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/mock-api/student.mock.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/first-app/src/app/teacher/teacher.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/web/first-app/src/app/teacher/teacher.module.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +58,7 @@
       <recent name="C:\Users\DELL\Desktop\sign-in-through-code-scanning\api\application\api" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\DELL\Desktop\yunzhi\lampp\htdocs\angular\web\first-app\src\app\teacher" />
       <recent name="C:\Users\DELL\Desktop\yunzhi\lampp\htdocs\angular\web\first-app\src\app\mock-api" />
       <recent name="C:\Users\DELL\Desktop\yunzhi\lampp\htdocs\angular\web\first-app\src\app\page" />
     </key>
@@ -89,6 +87,7 @@
       <workItem from="1656072374971" duration="594000" />
       <workItem from="1656076962711" duration="3000" />
       <workItem from="1656127509869" duration="511000" />
+      <workItem from="1656221817414" duration="1294000" />
     </task>
     <servers />
   </component>
