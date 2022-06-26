@@ -1,23 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import {Term} from '../../../entity/term';
-import {HttpClient, HttpParams} from '@angular/common/http';
 import {Page} from '../../../entity/page';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Schedule} from '../../../entity/schedule';
 
 @Component({
-  selector: 'app-term',
-  templateUrl: './term-index.component.html',
-  styleUrls: ['./term-index.component.css']
+  selector: 'app-task-index',
+  templateUrl: './task-index.component.html',
+  styleUrls: ['./task-index.component.css']
 })
-export class TermIndexComponent implements OnInit {
+export class TaskIndexComponent implements OnInit {
+
   page = 0;
   size = 10;
 
-  pageData = new Page<Term>({
+  pageData = new Page<Schedule>({
     content: [],
     number: this.page,
     size: this.size,
-    numberOfElements: 0,
+    numberOfElements: 0
   });
+
   constructor(private httpClient: HttpClient) { }
 
   ngOnInit(): void {
@@ -25,10 +27,9 @@ export class TermIndexComponent implements OnInit {
   }
 
   loadByPage(page: number = 0): void {
-    console.log('loadByPage', page);
     const httpParams = new HttpParams().append('page', page.toString())
       .append('size', this.size.toString());
-    this.httpClient.get<Page<Term>>('/term/page', {params: httpParams})
+    this.httpClient.get<Page<Schedule>>('/task/page', {params: httpParams})
       .subscribe(pageData => {
         console.log('请求成功', pageData);
         this.page = page;
@@ -37,7 +38,7 @@ export class TermIndexComponent implements OnInit {
   }
 
   onPage($event: number): void {
-    console.log('onPage is called', $event);
     this.loadByPage($event);
   }
+
 }

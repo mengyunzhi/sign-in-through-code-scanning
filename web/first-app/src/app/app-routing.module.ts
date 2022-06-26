@@ -1,17 +1,22 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
+import {WelcomeComponent} from './welcome/welcome.component';
 
 const routes: Routes = [
   {
-    path: 'admin',
-    // 惰性加载
-    loadChildren: () => import('./admin/admin.module').then(mod => mod.AdminModule)
+    path: '',
+    component: WelcomeComponent,
   },
   {
-    // 学生模块
-    path: 'student',
-    loadChildren: () => import('./student/student.module').then(mod => mod.StudentModule)
-  }
+    path: 'admin',
+    // 惰性加载
+    loadChildren: () => import('./admin/admin.module').then(mod => mod.AdminModule),
+  },
+  {
+    path: 'teacher',
+    // 惰性加载
+    loadChildren: () => import('./teacher/teacher.module').then(mod => mod.TeacherModule)
+  },
 ];
 
 @NgModule({

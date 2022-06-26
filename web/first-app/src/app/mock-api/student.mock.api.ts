@@ -41,6 +41,40 @@ export class StudentMockApi implements MockApiInterface {
             numberOfElements: size * 10
           });
         }
+      },
+      {
+        method: 'GET',
+        url: '/task/viewStudent/page',
+        result: (urlMatches: string[], option: RequestOptions) => {
+          let size = 10;
+          let page = 0;
+
+          const httpParams = option.params as HttpParams;
+          if (httpParams.has('size')) {
+            size = +(httpParams.get('size') as string);
+          }
+          if (httpParams.has('page')) {
+            page = +(httpParams.get('page') as string);
+          }
+          const students = [] as Student[];
+          for (let i = 0; i < size; i++) {
+            students.push({
+              id: i + 1,
+              name: '测试学生' + randomNumber(100).toString(),
+              sex: randomNumber() % 2,
+              user_id: randomNumber(100),
+              clazz_id: randomNumber(100),
+              sno: randomNumber(99999) + (randomNumber(9) + 1) * 100000,
+              state: randomNumber(100) % 2,
+            } as Student);
+          }
+          return new Page<Student>({
+            content: students,
+            size,
+            number: page,
+            numberOfElements: size * 20,
+          });
+        }
       }
     ];
   }

@@ -5,7 +5,7 @@ import {TermMockApi} from '../../../mock-api/term.mock.api';
 import {MockApiTestingInterceptor} from '@yunzhi/ng-mock-api/testing';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {getTestScheduler} from 'jasmine-marbles';
-import {TermStatePipe} from '../../pipe/term-state.pipe';
+import {TermStatePipe} from '../../../pipe/term-state.pipe';
 
 describe('TermIndexComponent', () => {
   let component: TermIndexComponent;

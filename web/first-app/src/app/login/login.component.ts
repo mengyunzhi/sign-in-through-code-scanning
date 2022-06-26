@@ -27,6 +27,10 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     console.log('点击了登录按钮');
     if (this.user.number === '000' && this.user.password === '000') {
+      this.user.role = 0;
+      this.beLogin.emit(this.user);
+    } else if (this.user.number === '111' && this.user.password === '111') {
+      this.user.role = 1;
       this.beLogin.emit(this.user);
     } else {
       this.showErrorDelay();

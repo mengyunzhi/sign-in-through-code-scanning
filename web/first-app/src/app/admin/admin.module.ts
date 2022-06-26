@@ -13,19 +13,16 @@ import {HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule} from '@angular/forms';
 import {PageModule} from '../page/page.module';
 import {RoomIndexComponent} from './room/room-index/room-index.component';
-import {RoomAddComponent} from './room/room-add/room-add.component';
-import {RoomEditComponent} from './room/room-edit/room-edit.component';
 import {MockApiTestingModule} from '../mock-api/mock-api-testing.module';
-import {TeacherIndexModule} from './teacher/teacher-index/teacher-index.module';
 import {AdminRoutingModule} from './admin-routing.module';
 import {TeacherModule} from './teacher/teacher.module';
+import {PipeModule} from '../pipe/pipe.module';
 
 @NgModule({
   declarations: [
     TermIndexComponent,
     TermAddComponent,
     TermEditComponent,
-    TermStatePipe,
     RoomIndexComponent
   ],
   imports: [
@@ -35,13 +32,12 @@ import {TeacherModule} from './teacher/teacher.module';
     HttpClientModule,
     PageModule,
     ReactiveFormsModule,
-    MockApiTestingModule
+    MockApiTestingModule,
+    PipeModule
   ],
   exports: [
-    TermStatePipe
   ],
   providers: [
-
   ]
 })
 export class AdminModule { }
