@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../entity/user';
+import {MenuService} from '../service/menu.service';
 
 @Component({
   selector: 'app-index',
@@ -10,7 +11,7 @@ export class IndexComponent implements OnInit {
 
   login = false;
   role: number | null = null;
-  constructor() {
+  constructor(private menuService: MenuService) {
   }
 
   ngOnInit(): void {
@@ -26,6 +27,7 @@ export class IndexComponent implements OnInit {
 
   onLogin(user: User): void {
     console.log(new Date().toTimeString(), '子组件进行了数据弹射', user);
+    this.menuService.getAllowMenus();
     this.login = true;
     this.role = user.role;
     // 将登录状态写入缓存
