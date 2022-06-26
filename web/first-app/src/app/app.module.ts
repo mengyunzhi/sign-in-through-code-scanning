@@ -10,6 +10,7 @@ import { NavComponent } from './nav/nav.component';
 import {MockApiTestingModule} from './mock-api/mock-api-testing.module';
 import { LoginComponent } from './login/login.component';
 import { IndexComponent } from './index/index.component';
+import { WelcomeComponent } from './welcome/welcome.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { IndexComponent } from './index/index.component';
     NavComponent,
     LoginComponent,
     IndexComponent,
+    WelcomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,7 +29,7 @@ import { IndexComponent } from './index/index.component';
     MockApiTestingModule,
   ],
   providers: [
-    DatePipe
+    DatePipe,
   ],
   bootstrap: [IndexComponent]
 })

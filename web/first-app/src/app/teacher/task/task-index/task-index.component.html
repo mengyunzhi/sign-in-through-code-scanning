@@ -1,0 +1,21 @@
+
+<table class="table table-striped mt-4">
+  <thead>
+    <tr  class="table-primary">
+      <th>序号</th>
+      <th>课程名称</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let schedule of pageData.content; index as index">
+      <td>{{ index + 1 }}</td>
+      <td>{{ '测试排课' + schedule.course_id.toString() }}</td>
+      <td>
+        <a class="btn btn-primary" [routerLink]="'/teacher/task/viewStudent/' + schedule.id.toString()"><i class="fa fa-search"></i>&nbsp;查看学生</a>
+        <a class="btn btn-success" [routerLink]="'/teacher/task/courseStart/' + schedule.id.toString()"><i class="fa fa-hourglass-start"></i>&nbsp;开始上课</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
