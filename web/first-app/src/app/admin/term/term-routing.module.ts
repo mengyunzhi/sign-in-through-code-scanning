@@ -7,15 +7,15 @@ import {TermAddComponent} from './add/term-add.component';
 const routes: Routes = [
   {
     path: '',
-    component: TermIndexComponent
+    component: TermIndexComponent,
   },
   {
     path: 'add',
-    component: TermAddComponent
+    component: TermAddComponent,
   },
   {
     path: 'edit/:id',
-    component: TermEditComponent
+    component: TermEditComponent,
   },
 
 ];
