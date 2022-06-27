@@ -15,7 +15,7 @@ const routes: Routes = [
     component: RoomAddComponent
   },
   {
-    path: 'edit',
+    path: 'edit/:id',
     component: RoomEditComponent
   },
 ];

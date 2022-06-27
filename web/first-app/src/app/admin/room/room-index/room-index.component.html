@@ -29,13 +29,12 @@
     <td>{{room.name}}</td>
     <td>{{room.capacity}}</td>
     <td>
-      <a class="btn btn-sm btn-primary" [routerLink]="'edit'"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
+      <a class="btn btn-sm btn-primary" [routerLink]="'edit/' + room.id"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
       <a class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i>删除</a>
     </td>
   </tr>
   </tbody>
 </table>
 
-<!--分页-->
 <app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
 </body>

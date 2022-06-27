@@ -24,7 +24,8 @@ import {ClazzMockApi} from './clazz.mock.api';
         StudentMockApi,
         ScheduleMockApi,
         RoomMockApi,
-        TeacherMockApi
+        TeacherMockApi,
+        ClazzMockApi
       ]),
     }
   ],

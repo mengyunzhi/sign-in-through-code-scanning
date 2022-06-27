@@ -24,24 +24,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>1</td>
-      <td>软件210</td>
-      <td>11</td>
-      <td>2022-09-01</td>
-      <td>4</td>
-      <td>
-        <a class="btn btn-sm btn-primary col-md-2" routerLink="./edit/1"><i class="fas fa-pen"></i>编辑</a>
-        <a class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i>删除</a>
-        <a class="btn btn-sm btn-success" routerLink="clazzMembers/1">查看班级成员</a>
-      </td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>软件211</td>
-      <td>11</td>
-      <td>2022-09-01</td>
-      <td>4</td>
+    <tr *ngFor="let clazz of pageData.content; index as index">
+      <td>{{ index + 1 }}</td>
+      <td>{{ clazz.name }}</td>
+      <td>30</td>
+      <td>{{ clazz.entranceData | date: 'yyyy-MM-dd' }}</td>
+      <td>{{ clazz.length }}</td>
       <td>
         <a class="btn btn-sm btn-primary col-md-2" routerLink="./edit/1"><i class="fas fa-pen"></i>编辑</a>
         <a class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i>删除</a>
@@ -50,13 +38,4 @@
     </tr>
   </tbody>
 </table>
-
-<nav class="row justify-content-md-center" >
-  <ul class="pagination col-md-auto">
-    <li class="page-item"><a class="page-link">上一页</a></li>
-    <li class="page-item"><a class="page-link">1</a></li>
-    <li class="page-item"><a class="page-link">2</a></li>
-    <li class="page-item"><a class="page-link">3</a></li>
-    <li class="page-item"><a class="page-link">下一页</a></li>
-  </ul>
-</nav>
+<app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>

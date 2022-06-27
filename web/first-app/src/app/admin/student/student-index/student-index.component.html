@@ -38,7 +38,7 @@
   <tr *ngFor="let student of pageDate.content; index as i">
     <td>{{i + 1}}</td>
     <td>{{student.name}}</td>
-    <td>{{student.sex}}</td>
+    <td>{{student.sex | sex}}</td>
     <td>软件21{{student.clazz_id}}</td>
     <td>{{student.sno}}</td>
     <td>
