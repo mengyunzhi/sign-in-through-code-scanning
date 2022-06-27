@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RoomIndexComponent } from './room-index.component';
+import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
 
 describe('RoomIndexComponent', () => {
   let component: RoomIndexComponent;
@@ -8,7 +9,10 @@ describe('RoomIndexComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RoomIndexComponent ]
+      declarations: [ RoomIndexComponent ],
+      imports: [
+        MockApiTestingModule
+      ]
     })
     .compileComponents();
   });

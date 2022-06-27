@@ -6,15 +6,16 @@ import {TeacherEditComponent} from './teacher-edit/teacher-edit.component';
 import {TeacherUpdatePasswordComponent} from './teacher-update-password/teacher-update-password.component';
 import {TeacherRoutingModule} from './teacher-routing.module';
 import {PageModule} from '../../page/page.module';
+import {TeacherIndexModule} from './teacher-index/teacher-index.module';
 
 @NgModule({
   declarations: [
-    TeacherIndexComponent,
     TeacherAddComponent,
     TeacherEditComponent,
     TeacherUpdatePasswordComponent,
   ],
   imports: [
+    TeacherIndexModule,
     CommonModule,
     TeacherRoutingModule,
     PageModule,
