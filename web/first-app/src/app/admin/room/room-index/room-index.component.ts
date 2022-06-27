@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {Page} from '../../../entity/page';
+import {Room} from '../../../entity/room';
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 @Component({
   selector: 'app-room-index',
@@ -7,23 +10,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoomIndexComponent implements OnInit {
 
-  rooms = [{
-    id: 1,
-    name: 'A101',
-    capacity: '45',
-  }, {
-    id: 2,
-    name: 'A102',
-    capacity: '50'
-  },{
-    id: 3,
-    name: 'B101',
-    capacity: '55'
-  }];
+  size = 10;
+  page = 0;
 
-  constructor() { }
+  pageData = new Page<Room>({
+    content: [],
+    number: this.page,
+    size: this.size,
+    numberOfElements: 0
+  });
+
+  constructor(private httpClient: HttpClient) {
+
+  }
 
   ngOnInit(): void {
+    this.loadByPage();
+  }
+
+  loadByPage(page: number = 0): void {
+    const httpParams = new HttpParams().append('size', this.size.toString())
+      .append('page', page.toString());
+    this.httpClient.get<Page<Room>>('/room/page', {params: httpParams})
+      .subscribe(pageData => {
+        this.page = page;
+        this.pageData = pageData;
+      });
+  }
+
+  onPage($event: number): void {
+    this.loadByPage($event);
   }
 
 }
