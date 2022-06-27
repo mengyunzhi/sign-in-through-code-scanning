@@ -9,9 +9,8 @@ import {HttpClient, HttpParams} from '@angular/common/http';
   styleUrls: ['./room-index.component.css']
 })
 export class RoomIndexComponent implements OnInit {
-
-  size = 10;
   page = 0;
+  size = 10;
 
   pageData = new Page<Room>({
     content: [],
@@ -39,7 +38,7 @@ export class RoomIndexComponent implements OnInit {
   }
 
   onPage($event: number): void {
+    console.log('onPage is called', $event);
     this.loadByPage($event);
   }
-
 }
