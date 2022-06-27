@@ -10,7 +10,7 @@ import {PageModule} from '../../../page/page.module';
   imports: [
     CommonModule,
     RouterModule,
-    PageModulegit
+    PageModule
   ],
   exports: [TeacherIndexComponent]
 })
