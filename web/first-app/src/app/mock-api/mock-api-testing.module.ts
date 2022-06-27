@@ -6,13 +6,8 @@ import {TermMockApi} from './term.mock.api';
 import {StudentMockApi} from './student.mock.api';
 import {ScheduleMockApi} from './schedule.mock.api';
 import {RoomMockApi} from './room.mock.api';
-import { TeacherMockApi } from './teacher.mock.api';
-<<<<<<< HEAD
-
-=======
 import {TeacherMockApi} from './teacher.mock.api';
 import {ClazzMockApi} from './clazz.mock.api';
->>>>>>> origin/main
 
 
 @NgModule({
@@ -29,7 +24,8 @@ import {ClazzMockApi} from './clazz.mock.api';
         StudentMockApi,
         ScheduleMockApi,
         RoomMockApi,
-        TeacherMockApi
+        TeacherMockApi,
+        ClazzMockApi
       ]),
     }
   ],
