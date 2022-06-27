@@ -5,6 +5,8 @@ import {MockApiInterceptor} from '@yunzhi/ng-mock-api';
 import {TermMockApi} from './term.mock.api';
 import {StudentMockApi} from './student.mock.api';
 import {ScheduleMockApi} from './schedule.mock.api';
+import {RoomMockApi} from './room.mock.api';
+import {TeacherMockApi} from './teacher.mock.api';
 import {ClazzMockApi} from './clazz.mock.api';
 
 
@@ -17,7 +19,13 @@ import {ClazzMockApi} from './clazz.mock.api';
   providers: [
     {
       provide: HTTP_INTERCEPTORS, multi: true,
-      useClass: MockApiInterceptor.forRoot([TermMockApi, StudentMockApi, ScheduleMockApi, ClazzMockApi]),
+      useClass: MockApiInterceptor.forRoot([
+        TermMockApi,
+        StudentMockApi,
+        ScheduleMockApi,
+        RoomMockApi,
+        TeacherMockApi
+      ]),
     }
   ],
   exports: [
