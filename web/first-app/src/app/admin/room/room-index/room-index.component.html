@@ -24,7 +24,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let room of rooms index as i">
+  <tr *ngFor="let room of pageData.content index as i">
     <td>{{i + 1}}</td>
     <td>{{room.name}}</td>
     <td>{{room.capacity}}</td>
@@ -37,13 +37,5 @@
 </table>
 
 <!--分页-->
-<nav aria-label="Page navigation example" style="margin-left: 420px">
-  <ul class="pagination">
-    <li class="page-item"><a class="page-link">上一页</a></li>
-    <li class="page-item"><a class="page-link">1</a></li>
-    <li class="page-item"><a class="page-link">2</a></li>
-    <li class="page-item"><a class="page-link">3</a></li>
-    <li class="page-item"><a class="page-link">下一页</a></li>
-  </ul>
-</nav>
+<app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
 </body>
