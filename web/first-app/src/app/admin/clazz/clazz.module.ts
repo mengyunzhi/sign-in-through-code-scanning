@@ -20,6 +20,9 @@ import {PageModule} from '../../page/page.module';
     ClazzMembersEditComponent,
     ClazzSelectComponent
   ],
+  exports: [
+    ClazzSelectComponent
+  ],
   imports: [
     CommonModule,
     ClazzRoutingModule,

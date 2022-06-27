@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: () => import('./view-student-add/view-student-add.module').then(m => m.ViewStudentAddModule)
   },
   {
+    path: 'viewStudent/:schedule_id/fraction/:student_id',
+    loadChildren: () => import('./view-student-fraction/view-student-fraction.module').then(m => m.ViewStudentFractionModule)
+  },
+  {
     path: 'courseStart/:schedule_id',
     loadChildren: () => import('./course-start/course-start.module').then(m => m.CourseStartModule),
   },

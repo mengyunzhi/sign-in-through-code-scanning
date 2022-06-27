@@ -38,8 +38,8 @@
       <td>软件2{{ student.clazz_id }}</td>
       <td>{{ student.sex | sex }}</td>
       <td>
-        <a class="btn btn-sm btn-success" href="">&nbsp;登记成绩</a>
-        <a class="btn btn-sm btn-danger">&nbsp;删除</a>
+        <a class="btn btn-sm btn-success" [routerLink]="'./fraction/' + student.id.toString()">登记成绩</a>
+        <a class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> 删除</a>
       </td>
     </tr>
   </tbody>

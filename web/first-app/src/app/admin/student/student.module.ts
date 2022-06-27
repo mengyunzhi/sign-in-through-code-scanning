@@ -10,6 +10,7 @@ import {MockApiTestingModule} from '../../mock-api/mock-api-testing.module';
 import {StudentIndexModule} from './student-index/student-index.module';
 import {StudentIndexComponent} from './student-index/student-index.component';
 import {StudentRoutingModule} from './student-routing.module';
+import {ClazzModule} from '../clazz/clazz.module';
 
 /**
  * 管理端-》学生模块
@@ -27,7 +28,8 @@ import {StudentRoutingModule} from './student-routing.module';
     FormsModule,
     MockApiTestingModule,
     StudentIndexModule,
-    StudentRoutingModule
+    StudentRoutingModule,
+    ClazzModule
   ]
 })
 export class StudentModule {
