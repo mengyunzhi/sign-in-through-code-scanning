@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {StudentIndexComponent} from './student-index.component';
 import {PageModule} from '../../../page/page.module';
 import {RouterModule} from '@angular/router';
+import {PipeModule} from '../../../pipe/pipe.module';
 
 @NgModule({
   declarations: [StudentIndexComponent],
@@ -10,6 +11,7 @@ import {RouterModule} from '@angular/router';
     CommonModule,
     PageModule,
     RouterModule,
+    PipeModule,
   ],
   exports: [
     StudentIndexComponent

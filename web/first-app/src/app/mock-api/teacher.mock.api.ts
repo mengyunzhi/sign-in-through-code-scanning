@@ -27,6 +27,7 @@ export class TeacherMockApi implements MockApiInterface {
             id: 1,
             name: '教师1',
             sex: 1,
+            number: (randomNumber(9999999999) + 10000000000).toString(),
             create_time: 1646928000,
             update_time: 1654963200
           } as Teacher);
@@ -34,6 +35,7 @@ export class TeacherMockApi implements MockApiInterface {
             id: 2,
             name: '教师2',
             sex: 1,
+            number: (randomNumber(9999999999) + 10000000000).toString(),
             create_time: 1630425600,
             update_time: 1639756800
           } as Teacher);
@@ -41,6 +43,7 @@ export class TeacherMockApi implements MockApiInterface {
             id: 3,
             name: '教师3',
             sex: 1,
+            number: (randomNumber(9999999999) + 10000000000).toString(),
             create_time: 1615478400,
             update_time: 1623427200
           } as Teacher);
@@ -49,6 +52,7 @@ export class TeacherMockApi implements MockApiInterface {
               id: i + 3,
               name: '教师' + (i + 4).toString(),
               sex: 1,
+              number: (randomNumber(9999999999) + 10000000000).toString(),
               create_time: randomNumber(999999999),
               update_time: randomNumber(999999999),
             } as Teacher);

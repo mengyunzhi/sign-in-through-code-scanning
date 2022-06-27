@@ -9,6 +9,7 @@ import {ClazzMembersEditComponent} from './clazz-mebers-edit/clazz-mebers-edit.c
 import {ClazzRoutingModule} from './clazz-routing.module';
 import {ClazzSelectComponent} from './clazz-select/clazz-select.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {PageModule} from '../../page/page.module';
 
 @NgModule({
   declarations: [ClazzIndexComponent,
@@ -23,7 +24,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     CommonModule,
     ClazzRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PageModule
   ]
 })
 export class ClazzModule {
