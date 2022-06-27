@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MockApiInterceptor} from '@yunzhi/ng-mock-api';
 import {TermMockApi} from './term.mock.api';
@@ -7,7 +7,7 @@ import {StudentMockApi} from './student.mock.api';
 import {ScheduleMockApi} from './schedule.mock.api';
 import {RoomMockApi} from './room.mock.api';
 import {TeacherMockApi} from './teacher.mock.api';
-
+import {ClazzMockApi} from './clazz.mock.api';
 
 
 @NgModule({
@@ -32,4 +32,5 @@ import {TeacherMockApi} from './teacher.mock.api';
     HttpClientModule
   ]
 })
-export class MockApiTestingModule { }
+export class MockApiTestingModule {
+}
