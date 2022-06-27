@@ -2,14 +2,16 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {TeacherIndexComponent} from './teacher-index.component';
 import {RouterModule} from '@angular/router';
+import {PageModule} from '../../../page/page.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [TeacherIndexComponent],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    PageModule
   ],
-  exports: []
+  exports: [TeacherIndexComponent]
 })
 export class TeacherIndexModule { }

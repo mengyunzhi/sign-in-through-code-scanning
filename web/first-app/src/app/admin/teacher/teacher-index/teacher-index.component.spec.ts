@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TeacherIndexComponent } from './teacher-index.component';
+import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
+import {TeacherIndexModule} from './teacher-index.module';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('TeacherIndexComponent', () => {
   let component: TeacherIndexComponent;
@@ -8,7 +11,11 @@ describe('TeacherIndexComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TeacherIndexComponent ]
+      imports: [
+        MockApiTestingModule,
+        TeacherIndexModule,
+        RouterTestingModule
+      ]
     })
     .compileComponents();
   });

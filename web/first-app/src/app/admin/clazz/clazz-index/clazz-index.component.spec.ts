@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClazzIndexComponent } from './clazz-index.component';
+import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
 
 describe('ClazzIndexComponent', () => {
   let component: ClazzIndexComponent;
@@ -8,7 +9,10 @@ describe('ClazzIndexComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ClazzIndexComponent ]
+      declarations: [ ClazzIndexComponent ],
+      imports: [
+        MockApiTestingModule
+      ]
     })
     .compileComponents();
   });
