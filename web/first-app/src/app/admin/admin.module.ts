@@ -23,7 +23,6 @@ import {PipeModule} from '../pipe/pipe.module';
     TermIndexComponent,
     TermAddComponent,
     TermEditComponent,
-    RoomIndexComponent
   ],
   imports: [
     CommonModule,
