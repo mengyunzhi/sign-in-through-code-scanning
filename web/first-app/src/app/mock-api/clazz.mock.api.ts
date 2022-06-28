@@ -41,7 +41,7 @@ export class ClazzMockApi implements MockApiInterface {
       {
         method: 'GET',
         url: 'clazz',
-        description: '获取所有班级',
+        description: 'getAll() 获取所有班级',
         result: () => {
           const clazzes = [] as Clazz[];
           for (let i = 0; i < 10; i++) {

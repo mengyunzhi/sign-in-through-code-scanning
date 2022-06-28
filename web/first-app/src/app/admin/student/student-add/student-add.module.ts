@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {StudentAddComponent} from './student-add.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {ClazzModule} from '../../clazz/clazz.module';
+import {ClazzShareModule} from '../../clazz/clazz-share.module';
 
 
 
@@ -9,7 +11,8 @@ import {ReactiveFormsModule} from '@angular/forms';
   declarations: [StudentAddComponent],
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ClazzShareModule
   ],
   exports: [
     StudentAddComponent

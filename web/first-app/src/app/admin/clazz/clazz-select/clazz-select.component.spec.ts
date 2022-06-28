@@ -60,11 +60,12 @@ describe('admin -> clazz -> ClazzSelectComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
     fixture.autoDetectChanges();
-    component.beChange
-      .subscribe((data: number) => console.log('接收弹出数据：', data));
+    // 手动控制MockApi发送数据
+    getTestScheduler().flush();
+    fixture.detectChanges();
   });
 
-  fit('响应式表单', () => {
+  it('响应式表单', () => {
     // 创建一个组件夹具（容器）
     console.log('开始创建父组件');
     const fixture1 = TestBed.createComponent(TestComponent);
@@ -79,5 +80,17 @@ describe('admin -> clazz -> ClazzSelectComponent', () => {
     getTestScheduler().flush();
     console.log('重新渲染组件');
     fixture1.detectChanges();
+  });
+
+  it('先传值，然后再获取到所有的乡镇', () => {
+    component.writeValue(4);
+    getTestScheduler().flush();
+    fixture.detectChanges();
+  });
+
+  it('先获取到所有的乡镇，再接收到的传值', () => {
+    getTestScheduler().flush();
+    component.writeValue(4);
+    fixture.detectChanges();
   });
 });

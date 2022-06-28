@@ -3,6 +3,7 @@ import {StudentAddComponent} from './student-add.component';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {StudentAddModule} from './student-add.module';
+import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
 
 describe('admin -> student -> StudentAddComponent', () => {
   let component: StudentAddComponent;
@@ -15,6 +16,7 @@ describe('admin -> student -> StudentAddComponent', () => {
         HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
+        MockApiTestingModule
       ]
     })
       .compileComponents();
@@ -26,7 +28,7 @@ describe('admin -> student -> StudentAddComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
     fixture.autoDetectChanges();
   });

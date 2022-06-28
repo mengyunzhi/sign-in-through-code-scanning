@@ -2,6 +2,7 @@ import {Component, EventEmitter, forwardRef, Input, OnInit, Output} from '@angul
 import {Clazz} from '../../../entity/clazz';
 import {HttpClient} from '@angular/common/http';
 import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {ClazzService} from '../../../service/clazz.service';
 
 /**
  * 班级选择组件
@@ -13,10 +14,7 @@ import {ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR} from '@angular/for
   providers: [
     {
       provide: NG_VALUE_ACCESSOR, multi: true,
-      useExisting: forwardRef(() => {
-        console.log('useExisting->forwardRef中的回调方法被调用一次');
-        return ClazzSelectComponent;
-      })
+      useExisting: forwardRef(() => ClazzSelectComponent)
     }
   ]
 })
@@ -26,30 +24,25 @@ export class ClazzSelectComponent implements OnInit, ControlValueAccessor {
    * 所有班级
    */
   clazzes = new Array<Clazz>();
-  clazzId = new FormControl();
+  clazzSelected = new FormControl(null);
+
+  /**
+   * 是否显示 请选择
+   */
+  isShowPleaseSelect = true;
 
   @Input()
-  set id(id: number) {
-    // 使用接受到的id设置clazzId
-    this.clazzId.setValue(id);
+  set showAllClazz(isShowAllClazz: boolean) {
+    this.isShowPleaseSelect = isShowAllClazz;
   }
 
-  @Output()
-  beChange = new EventEmitter<number>();
-
-  constructor(private httpClient: HttpClient) {
+  constructor(private clazzService: ClazzService) {
   }
 
   ngOnInit(): void {
-    console.log('班级选择组件初始化');
-    // 获取所有班级
-    this.clazzId.valueChanges
-      .subscribe((data: number) => this.beChange.emit(data));
-    this.httpClient.get<Array<Clazz>>('clazz')
-      .subscribe(clazzes => {
-        this.clazzes = clazzes;
-        console.log('班级选择组件接收到数据');
-      });
+    this.clazzService.getAll().subscribe(clazzes => {
+      this.clazzes = clazzes;
+    });
   }
 
   /**
@@ -58,9 +51,10 @@ export class ClazzSelectComponent implements OnInit, ControlValueAccessor {
    * @param fn 此类型取决于当前组件的弹出值类型，当前弹出为clazzId number
    */
   registerOnChange(fn: (data: number) => void): void {
-    console.log(`registerOnChange is called`);
-    this.clazzId.valueChanges
-      .subscribe(data => fn(data));
+    this.clazzSelected.valueChanges
+      .subscribe((data: number) => {
+        fn(data);
+      });
   }
 
   registerOnTouched(fn: any): void {
@@ -74,7 +68,6 @@ export class ClazzSelectComponent implements OnInit, ControlValueAccessor {
    * @param obj 此类型取决于当前组件的接收类型，当前接收为clazzId number
    */
   writeValue(obj: number): void {
-    console.log('writeValue is called');
-    this.clazzId.setValue(obj);
+    this.clazzSelected.setValue(obj);
   }
 }
