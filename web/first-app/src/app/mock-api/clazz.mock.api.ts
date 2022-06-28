@@ -38,6 +38,21 @@ export class ClazzMockApi implements MockApiInterface {
           });
         }
       },
+      {
+        method: 'GET',
+        url: 'clazz',
+        description: 'getAll() 获取所有班级',
+        result: () => {
+          const clazzes = [] as Clazz[];
+          for (let i = 0; i < 10; i++) {
+            clazzes.push({
+              id: i,
+              name: '班级' + (i + 1),
+            } as Clazz);
+          }
+          return clazzes;
+        }
+      }
     ];
   }
 }

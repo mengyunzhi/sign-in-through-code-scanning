@@ -17,6 +17,10 @@ const routes: Routes = [
     // 惰性加载
     loadChildren: () => import('./teacher/teacher.module').then(mod => mod.TeacherModule)
   },
+  {
+    path: 'student',
+    loadChildren: () => import('./student/student.module').then(mod => mod.StudentModule)
+  },
 ];
 
 @NgModule({
