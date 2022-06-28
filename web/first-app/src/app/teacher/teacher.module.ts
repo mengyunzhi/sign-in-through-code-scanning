@@ -14,7 +14,7 @@ import {TeacherRoutingModule} from './teacher-routing.module';
     MockApiTestingModule,
     PageModule,
     PipeModule,
-    TeacherRoutingModule
+    TeacherRoutingModule,
   ],
   providers: [
   ]

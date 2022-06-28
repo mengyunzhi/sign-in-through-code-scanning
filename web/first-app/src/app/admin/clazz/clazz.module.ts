@@ -20,6 +20,9 @@ import {ClazzShareModule} from './clazz-share.module';
     ClazzMembersAddComponent,
     ClazzMembersEditComponent,
   ],
+  exports: [
+    ClazzSelectComponent
+  ],
   imports: [
     CommonModule,
     ClazzRoutingModule,
