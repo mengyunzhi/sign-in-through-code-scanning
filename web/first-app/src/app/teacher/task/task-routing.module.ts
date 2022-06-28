@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {PageModule} from '../../page/page.module';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./task-index/task-index.module').then(m => m.TaskIndexModule)
+    loadChildren: () => import('./task-index/task-index.module').then(m => m.TaskIndexModule),
   },
   {
     path: 'viewStudent/:schedule_id',

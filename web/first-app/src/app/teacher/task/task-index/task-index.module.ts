@@ -19,6 +19,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     PageModule
+
   ],
   exports: [
     TaskIndexComponent
