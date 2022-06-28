@@ -1,0 +1,52 @@
+<body class="container">
+<!--查询和添加-->
+<div class="row">
+  <div class="col-md-10">
+    <form class="form-inline">
+      <input type="text" class="form-control" style="margin-right: 10px" placeholder="名称">
+      <input type="text" class="form-control" style="margin-right: 10px" placeholder="学时">
+      <button type="submit" class="btn btn-info"><i class="fas fa-search"></i>查询</button>
+    </form>
+  </div>
+  <div class="col-md-2">
+    <a class="btn btn-primary" style="float: right" [routerLink]="'add'"><i class="fas fa-plus"></i>添加课程</a>
+  </div>
+</div>
+
+<!--表格-->
+<table class="table table-striped" style="margin-top: 20px">
+  <thead>
+  <tr  class="table-primary">
+    <th>序号</th>
+    <th>课程名称</th>
+    <th>学时</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let course of courses index as i">
+    <td>{{i + 1}}</td>
+    <td>{{course.name}}</td>
+    <td>{{course.lesson}}</td>
+    <td>
+      <a class="btn btn-sm btn-primary" [routerLink]="'edit'"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
+      <a class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i>删除</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+<!-- 分页 -->
+<nav aria-label="Page navigation example" style="margin-left: 400px">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">上一页</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">下一页</a></li>
+  </ul>
+</nav>
+
+
+</body>

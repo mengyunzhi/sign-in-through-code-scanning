@@ -10,6 +10,10 @@ const routes: Routes = [
     loadChildren: () => import('./task/task.module').then(m => m.TaskModule),
   },
   {
+    path: 'course',
+    loadChildren: () => import('./course/course.module').then(m => m.CourseModule),
+  },
+  {
     path: '',
     component: WelcomeComponent
   },
