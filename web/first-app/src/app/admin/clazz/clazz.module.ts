@@ -10,6 +10,7 @@ import {ClazzRoutingModule} from './clazz-routing.module';
 import {ClazzSelectComponent} from './clazz-select/clazz-select.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PageModule} from '../../page/page.module';
+import {ClazzShareModule} from './clazz-share.module';
 
 @NgModule({
   declarations: [ClazzIndexComponent,
@@ -18,14 +19,14 @@ import {PageModule} from '../../page/page.module';
     ClazzEditComponent,
     ClazzMembersAddComponent,
     ClazzMembersEditComponent,
-    ClazzSelectComponent
   ],
   imports: [
     CommonModule,
     ClazzRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    PageModule
+    PageModule,
+    ClazzShareModule
   ]
 })
 export class ClazzModule {

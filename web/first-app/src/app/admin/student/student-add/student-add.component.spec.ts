@@ -1,16 +1,25 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {StudentAddComponent} from './student-add.component';
+import {HttpClientModule} from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {StudentAddModule} from './student-add.module';
+import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
 
-import { StudentAddComponent } from './student-add.component';
-
-describe('StudentAddComponent', () => {
+describe('admin -> student -> StudentAddComponent', () => {
   let component: StudentAddComponent;
   let fixture: ComponentFixture<StudentAddComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StudentAddComponent ]
+      imports: [
+        StudentAddModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MockApiTestingModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -19,7 +28,8 @@ describe('StudentAddComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  fit('should create', () => {
     expect(component).toBeTruthy();
+    fixture.autoDetectChanges();
   });
 });
