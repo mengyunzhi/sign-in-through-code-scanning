@@ -8,6 +8,6 @@ import {TaskRoutingModule} from './task-routing.module';
   imports: [
     CommonModule,
     TaskRoutingModule,
-  ]
+  ],
 })
 export class TaskModule { }
