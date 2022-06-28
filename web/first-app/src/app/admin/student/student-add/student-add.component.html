@@ -1,5 +1,5 @@
 <body class="container">
-<form style="margin-top: 20px">
+<form style="margin-top: 20px" [formGroup]="formGroup">
   <div class="form-group row">
     <label class="col-sm-1 col-form-label"><code>*</code>姓名</label>
     <div class="col-sm-4">
@@ -17,11 +17,12 @@
   <div class="form-group row">
     <label class="col-sm-1 col-form-label"><code>*</code>班级</label>
     <div class="col-sm-4">
-      <select class="form-control" style="width: 200px">
-        <option>软件2101</option>
-        <option>软件2102</option>
-        <option>软件2103</option>
-      </select>
+      <app-clazz-select [formControlName]="formKeys.clazzId"></app-clazz-select>
+<!--      <select class="form-control" style="width: 200px">-->
+<!--        <option>软件2101</option>-->
+<!--        <option>软件2102</option>-->
+<!--        <option>软件2103</option>-->
+<!--      </select>-->
     </div>
   </div>
   <div class="form-group row">

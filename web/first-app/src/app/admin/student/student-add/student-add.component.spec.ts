@@ -1,16 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {StudentAddComponent} from './student-add.component';
+import {HttpClientModule} from '@angular/common/http';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {StudentAddModule} from './student-add.module';
 
-import { StudentAddComponent } from './student-add.component';
-
-describe('StudentAddComponent', () => {
+describe('admin -> student -> StudentAddComponent', () => {
   let component: StudentAddComponent;
   let fixture: ComponentFixture<StudentAddComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StudentAddComponent ]
+      imports: [
+        StudentAddModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -21,5 +28,6 @@ describe('StudentAddComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    fixture.autoDetectChanges();
   });
 });

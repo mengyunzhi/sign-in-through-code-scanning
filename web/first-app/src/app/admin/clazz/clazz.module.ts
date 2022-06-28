@@ -26,6 +26,9 @@ import {PageModule} from '../../page/page.module';
     FormsModule,
     ReactiveFormsModule,
     PageModule
+  ],
+  exports: [
+    ClazzSelectComponent
   ]
 })
 export class ClazzModule {
