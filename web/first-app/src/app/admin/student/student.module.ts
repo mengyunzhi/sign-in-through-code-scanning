@@ -26,7 +26,7 @@ import {StudentAddModule} from './student-add/student-add.module';
     MockApiTestingModule,
     StudentIndexModule,
     StudentAddModule,
-    StudentRoutingModule,
+    StudentRoutingModule
   ]
 })
 export class StudentModule {

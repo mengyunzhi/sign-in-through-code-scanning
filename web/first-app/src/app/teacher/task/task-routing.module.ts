@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {PageModule} from '../../page/page.module';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./task-index/task-index.module').then(m => m.TaskIndexModule)
+    loadChildren: () => import('./task-index/task-index.module').then(m => m.TaskIndexModule),
   },
   {
     path: 'viewStudent/:schedule_id',
@@ -13,6 +14,10 @@ const routes: Routes = [
   {
     path: 'viewStudent/:schedule_id/add',
     loadChildren: () => import('./view-student-add/view-student-add.module').then(m => m.ViewStudentAddModule)
+  },
+  {
+    path: 'viewStudent/:schedule_id/fraction/:student_id',
+    loadChildren: () => import('./view-student-fraction/view-student-fraction.module').then(m => m.ViewStudentFractionModule)
   },
   {
     path: 'courseStart/:schedule_id',
