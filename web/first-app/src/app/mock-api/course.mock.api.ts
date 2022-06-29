@@ -24,7 +24,7 @@ export class CourseMockApi implements MockApiInterface {
           for (let i = 0; i < size; i++) {
             courses.push({
               id: i + 1,
-              name: '测试教室' + randomNumber(100).toString(),
+              name: '测试课程' + randomNumber(100).toString(),
               lesson: randomNumber(100),
             } as Course);
           }
