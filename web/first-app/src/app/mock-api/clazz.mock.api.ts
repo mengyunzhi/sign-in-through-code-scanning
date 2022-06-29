@@ -3,6 +3,7 @@ import {Clazz} from '../entity/clazz';
 import {HttpParams} from '@angular/common/http';
 import {Room} from '../entity/room';
 import {Page} from '../entity/page';
+import {Term} from '../entity/term';
 
 export class ClazzMockApi implements MockApiInterface {
   getInjectors(): ApiInjector[] {
@@ -26,7 +27,7 @@ export class ClazzMockApi implements MockApiInterface {
             clazzes.push({
               id: i + 1,
               name: '测试班级' + randomNumber(100).toString(),
-              entranceData: randomNumber(999999999),
+              entrance_date: randomNumber(999999999),
               length: randomNumber(9) + 1,
             } as Clazz);
           }
@@ -51,6 +52,19 @@ export class ClazzMockApi implements MockApiInterface {
             } as Clazz);
           }
           return clazzes;
+        }
+      },
+      {
+        method: 'GET',
+        url: '/clazz/(\\d+)',
+        result: (urlMatches: string[], options: RequestOptions) => {
+          const id = +urlMatches[1];
+          return {
+            id,
+            name: '软件201',
+            entrance_date: 1646928000,
+            length: randomNumber(6)
+          } as Clazz;
         }
       }
     ];

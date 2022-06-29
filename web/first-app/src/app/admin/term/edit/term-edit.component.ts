@@ -12,18 +12,18 @@ import {DatePipe} from '@angular/common';
 })
 export class TermEditComponent implements OnInit {
 
-  formGroup : FormGroup;
-  id : number | undefined;
+  formGroup: FormGroup;
+  id: number | undefined;
 
   constructor(private activatedRoute: ActivatedRoute,
               private httpClient: HttpClient,
               private datePipe: DatePipe) {
     this.formGroup = new FormGroup({
       name : new FormControl('', Validators.required),
-      startTime : new FormControl('', Validators.required),
-      endTime : new FormControl('', Validators.required),
+      start_time : new FormControl('', Validators.required),
+      end_time : new FormControl('', Validators.required),
       state : new FormControl(0, Validators.required),
-    })
+    });
     this.id = this.activatedRoute.snapshot.params.id;
     console.log(this.id);
     this.loadData(this.id);
@@ -32,14 +32,14 @@ export class TermEditComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  loadData(id: number | undefined) : void {
+  loadData(id: number | undefined): void {
     console.log('loadData is called');
     this.httpClient.get<Term>('/term/' + id)
       .subscribe(term => {
         this.formGroup.get('name')?.setValue(term.name);
         this.formGroup.get('state')?.setValue(term.state);
-        this.formGroup.get('startTime')?.setValue(this.datePipe.transform(new Date(term.start_time * 1000), "yyyy-MM-dd"));
-        this.formGroup.get('endTime')?.setValue(this.datePipe.transform(new Date(term.end_time * 1000), "yyyy-MM-dd"));
+        this.formGroup.get('start_time')?.setValue(this.datePipe.transform(new Date(term.start_time * 1000), 'yyyy-MM-dd'));
+        this.formGroup.get('end_time')?.setValue(this.datePipe.transform(new Date(term.end_time * 1000), 'yyyy-MM-dd'));
         console.log(this.formGroup.value);
       }, error => console.log('加载数据失败', error));
   }
