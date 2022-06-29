@@ -17,6 +17,10 @@ const routes: Routes = [
     path: '',
     component: WelcomeComponent
   },
+  {
+    path: 'clazz-schedule',
+    loadChildren: () => import('./clazz-schedule/clazz-schedule.module').then(m => m.ClazzScheduleModule),
+  },
 ];
 
 @NgModule({

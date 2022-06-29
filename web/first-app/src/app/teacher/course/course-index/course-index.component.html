@@ -9,7 +9,7 @@
     </form>
   </div>
   <div class="col-md-2">
-    <a class="btn btn-primary" style="float: right" [routerLink]="'add'"><i class="fas fa-plus"></i>添加课程</a>
+    <a class="btn btn-primary" style="float: right" routerLink="'add'"><i class="fas fa-plus"></i>添加课程</a>
   </div>
 </div>
 
@@ -29,7 +29,7 @@
     <td>{{course.name}}</td>
     <td>{{course.lesson}}</td>
     <td>
-      <a class="btn btn-sm btn-primary" [routerLink]="'edit'"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
+      <a class="btn btn-sm btn-primary" routerLink="'edit'"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
       <a class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i>删除</a>
     </td>
   </tr>
