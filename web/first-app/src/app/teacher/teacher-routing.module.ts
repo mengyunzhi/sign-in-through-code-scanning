@@ -13,6 +13,10 @@ const routes: Routes = [
     loadChildren: () => import('./../admin/personal/personal.module').then(m => m.PersonalModule)
   },
   {
+    path: 'course',
+    loadChildren: () => import('./course/course.module').then(m => m.CourseModule),
+  },
+  {
     path: '',
     component: WelcomeComponent
   },
