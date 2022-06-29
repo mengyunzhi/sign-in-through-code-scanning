@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {PageModule} from '../../page/page.module';
+import {SignInStateComponent} from './sign-in-state/sign-in-state.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
   {
     path: 'courseStart/:schedule_id',
     loadChildren: () => import('./course-start/course-start.module').then(m => m.CourseStartModule),
+  },
+  {
+    path: 'courseStart/:schedule_id/signInState',
+    loadChildren: () => import('./sign-in-state/sign-in-state.module').then(m => m.SignInStateModule),
   },
 ];
 

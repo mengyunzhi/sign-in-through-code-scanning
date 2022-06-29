@@ -43,11 +43,27 @@
 </div>
 <div class="form-group row">
   <div class="col-md-12">
-    <a type="submit" class="btn btn-primary">生成随机码(可选)</a>
+    <a type="submit" class="btn btn-primary" (click)="setRandomCode()"  *ngIf="!coursing">生成随机码(可选)</a>
+    <h6>随机码为：{{ randomCode }}</h6>
   </div>
 </div>
-<div class="form-group row">
+<div class="form-group row" *ngIf="!coursing">
   <div class="col-md-12">
-    <a href="" class="btn btn-success">开始上课</a>
+    <a class="btn btn-success" (click)="courseStart()">开始上课</a>
+  </div>
+</div>
+<div class="form-group row" *ngIf="coursing">
+  <div class="col-md-12">
+    <a class="btn btn-primary" routerLink="./signInState">查看签到情况(PS：座位按权限排序)</a>
+  </div>
+</div>
+<!--<div class="form-group row" *ngIf="coursing">-->
+<!--  <div class="col-md-12">-->
+<!--    <a class="btn btn-success" routerLink="./signInState">查看签到学生</a>-->
+<!--  </div>-->
+<!--</div>-->
+<div class="form-group row" *ngIf="coursing">
+  <div class="col-md-12">
+    <a class="btn btn-danger" (click)="courseEnd()">课程结束(PS：课程结束后生成记录表)</a>
   </div>
 </div>
