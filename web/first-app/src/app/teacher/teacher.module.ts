@@ -5,6 +5,7 @@ import {PageModule} from '../page/page.module';
 import {PipeModule} from '../pipe/pipe.module';
 import {TeacherRoutingModule} from './teacher-routing.module';
 import {CourseModule} from './course/course.module';
+import {ClazzScheduleModule} from './clazz-schedule/clazz-schedule.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {CourseModule} from './course/course.module';
     PageModule,
     PipeModule,
     TeacherRoutingModule,
-    CourseModule
+    CourseModule,
+    ClazzScheduleModule
   ],
   providers: [
   ]
