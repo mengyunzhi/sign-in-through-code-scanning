@@ -10,17 +10,12 @@ import {HttpClient} from '@angular/common/http';
 export class TermAddComponent implements OnInit {
   formGroup = new FormGroup({
     name : new FormControl('', Validators.required),
-    startTime : new FormControl('', Validators.required),
-    endTime : new FormControl('', Validators.required),
+    start_time : new FormControl(null, Validators.required),
+    end_time : new FormControl(null, Validators.required),
     state : new FormControl(0, Validators.required),
   });
   constructor(private httpClient: HttpClient) { }
 
   ngOnInit(): void {
-    this.httpClient.get('http://localhost/thinkphp/public/index/login/test')
-      .subscribe((data) => {
-        console.log('请求成功', data);
-      },
-      error => console.log('请求失败', error));
   }
 }

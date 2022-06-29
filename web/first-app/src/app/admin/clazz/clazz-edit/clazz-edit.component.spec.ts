@@ -1,14 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClazzEditComponent } from './clazz-edit.component';
+import {HttpClientModule} from '@angular/common/http';
+import {DatePipe} from '@angular/common';
+import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
 
-describe('ClazzEditComponent', () => {
+describe('admin => clazz => ClazzEditComponent', () => {
   let component: ClazzEditComponent;
   let fixture: ComponentFixture<ClazzEditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ClazzEditComponent ]
+      declarations: [ ClazzEditComponent ],
+      imports: [
+        HttpClientModule,
+        MockApiTestingModule,
+      ],
+      providers: [
+        DatePipe
+      ]
     })
     .compileComponents();
   });

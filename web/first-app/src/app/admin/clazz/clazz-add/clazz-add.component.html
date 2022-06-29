@@ -1,4 +1,4 @@
-<form>
+<form [formGroup]="formGroup">
   <div class="form-group row">
     <label for="name" class="col-sm-2 col-form-label"><code>*</code>名称</label>
     <div class="col-sm-4">
@@ -8,7 +8,7 @@
   <div class="form-group row">
     <label for="entrance_date" class="col-sm-2 col-form-label"><code>*</code>入学日期</label>
     <div class="col-sm-4">
-      <input type="date" class="form-control" id="entrance_date" name="entrance_date">
+      <app-date formControlName="entrance_date" id="entrance_date"></app-date>
     </div>
   </div>
   <div class="form-group row">

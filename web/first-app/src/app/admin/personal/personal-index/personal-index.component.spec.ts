@@ -1,14 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PersonalIndexComponent } from './personal-index.component';
+import {PipeModule} from '../../../pipe/pipe.module';
 
-describe('admin -> person -> PersonalIndexComponent', () => {
+describe('admin -> personal -> PersonalIndexComponent', () => {
   let component: PersonalIndexComponent;
   let fixture: ComponentFixture<PersonalIndexComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PersonalIndexComponent ]
+      declarations: [ PersonalIndexComponent ],
+      imports: [
+        PipeModule
+      ]
     })
     .compileComponents();
   });

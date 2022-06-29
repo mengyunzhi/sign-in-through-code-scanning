@@ -13,9 +13,6 @@ import {PipeModule} from '../pipe/pipe.module';
 
 @NgModule({
   declarations: [
-    TermIndexComponent,
-    TermAddComponent,
-    TermEditComponent,
   ],
   imports: [
     CommonModule,
@@ -25,7 +22,7 @@ import {PipeModule} from '../pipe/pipe.module';
     PageModule,
     ReactiveFormsModule,
     MockApiTestingModule,
-    PipeModule
+    PipeModule,
   ],
   exports: [
   ],
