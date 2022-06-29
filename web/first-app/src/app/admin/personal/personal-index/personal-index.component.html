@@ -18,19 +18,19 @@
       <tbody>
       <tr>
         <td>姓名</td>
-        <td>张三</td>
+        <td>{{ user.name }}</td>
       </tr>
       <tr>
         <td>性别</td>
-        <td>男</td>
+        <td>{{ user.sex | sex}}</td>
       </tr>
       <tr>
         <td>手机号</td>
-        <td>18500003168</td>
+        <td>{{ user.number }}</td>
       </tr>
       <tr>
         <td>身份</td>
-        <td>教师</td>
+        <td>{{ user.role | role }}</td>
       </tr>
       </tbody>
     </table>
