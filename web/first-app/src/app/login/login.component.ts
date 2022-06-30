@@ -17,11 +17,19 @@ export class LoginComponent implements OnInit {
    * 是否显示错误信息
    */
   showError = false;
+  data: any;
 
-  constructor(private httpClient: HttpClient, private ngZone: NgZone) {
+  constructor(private httpClient: HttpClient,
+              private ngZone: NgZone) {
   }
 
   ngOnInit(): void {
+    this.httpClient.get('http://localhost:8080/api/angular/api/public/index/login/test')
+      .subscribe(data => {
+        console.log('api数据', data);
+        console.log(Number(Math.random() * 10000).toFixed(0));
+        this.data = data;
+      }, error => console.log(error));
   }
 
   onSubmit(): void {

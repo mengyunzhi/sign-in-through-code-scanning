@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {WelcomeComponent} from '../welcome/welcome.component';
+import {ViewStudentComponent} from './task/view-student/view-student.component';
 
 
 const routes: Routes = [
@@ -10,7 +11,7 @@ const routes: Routes = [
   },
   {
     path: 'personal',
-    loadChildren: () => import('./../admin/personal/personal.module').then(m => m.PersonalModule)
+    component: ViewStudentComponent
   },
   {
     path: 'course',

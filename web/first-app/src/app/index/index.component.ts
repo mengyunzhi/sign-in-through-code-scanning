@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../entity/user';
 import {MenuService} from '../service/menu.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-index',
@@ -11,7 +12,8 @@ export class IndexComponent implements OnInit {
 
   login = false;
   role: number | null = null;
-  constructor(private menuService: MenuService) {
+  constructor(private menuService: MenuService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -41,5 +43,6 @@ export class IndexComponent implements OnInit {
     this.role = null;
     window.sessionStorage.removeItem('login');
     window.sessionStorage.removeItem('role');
+    this.router.navigateByUrl('/');
   }
 }
