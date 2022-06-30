@@ -22,6 +22,8 @@ export class MenuService {
       {name: '课程管理', routerLink: '/teacher/course', roles: [1]} as Menu,
       {name: '课程表', routerLink: '/teacher/clazz-schedule', roles: [1]} as Menu,
       {name: '个人中心', routerLink: '/teacher/personal', roles: [1]} as Menu,
+
+      {name: '扫码签到', routerLink: '/student/', roles: [2]} as Menu,
     ];
   }
 

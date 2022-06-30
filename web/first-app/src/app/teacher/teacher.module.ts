@@ -6,19 +6,22 @@ import {PipeModule} from '../pipe/pipe.module';
 import {TeacherRoutingModule} from './teacher-routing.module';
 import {CourseModule} from './course/course.module';
 import {ClazzScheduleModule} from './clazz-schedule/clazz-schedule.module';
+import { ScheduleIndexComponent } from './schedule/schedule-index/schedule-index.component';
+import {RouterModule} from "@angular/router";
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    MockApiTestingModule,
-    PageModule,
-    PipeModule,
-    TeacherRoutingModule,
-    CourseModule,
-    ClazzScheduleModule
-  ],
+  declarations: [ScheduleIndexComponent],
+    imports: [
+        CommonModule,
+        MockApiTestingModule,
+        PageModule,
+        PipeModule,
+        TeacherRoutingModule,
+        CourseModule,
+        ClazzScheduleModule,
+        RouterModule
+    ],
   providers: [
   ]
 })
