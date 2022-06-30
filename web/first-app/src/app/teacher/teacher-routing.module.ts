@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {WelcomeComponent} from '../welcome/welcome.component';
+import {ViewStudentComponent} from './task/view-student/view-student.component';
 
 
 const routes: Routes = [
@@ -9,8 +10,12 @@ const routes: Routes = [
     loadChildren: () => import('./task/task.module').then(m => m.TaskModule),
   },
   {
+    path: '',
+    loadChildren: () => import('./task/task.module').then(m => m.TaskModule),
+  },
+  {
     path: 'personal',
-    loadChildren: () => import('./../admin/personal/personal.module').then(m => m.PersonalModule)
+    component: ViewStudentComponent
   },
   {
     path: 'course',

@@ -12,17 +12,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    TaskIndexComponent,
-  ],
+  declarations: [TaskIndexComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     PageModule
-
   ],
-  exports: [
-    TaskIndexComponent
-  ]
+  exports: [TaskIndexComponent]
 })
 export class TaskIndexModule { }

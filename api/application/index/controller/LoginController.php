@@ -19,7 +19,7 @@ class LoginController extends Controller
     }
 
     public function test() {
-        return 1231233;
+        return json(Teacher::all());
     }
 
     public function login() {
