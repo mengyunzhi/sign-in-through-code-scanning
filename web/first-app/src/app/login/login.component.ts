@@ -32,6 +32,9 @@ export class LoginComponent implements OnInit {
     } else if (this.user.number === '111' && this.user.password === '111') {
       this.user.role = 1;
       this.beLogin.emit(this.user);
+    } else if (this.user.number === '222' && this.user.password === '222') {
+      this.user.role = 2;
+      this.beLogin.emit(this.user);
     } else {
       this.showErrorDelay();
     }
