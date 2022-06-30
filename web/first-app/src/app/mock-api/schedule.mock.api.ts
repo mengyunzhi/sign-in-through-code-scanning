@@ -28,8 +28,6 @@ export class ScheduleMockApi implements MockApiInterface {
               teacher_id: randomNumber(),
               term_id: randomNumber(),
               course_id: randomNumber(100),
-              test_course_name: '测试课程' + randomNumber(100).toString(),
-              test_term_name: '测试学期' + randomNumber(100).toString(),
               test_clazz_name: '测试班级' + randomNumber(100).toString(),
             } as Schedule);
           }

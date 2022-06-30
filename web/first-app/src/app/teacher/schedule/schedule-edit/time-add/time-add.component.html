@@ -1,0 +1,108 @@
+<div>
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <a class="btn btn-primary" routerLink="/teacher/schedule/edit"><i class="glyphicon"></i>&nbsp;返回</a>
+    </div>
+  </div>
+  <br>
+  <input type="hidden" name="schedule_id" value="{:$Schedule->id}">
+  <div class="form-group row">
+    <label for="" class="col-sm-2 col-form-label">课程名称:</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" value="程序设计" disabled>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="" class="col-sm-2 col-form-label">上课班级:</label>
+    <div class="col-sm-1">
+      <input type="text" class="form-control" id="" value="计2101" style="width: 100px" disabled>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <label for="">上课时间：</label>
+    </div>
+  </div>
+
+  <!--选择时间-->
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table table-hover table-bordered">
+        <tr>
+          <th class="">周几/课序</th>
+          <th class="">1</th>
+          <th class="">2</th>
+          <th class="">3</th>
+          <th class="">4</th>
+          <th class="">5</th>
+        </tr>
+        <tr>
+          <td>周一</td>
+          <td>
+            <div class="row">
+              <!-- 模态框 -->
+              <!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                周一第1节
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">周一第1节</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="row">
+                            <input type="checkBox">&nbsp;<label>第1周</label>
+                          </div>
+                          <div class="row">
+                            <input type="checkBox">&nbsp;<label>第2周</label>
+                          </div>
+                          <div class="row">
+                            <input type="checkBox">&nbsp;<label>第3周</label>
+                          </div>
+                          <div class="row">
+                            <input type="checkBox">&nbsp;<label>第4周</label>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="row">
+                            <input type="checkBox">&nbsp;<label>教室1</label>
+                          </div>
+                          <div class="row">
+                            <input type="checkBox">&nbsp;<label>教室2</label>
+                          </div>
+                          <div class="row">
+                            <input type="checkBox">&nbsp;<label>教室3</label>
+                          </div>
+                          <div class="row">
+                            <input type="checkBox">&nbsp;<label>教室4</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-dismiss="modal">保存数据</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="form-group row">
+      <div class="col">
+        <a type="submit" class="btn btn-primary">确定</a>
+      </div>
+    </div>
+  </div>
+</div>
