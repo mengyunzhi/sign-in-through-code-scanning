@@ -17,6 +17,10 @@ const routes: Routes = [
     loadChildren: () => import('./course/course.module').then(m => m.CourseModule),
   },
   {
+    path: 'schedule',
+    loadChildren: () => import('./schedule/schedule.module').then(m => m.ScheduleModule),
+  },
+  {
     path: '',
     component: WelcomeComponent
   },
