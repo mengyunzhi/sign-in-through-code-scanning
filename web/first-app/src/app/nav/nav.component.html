@@ -12,7 +12,6 @@
 <!--        <a class="nav-link" routerLink="/admin/term">学期管理 <span class="sr-only">(current)</span></a>-->
 <!--      </li>-->
       <li class="nav-item" routerLinkActive="active"
-          [routerLinkActiveOptions]="{exact: true}"
           *ngFor="let menu of menus; index as index">
         <a class="nav-link" [routerLink]="menu.routerLink">{{ menu.name }}</a>
       </li>
