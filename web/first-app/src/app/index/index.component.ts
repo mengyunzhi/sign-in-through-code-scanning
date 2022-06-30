@@ -35,6 +35,13 @@ export class IndexComponent implements OnInit {
     // 将登录状态写入缓存
     window.sessionStorage.setItem('login', 'true');
     window.sessionStorage.setItem('role', user.role.toString());
+    if (user.role === 0) {
+      this.router.navigateByUrl('/admin');
+    } else if (user.role === 1) {
+      this.router.navigateByUrl('/teacher');
+    } else if (user.role === 2) {
+      this.router.navigateByUrl('/student');
+    }
   }
 
   onLogout(): void {

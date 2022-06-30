@@ -10,6 +10,10 @@ const routes: Routes = [
     loadChildren: () => import('./task/task.module').then(m => m.TaskModule),
   },
   {
+    path: '',
+    loadChildren: () => import('./task/task.module').then(m => m.TaskModule),
+  },
+  {
     path: 'personal',
     component: ViewStudentComponent
   },
