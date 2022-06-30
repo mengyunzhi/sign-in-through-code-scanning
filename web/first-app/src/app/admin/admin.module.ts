@@ -8,7 +8,6 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {PageModule} from '../page/page.module';
 import {MockApiTestingModule} from '../mock-api/mock-api-testing.module';
 import {AdminRoutingModule} from './admin-routing.module';
-import {TeacherModule} from './teacher/teacher.module';
 import {PipeModule} from '../pipe/pipe.module';
 
 @NgModule({
@@ -16,7 +15,6 @@ import {PipeModule} from '../pipe/pipe.module';
   ],
   imports: [
     CommonModule,
-    TeacherModule,
     AdminRoutingModule,
     HttpClientModule,
     PageModule,

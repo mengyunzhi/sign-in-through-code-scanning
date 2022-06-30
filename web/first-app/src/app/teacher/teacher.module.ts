@@ -7,7 +7,6 @@ import {TeacherRoutingModule} from './teacher-routing.module';
 import {CourseModule} from './course/course.module';
 import {ClazzScheduleModule} from './clazz-schedule/clazz-schedule.module';
 import { ScheduleIndexComponent } from './schedule/schedule-index/schedule-index.component';
-import {RouterModule} from "@angular/router";
 
 
 @NgModule({
@@ -20,7 +19,6 @@ import {RouterModule} from "@angular/router";
         TeacherRoutingModule,
         CourseModule,
         ClazzScheduleModule,
-        RouterModule
     ],
   providers: [
   ]

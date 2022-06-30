@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {Page} from "../../../entity/page";
-import {Schedule} from "../../../entity/schedule";
-import {HttpClient, HttpParams} from "@angular/common/http";
-import {Course} from "../../../entity/course";
+import {Page} from '../../../entity/page';
+import {Schedule} from '../../../entity/schedule';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Course} from '../../../entity/course';
 
 @Component({
   selector: 'app-course-index',

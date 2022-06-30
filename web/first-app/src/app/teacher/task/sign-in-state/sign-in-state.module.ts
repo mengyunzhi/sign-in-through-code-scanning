@@ -8,7 +8,7 @@ const routes: Routes = [
     path: '',
     component: SignInStateComponent
   }
-]
+];
 
 @NgModule({
   declarations: [SignInStateComponent],
