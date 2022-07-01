@@ -16,8 +16,7 @@ export class NavComponent implements OnInit {
   beLogout = new EventEmitter<void>();
 
 
-  constructor(private menuService: MenuService,
-              public router: Router) { }
+  constructor(private menuService: MenuService) { }
 
   ngOnInit(): void {
     this.menus = this.menuService.getAllowMenus();
@@ -27,5 +26,4 @@ export class NavComponent implements OnInit {
   onSubmit(): void {
     this.beLogout.emit(undefined);
   }
-
 }
