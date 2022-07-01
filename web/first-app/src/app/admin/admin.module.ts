@@ -19,7 +19,6 @@ import {PipeModule} from '../pipe/pipe.module';
     HttpClientModule,
     PageModule,
     ReactiveFormsModule,
-    MockApiTestingModule,
     PipeModule,
   ],
   exports: [
