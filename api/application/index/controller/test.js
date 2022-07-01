@@ -15,7 +15,7 @@
 
 组件course-select:
     [
-        {id: 1, name:'程序设计', lesson:12(课时), klassIds: [1, 2, 3]}
+        {id: 1, name:'程序设计', lesson: 12(课时), klassIds: [1, 2, 3]}
     ]
 
 

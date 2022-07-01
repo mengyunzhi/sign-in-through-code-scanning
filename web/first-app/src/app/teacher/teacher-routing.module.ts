@@ -15,7 +15,7 @@ const routes: Routes = [
   },
   {
     path: 'personal',
-    component: ViewStudentComponent
+    loadChildren: () => import('./../admin/personal/personal.module').then(m => m.PersonalModule)
   },
   {
     path: 'course',

@@ -12,7 +12,15 @@ import { ScheduleAddComponent } from './schedule-add/schedule-add.component';
 
 
 @NgModule({
-  declarations: [ScheduleEditComponent, ProgramAddComponent, ClazzAddComponent, TimeAddComponent, ProgramEditComponent, NameEditComponent, ScheduleAddComponent],
+  declarations: [
+    ScheduleEditComponent,
+    ProgramAddComponent,
+    ClazzAddComponent,
+    TimeAddComponent,
+    ProgramEditComponent,
+    NameEditComponent,
+    ScheduleAddComponent
+  ],
   imports: [
     CommonModule,
     ScheduleRoutingModule

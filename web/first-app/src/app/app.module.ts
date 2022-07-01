@@ -26,6 +26,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    MockApiTestingModule
   ],
   providers: [
     DatePipe,
