@@ -36,9 +36,9 @@ export class IndexComponent implements OnInit {
     window.sessionStorage.setItem('login', 'true');
     window.sessionStorage.setItem('role', user.role.toString());
     if (user.role === 0) {
-      this.router.navigateByUrl('/admin');
+      this.router.navigateByUrl('/admin/term');
     } else if (user.role === 1) {
-      this.router.navigateByUrl('/teacher');
+      this.router.navigateByUrl('/teacher/task');
     } else if (user.role === 2) {
       this.router.navigateByUrl('/student');
     }

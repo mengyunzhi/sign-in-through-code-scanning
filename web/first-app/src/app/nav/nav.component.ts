@@ -1,6 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Menu} from '../entity/menu';
 import {MenuService} from '../service/menu.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -15,7 +16,8 @@ export class NavComponent implements OnInit {
   beLogout = new EventEmitter<void>();
 
 
-  constructor(private menuService: MenuService) { }
+  constructor(private menuService: MenuService,
+              public router: Router) { }
 
   ngOnInit(): void {
     this.menus = this.menuService.getAllowMenus();
@@ -25,4 +27,5 @@ export class NavComponent implements OnInit {
   onSubmit(): void {
     this.beLogout.emit(undefined);
   }
+
 }
