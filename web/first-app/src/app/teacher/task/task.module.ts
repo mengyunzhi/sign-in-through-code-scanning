@@ -15,12 +15,6 @@ import {SignInStateModule} from './sign-in-state/sign-in-state.module';
   imports: [
     CommonModule,
     TaskRoutingModule,
-    CourseStartModule,
-    SignInStateModule,
-    TaskIndexModule,
-    ViewStudentModule,
-    ViewStudentAddModule,
-    ViewStudentFractionModule
   ],
 })
 export class TaskModule { }
