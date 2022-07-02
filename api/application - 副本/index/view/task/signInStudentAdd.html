@@ -1,0 +1,39 @@
+{extend name="index"/}
+{block name="title"}
+查看已签到学生
+{/block}
+{block name="search"}
+{/block}
+{block name="content"}
+<form class="" action="{:url('courseSave')}" method="post">
+    <div class="form-group row">
+        <label for="room" class="col-md-2">教室</label>
+        <div class="col-md-4">
+            <input type="text" class="form-control" id="room" name="room" value="">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="" class="col-md-2">座位</label>
+        <div class="col-md-4">
+            <input type="text" class="form-control" id="" name="" value="">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="sno" class="col-md-2">学号</label>
+        <div class="col-md-4">
+            <input type="text" class="form-control" id="sno" name="sno" value="">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="" class="col-md-2">签到时间（默认为开课时间）</label>
+        <div class="col-md-4">
+            <input type="date" class="form-control" id="" name="" value="">
+        </div>
+    </div>
+    <div class="form-group row">
+        <a href="{:url('signInStudentSave')}" class="btn btn-primary">确定</a>
+    </div>
+</form>
+{/block}
+{block name="page"}
+{/block}

@@ -1,0 +1,68 @@
+{extend name="index"/}
+{block name="title"}
+教师端
+{/block}
+{block name="search"}
+<hr />
+<form>
+    <div class="form-group row">
+        <div class="col-sm-2">
+            <select class="selectpicker form-control col-sm-12" name="course_id">
+                <option value="">课程</option>
+                {volist name="Courses" id="_Course" key="key"}
+                <option value="{:$_Course->id}" <?php if($_Course->id == input('param.course_id')){echo 'selected';} ?>>{:$_Course->name}</option>
+                {/volist}
+            </select>
+        </div>
+
+        <div class="col-sm-2">
+            <select class="selectpicker form-control col-sm-12" name="term_id">
+                <option value="">学期</option>
+                {volist name="Terms" id="_Term" key="key"}
+                <option value="{:$_Term->id}" <?php if($_Term->id == input('param.term_id')){echo 'selected';} ?>>{:$_Term->name}</option>
+                {/volist}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn">确定</button>
+        </div>
+        <div class="col-md-6 text-right">
+            <a href="{:url('scheduleAdd')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加排课</a>&nbsp;&nbsp;
+            <a href="{:url('')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;导出所有课程</a>
+        </div>
+    </div>
+</form>
+<hr />
+{/block}
+{block name="content"}
+<table class="table table-hover table-bordered">
+    <tr class="info">
+        <th>序号</th>
+        <th>课程名称</th>
+        <th>学期名称</th>
+        <th>班级</th>
+        <th>操作</th>
+    </tr>
+    {volist name="Schedules" id="_Schedule" key="key"}
+    <tr>
+        <td>{:$key}</td>
+        <td>{:$_Schedule->getCourse()->getName()}</td>
+        <td>{:$_Schedule->getTerm()->getName()}</td>
+        <td><?php 
+            foreach($_Schedule->Klasses as $key => $Klass) {
+                if($key !== 0)
+                    echo ' ';
+                echo $Klass->getName();
+            }
+         ?></td>
+        <td>
+            <a class="btn btn-info" href="{:url('courseDetail?schedule_id='.$_Schedule->getId())}"><i class="glyphicon"></i>&nbsp;编辑</a>
+            <a class="btn btn-danger" href="{:url('courseDelete?schedule_id='.$_Schedule->getId())}"><i class="glyphicon"></i>&nbsp;删除</a>
+        </td>
+    </tr>
+    {/volist}
+</table>
+{/block}
+{block name="page"}
+    {:$Schedules->render()}
+{/block}

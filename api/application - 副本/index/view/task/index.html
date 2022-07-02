@@ -1,0 +1,27 @@
+{extend name="index"/}
+{block name="title"}
+教师端
+{/block}
+{block name="search"}
+{/block}
+{block name="content"}
+<table class="table table-hover table-bordered">
+    <tr class="info">
+        <th>序号</th>
+        <th>课程名称</th>
+        <th>操作</th>
+    </tr>
+    {volist name="Schedules" id="_Schedule" key="key"}
+    <tr>
+        <td>{:$key}</td>
+        <td>{:$_Schedule->getCourse()->name}</td>
+        <td>
+            <a class="btn btn-success" href="{:url('task/student?schedule_id='.$_Schedule->id)}"><i class="glyphicon"></i>&nbsp;查看学生</a>
+            <a class="btn btn-warning" href="{:url('task/courseStart')}"><i class="glyphicon"></i>&nbsp;开始上课</a>
+        </td>
+    </tr>
+    {/volist}
+</table>
+{/block}
+{block name="page"}
+{/block}

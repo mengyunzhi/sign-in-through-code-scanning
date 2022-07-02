@@ -1,0 +1,25 @@
+{extend name="Index"}
+{block name="title"}
+教师端mobile
+{/block}
+{block name="content"}
+<h4>1、自动优先显示课程</h4>
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table table-hover table-bordered">
+            <tr class="info">
+                <th>序号</th>
+                <th>课程名称</th>
+                <th>操作</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>数学分析</td>
+                <td>
+                    <a class="btn btn-warning btn-block" href="{:url('courseStart')}"><i class="glyphicon"></i>&nbsp;开始上课</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+{/block}

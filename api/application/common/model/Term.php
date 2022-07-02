@@ -18,6 +18,7 @@ class Term extends Model {
         }
         //获取学期，state是1直接返回
         $Term = Term::get($termId);
+        // 如果是插入数据时选择未激活， 则返回, 如果修改某个未激活学期为激活状态，则应继续执行。
         if ($judge) {
             if (!$Term->state) {
                 return true;
@@ -121,7 +122,7 @@ class Term extends Model {
         return $status;
     }
 
-    static public function termUpdate($termId, $name, $startTime, $endTime, &$msg = '') {
+    static public function termUpdate($termId, $name, $startTime, $endTime, &$msg = '', $state = null) {
         //检查数据
         if (is_null($name)) {
             throw new \Exception('name信息为空');
@@ -130,7 +131,7 @@ class Term extends Model {
         } elseif (is_null($endTime)) {
             throw new \Exception('endTime');
         }
-        $status = self::termInsert($name, $startTime, $endTime, null, $msg, $termId);
+        $status = self::termInsert($name, $startTime, $endTime, $state, $msg, $termId);
         return $status;
     }
 

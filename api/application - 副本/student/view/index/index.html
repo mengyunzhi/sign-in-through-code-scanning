@@ -1,0 +1,45 @@
+{extend name="./../../index/view/index"/}
+{block name="title"}
+学生主页
+{/block}
+{block name="content"}
+<form action="{:url('signIn')}" method="post">
+    <div>
+        <div class="row">
+            <div class="col-md-12 p-2">
+                <label for="course">当前课程:</label>
+                <input type="text" name="course" id="course" class="form-control" value="程序设计" disabled />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 p-2">
+                <label for="seat">当前位置:</label>
+                <input type="text" name="seat" id="seat" class="form-control" value="A301-1" disabled />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 p-2">
+                <label for="name">签到人:</label>
+                <input type="text" name="name" id="name" class="form-control " value="{}" disabled />
+            </div>
+        </div>
+        &nbsp
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary btn-lg btn-block">签到</button>
+            </div>
+        </div>
+        &nbsp
+        <div class="row">
+            <div class="col-md-12">
+                <a href="{:url('PasswordSignIn')}" type="submit" class="btn btn-primary btn-lg btn-block">暗号签到</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 p-2">
+                <label>*若您上的课程与当前显示课程不一致，请选择暗号签到</label>
+            </div>
+        </div>
+    </div>
+</form>
+{/block}

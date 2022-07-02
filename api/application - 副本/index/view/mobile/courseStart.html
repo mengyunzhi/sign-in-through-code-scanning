@@ -1,0 +1,61 @@
+{extend name="Index"}
+{block name="title"}
+教师端(开始上课)
+{/block}
+{block name="content"}
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-sm-12">
+            <a href="{:url('index')}" class="btn btn-primary col-sm-8 btn-block"><i class="glyphicon"></i>&nbsp;返回</a>&nbsp&nbsp
+        </div>
+        <hr>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col-md-3">项</th>
+                    <th scope="col-md-3">内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>课程名称</td>
+                    <td>程序设计</td>
+                </tr>
+                <tr>
+                    <td>当前周次</td>
+                    <td>第七周</td>
+                </tr>
+                <tr>
+                    <td>课次</td>
+                    <td>周三5-6节</td>
+                </tr>
+                <tr>
+                    <td rowspan="2">上课的班级</td>
+                    <td>计2021(30人)</td>
+                </tr>
+                <tr>
+                    <td>计2022(29人)</td>
+                </tr>
+                <tr>
+                    <td>总人数</td>
+                    <td>59</td>
+                </tr>
+                <tr>
+                    <td class="navbar-brand col-md-3 info">当前项目</td>
+                    <td class="navbar-brand col-md-5 info">链表的使用</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-10">
+        <a href="{:url('randomCode')}" name="" type="submit" class="btn btn-primary btn-block">点击生成随机码(可选)</a>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-sm-10">
+        <a href="{:url('coursing')}" class="btn btn-warning btn-block">开始上课</a>
+    </div>
+</div>
+{/block}

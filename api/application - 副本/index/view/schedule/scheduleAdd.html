@@ -1,0 +1,717 @@
+{extend name="index"/}
+{block name="title"}
+添加排课
+{/block}
+{block name="search"}
+{/block}
+{block name="content"}
+<div id="main">
+</div>
+<script>
+
+var courseTimes = new Array();   //先声明一维
+for(var i=0;i<7;i++){        //一维长度为7
+    courseTimes[i]=new Array();    //在声明二维
+    for(var j=0;j<5;j++){      //二维长度为11
+        courseTimes[i][j]=[];
+    }
+}
+// 班级选择
+const RootComponent = {
+    data() {
+        return {
+            active: [-1, -1],
+            dispatches: [],
+            isSelectCourse: null,
+            isSelectKlass: null,
+            allowedKlasses: [],
+            teacher: null,
+            weekName: ['一', '二', '三', '四', '五', '六', '日'],
+            courseTimes: courseTimes,
+        }
+    },
+    methods: {
+        onCourseSelect(course, allowedKlasses) {
+            // console.log(course);
+            this.isSelectKlass = null;
+            this.isSelectCourse = course;
+            this.allowedKlasses = allowedKlasses;
+        },
+        onKlassSelect(klass) {
+            // console.log(klass);
+            this.isSelectKlass = klass;
+            if (klass.length === 1 && !klass[0]) {
+                this.isSelectKlass = null;
+            }
+        },
+        changeActive(active) {
+            if (this.active[1] === active) {
+                return ;
+            }
+            this.active[0] = this.active[1];
+            this.active[1] = active;
+        },
+        submit() {
+            var status = this.checkCourseTimes();
+            if (!status) return ;
+            data = {'teacherId':this.teacher.id, 'courseId': this.isSelectCourse, 'klassIds': this.isSelectKlass, 'courseTimes': this.courseTimes};
+            axios.
+                post("{:url('schedulesave')}",data).
+                then( function(response) {
+                    if (response) {
+                        window.location.href = "{:url('courseSort')}";
+                    }
+                })
+        },
+        courseTime(day, lesson, selectWeeks, selectRoomIds) {
+            this.courseTimes[day][lesson]= {'weeks': selectWeeks,'roomIds': selectRoomIds};
+            // if (selectWeeks.length === 0 || selectRoomIds.length === 0) {
+            //     this.courseTimes[day][lesson]= [];
+            // }
+        },
+        checkCourseTimes() {
+            var count = 0; //计数器，保证时间不是空
+            for (var i = 0; i < 7; i++) {
+                for (var j = 0; j < 5; j++) {
+                    if(this.courseTimes[i][j].length !== 0) {
+                        console.log('courseTimes不为空',i,j);
+                        if ((this.courseTimes[i][j].weeks.length===0&&this.courseTimes[i][j].roomIds.length !== 0) || (this.courseTimes[i][j].weeks.length!==0&&this.courseTimes[i][j].roomIds.length === 0)) {
+                            alert(`请检查:
+                                周${this.weekName[i]}第${this.weekName[j]}节课
+                                是否少选周或者教室后重新提交`);
+                            return false;
+                        } else if (this.courseTimes[i][j].weeks.length!==0&&this.courseTimes[i][j].roomIds.length !== 0) {
+                            count++;
+                        }
+                    }
+                }
+            }
+            if (count === 0) {
+                alert('请至少选择一项上课时间');
+                return false;
+            }
+            return true;
+        }
+    },
+
+    template: `
+    {{courseTimes}}
+    {{dispatches}}
+    <form>
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <a href="{:url('courseSort')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>
+            </div>
+        </div>
+        <br>
+        <!--选择课程-->
+        <course-select @on-course-select="onCourseSelect"></course-select>
+
+        <!--选择班级-->
+        <div class="form-group row" v-if="isSelectCourse">
+            <klass-select @on-klass-select="onKlassSelect" :allowedKlasses="allowedKlasses"></klass-select>
+        </div>
+
+        <!--选择时间-->
+        <div class="row" v-if="isSelectKlass">
+            <div class="col-sm-12">
+                <table class="table table-hover table-bordered">
+                    <tr>
+                        <th class="">周几/课序</th>
+                        <th class="">1</th>
+                        <th class="">2</th>
+                        <th class="">3</th>
+                        <th class="">4</th>
+                        <th class="">5</th>
+                    </tr>
+                    <tr v-for="row in [0, 1, 2, 3, 4, 5, 6]">
+                        <td>周{{weekName[row]}}</td>
+                        <td v-for="col in [0, 1, 2, 3, 4]">
+                            <ul class="accordion" data-accordion>
+                                <li class="accordion-navigation">
+                                <!--选择时间-->
+                                    <course-time-select  @change-active="changeActive" @course-time="courseTime"  :day="row" :lesson="col" :dispatches="dispatches" :selectKlass="isSelectKlass" :teacher="teacher" :active="active"></course-time-select>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-10">
+                    <a type="submit" @click="submit" value="123" class="btn btn-primary">确定</a>
+                </div>
+            </div>
+        </div>
+    </form>
+    `,
+    mounted () {
+
+        axios.all([
+            axios
+                .get('{:url("Vue/getDispatchesJson")}')
+                .then(res => res.data),
+            axios
+                .get('{:url("Vue/getTeacherJson")}')
+                .then(res => res.data)
+        ]).then(
+            axios.spread((val1, val2) => {
+                this.dispatches = val1;
+                console.log(val1);
+                this.teacher = val2;
+            })
+        ).catch(err => {
+            console.log(err) ;
+        })
+    }
+
+}
+
+const app = Vue.createApp(RootComponent);
+// 上课时间选择
+app.component('course-time-select',{
+    data() {
+        return {
+            clickCount: 0,
+            dispatchWeeks: null,
+            dispatchRooms: null,
+            dispatchs: null,
+            conflictData: [],
+            selectWeeks: [],
+            selectRoomIds: [],
+            disableWeeks: [],
+            disableRoomIds: [],
+            rooms: null
+        }
+    },
+    props: {
+        active: null,
+        day: 0,
+        lesson: 0,
+        dispatches: null,
+        //已选择的班级
+        selectKlass: null,
+        teacher: null,
+    },
+    emits: ['changeActive', 'courseTime'],
+    template: `
+    ----------
+    {{conflictWeeksAndRooms}}
+    {{dontDisplayWeeks}}
+            <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-primary" @click="onChange">{{getContent()}}</a>
+            <div v-if="isShow()" class="row" @change="courseTime">
+                <!-- 模态框 -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">周{{weekday(day+1)}}第{{lesson+1}}节</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <!--选择周数-->
+                                        <week-select @add-select-weeks="addSelectWeeks" :disableWeeks="disableWeeks" :dontDisplayWeeks="dontDisplayWeeks" :alreadySelectWeeks="selectWeeks"></week-select>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <!--选择教室-->
+                                        <room-select @add-select-room-ids="addSelectRoomIds" :disableRoomIds="disableRoomIds" :alreadySelectRoomIds="selectRoomIds"></room-select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">保留数据</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- 调用数据对接 -->
+    `,
+    methods: {
+        getContent() {
+            if (this.selectWeeks.length===0&&this.selectRoomIds.length===0) {
+                return `周${this.weekday(this.day+1)}第${this.weekday(this.lesson+1)}节`;
+            }
+            var content = '';
+            content += `周:${this.selectWeeks}    `;
+            content += this.getRoomNames();
+            return content;
+        },
+        getRoomNames() {
+            var rooms;
+            var roomNames = '教室:';
+            for (var i = this.rooms.length - 1; i >= 0; i--) {
+                if(this.selectRoomIds.includes(this.rooms[i].id)) {
+                    roomNames += this.rooms[i].name+';';
+                }
+            }
+            return roomNames;
+        },
+        courseTime() {
+            this.$emit('courseTime', this.day, this.lesson, this.selectWeeks, this.selectRoomIds);
+        },
+        onChange() {
+            this.clickCount++;
+            this.$emit('changeActive', this.day * 11 + this.lesson);
+        },
+        weekday(day) {
+            if (day === 1) { return "一"; }
+            if (day === 2) { return "二"; }
+            if (day === 3) { return "三"; }
+            if (day === 4) { return "四"; }
+            if (day === 5) { return "五"; }
+            if (day === 6) { return "六"; }
+            if (day === 7) { return "日"; }
+        },
+        isShow() {
+            if (this.active[0] === this.day * 11 + this.lesson && this.clickCount % 2===1) {
+                this.clickCount++;
+            }
+            if (this.clickCount % 2 === 0) { this.clickCount++; }
+            return (this.day * 11 + this.lesson === this.active[1]) && this.clickCount % 2;
+        },
+        addSelectWeeks(selectWeek) {
+            // 添加selectWeek
+            // 对某个周勾选或取消的判断
+            var status = true;
+            for (var i = 0; i < this.selectWeeks.length; i++) {
+                if (selectWeek == this.selectWeeks[i]) {
+                    status = !status;
+                    break;
+                }
+            }
+            if (status) {
+                // 若勾选，则加入到selectWeeks数组中
+                this.selectWeeks.push(selectWeek);
+            } else {
+                // 若取消，则从selectWeeks数组中删去
+                // 变量d，记录当前取消勾选的周数
+                var d = this.selectWeeks[i];
+                this.selectWeeks.splice(i, 1);
+            }
+
+            // 添加disableRoomIds
+            // 对某个周勾选或取消的判断
+            var sta = false;
+            for (var n = 0; n < this.selectWeeks.length; n++) {
+                if (selectWeek == this.selectWeeks[n]) {
+                    sta = !sta;
+                    break;
+                }
+            }
+            // 如果selectWeeks的长度大于0，即有勾选周数，且当前勾选的周数能在conflictData中找到，则添加disableRoomIds
+            if (this.selectWeeks.length > 0 && sta) {
+                // 遍历conflictData数组
+                for (var i = 0; i < this.conflictData.length; i++) {
+                    // 如果当前勾选的周数能在conflictData中找到
+                    if (this.selectWeeks[this.selectWeeks.length-1] == this.conflictData[i].week) {
+                        for (var j = 0; j < this.conflictData[i].roomIds.length; j++) {
+                            // 求并集
+                            // 则添加对应的disableRoomId进入disableRoomIds中
+                            this.disableRoomIds.push(this.conflictData[i].roomIds[j]);
+                        }
+                    }
+                }
+            } else {
+                // 当某个周数取消勾选后，从disableRoomIds中删除对应的roomIds
+                // 遍历conflictData数组
+                for (var a = 0; a < this.conflictData.length; a++) {
+                    // 如果当前取消勾选的周数能在conflictData中找到
+                    if (d == this.conflictData[a].week) {
+                        // 从disableRoomIds中删除对应的roomIds
+                        for (var c = 0; c < this.conflictData[a].roomIds.length; c++) {
+                            for (var b = 0; b < this.disableRoomIds.length; b++) {
+                                if (this.conflictData[a].roomIds[c] == this.disableRoomIds[b]) {
+                                    this.disableRoomIds.splice(b, 1);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        addSelectRoomIds(selectRoomId) {
+            // 添加selectRoomIds
+            // 对某个教室勾选或取消的判断
+            var status = true;
+            for (var i = 0; i < this.selectRoomIds.length; i++) {
+                if (selectRoomId == this.selectRoomIds[i]) {
+                    status = !status;
+                    break;
+                }
+            }
+            if (status) {
+                // 若勾选，则加入到selectRoomIds数组中
+                this.selectRoomIds.push(selectRoomId);
+            } else {
+                // 若取消，则从selectRoomIds数组中删去
+                // 变量d，记录当前取消勾选的教室
+                var d = this.selectRoomIds[i];
+                this.selectRoomIds.splice(i, 1);
+            }
+
+            // 添加disableWeeks
+            // 对某个教室勾选或取消的判断
+            var sta = false;
+            for (var n = 0; n < this.selectRoomIds.length; n++) {
+                if (selectRoomId == this.selectRoomIds[n]) {
+                    sta = !sta;
+                    break;
+                }
+            }
+            // 如果selectRoomIds的长度大于0，即有勾选教室，且当前勾选的教室id能在conflictData中找到，则添加disableWeeks
+            if (this.selectRoomIds.length > 0 && sta) {
+                // 遍历conflictData数组
+                for (var b = 0; b < this.conflictData.length; b++) {
+                    // 遍历conflictData[b].roomIds数组
+                    for (var c = 0; c < this.conflictData[b].roomIds.length; c++) {
+                        // 如果当前勾选的教室能在conflictData中找到
+                        if (this.selectRoomIds[this.selectRoomIds.length-1] == this.conflictData[b].roomIds[c]) {
+                            // 求并集
+                            // 添加对应的disableWeek进入disableWeeks中
+                            this.disableWeeks.push(this.conflictData[b].week);
+                        }
+                    }
+                }
+            } else {
+                //  当某个教室取消勾选之后，从disableWeeks中删去对应的week
+                // 遍历conflictData数组
+                for (var j = 0; j < this.conflictData.length; j++) {
+                    // 遍历conflictData[j].roomIds数组
+                    for (var m = 0; m < this.conflictData[j].roomIds.length; m++) {
+                        // 如果当前取消勾选的教室能在conflictData中找到
+                        if (d == this.conflictData[j].roomIds[m]) {
+                            // 遍历disableWeeks数组
+                            for (var x = 0; x < this.disableWeeks.length; x++) {
+                                // 如果conflictData[j]中的week能够在disableWeeks[x]中找到
+                                if (this.conflictData[j].week == this.disableWeeks[x]) {
+                                    // 删去找到的week
+                                    this.disableWeeks.splice(x, 1);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+    },
+    computed: {
+        conflictWeeksAndRooms() {
+            conflictWeeksAndRooms = [];
+            dispatches = this.dispatches;
+            for (var i = this.dispatches.length - 1; i >= 0; i--) {
+                //挑选出当前day和lesson的
+                if (dispatches[i].day===this.day && dispatches[i].lesson===this.lesson) {
+                    conflictWeeksAndRooms.push(dispatches[i]);
+                }
+            }
+            weeksAndRooms = [];
+            for (var i = conflictWeeksAndRooms.length - 1; i >= 0; i--) {
+                weeksAndRooms.push({week:conflictWeeksAndRooms[i].week, roomIds:conflictWeeksAndRooms[i].roomIds});
+            }
+            this.conflictData = weeksAndRooms;
+            return conflictWeeksAndRooms;
+        },
+        dontDisplayWeeks() {
+            dontDisplayWeeksAndRooms = [];
+            dispatches = this.conflictWeeksAndRooms;
+            for (var i = dispatches.length - 1; i >= 0; i--) {
+                //符合当前教师的
+                if (dispatches[i].teacherId === this.teacher.id) {
+                    dontDisplayWeeksAndRooms.push(dispatches[i]);
+                    continue;
+                }
+                for (var j = this.selectKlass.length - 1; j >= 0; j--) {
+                //如果调度中包括选择的班级就说明当前周不能用,即存入dontDisplayWeeksAndRooms(不包括直接排除)
+                    if (dispatches[i].klassIds.includes(this.selectKlass[j])) {
+                        dontDisplayWeeksAndRooms.push(dispatches[i]);
+                        //有一个班级被包含就足够了
+                        break;
+                    }
+                }
+            }
+            dontDisplayWeeks=[];
+            for (var i = dontDisplayWeeksAndRooms.length - 1; i >= 0; i--) {
+                dontDisplayWeeks.push(dontDisplayWeeksAndRooms[i].week);
+            }
+            return dontDisplayWeeks;
+        }
+    },
+    mounted () {
+        axios
+            .get('{:url("Vue/getAllRoomsJson")}')
+            .then(response => this.rooms = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+    }
+})
+
+//  上课时间选择-周
+app.component('week-select', {
+    data() {
+        return {
+            weeks: null,
+            termStartTime: null,
+            termEndTime: null,
+        }
+    },
+    props: {
+        disableWeeks: null,
+        dontDisplayWeeks: null,
+        alreadySelectWeeks: null,
+    },
+    template: `
+        {{calculateTotalWeeks()}}
+        <label>上课周</label>
+        <div class="row" v-for="week in weeks">
+            <div class="col" v-if="disableShowWeek(week)">
+                <div v-if="isChecked(week)">
+                    <input checked  type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)" >
+                    <label for="">第{{week}}周</label>
+                </div>
+                <div v-if="!isChecked(week)">
+                    <input type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)">
+                    <label for="">第{{week}}周</label>
+                </div>
+            </div>
+            
+            <div class="col" v-if="!disableShowWeek(week)">
+                <div v-if="isChecked(week)">
+                    <input checked  type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)" >
+                    <label for="">第{{week}}周</label>
+                </div>
+                <div v-if="!isChecked(week)">
+                    <input type="checkbox" name="" value="" id="" @change="addSelectWeeks(week)" disabled>
+                    <label for="">第{{week}}周</label>
+                </div>
+            </div>
+        </div>
+        <slot></slot>
+    `,
+    emits: ['addSelectWeeks'],
+    methods: {
+        addSelectWeeks(selectWeek) {
+            this.$emit('addSelectWeeks', selectWeek);
+        },
+        disableShowWeek(week) {
+            if (this.disableWeeks.length == 0) {
+                return !this.dontDisplayWeeks.includes(week);
+            } else {
+                return !this.disableWeeks.includes(week) && !this.dontDisplayWeeks.includes(week);
+            }
+        },
+        calculateTotalWeeks() {
+            if (this.weeks === null) {
+                this.weeks = [];
+                axios
+                    .get('{:url("Vue/getCurrentTermStartTimeJson")}')
+                    .then(response => {
+                        this.termStartTime = response.data;
+                        axios
+                            .get('{:url("Vue/getCurrentTermEndTimeJson")}')
+                            .then(response => {
+                                this.termEndTime = response.data;
+                                var dateStart = new Date(this.termStartTime);
+                                var dateEnd = new Date(this.termEndTime);
+                                var difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
+                                for (var i = 0; i < Math.ceil(difValue / 7); i++) {
+                                    this.weeks[i] = i+1;
+                                }
+                            })
+                            .catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+                    })
+                    .catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
+            }
+        },
+        isChecked(week) {
+            return this.alreadySelectWeeks.includes(week);
+        }
+    },
+    mounted () {
+        axios
+            .get('{:url("Vue/getCurrentTermStartTimeJson")}')
+            .then(response => this.termStartTime = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+        axios
+            .get('{:url("Vue/getCurrentTermEndTimeJson")}')
+            .then(response => this.termEndTime = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+    }
+})
+
+//  上课时间选择-教室
+app.component('room-select', {
+    data() {
+        return {
+            rooms: [],
+        }
+    },
+    props: {
+        disableRoomIds: null,
+        alreadySelectRoomIds: null,
+    },
+    template: `
+    <label>选择教室</label>
+    <div class="row" v-for="room in rooms">
+        <div class="col" v-if="disableRoomId(room.id)">
+            <div v-if="isChecked(room.id)">
+                    <input checked  type="checkbox" name="" value="" id="" @change="addSelectRoomIds(room.id)">
+                    <label for="">{{room.name}}</label>
+                </div>
+                <div v-if="!isChecked(room.id)">
+                    <input type="checkbox" name="" value="" id="" @change="addSelectRoomIds(room.id)">
+                    <label for="">{{room.name}}</label>
+                </div>
+        </div>
+        <div class="col" v-if="!disableRoomId(room.id)">
+            <div v-if="isChecked(room.id)">
+                    <input checked  type="checkbox" name="" value="" id="" @change="addSelectRoomIds(room.id)">
+                    <label for="">{{room.name}}</label>
+                </div>
+                <div v-if="!isChecked(room.id)">
+                    <input type="checkbox" name="" value="" id="" @change="addSelectRoomIds(room.id)" disabled>
+                    <label for="">{{room.name}}</label>
+                </div>
+        </div>
+    </div>
+    `,
+    emits: ['addSelectRoomIds'],
+    methods: {
+        addSelectRoomIds(selectRoomId) {
+            this.$emit('addSelectRoomIds', selectRoomId);
+        },
+        disableRoomId(roomId) {
+            if (this.disableRoomIds.length == 0) {
+                return true;
+            } else {
+                return !this.disableRoomIds.includes(roomId);
+            }
+        },
+        isChecked(roomId) {
+            return this.alreadySelectRoomIds.includes(roomId);
+        }
+    },
+    mounted () {
+        axios
+            .get('{:url("Vue/getAllRoomsJson")}')
+            .then(response => this.rooms = response.data)
+            .catch(function (error) { // 请求失败处理
+            console.log(error);
+        });
+    }
+})
+
+
+// 班级选择
+app.component('klass-select', {
+    data() {
+        return {
+            selectKlass: [],
+        }
+    },
+    props : ['allowedKlasses'],
+    template: `
+    <label for="klass_id" class="col-sm-2 col-form-label" style="width: 162px">上课班级<br>(可多选)</label>
+    <div class="col-sm-4">
+        <select  @change="onChange" v-model="selectKlass" class="selectpicker form-control col-sm-12" multiple name="klass_id[]" id="klass_id" required>
+            <option value=''>请选择班级</option>
+            <option v-for="klass in allowedKlasses" :value="klass.id" >{{klass.name}}</option>
+        </select>
+    </div>
+    `,
+
+    emits: ['onKlassSelect'],
+    
+    methods: {
+        onChange() {
+            this.$emit('onKlassSelect', this.selectKlass)
+        },
+    },
+})
+
+
+// 课程选择
+app.component('course-select', {
+    data() {
+        return {
+            courses: [],
+            selectCourse: [],
+            klasses: []
+        }
+    },
+
+    template: `
+    <div class="form-group row">
+        <label for="course_id" class="col-sm-2 col-form-label" style="width: 162px">课程</label>
+        <div class="col-sm-4">
+            <select @change="onChange()" v-model="selectCourse" class="selectpicker form-control col-sm-12" name="course_id" id="course_id" required>
+                <option value="">请选择课程</option>
+                <option v-for="course in courses" :value="course.id">{{course.name}}</option>
+            </select>
+        </div>
+    </div>
+    `,
+    emits: ['onCourseSelect'],
+    methods: {
+        onChange() {
+            // console.log(this.selectCourse);
+            this.$emit('onCourseSelect', this.selectCourse, this.getAllowedKlasses);
+        },
+    },
+    computed: {
+        getAllowedKlasses() {
+            //获取不符合条件的班级(不应该显示的班级)
+            forbiddenKlasses = [];
+            for (var i = this.courses.length - 1; i >= 0; i--) {
+                if(this.selectCourse === this.courses[i].id) {
+                    for (var j = this.courses[i].klassIds.length - 1; j >= 0; j--) {
+                        forbiddenKlasses.push(this.courses[i].klassIds[j]);
+                    }
+                }
+            }
+            //通过不符合条件的班级过滤出符合条件的班级
+            allowedKlasses = this.klasses.filter(klass => !forbiddenKlasses.includes(klass.id));
+            return allowedKlasses;
+        }
+    },
+
+    mounted () {
+        axios.all([
+            axios
+                .get('{:url("Vue/getAllCoursesJson")}')
+                .then(res => res.data),
+            axios
+                .get('{:url("Vue/getAllKlassesJson")}')
+                .then(res => res.data)
+        ]).then(
+            axios.spread((val1, val2) => {
+                this.courses = val1;
+                this.klasses = val2;
+            })
+        ).catch(err => {
+            console.log(err) ;
+        })
+    }
+})
+app.mount('#main');
+</script>
+
+{/block}

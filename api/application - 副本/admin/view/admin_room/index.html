@@ -1,0 +1,38 @@
+{extend name="./../../index/view/index"/}
+{block name="title"}
+教室管理
+{/block}
+{block name='4'}
+active
+{/block}
+{block name="search"}
+<hr />
+<div class="row">
+    <div class="col-md-3">
+        <a href="{:url('add')}" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;添加教室</a>
+    </div>
+</div>
+<hr />
+{/block}
+{block name="content"}
+<table class="table table-hover table-bordered">
+    <tr class="info">
+        <th>序号</th>
+        <th>教室名称</th>
+        <th>座位数</th>
+        <th>操作</th>
+    </tr>
+    {volist name="rooms" id="_room" key="key"}
+    <tr>
+        <td>{$key}</td>
+        <td>{$_room->name}</td>
+        <td>{$_room->capacity}</td>
+        <td>
+            <a href="{:url('edit?id=' . $_room->getData('id'))}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
+            <a href="{:url('delete?id=' . $_room->getData('id'))}" class="btn btn-danger">删除</a>
+        </td>
+    </tr>
+    {/volist}
+</table>
+<div>{$rooms->render()}</div>
+{/block}

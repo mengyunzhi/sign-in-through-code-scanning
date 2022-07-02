@@ -1,0 +1,41 @@
+{extend name="index"/}
+{block name="title"}
+登记成绩
+{/block}
+{block name="content"}
+<table class="table table-hover table-bordered">
+    <tr class="info">
+        <th>平时成绩1</th>
+        <th>平时成绩2</th>
+        <th>平时成绩3</th>
+        <th>平时成绩4</th>
+        <th>报告成绩1</th>
+        <th>报告成绩2</th>
+        <th>报告成绩3</th>
+        <th>报告成绩4</th>
+        <th>平时20%</th>
+        <th>报告80%</th>
+        <th>总成绩</th>
+        <th>操作</th>
+    </tr>
+    <tr>
+        <td><input type="" name="" style="width: 50px" class="form-control"></td>
+        <td><input type="" name="" style="width: 50px" class="form-control"></td>
+        <td><input type="" name="" style="width: 50px" class="form-control"></td>
+        <td><input type="" name="" style="width: 50px" class="form-control"></td>
+        <td><input type="" name="" style="width: 50px" class="form-control"></td>
+        <td><input type="" name="" style="width: 50px" class="form-control"></td>
+        <td><input type="" name="" style="width: 50px" class="form-control"></td>
+        <td><input type="" name="" style="width: 50px" class="form-control"></td>
+        <td><input type="" name="" style="width: 50px" class="form-control"></td>
+        <td><input type="" name="" style="width: 50px" class="form-control"></td>
+        <td><input type="" name="" style="width: 50px" class="form-control"></td>
+        <td>
+            <a class="btn btn-sm btn-warning" href="{:url('fractionSave')}">&nbsp;保存</a>
+        </td>
+    </tr>
+</table>
+<a href="{:url('student?schedule_id='.input('schedule_id'))}" class="btn btn-primary">返回</a>
+{/block}
+{block name="page"}
+{/block}

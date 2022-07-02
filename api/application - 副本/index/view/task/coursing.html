@@ -1,0 +1,74 @@
+{extend name="index"/}
+{block name="title"}
+教师端
+{/block}
+{block name="search"}
+{/block}
+{block name="content"}
+<div class="row">
+    <div class="col col-md-12">
+        <hr>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col-md-3">项</th>
+                    <th scope="col-md-3">内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>课程名称</td>
+                    <td>程序设计</td>
+                </tr>
+                <tr>
+                    <td>当前周次</td>
+                    <td>第七周</td>
+                </tr>
+                <tr>
+                    <td>课次</td>
+                    <td>周三5-6节</td>
+                </tr>
+                <tr>
+                    <td rowspan="2">上课的班级</td>
+                    <td>计2021(30人)</td>
+                </tr>
+                <tr>
+                    <td>计2022(29人)</td>
+                </tr>
+                <tr>
+                    <td>总人数</td>
+                    <td>59</td>
+                </tr>
+                <tr>
+                    <td class="navbar-brand col-md-3 info">当前项目</td>
+                    <td class="navbar-brand col-md-5 info">链表的使用</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="form-group col-md-12">
+        <label class="col col-md-2">您的随机码为:1234</label>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-12">
+        <a href="{:url('signInSeat')}" type="submit" class="btn btn-primary">查看签到座位（按权限排序）</a>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-12">
+        <a href="{:url('signInStudent')}" type="submit" class="btn btn-success">查看完成签到学生</a>
+    </div>
+</div>
+<div class="form-group row">
+    <div class="col-md-12">
+        <h5>课程结束后生成记录表</h5>
+        <a href="{:url('CourseEnd')}" type="submit" class="btn btn-danger">课程结束</a>
+    </div>
+</div>
+{/block}
+{block name="page"}
+{/block}
+    

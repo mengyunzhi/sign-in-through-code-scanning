@@ -1,6 +1,3 @@
-<pre>
-  {{ pageData | json }}
-</pre>
 <!--查询和添加-->
 <div class="row">
   <div class="col-md-10">
@@ -28,13 +25,13 @@
     <tr *ngFor="let term of pageData.content, index as index">
       <td>{{ index + 1 }}</td>
       <td>{{ term.name }}</td>
-      <td>{{ term.start_time * 1000 | date: 'yyyy-MM-dd' }}</td>
-      <td>{{ term.end_time * 1000 | date: 'yyyy-MM-dd' }}</td>
+      <td>{{ (+term.start_time) * 1000 | date: 'yyyy-MM-dd' }}</td>
+      <td>{{ (+term.end_time) * 1000 | date: 'yyyy-MM-dd' }}</td>
       <td><span class="badge" [ngClass]="{ 'badge-primary': term.state, 'badge-secondary': !term.state }">{{ term.state | termState }}</span></td>
       <td>
-        <a class="btn btn-sm btn-primary" [routerLink]="'/admin/term/edit/' + '1'"><i class="fas fa-pen"></i>编辑</a>
-        <a class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i>删除</a>
-        <a class="btn btn-sm btn-success col-md-2" [ngClass]="{ disabled: term.state }">激活</a>
+        <a class="btn btn-sm btn-primary" [routerLink]="'/admin/term/edit/' + term.id.toString()"><i class="fas fa-pen"></i>编辑</a>
+        <a class="btn btn-sm btn-danger" (click)="onDelete(term.id)"><i class="far fa-trash-alt"></i>删除</a>
+        <a class="btn btn-sm btn-success col-md-2" (click)="activate(term.id)" [ngClass]="{ disabled: term.state }">激活</a>
       </td>
     </tr>
   </tbody>

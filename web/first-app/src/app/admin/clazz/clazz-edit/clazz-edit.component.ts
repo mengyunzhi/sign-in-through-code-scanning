@@ -23,7 +23,7 @@ export class ClazzEditComponent implements OnInit {
     this.httpClient.get<Clazz>('/clazz/1')
       .subscribe(clazz => {
         this.formGroup.get('name')?.setValue(clazz.name);
-        this.formGroup.get('entrance_date')?.setValue(this.datePipe.transform(new Date(clazz.entrance_date * 1000), 'yyyy-MM-dd'));
+        this.formGroup.get('entrance_date')?.setValue(clazz.entrance_date);
         this.formGroup.get('length')?.setValue(clazz.length);
       });
   }

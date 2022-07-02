@@ -1,0 +1,41 @@
+{extend name="./../../index/view/index"/}
+{block name="title"}
+管理端
+{/block}
+{block name="search"}
+<div class="row">
+    <div class="col-sm-12 text-right">
+        <a href="{:url('add')}" class="btn btn-primary">新增</a>
+    </div>
+</div>
+<hr>
+{/block}
+{block name="content"}
+<table class="table table-hover table-bordered">
+    <tr class="info">
+        <th>序号</th>
+        <th>名称</th>
+        <th>开始日期</th>
+        <th>结束日期</th>
+        <th>状态</th>
+        <th>操作</th>
+    </tr>
+    {volist name="Terms" id="_Term" key="key"}
+    <tr>
+        <td>{:$key}</td>
+        <td>{:$_Term->getName()}</td>
+        <td>{:$_Term->getStartTime()}</td>
+        <td>{:$_Term->getEndTime()}</td>
+        <td><span class="badge <?php if($_Term->state) echo 'badge-primary'; ?>">{:$_Term->getState()}</span></td>
+        <td>
+            <a href="{:url('edit?term_id='.$_Term->getId())}" class="btn btn-primary">编辑</a> &nbsp;&nbsp;
+            <a href="{:url()}" class="btn btn-danger">删除</a> &nbsp;&nbsp;
+            <a href='{:url("","term_id=$_Term->getId()")}' class="btn btn-success <?php if($_Term->state) echo 'disabled'; ?>">激活</a> &nbsp;&nbsp;
+        </td>
+    </tr>
+    {/volist}
+</table>
+{/block}
+{block name="page"}
+    {:$Terms->render()}
+{/block}

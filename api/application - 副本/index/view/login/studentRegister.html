@@ -1,0 +1,52 @@
+{extend name="index"/}
+{block name="title"}
+学生注册
+{/block}
+{block name="nav"}
+{/block}
+{block name="content"}
+<form action="{:url('register')}" method="post">
+    <div class="row">
+        <div class="col-md-12">
+            <label for="sno">学号:</label>
+            <input type="text" name="sno" id="sno" class="form-control" value="" required />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label for="password">密码:</label>
+            <input type="password" name="password" id="password" class="form-control" value="" required />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <label for="number">手机号:</label>
+            <input type="text" name="number" id="number" class="form-control" value="" />
+        </div>
+    </div>
+    &nbsp
+    <div class="row">
+        <div class="col-md-4">
+            <button type="submit" disabled>获取验证码</button>
+        </div>
+    </div>
+    &nbsp
+    <div class="row">
+        <div class="col-md-8">
+            <label for="verificationCode">验证码:</label>
+            <input type="tel" name="verificationCode" placeholder="请输入验证码" id="verificationCode" class="form-control" value="" />
+        </div>
+    </div>
+    &nbsp
+    <div class="row">
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-primary btn-block">确定</button>
+        </div>
+    </div>
+</form>
+<div class="row">
+    <div class="col-md-12 text-right">
+        <a href="{:url('login/index')}">登录</a>
+    </div>
+</div>
+{/block}
