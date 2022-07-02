@@ -5,7 +5,7 @@
 1. 使用框架：[angular](https://angular.cn/)
 2. 图标库 [fontawesome-free](https://fontawesome.com/v5/search?m=free)
 3. bootstrap [V4.6.0](https://getbootstrap.com/docs/4.6/getting-started/introduction/)
-
+4. notiflix [3.2.5](https://www.npmjs.com/package/notiflix)
 ## 环境
 1. node: V14.15.4
 2. NPM: 6.14.10

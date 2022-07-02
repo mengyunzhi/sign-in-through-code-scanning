@@ -30,7 +30,7 @@ export class DateComponent implements OnInit, ControlValueAccessor {
     this.date.valueChanges
       .subscribe(date => {
         console.log(date);
-        date = new Date(date).getTime() / 1000;
+        // date = new Date(date).getTime() / 1000;
         fn(date);
       });
   }

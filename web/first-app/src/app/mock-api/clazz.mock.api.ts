@@ -27,7 +27,7 @@ export class ClazzMockApi implements MockApiInterface {
             clazzes.push({
               id: i + 1,
               name: '测试班级' + randomNumber(100).toString(),
-              entrance_date: randomNumber(999999999),
+              entrance_date: randomNumber(999999999).toString(),
               length: randomNumber(9) + 1,
             } as Clazz);
           }
@@ -62,7 +62,7 @@ export class ClazzMockApi implements MockApiInterface {
           return {
             id,
             name: '软件201',
-            entrance_date: 1646928000,
+            entrance_date: '1646928000',
             length: randomNumber(6)
           } as Clazz;
         }
