@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Page} from '../../../entity/page';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Teacher} from '../../../entity/teacher';
+import {TeacherService} from '../../../service/teacher.service';
+import {Confirm, Notify} from 'notiflix';
 
 @Component({
   selector: 'app-teacher-index',
@@ -19,7 +21,7 @@ export class TeacherIndexComponent implements OnInit {
     numberOfElements: 0,
   });
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private teacherService: TeacherService) { }
 
   ngOnInit(): void {
     this.loadByPage();
@@ -27,14 +29,36 @@ export class TeacherIndexComponent implements OnInit {
 
   loadByPage(page: number = 0): void {
     console.log('loadByPage', page);
-    const httpParams = new HttpParams().append('page', page.toString())
-      .append('size', this.size.toString());
-    this.httpClient.get<Page<Teacher>>('/teacher/page', {params: httpParams})
+    this.teacherService.page(page, this.size)
       .subscribe(pageData => {
-        console.log('请求成功', pageData);
         this.page = page;
+        console.log('教师index请求成功', pageData);
         this.pageData = pageData;
       });
+  }
+
+  /*
+  * 删除
+  * @params id 教师对应的user_id
+  * */
+  onDelete(id: number): void {
+    Confirm.show(
+      '请确认',
+      '该操作不可逆',
+      '确认',
+      '取消',
+      () => {
+        this.teacherService.delete(id)
+          .subscribe(success => {
+            console.log('删除成功', success);
+            this.ngOnInit();
+            Notify.success('删除成功', {timeout: 800});
+          }, error => {
+            console.log('删除失败', error);
+            Notify.failure('删除失败', {timeout: 800});
+          });
+      },
+    );
   }
 
   onPage($event: number): void {

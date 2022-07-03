@@ -58,11 +58,10 @@ export class TermIndexComponent implements OnInit {
           .subscribe(success => {
             console.log('删除成功', success);
             this.ngOnInit();
-            Notify.success('删除成功', {
-              timeout: 400
-            });
+            Notify.success('删除成功', {timeout: 800});
           }, error => {
             console.log('删除失败', error);
+            Notify.failure('删除失败', {timeout: 800});
           });
       },
     );

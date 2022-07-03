@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {TeacherIndexComponent} from './teacher-index.component';
 import {RouterModule} from '@angular/router';
 import {PageModule} from '../../../page/page.module';
+import {PipeModule} from '../../../pipe/pipe.module';
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import {PageModule} from '../../../page/page.module';
   imports: [
     CommonModule,
     RouterModule,
-    PageModule
+    PageModule,
+    PipeModule
   ],
   exports: [TeacherIndexComponent]
 })

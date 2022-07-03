@@ -384,6 +384,22 @@ class Teacher extends Model {
 		}
 	}
 
+    static public function saveTeacher($user_id, &$msg = '') {
+        $Teacher = Teacher::where('user_id', 'eq', $user_id)->find();
+        if (is_null($Teacher)) {
+            $Teacher = new Teacher;
+            $Teacher->user_id = $user_id;
+        } else {
+            // teacher表对应的字段只有 user_id，无需修改
+            return true;
+        }
+        $Teacher->user_id = $user_id;
+        $status = $Teacher->validate(true)->save();
+        $msg .= $Teacher->getError();
+        return $status;
+        
+    }
+
     /**
      * 通过班级id存入学生和排课的关系
      * @param  [object] $Schedule [要存的排课对象]

@@ -75,8 +75,8 @@ class User extends Model {
     public function getSexAttr($value) 
     {
         $status = [
-            '0'=>'男',
-            '1'=>'女',
+            '0'=> 0,
+            '1'=> 1,
         ];
 
         $sex = $status[$value];
@@ -334,12 +334,23 @@ class User extends Model {
         //data无number，role为student；对象的number为空
         if (!isset($data['number']) && empty($User->number) && $data['role'] === User::$ROLE_STUDENT) {
             $data['number'] = $data['sno'];
+            $User->number = $data['sno'];
         }
         //更新时如果sno和number相等，同时修改number
         if (!is_null($User->getStudent())) {
-            if ($User->getStudent()->sno === $User->number) $data['number'] = $data['sno'];
+            if ($User->getStudent()->sno === $User->number) {
+                $data['number'] = $data['sno'];
+                $User->number = $data['sno'];
+            }
         }
-        $status = $User->validate(true)->allowField(true)->save($data);
+        // 防止更新时候出现unique检验不排除自己的问题，单个赋值
+        $User->role = $data['role'];
+        $User->password = $data['password'];
+        if (isset($data['number'])) $User->number = $data['number'];
+        if (isset($data['name'])) $User->setAttr('name', $data['name']);
+        if (isset($data['sex'])) $User->sex = $data['sex'];
+
+        $status = $User->validate(true)->allowField(true)->save();
         $msg .= $User->getError();
         if ($status) {
             return $User;
@@ -374,7 +385,37 @@ class User extends Model {
         //学生=>存student表； ......(之后可能存管理员、教师)
         if ($role === User::$ROLE_STUDENT) {
             $status = Student::saveStudent($User->id, $data['klass_id'], $data['sno'], $msg);
+
+        } elseif ($role === User::$ROLE_TEACHER) {
+            // 存教师表
+            $status = Teacher::saveTeacher($User->id, $msg);
         }
+
+        if (!$status) {
+            $User->delete();
+            $msg .= $Teacher->getError();
+        }
+        return $status;
+    }
+
+    static public function userDelete($user_id, &$msg='') {
+        $user = User::get($user_id);
+        $status = false;
+        if ((int)$user->role === User::$ROLE_ADMIN) {
+            $obj = Admin::where('user_id', 'eq', $user_id)->find();
+            $status = $obj->delete();
+            $msg .= $obj->getError();
+        } else if ((int)$user->role === User::$ROLE_TEACHER) {
+            $obj = Teacher::where('user_id', 'eq', $user_id)->find();
+            $status = $obj->delete();
+            $msg .= $obj->getError();
+        } else if ((int)$user->role === User::$ROLE_STUDENT) {
+            $obj = Student::where('user_id', 'eq', $user_id)->find();
+            $status = $obj->delete();
+            $msg .= $obj->getError();
+        }
+        $status = $status && $user->delete();
+        $msg .=  $user->getError();
         return $status;
     }
 

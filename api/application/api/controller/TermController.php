@@ -60,6 +60,7 @@ class TermController extends Controller
             return json_encode($status);
         } else {
             $this->error('添加失败:'.$msg);
+            return $msg;
         }
     }
 

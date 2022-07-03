@@ -6,7 +6,7 @@ import {Term} from '../../../entity/term';
 import {DatePipe} from '@angular/common';
 import {TermService} from '../../../service/term.service';
 import {Assert} from '@yunzhi/ng-mock-api';
-import {Report} from 'notiflix';
+import {Notify, Report} from 'notiflix';
 
 @Component({
   selector: 'app-term-edit',
@@ -63,6 +63,7 @@ export class TermEditComponent implements OnInit {
       .subscribe(success => {
           console.log('学期更新成功', success);
           this.router.navigate(['./../../'], {relativeTo: this.route});
+          Notify.success('更新成功', {timeout: 1000});
         },
         error => {
           console.log('学期更新失败', error);
