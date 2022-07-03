@@ -16,11 +16,11 @@ const routes: Routes = [
     component: TeacherAddComponent
   },
   {
-    path: 'edit',
+    path: 'edit/:id',
     component: TeacherEditComponent
   },
   {
-    path: 'updatePassword',
+    path: 'updatePassword/:id',
     component: TeacherUpdatePasswordComponent
   },
 ];

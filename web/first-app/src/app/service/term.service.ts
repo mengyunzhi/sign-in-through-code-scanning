@@ -33,7 +33,7 @@ export class TermService {
           .append('page', page.toString());
         this.httpClient.get<any>('/term/page', {params: httpParams})
           .subscribe(data => {
-            // 返回的内容是当前页面的学期数组和总共的学期数量 {} as {length: number, terms: Term[]}
+            // 返回的内容是当前页面的学期数组和总共的学期数量 {} as {length: number, content: Term[]}
             terms = data.content;
             subscriber.next(new Page<Term>({
               content: terms,
@@ -53,8 +53,8 @@ export class TermService {
   /*
   * 激活学期
   * */
-  activate(id: number): Observable<Term> {
-    return this.httpClient.post<Term>('/term/activate', id);
+  activate(id: number): Observable<any> {
+    return this.httpClient.post<any>('/term/activate', id);
   }
 
   /*
@@ -78,8 +78,8 @@ export class TermService {
   /*
   * 更新学期
   * */
-  update(id: number, term: {name: string, start_time: string, end_time: string, state: number}): Observable<Term> {
+  update(id: number, term: {name: string, start_time: string, end_time: string, state: number}): Observable<any> {
     return this.httpClient
-      .post<Term>('/term/update/id/' + id.toString(), term);
+      .post<any>('/term/update/id/' + id.toString(), term);
   }
 }

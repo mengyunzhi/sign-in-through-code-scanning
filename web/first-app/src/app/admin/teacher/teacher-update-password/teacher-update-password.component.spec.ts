@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TeacherUpdatePasswordComponent } from './teacher-update-password.component';
+import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('TeacherUpdatePasswordComponent', () => {
   let component: TeacherUpdatePasswordComponent;
@@ -8,7 +10,11 @@ describe('TeacherUpdatePasswordComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TeacherUpdatePasswordComponent ]
+      declarations: [ TeacherUpdatePasswordComponent ],
+      imports: [
+        MockApiTestingModule,
+        RouterTestingModule
+      ]
     })
     .compileComponents();
   });

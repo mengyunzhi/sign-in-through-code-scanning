@@ -28,15 +28,12 @@
       <tr *ngFor="let teacher of pageData.content index as i">
         <td>{{i + 1}}</td>
         <td>{{teacher.name}}</td>
-        <td>
-          <span *ngIf="teacher.sex">男</span>
-          <span *ngIf="!teacher.sex">女</span>
-        </td>
+        <td>{{teacher.sex | sex}}</td>
         <td>{{teacher.number}}</td>
         <td>
-          <a class="btn btn-sm btn-primary" [routerLink]="'edit'"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
-          <a class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i>删除</a>
-          <a class="btn btn-sm btn-success" [routerLink]="'updatePassword'">修改密码</a>&nbsp;&nbsp;
+          <a class="btn btn-sm btn-primary" [routerLink]="'edit/' + teacher.user_id"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
+          <a class="btn btn-sm btn-danger" (click)="onDelete(teacher.user_id)"><i class="far fa-trash-alt"></i>删除</a>
+          <a class="btn btn-sm btn-success" [routerLink]="'updatePassword/' + teacher.user_id">修改密码</a>&nbsp;&nbsp;
         </td>
       </tr>
     </tbody>

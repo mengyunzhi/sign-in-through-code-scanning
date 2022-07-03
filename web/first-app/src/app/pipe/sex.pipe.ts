@@ -10,9 +10,9 @@ export class SexPipe implements PipeTransform {
       return '-';
     }
     if (value === 1) {
-      return '男';
-    } else {
       return '女';
+    } else {
+      return '男';
     }
   }
 
