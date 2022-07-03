@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TermAddComponent } from './term-add.component';
 import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('TermAddComponent', () => {
   let component: TermAddComponent;
@@ -11,7 +12,8 @@ describe('TermAddComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ TermAddComponent ],
       imports: [
-        MockApiTestingModule
+        MockApiTestingModule,
+        RouterTestingModule
       ]
     })
     .compileComponents();

@@ -4,6 +4,7 @@ import { TermEditComponent } from './term-edit.component';
 import {RouterTestingModule} from '@angular/router/testing';
 import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
 import {DatePipe} from '@angular/common';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('TermEditComponent', () => {
   let component: TermEditComponent;
