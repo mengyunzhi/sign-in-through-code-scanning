@@ -46,16 +46,18 @@ class TeacherController extends Controller
 
     public function page() {
         $params = Request()->param();
-
-        $teachers = Db::table('yunzhi_user')->alias('user')
+        $where = '';
+        Db::name('Teacher');
+        $query = Db::table('yunzhi_user')->alias('user')
         ->join('yunzhi_teacher teacher', 'user.id = teacher.user_id')
-        ->order(['teacher.id desc'])->limit(
+        ->order(['teacher.id desc'])->where($where);
+
+        $teachers = $query->limit(
             $params['page'] * $params['size'],
             $params['size']
         )->select();
-
         $data['content'] = $teachers;
-        $data['length'] = sizeof(Teacher::all());
+        $data['length'] = $query->count();
         return json_encode($data);
     }
 

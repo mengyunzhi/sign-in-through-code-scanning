@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {observable, Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Page} from '../entity/page';
 import {Term} from '../entity/term';
 import {HttpClient, HttpParams} from '@angular/common/http';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -25,28 +26,18 @@ export class TermService {
   * 管理端学期管理页面
   * */
   page({page = 0, size = 20}: { page?: number, size?: number }): Observable<Page<Term>> {
-    let terms = [] as Term[];
-    return new Observable<Page<Term>>(
-      subscriber => {
-        const httpParams = new HttpParams()
-          .append('size', size.toString())
-          .append('page', page.toString());
-        this.httpClient.get<any>('/term/page', {params: httpParams})
-          .subscribe(data => {
-            // 返回的内容是当前页面的学期数组和总共的学期数量 {} as {length: number, content: Term[]}
-            terms = data.content;
-            subscriber.next(new Page<Term>({
-              content: terms,
-              number: page,
-              size,
-              numberOfElements: data.length
-            }));
-          },
-          error => {
-            console.log('请求失败', error);
-          });
-      }
-    );
+    const httpParams = new HttpParams()
+      .append('size', size.toString())
+      .append('page', page.toString());
+    return this.httpClient.get<{length: number, content: Term[]}>('/term/page', {params: httpParams})
+      .pipe(map(data =>
+          new Page<Term>({
+            content: data.content,
+            number: page,
+            size,
+            numberOfElements: data.length
+          }
+      )));
   }
 
 
