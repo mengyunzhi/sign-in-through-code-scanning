@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Page} from '../../../entity/page';
 import {Room} from '../../../entity/room';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {RoomService} from '../../../service/room.service';
 
 @Component({
   selector: 'app-room-index',
@@ -10,7 +10,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 })
 export class RoomIndexComponent implements OnInit {
   page = 0;
-  size = 10;
+  size = 3;
 
   pageData = new Page<Room>({
     content: [],
@@ -19,7 +19,7 @@ export class RoomIndexComponent implements OnInit {
     numberOfElements: 0
   });
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private roomService: RoomService) {
 
   }
 
@@ -27,11 +27,14 @@ export class RoomIndexComponent implements OnInit {
     this.loadByPage();
   }
 
+  /*
+  * 获取页面数据
+  * */
   loadByPage(page: number = 0): void {
-    const httpParams = new HttpParams().append('size', this.size.toString())
-      .append('page', page.toString());
-    this.httpClient.get<Page<Room>>('/room/page', {params: httpParams})
+    console.log('loadByPage', page);
+    this.roomService.page({page, size: this.size})
       .subscribe(pageData => {
+        console.log('请求成功---', pageData);
         this.page = page;
         this.pageData = pageData;
       });
