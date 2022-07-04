@@ -3,6 +3,7 @@ import {Teacher} from '../entity/teacher';
 import {Page} from '../entity/page';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -28,19 +29,14 @@ export class TeacherService {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString());
-    return new Observable<Page<Teacher>>(subscriber => {
-        this.httpClient.get<any>('/teacher/page', {params: httpParams})
-          .subscribe(data => {
-            console.log('teacher api 请求成功', data);
-            subscriber.next(new Page<Teacher>({
-              content: data.content,
-              number: page,
-              size,
-              numberOfElements: data.length
-            }));
-          }, error => console.log('教师api请求失败', error));
-      }
-    );
+    return  this.httpClient.get<any>('/teacher/page', {params: httpParams})
+      .pipe(map(data =>
+        new Page<Teacher>({
+          content: data.content,
+          number: page,
+          size,
+          numberOfElements: data.length
+        })));
   }
 
   update(id: number, data: {name: string, sex: number, number: string}): Observable<any> {
