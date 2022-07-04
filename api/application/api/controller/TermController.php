@@ -13,13 +13,19 @@ class TermController extends Controller
 {
     public function page() {
         $params = Request()->param();
-        $terms = Term::order(['state desc', 'id desc'])->limit(
+        $where = '';
+        $query = Term::order(['state desc', 'id desc'])->where($where);
+        $terms = $query->limit(
             $params['page'] * $params['size'],
             $params['size']
         )->select();
         $data['content'] = $terms;
-        $data['length'] = sizeof(Term::all());
+        $data['length'] = $query->count();
         return json_encode($data);
+    }
+
+    public function test() {
+        $list = Db::name('yunzhi_term')->where('status',1)->paginate(10);
     }
 
     public function allTerms() {
