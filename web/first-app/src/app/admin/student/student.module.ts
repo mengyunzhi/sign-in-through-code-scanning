@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {StudentAddComponent} from './student-add/student-add.component';
 import {StudentEditComponent} from './student-edit/student-edit.component';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -9,13 +8,13 @@ import {MockApiTestingModule} from '../../mock-api/mock-api-testing.module';
 import {StudentIndexModule} from './student-index/student-index.module';
 import {StudentRoutingModule} from './student-routing.module';
 import {StudentAddModule} from './student-add/student-add.module';
+import {StudentEditModule} from './student-edit/student-edit.module';
 
 /**
  * 管理端-》学生模块
  */
 @NgModule({
   declarations: [
-    StudentEditComponent,
     StudentUpdatePasswordComponent
   ],
   imports: [
@@ -27,7 +26,7 @@ import {StudentAddModule} from './student-add/student-add.module';
     StudentIndexModule,
     StudentAddModule,
     StudentRoutingModule,
-    MockApiTestingModule
+    StudentEditModule
   ]
 })
 export class StudentModule {
