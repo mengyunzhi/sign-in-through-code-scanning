@@ -12,6 +12,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PageModule} from '../../page/page.module';
 import {ClazzShareModule} from './clazz-share.module';
 import {DateModule} from '../term/data/date.module';
+import {PipeModule} from '../../pipe/pipe.module';
 
 @NgModule({
   declarations: [ClazzIndexComponent,
@@ -31,7 +32,8 @@ import {DateModule} from '../term/data/date.module';
     ReactiveFormsModule,
     PageModule,
     ClazzShareModule,
-    DateModule
+    DateModule,
+    PipeModule
   ]
 })
 export class ClazzModule {

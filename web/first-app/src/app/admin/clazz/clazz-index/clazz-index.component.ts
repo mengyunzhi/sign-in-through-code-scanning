@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {Clazz} from '../../../entity/clazz';
 import {Page} from '../../../entity/page';
-import {Term} from '../../../entity/term';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {ClazzService} from '../../../service/clazz.service';
+import {Confirm, Notify} from 'notiflix';
 
 @Component({
   selector: 'app-clazz-student-index',
@@ -19,7 +19,8 @@ export class ClazzIndexComponent implements OnInit {
     size: this.size,
     numberOfElements: 0,
   });
-  constructor(private httpClient: HttpClient) { }
+
+  constructor(private clazzService: ClazzService) { }
 
   ngOnInit(): void {
     this.loadByPage();
@@ -27,14 +28,35 @@ export class ClazzIndexComponent implements OnInit {
 
   loadByPage(page: number = 0): void {
     console.log('loadByPage', page);
-    const httpParams = new HttpParams().append('page', page.toString())
-      .append('size', this.size.toString());
-    this.httpClient.get<Page<Clazz>>('/clazz/page', {params: httpParams})
-      .subscribe(pageData => {
-        console.log('请求成功', pageData);
+    this.clazzService.page(page, this.size)
+      .subscribe(pagedate => {
+        console.log('班级数据请求成功', pagedate);
         this.page = page;
-        this.pageData = pageData;
+        this.pageData = pagedate;
+      }, error => {
+        console.log('班级数据请求失败', error);
       });
+  }
+
+  onDelete(clazz_id: number): void {
+    Confirm.show(
+      '请确认',
+      '该操作不可逆',
+      '确认',
+      '取消',
+      () => {
+        this.clazzService.delete(clazz_id)
+          .subscribe(success => {
+            console.log('班级删除成功', success);
+            this.ngOnInit();
+            Notify.success('删除成功', {timeout: 800});
+          }, error => {
+            console.log('班级删除失败', error);
+            Notify.failure('删除失败', {timeout: 800});
+          });
+      },
+    );
+
   }
 
   onPage($event: number): void {

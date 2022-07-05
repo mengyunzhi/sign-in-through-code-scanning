@@ -17,19 +17,19 @@ const routes: Routes = [
     component: ClazzAddComponent
   },
   {
-    path: 'clazzMembers/:clazzId',
+    path: 'clazzMembers/:clazz_id',
     component: ClazzMembersComponent
   },
   {
-    path: 'clazzMembers/:clazzId/add',
+    path: 'clazzMembers/:clazz_id/add',
     component: ClazzMembersAddComponent
   },
   {
-    path: 'edit/:clazzId',
+    path: 'edit/:clazz_id',
     component: ClazzEditComponent
   },
   {
-    path: 'clazzMembers/:clazzId/edit/:studentId',
+    path: 'clazzMembers/:clazz_id/edit/:student_id',
     component: ClazzMembersEditComponent
   }
 ];

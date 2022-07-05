@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {TeacherService} from '../../../service/teacher.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Report} from 'notiflix';
+import {Notify, Report} from 'notiflix';
 
 @Component({
   selector: 'app-teacher-add',
@@ -34,6 +34,7 @@ export class TeacherAddComponent implements OnInit {
       .subscribe(success => {
         console.log('教师添加成功', success);
         this.router.navigate(['../'], {relativeTo: this.route});
+        Notify.success('添加成功', {timeout: 1000});
       }, error => {
         console.log('教师添加失败', error);
         Report.failure('添加失败', '', '确定');

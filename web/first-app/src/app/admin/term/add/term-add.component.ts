@@ -35,6 +35,7 @@ export class TermAddComponent implements OnInit {
       .subscribe(success => {
           console.log('添加成功', success);
           this.router.navigate(['../'], {relativeTo: this.route});
+          Notify.success('添加成功', {timeout: 1000});
         },
         error => {
           console.log('添加失败', error);

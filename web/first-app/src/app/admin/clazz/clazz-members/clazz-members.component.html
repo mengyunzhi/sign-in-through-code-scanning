@@ -30,15 +30,19 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>1</td>
-      <td>张三</td>
-      <td>214111</td>
-      <td>男</td>
+
+  <tr *ngFor="let student of pageData.content; index as index">
+      <td>{{ index + 1 }}</td>
+      <td>{{ student.name }}</td>
+      <td>{{ student.sno }}</td>
+      <td>{{ student.sex | sex }}</td>
       <td>
         <a class="btn btn-sm btn-primary" routerLink="./edit/1">&nbsp;编辑</a>
         <a class="btn btn-sm btn-danger">&nbsp;删除</a>
       </td>
     </tr>
+
   </tbody>
 </table>
+
+<app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>

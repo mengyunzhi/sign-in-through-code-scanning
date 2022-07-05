@@ -27,13 +27,13 @@
     <tr *ngFor="let clazz of pageData.content; index as index">
       <td>{{ index + 1 }}</td>
       <td>{{ clazz.name }}</td>
-      <td>30</td>
-      <td>{{ clazz.entrance_date | date: 'yyyy-MM-dd' }}</td>
+      <td>{{ clazz.number_of_students }}</td>
+      <td>{{ (+clazz.entrance_date) * 1000 | date: 'yyyy-MM-dd' }}</td>
       <td>{{ clazz.length }}</td>
       <td>
-        <a class="btn btn-sm btn-primary col-md-2" routerLink="./edit/1"><i class="fas fa-pen"></i>编辑</a>
-        <a class="btn btn-sm btn-danger"><i class="far fa-trash-alt"></i>删除</a>
-        <a class="btn btn-sm btn-success" routerLink="clazzMembers/1">查看班级成员</a>
+        <a class="btn btn-sm btn-primary col-md-2" [routerLink]="'./edit/' + clazz.id.toString()"><i class="fas fa-pen"></i>编辑</a>
+        <a class="btn btn-sm btn-danger" (click)="onDelete(clazz.id)"><i class="far fa-trash-alt"></i>删除</a>
+        <a class="btn btn-sm btn-success" [routerLink]="'clazzMembers/' + clazz.id.toString()">查看班级成员</a>
       </td>
     </tr>
   </tbody>
