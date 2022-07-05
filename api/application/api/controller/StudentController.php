@@ -10,7 +10,7 @@ use app\common\model\Schedule;
 use app\common\model\Term;
 
 
-class StudentControll extends Controller
+class StudentController extends Controller
 {
 	public function page() {
 		$params = Request()->param();

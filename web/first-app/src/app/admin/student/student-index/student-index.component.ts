@@ -4,7 +4,6 @@ import {HttpClient} from '@angular/common/http';
 import {Page} from '../../../entity/page';
 import {StudentService} from '../../../service/student.service';
 import {CommonService} from '../../../service/common.service';
-import {error} from 'protractor';
 
 @Component({
   selector: 'app-student-student-index',
@@ -44,7 +43,7 @@ export class StudentIndexComponent implements OnInit {
    */
   loadByPage(page = 0): void {
     console.log('触发loadByPage方法');
-    this.studentService.page(page, this.size)
+    this.studentService.page({page, size: this.size})
       .subscribe(pageDate => {
       // 请求数据之后设置当前页
       console.log('请求成功', pageDate);

@@ -28,13 +28,14 @@ class ClazzController extends Controller
         $clazz_id = Request()->param('clazz_id');
         $params = Request()->param();
         Db::name('student');
+        $where['klass_id'] = ["=", $clazz_id];
         $query = Db::table('yunzhi_user')->alias('user')
-        ->join('yunzhi_student student', 'user.id = student.user_id')->order('student.id desc')->where("klass_id", "eq", $clazz_id);
+        ->join('yunzhi_student student', 'user.id = student.user_id')->order('student.id desc')->where($where);
 
         $data['content'] = $query->limit(
             $params['page'] * $params['size'],
             $params['size'])->select();
-        $data['length'] = $query->where("klass_id", "eq", $clazz_id)->count();
+        $data['length'] = $query->where($where)->count();
         return json_encode($data);
     }
 
