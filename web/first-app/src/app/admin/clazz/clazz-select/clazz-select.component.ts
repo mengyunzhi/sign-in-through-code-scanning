@@ -51,8 +51,10 @@ export class ClazzSelectComponent implements OnInit, ControlValueAccessor {
    * @param fn 此类型取决于当前组件的弹出值类型，当前弹出为clazzId number
    */
   registerOnChange(fn: (data: number) => void): void {
+    console.log('clazz-select向外传值');
     this.clazzSelected.valueChanges
       .subscribe((data: number) => {
+        console.log(data);
         fn(data);
       });
   }
@@ -68,6 +70,7 @@ export class ClazzSelectComponent implements OnInit, ControlValueAccessor {
    * @param obj 此类型取决于当前组件的接收类型，当前接收为clazzId number
    */
   writeValue(obj: number): void {
+    console.log('向clazz-select组件传值', obj);
     this.clazzSelected.setValue(obj);
   }
 }

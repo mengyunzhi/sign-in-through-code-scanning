@@ -26,11 +26,13 @@
     "@angular/router": "~11.0.9",
     "@fortawesome/fontawesome-free": "^6.1.1",
     "@yunzhi/ng-mock-api": "0.0.9",
+    "angular-sweetalert": "^1.1.2",
     "bootstrap": "^4.6.0",
     "jquery": "^3.5.1",
     "notiflix": "^3.2.5",
     "popper.js": "^1.16.1",
     "rxjs": "~6.6.0",
+    "sweetalert2": "^11.4.19",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"
   },
