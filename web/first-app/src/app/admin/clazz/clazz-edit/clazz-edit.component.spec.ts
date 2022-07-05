@@ -4,6 +4,7 @@ import { ClazzEditComponent } from './clazz-edit.component';
 import {HttpClientModule} from '@angular/common/http';
 import {DatePipe} from '@angular/common';
 import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('admin => clazz => ClazzEditComponent', () => {
   let component: ClazzEditComponent;
@@ -15,6 +16,7 @@ describe('admin => clazz => ClazzEditComponent', () => {
       imports: [
         HttpClientModule,
         MockApiTestingModule,
+        RouterTestingModule
       ],
       providers: [
         DatePipe

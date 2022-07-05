@@ -4,6 +4,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {StudentAddModule} from './student-add.module';
 import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
+import {RouterTestingModule} from '@angular/router/testing';
 
 describe('admin -> student -> StudentAddComponent', () => {
   let component: StudentAddComponent;
@@ -16,7 +17,8 @@ describe('admin -> student -> StudentAddComponent', () => {
         HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
-        MockApiTestingModule
+        MockApiTestingModule,
+        RouterTestingModule
       ]
     })
       .compileComponents();

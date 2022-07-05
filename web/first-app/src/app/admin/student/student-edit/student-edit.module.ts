@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {StudentEditComponent} from './student-edit.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ClazzShareModule} from '../../clazz/clazz-share.module';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import {ClazzShareModule} from '../../clazz/clazz-share.module';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    ClazzShareModule
+    ClazzShareModule,
+    HttpClientModule
   ],
   exports: [
     StudentEditComponent

@@ -13,6 +13,8 @@ import {PageModule} from '../../page/page.module';
 import {ClazzShareModule} from './clazz-share.module';
 import {DateModule} from '../term/data/date.module';
 import {PipeModule} from '../../pipe/pipe.module';
+import {RouterModule} from '@angular/router';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [ClazzIndexComponent,
@@ -33,7 +35,8 @@ import {PipeModule} from '../../pipe/pipe.module';
     PageModule,
     ClazzShareModule,
     DateModule,
-    PipeModule
+    PipeModule,
+    RouterModule
   ]
 })
 export class ClazzModule {
