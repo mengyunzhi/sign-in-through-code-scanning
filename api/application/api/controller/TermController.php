@@ -42,7 +42,6 @@ class TermController extends Controller
         } else {
             $this->error('添加失败:'.$msg);
         }
-
     }
 
     public function getById() {

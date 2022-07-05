@@ -61,6 +61,9 @@ export class TermService {
     return this.httpClient.post<Term>('/term/add', term);
   }
 
+  /*
+  * 删除学期
+  * */
   delete(id: number): Observable<Term> {
     return this.httpClient
       .delete<Term>('/term/delete/id/' + id.toString());

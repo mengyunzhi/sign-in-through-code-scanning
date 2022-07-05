@@ -36,4 +36,26 @@ export class RoomService {
           });
       });
   }
+
+  /*
+  * 删除教室
+  * */
+  delete(id: number): Observable<Room> {
+    console.log('delete');
+    return this.httpClient
+      .delete<Room>('/room/delete/id/' + id.toString());
+  }
+
+  /*
+  * 新增教室
+  * */
+  add(data: { name: string; capacity: number }): Observable<Room> {
+    console.log('添加教室');
+    const room = {
+      name: data.name,
+      capacity: data.capacity
+    } as Room;
+    console.log(room);
+    return this.httpClient.post<Room>('/room/add', room);
+  }
 }

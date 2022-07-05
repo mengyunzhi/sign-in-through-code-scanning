@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Page} from '../../../entity/page';
 import {Room} from '../../../entity/room';
 import {RoomService} from '../../../service/room.service';
+import {Confirm, Notify} from 'notiflix';
 
 @Component({
   selector: 'app-room-index',
@@ -38,6 +39,30 @@ export class RoomIndexComponent implements OnInit {
         this.page = page;
         this.pageData = pageData;
       });
+  }
+
+  /*
+  * 删除教室
+  * */
+  onDelete(id: number): void {
+    console.log(id);
+    Confirm.show(
+      '请确认',
+      '该操作不可逆',
+      '确认',
+      '取消',
+      () => {
+        this.roomService.delete(id)
+          .subscribe(success => {
+            console.log('删除成功', success);
+            this.ngOnInit();
+            Notify.success('删除成功', {timeout: 800});
+          }, error => {
+            console.log('删除失败', error);
+            Notify.failure('删除失败', {timeout: 800});
+          });
+      },
+    );
   }
 
   onPage($event: number): void {
