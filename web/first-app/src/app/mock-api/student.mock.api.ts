@@ -1,4 +1,4 @@
-import {ApiInjector, MockApiInterface, randomNumber, RequestOptions} from '@yunzhi/ng-mock-api';
+import {ApiInjector, MockApiInterface, randomNumber, randomString, RequestOptions} from '@yunzhi/ng-mock-api';
 import {HttpParams} from '@angular/common/http';
 import {Student} from '../entity/student';
 import {Page} from '../entity/page';
@@ -75,7 +75,46 @@ export class StudentMockApi implements MockApiInterface {
             numberOfElements: size * 20,
           });
         }
+      },
+      {
+        method: 'POST',
+        url: '/student/add',
+        description: 'save 新增',
+        result: (urlMatches: any, option: {body: {name: string, sex: number, clazz_id: number, sno: number}; }) => {
+          let body = {} as {name: string, sex: number, clazz_id: number, sno: number};
+          if (option) {
+            body = option.body;
+          }
+
+          return {
+            id: randomNumber(),
+            name: body.name,
+            sex: body.sex,
+            clazz_id: body.clazz_id,
+            sno: body.sno,
+          } as Student;
+        }
+      },
+      {
+        method: 'GET',
+        url: '/student/(\\d+)',
+        result: (urlMatches: Array<any>) => {
+          // 使用 + 完成字符串向数字的转换
+          const id = +urlMatches[1];
+          return {
+            id,
+            name: randomString('学生'),
+            sex: randomNumber(1),
+            clazz_id: randomNumber(100),
+            sno: randomNumber(),
+          } as Student;
+        }
+      },
+      {
+        method: 'DELETE',
+        url: '/student/delete/(\\d+)',
       }
-    ];
+    ]
+      ;
   }
 }

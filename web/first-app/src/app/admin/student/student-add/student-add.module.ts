@@ -4,6 +4,7 @@ import {StudentAddComponent} from './student-add.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ClazzModule} from '../../clazz/clazz.module';
 import {ClazzShareModule} from '../../clazz/clazz-share.module';
+import {RouterModule} from '@angular/router';
 
 
 
@@ -12,7 +13,8 @@ import {ClazzShareModule} from '../../clazz/clazz-share.module';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    ClazzShareModule
+    ClazzShareModule,
+    RouterModule
   ],
   exports: [
     StudentAddComponent

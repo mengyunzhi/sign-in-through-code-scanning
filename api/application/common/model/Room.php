@@ -15,6 +15,4 @@ class Room extends Model {
     public function getCapacity() {
         return isset($this->data['capacity']) ? $this->data['capacity'] : null;
     }
-
-    
 }
