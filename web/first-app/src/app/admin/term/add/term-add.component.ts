@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
 import {TermService} from '../../../service/term.service';
-import {Term} from '../../../entity/term';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Notify, Report} from 'notiflix';
 @Component({

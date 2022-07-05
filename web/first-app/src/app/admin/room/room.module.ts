@@ -5,6 +5,7 @@ import {RoomEditComponent} from './room-edit/room-edit.component';
 import {RoomIndexComponent} from './room-index/room-index.component';
 import {RoomAddComponent} from './room-add/room-add.component';
 import {PageModule} from '../../page/page.module';
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -17,7 +18,8 @@ import {PageModule} from '../../page/page.module';
   imports: [
     CommonModule,
     RoomRoutingModule,
-    PageModule
+    PageModule,
+    ReactiveFormsModule
   ]
 })
 export class RoomModule { }
