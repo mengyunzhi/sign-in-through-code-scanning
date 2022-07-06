@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {UserService} from '../../../service/user.service';
+import {Assert} from '@yunzhi/ng-mock-api';
+import {Notify, Report} from 'notiflix';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-personal-edit',
@@ -9,19 +13,55 @@ import {FormControl, FormGroup} from '@angular/forms';
 export class PersonalEditComponent implements OnInit {
 
   formGroup: FormGroup = new FormGroup({
-    password: new FormControl(null),
-    name: new FormControl('用户'),
-    sex: new FormControl(),
-    role: new FormControl(),
-    number: new FormControl()
+    name: new FormControl('', Validators.required),
+    sex: new FormControl(null, Validators.required),
+    role: new FormControl(null, Validators.required),
+    number: new FormControl('', Validators.required),
+    password: new FormControl(null)
   });
-
-  constructor() { }
+  password: string | undefined;
+  id: number | undefined;
+  constructor(private userService: UserService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.formGroup.get('sex')?.setValue(Number((Math.random() * 10).toFixed()) % 2);
-    this.formGroup.get('role')?.setValue(+(window.sessionStorage.getItem('role') as string));
-    this.formGroup.get('number')?.setValue(Number((Math.random() * 100 * 10000 * 10000 + 10000000000).toFixed()).toString());
+    this.userService.getCurrentLoginUser()
+      .subscribe(user => {
+        console.log('当前用户请求成功', user);
+        this.id = +user.id;
+        this.formGroup.get('name')?.setValue(user.name);
+        this.formGroup.get('sex')?.setValue(+user.sex);
+        this.formGroup.get('role')?.setValue(+user.role);
+        this.formGroup.get('number')?.setValue(user.number);
+        this.password = user.password;
+      }, error => {
+        console.log('当前用户请求失败', error);
+      });
+  }
+
+  onSubmit(): void {
+    const data = {
+      name: this.formGroup.get('name')?.value,
+      sex: this.formGroup.get('sex')?.value,
+      number: this.formGroup.get('number')?.value,
+      role: this.formGroup.get('role')?.value,
+      password: this.formGroup.get('password')?.value,
+    };
+    if (!this.formGroup.get('password')?.value) {
+      data.password = this.password;
+    }
+    Assert.isNumber(this.id, 'id的类型错误');
+    this.userService.userUpdate(this.id as number, data)
+      .subscribe(success => {
+        console.log('用户更新成功', success);
+        this.router.navigate(['./../'], {relativeTo: this.route});
+        Notify.success('更新成功', {timeout: 1000});
+      }, error => {
+        console.log('用户更新失败', error);
+        Report.failure('更新失败', '', '确定');
+      });
+
   }
 
 }
