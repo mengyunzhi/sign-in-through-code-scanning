@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {Term} from '../../../entity/term';
 import {DatePipe} from '@angular/common';
 import {TermService} from '../../../service/term.service';
 import {Assert} from '@yunzhi/ng-mock-api';
