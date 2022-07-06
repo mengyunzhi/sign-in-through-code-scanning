@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
+import { Location } from '@angular/common';
 import {User} from '../entity/user';
 import {MenuService} from '../service/menu.service';
 import {Router} from '@angular/router';
+import {UserService} from '../service/user.service';
 
 @Component({
   selector: 'app-index',
@@ -11,9 +13,11 @@ import {Router} from '@angular/router';
 export class IndexComponent implements OnInit {
 
   login = false;
-  role: number | null = null;
+  role = -1;
   constructor(private menuService: MenuService,
-              private router: Router) {
+              private router: Router,
+              private userService: UserService,
+              private location: Location) {
   }
 
   ngOnInit(): void {
@@ -25,6 +29,29 @@ export class IndexComponent implements OnInit {
       const a = window.sessionStorage.getItem('role') as string;
       this.role = +a;
     }
+    console.log('role', this.role);
+    this.userService.isLogin(this.getModuleRole())
+      .subscribe(success => {
+        console.log('已登录', success);
+      }, error => {
+        console.log('未登录', error);
+        this.login = false;
+        this.router.navigateByUrl('/');
+      });
+  }
+
+  getModuleRole(): number {
+    const module = this.location.path().split('/')[1];
+    if (module === 'admin') {
+      return UserService.ROLE_ADMIN;
+    } else if (module === 'teacher') {
+      return UserService.ROLE_TEACHER;
+    } else if (module === 'student') {
+      return UserService.ROLE_STUDENT;
+    } else {
+      // 访问 '/' 首页各个角色都一样
+      return this.role as number;
+    }
   }
 
   onLogin(user: User): void {
@@ -35,21 +62,19 @@ export class IndexComponent implements OnInit {
     // 将登录状态写入缓存
     window.sessionStorage.setItem('login', 'true');
     window.sessionStorage.setItem('role', user.role.toString());
-    if (user.role === 0) {
-      this.router.navigateByUrl('/admin/term');
-    } else if (user.role === 1) {
-      this.router.navigateByUrl('/teacher/task');
-    } else if (user.role === 2) {
-      this.router.navigateByUrl('/student');
-    }
+
   }
 
   onLogout(): void {
     console.log('接收到注销组件的数据弹射，开始注销');
-    this.login = false;
-    this.role = null;
-    window.sessionStorage.removeItem('login');
-    window.sessionStorage.removeItem('role');
-    this.router.navigateByUrl('/');
+    this.userService.logout()
+      .subscribe(() => {
+        console.log('注销成功');
+        this.login = false;
+        this.role = -1;
+        window.sessionStorage.removeItem('login');
+        window.sessionStorage.removeItem('role');
+        this.router.navigateByUrl('/');
+      });
   }
 }

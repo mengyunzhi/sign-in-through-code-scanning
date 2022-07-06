@@ -1,8 +1,7 @@
-import {Observable, of} from 'rxjs';
-import {Student} from '../entity/student';
-import {Page} from '../entity/page';
+import {Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import {User} from '../entity/user';
 
 @Injectable({
   providedIn: 'root'
@@ -16,5 +15,26 @@ export class UserService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getCurrentUser(): void {}
+  isLogin(moduleRole: number): Observable<boolean> {
+    const httpParams = new HttpParams()
+      .append('moduleRole', moduleRole.toString());
+    return this.httpClient.get<boolean>('/user/isLogin', {params: httpParams});
+  }
+
+  login(phone: string, password: string): Observable<User>{
+    const httpParams = new HttpParams()
+      .append('number', phone)
+      .append('password', password);
+    return this.httpClient.get<User>('/user/login', {params: httpParams});
+  }
+
+  logout(): Observable<void> {
+    return this.httpClient.get<void>('/user/logout');
+  }
+
+  getCurrentLoginUser(): Observable<User> {
+    return this.httpClient.get<User>('/user/getCurrentLoginUser');
+  }
+
+
 }

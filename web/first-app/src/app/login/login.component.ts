@@ -1,6 +1,8 @@
 import {Component, EventEmitter, NgZone, OnInit, Output} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../entity/user';
+import {UserService} from '../service/user.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -20,32 +22,34 @@ export class LoginComponent implements OnInit {
   data: any;
 
   constructor(private httpClient: HttpClient,
-              private ngZone: NgZone) {
+              private ngZone: NgZone,
+              private userService: UserService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
-    this.httpClient.get('http://localhost:8080/api/angular/api/public/index/login/test')
-      .subscribe(data => {
-        console.log('api数据', data);
-        console.log(Number(Math.random() * 10000).toFixed(0));
-        this.data = data;
-      }, error => console.log(error));
   }
 
   onSubmit(): void {
     console.log('点击了登录按钮');
-    if (this.user.number === '000' && this.user.password === '000') {
-      this.user.role = 0;
-      this.beLogin.emit(this.user);
-    } else if (this.user.number === '111' && this.user.password === '111') {
-      this.user.role = 1;
-      this.beLogin.emit(this.user);
-    } else if (this.user.number === '222' && this.user.password === '222') {
-      this.user.role = 2;
-      this.beLogin.emit(this.user);
-    } else {
-      this.showErrorDelay();
-    }
+
+    this.userService.login(this.user.number, this.user.password)
+      .subscribe(user => {
+        console.log('登录成功', user);
+        this.beLogin.emit(user);
+
+        if (+user.role === UserService.ROLE_ADMIN) {
+          this.router.navigateByUrl('/admin/term');
+        } else if (+user.role === UserService.ROLE_TEACHER) {
+          this.router.navigateByUrl('/teacher/task');
+        } else if (+user.role === UserService.ROLE_STUDENT) {
+          this.router.navigateByUrl('/student');
+        }
+
+      }, error => {
+        console.log('登录失败', error);
+        this.showErrorDelay();
+      });
   }
 
   /**
