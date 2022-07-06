@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Report} from 'notiflix';
+import {Notify, Report} from 'notiflix';
 import {RoomService} from '../../../service/room.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-room-add',
@@ -15,7 +16,9 @@ export class RoomAddComponent implements OnInit {
     capacity : new FormControl(null, Validators.required),
   });
 
-  constructor(private roomService: RoomService) { }
+  constructor(private roomService: RoomService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit(): void {
   }
@@ -27,6 +30,15 @@ export class RoomAddComponent implements OnInit {
       capacity: number
     };
     console.log(room);
-    this.roomService.add(room);
+    this.roomService.add(room)
+      .subscribe(success => {
+          console.log('添加成功', success);
+          this.router.navigate(['../'], {relativeTo: this.route});
+          Notify.success('添加成功', {timeout: 1000});
+        },
+        error => {
+          console.log('添加失败', error);
+          Report.failure('添加失败', '', '确定');
+        });
   }
 }

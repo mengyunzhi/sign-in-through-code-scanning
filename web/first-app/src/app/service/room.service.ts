@@ -11,6 +11,11 @@ export class RoomService {
 
   constructor(private httpClient: HttpClient) { }
 
+  getById(id: number): Observable<Room> {
+    return this.httpClient
+      .get<Room>(`/room/getById/id/` + id.toString());
+  }
+
   /*
   * 管理端教室管理index页面
   * */
@@ -57,5 +62,10 @@ export class RoomService {
     } as Room;
     console.log(room);
     return this.httpClient.post<Room>('/room/add', room);
+  }
+
+  update(id: number, room: { name: any; capacity: any }): Observable<any> {
+    return this.httpClient
+      .post<any>('/room/update/id/' + id.toString(), room);
   }
 }
