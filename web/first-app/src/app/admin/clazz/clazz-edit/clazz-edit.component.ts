@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ClazzService} from '../../../service/clazz.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
@@ -13,9 +13,9 @@ import {Notify, Report} from 'notiflix';
 })
 export class ClazzEditComponent implements OnInit {
   formGroup = new FormGroup({
-    name: new FormControl(''),
-    entrance_date: new FormControl(null),
-    length: new FormControl(null)
+    name: new FormControl('', Validators.required),
+    entrance_date: new FormControl(null, Validators.required),
+    length: new FormControl(null, Validators.required)
   });
 
   clazz_id: number | undefined;

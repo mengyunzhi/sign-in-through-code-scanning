@@ -18,8 +18,7 @@ class ClazzController extends Controller
         $data = json_decode(file_get_contents("php://input"));
         $status = Klass::klassSave($data->name, $data->entrance_date, $data->length, $msg);
         if (!$status) {
-            throw new \Exception('班级添加失败');
-            return $msg;
+            return $this->error('班级添加失败:'. $msg);
         }
         return json_encode($status);
     }
@@ -44,8 +43,7 @@ class ClazzController extends Controller
         $clazz = Klass::get($id);
         $status = $clazz->delete();
         if (!$status) {
-            throw new \Exception('班级删除失败');
-            return $clazz->getError();
+            return $this->error('班级删除失败:'.$clazz->getError());
         }
         return json_encode($status);
     }
@@ -83,8 +81,7 @@ class ClazzController extends Controller
         $clazz->length = $data->length;
         $status = $clazz->validate(true)->save();
         if (!$status) {
-            throw new \Exception('班级更新失败');
-            return $clazz->getError();
+            return $this->error('班级更新失败:'.$clazz->getError());
         }
         return json_encode($status);
     }
