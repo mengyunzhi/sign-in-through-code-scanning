@@ -47,7 +47,7 @@ export class ClazzService {
    * 获取所有的班级
    */
   getAll(): Observable<Clazz[]> {
-    return this.httpClient.get<Array<Clazz>>(this.baseUrl);
+    return this.httpClient.get<Array<Clazz>>('/clazz/getAll');
   }
 
   page(page: number, size: number): Observable<Page<Clazz>> {

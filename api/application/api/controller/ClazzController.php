@@ -3,6 +3,7 @@ namespace app\api\controller;     //命名空间，也说明了文件所在的�
 use app\common\model\Teacher;
 use app\common\model\User;
 use app\common\model\Student;
+use app\common\model\Klass;
 use app\index\service\MenuService;
 use think\Controller;
 use think\Request;
@@ -84,7 +85,7 @@ class ClazzController extends Controller
     }
 
     public function getAll() {
-        return Klazz::getAll();
+        return json_encode(Klass::all());
     }
 
 }
