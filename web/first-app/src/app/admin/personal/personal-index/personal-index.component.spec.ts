@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PersonalIndexComponent } from './personal-index.component';
 import {PipeModule} from '../../../pipe/pipe.module';
+import {HttpClientModule} from '@angular/common/http';
 
 describe('admin -> personal -> PersonalIndexComponent', () => {
   let component: PersonalIndexComponent;
@@ -11,7 +12,8 @@ describe('admin -> personal -> PersonalIndexComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ PersonalIndexComponent ],
       imports: [
-        PipeModule
+        PipeModule,
+        HttpClientModule
       ]
     })
     .compileComponents();

@@ -13,6 +13,7 @@ class UserController extends Controller
 {
 
     public function getCurrentLoginUser() {
+        User::updateUserSession();
         $user = User::getCurrentLoginUser();
         if (is_null($user)) {
             return $this->error('获取当前登录用户失败');
@@ -51,5 +52,17 @@ class UserController extends Controller
             return $this->error('您并不拥有操作当前模块的权限');
         }
         return json_encode(true);
+    }
+
+    public function userUpdate() {
+        $data = json_decode(file_get_contents("php://input"), true);
+        $id = Request()->param('id/d');
+        $status = User::userSave($data, $data['role'], $msg, $id);
+        User::updateUserSession();
+        // return json_encode($status);
+        if (!$status) {
+            return $this->error('用户更新失败:'. $msg);
+        }
+        return json_decode(true);
     }
 }
