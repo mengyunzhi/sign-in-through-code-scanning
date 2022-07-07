@@ -36,12 +36,12 @@
     <td>{{i + 1}}</td>
     <td>{{student.name}}</td>
     <td>{{student.sex | sex}}</td>
-    <td>软件21{{student.clazz_id}}</td>
+    <td>{{student.clazz_id}}</td>
     <td>{{student.sno}}</td>
     <td>
-      <a class="btn btn-sm btn-primary" [routerLink]="'edit'"><i class="fas fa-pen"></i>编辑</a>
-      <a class="btn btn-sm btn-danger" (click)="onDelete(student.id)"><i class="far fa-trash-alt"></i>删除</a>
-      <a class="btn btn-sm btn-success col-md-3" [routerLink]="'updatePassword'"><i class="fas fa-lock"></i>修改密码</a>
+      <a class="btn btn-sm btn-primary" [routerLink]="'edit/' + student.user_id"><i class="fas fa-pen"></i>编辑</a>
+      <a class="btn btn-sm btn-danger" (click)="onDelete(student.user_id)"><i class="far fa-trash-alt"></i>删除</a>
+      <a class="btn btn-sm btn-success col-md-3" [routerLink]="'updatePassword/'  + student.user_id"><i class="fas fa-lock"></i>修改密码</a>
     </td>
   </tr>
   </tbody>

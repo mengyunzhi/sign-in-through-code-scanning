@@ -14,7 +14,7 @@ export class StudentService {
   }
 
 
-  page({page = 0, size = 20}: { page?: number, size?: number }): Observable<Page<Student>> {
+  page(page: number, size: number): Observable<Page<Student>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString());

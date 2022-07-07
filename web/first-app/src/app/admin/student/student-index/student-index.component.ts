@@ -43,7 +43,7 @@ export class StudentIndexComponent implements OnInit {
    */
   loadByPage(page = 0): void {
     console.log('触发loadByPage方法');
-    this.studentService.page({page, size: this.size})
+    this.studentService.page(page, this.size)
       .subscribe(pageDate => {
       // 请求数据之后设置当前页
       console.log('请求成功', pageDate);
@@ -62,6 +62,7 @@ export class StudentIndexComponent implements OnInit {
         this.studentService.delete(studentId)
           .subscribe(() => {
             console.log('删除成功');
+            this.ngOnInit();
           }, error => console.log('删除失败'));
       }
     });
