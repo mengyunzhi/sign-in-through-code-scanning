@@ -85,7 +85,8 @@ class ClazzController extends Controller
     }
 
     public function getAll() {
-        return json_encode(Klass::getAll());
+        return json_encode(Klass::all());
     }
+
 }
 

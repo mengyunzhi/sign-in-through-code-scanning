@@ -5,10 +5,8 @@ use think\Request;
 use think\Db;
 use app\common\model\Student;
 use app\index\service\MenuService;
-use app\common\model\Teacher;
 use app\common\model\User;
-use app\common\model\Schedule;
-use app\common\model\Term;
+use app\common\model\Klazz;
 
 
 class StudentController extends Controller
@@ -30,6 +28,44 @@ class StudentController extends Controller
 		return json_encode($data);
 	}
 
+
+	public function add() {
+		// name: string, sex: number, clazz_id: number, sno: string
+		$data = json_decode(file_get_contents("php://input"));
+		$params['name'] = $data->name;
+		$params['sex'] = $data->sex;
+		$params['clazz_id'] = $data->clazz_id;
+		$params['sno'] = $data->sno;
+		$msg = '';
+		$status = User::userSave($params, User::$ROLE_STUDENT, $msg);
+		if (!$status) {
+			$this->error('学生添加失败:' . $msg);
+			return $msg;
+		}
+		return $status;
+	}
+
+	 public function getById() {
+        $id = Request()->param('id/d');
+        return json_encode(User::get($id));
+    }
+
+    public function update() {
+		// name: string, sex: number, clazz_id: number, sno: string
+		$data = json_decode(file_get_contents("php://input"));
+		$params['name'] = $data->name;
+		$params['sex'] = $data->sex;
+		$params['clazz_id'] = $data->clazz_id;
+		$params['sno'] = $data->sno;
+		$user_id = Request()->param('id/d');
+		$status = User::userSave($params, User::$ROLE_STUDENT, $msg, $user_id);
+		if (!$status) {
+			$this->error('学生添加失败:' . $msg);
+			return $msg;
+		}
+		return json_encode($status);
+	}
+
 	public function delete() {
         $id = Request()->param('id/d');
         $student = Student::get($id);
@@ -39,5 +75,17 @@ class StudentController extends Controller
         } else {
             return $student->getError();
         }
+    }
+
+    public function updatePasswordByAdmin() {
+        $password = file_get_contents("php://input");
+        $id = Request()->param('id/d');
+        $user = User::get($id);
+        $user->password = $password;
+        if ($user->save() === false) {
+            throw new \Exception('更新失败:'. $user->getError);
+            return $user->getError;
+        }
+        return json_encode(true);
     }
 }

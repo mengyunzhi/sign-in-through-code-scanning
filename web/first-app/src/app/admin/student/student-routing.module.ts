@@ -14,10 +14,10 @@ const routes: Routes = [
     path: 'add',
     component: StudentAddComponent
   }, {
-    path: 'edit',
+    path: 'edit/:id',
     component: StudentEditComponent
   }, {
-    path: 'updatePassword',
+    path: 'updatePassword/:id',
     component: StudentUpdatePasswordComponent
   }
 ];

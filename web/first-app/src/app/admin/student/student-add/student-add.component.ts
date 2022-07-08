@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {StudentService} from '../../../service/student.service';
 import {Student} from '../../../entity/student';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Report} from 'notiflix';
 
 @Component({
   selector: 'app-student-add',
@@ -26,6 +28,8 @@ export class StudentAddComponent implements OnInit {
 
   constructor(
     private studentService: StudentService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
   }
 
@@ -51,6 +55,10 @@ export class StudentAddComponent implements OnInit {
     this.studentService.save(student)
       .subscribe(() => {
         console.log('保存成功');
-      }, error => console.log('保存失败'));
+        this.router.navigate(['../'], {relativeTo: this.route});
+      }, error => {
+        console.log('保存失败');
+        Report.failure('添加失败', '', '确定');
+      });
   }
 }
