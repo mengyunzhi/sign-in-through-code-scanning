@@ -39,8 +39,8 @@ export class StudentService {
   /**
    * 根据ID获取学生
    */
-  getById(id: number): Observable<Student> {
-    return this.httpClient.get<Student>('student/getById/id/' + id.toString());
+  getById(id: number): Observable<{name: string, sex: number, klass_id: number, sno: number}> {
+    return this.httpClient.get<{name: string, sex: number, klass_id: number, sno: number}>('student/getById/id/' + id.toString());
   }
 
   /**
@@ -63,6 +63,6 @@ export class StudentService {
    */
   delete(id: number): Observable<Student>{
     return this.httpClient
-      .delete<Student>(`/student/delete/${id}`);
+      .delete<Student>(`/student/delete/id/${id}`);
   }
 }

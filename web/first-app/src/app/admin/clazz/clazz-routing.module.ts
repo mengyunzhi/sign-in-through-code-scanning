@@ -29,7 +29,7 @@ const routes: Routes = [
     component: ClazzEditComponent
   },
   {
-    path: 'clazzMembers/:clazz_id/edit/:student_id',
+    path: 'clazzMembers/:clazz_id/edit/:id',
     component: ClazzMembersEditComponent
   }
 ];

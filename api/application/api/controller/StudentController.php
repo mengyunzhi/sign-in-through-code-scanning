@@ -16,7 +16,7 @@ class StudentController extends Controller
 		$where = '';
 		Db::name('Student');
 		$query = Db::table('yunzhi_user')->alias('user')
-		->join('yunzhi_student student', 'user_id = student.user_id')
+		->join('yunzhi_student student', 'user.id = student.user_id')
 		->order(['student.id desc'])->where($where);
 		
 		$students = $query->limit(
@@ -34,7 +34,7 @@ class StudentController extends Controller
 		$data = json_decode(file_get_contents("php://input"));
 		$params['name'] = $data->name;
 		$params['sex'] = $data->sex;
-		$params['clazz_id'] = $data->clazz_id;
+		$params['klass_id'] = $data->clazz_id;
 		$params['sno'] = $data->sno;
 		$msg = '';
 		$status = User::userSave($params, User::$ROLE_STUDENT, $msg);
@@ -42,12 +42,17 @@ class StudentController extends Controller
 			$this->error('学生添加失败:' . $msg);
 			return $msg;
 		}
-		return $status;
+		return json_encode($status);
 	}
 
 	 public function getById() {
         $id = Request()->param('id/d');
-        return json_encode(User::get($id));
+        Db::name('user');
+        $user = Db::table('yunzhi_user')->alias('user')
+        ->join('yunzhi_student student',  'user.id = student.user_id')
+        ->join('yunzhi_klass klass', 'student.klass_id = klass.id')
+        ->where("user.id=$id")->find();
+        return json_encode($user);
     }
 
     public function update() {
@@ -55,7 +60,7 @@ class StudentController extends Controller
 		$data = json_decode(file_get_contents("php://input"));
 		$params['name'] = $data->name;
 		$params['sex'] = $data->sex;
-		$params['clazz_id'] = $data->clazz_id;
+		$params['klass_id'] = $data->clazz_id;
 		$params['sno'] = $data->sno;
 		$user_id = Request()->param('id/d');
 		$status = User::userSave($params, User::$ROLE_STUDENT, $msg, $user_id);
@@ -68,12 +73,11 @@ class StudentController extends Controller
 
 	public function delete() {
         $id = Request()->param('id/d');
-        $student = Student::get($id);
-        $status = $student->delete();
+        $status = User::userDelete($id);
         if ($status) {
-            return json_encode($student);
+            return json_encode($status);
         } else {
-            return $student->getError();
+            return $this->error('删除失败：'.$student->getError());
         }
     }
 

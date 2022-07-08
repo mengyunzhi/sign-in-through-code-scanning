@@ -14,7 +14,7 @@ export class StudentIndexComponent implements OnInit {
   // 默认显示第一页内容
   page = 0;
   // 每页默认5条
-  size = 5;
+  size = 3;
 
   // 初始化一个有0条数据的分页
   pageDate = new Page<Student>({
@@ -56,14 +56,14 @@ export class StudentIndexComponent implements OnInit {
   /**
    * 删除
    */
-  onDelete(studentId: number): void {
+  onDelete(id: number): void {
     this.commonService.confirm((confirm) => {
       if (confirm) {
-        this.studentService.delete(studentId)
+        this.studentService.delete(id)
           .subscribe(() => {
             console.log('删除成功');
             this.ngOnInit();
-          }, error => console.log('删除失败'));
+          }, error => console.log('删除失败', error));
       }
     });
   }

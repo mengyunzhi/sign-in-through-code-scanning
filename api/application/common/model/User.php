@@ -320,8 +320,8 @@ class User extends Model {
      * 存User表
      * @author chenshihang 858190647@qq.com
      * @param  array $data   需要存入的信息 
-     * 新增: role password在usersave方法给过data,另外需要number, name, sex ,student需要sno
-     * 更新: role在 usersave方法给过data, 另外需要password number name sex ,student需要sno
+     * 新增: role password在usersave方法给过data,另外需要number, name, sex ,student需要sno不需要number
+     * 更新: role在 usersave方法给过data, 另外需要 password number name sex ,student需要sno
      * @param  string   $msg   报错信息
      * @param  int $userId 如果非空代表修改；空代表新增
      * @return object         成功 object; 失败 null
@@ -389,7 +389,6 @@ class User extends Model {
             // throw new Exception('存User表失败');
             return false;
         }
-        return $User;
         //学生=>存student表； ......(之后可能存管理员、教师)
         if ($role === User::$ROLE_STUDENT) {
             $status = Student::saveStudent($User->id, $data['klass_id'], $data['sno'], $msg);
@@ -412,6 +411,7 @@ class User extends Model {
         $status = false;
         if ((int)$user->role === User::$ROLE_ADMIN) {
             $obj = Admin::where('user_id', 'eq', $user_id)->find();
+            return $user;
             $status = $obj->delete();
             $msg .= $obj->getError();
         } else if ((int)$user->role === User::$ROLE_TEACHER) {

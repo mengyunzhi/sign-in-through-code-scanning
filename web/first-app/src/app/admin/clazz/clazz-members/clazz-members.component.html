@@ -1,3 +1,4 @@
+<pre>{{ pageData.content | json }}</pre>
 <div class="row">
   <div class="col-md-12 text-right">
     <a class="btn btn-primary" routerLink="./add"><i class="glyphicon"></i>新增</a>
@@ -37,8 +38,8 @@
       <td>{{ student.sno }}</td>
       <td>{{ student.sex | sex }}</td>
       <td>
-        <a class="btn btn-sm btn-primary" routerLink="./edit/1">&nbsp;编辑</a>
-        <a class="btn btn-sm btn-danger">&nbsp;删除</a>
+        <a class="btn btn-sm btn-primary" [routerLink]="'./edit/' + student.user_id">&nbsp;编辑</a>
+        <a class="btn btn-sm btn-danger" (click)="onDelete(student.user_id)">&nbsp;删除</a>
       </td>
     </tr>
 
