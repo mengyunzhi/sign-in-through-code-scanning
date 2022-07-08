@@ -15,7 +15,15 @@ class RoomController extends Controller
     * index页面
     */
     public function page() {
-        $data['content'] = Room::all();
+        $params = Request()->param();
+        $where = '';
+        $query = Room::order(['id desc'])->where($where);
+        $rooms = $query->limit(
+            $params['page'] * $params['size'],
+            $params['size']
+        )->select();
+        $data['content'] = $rooms;
+        $data['length'] = $query->count();
         return json_encode($data);
     }
 
@@ -37,6 +45,8 @@ class RoomController extends Controller
     * 新增教室
     */
     public function add() {
+        ini_set("display_errors", '0');
+        error_reporting(E_ERROR | E_WARNING);
         $json_raw = file_get_contents("php://input");
         $data = json_decode($json_raw);
         $msg = '';
@@ -46,8 +56,6 @@ class RoomController extends Controller
         $status = $room->validate(true)->save();
         if ($status) {
             return $json_raw;
-        } else {
-            $this->error('添加失败:'.$msg);
         }
     }
 
