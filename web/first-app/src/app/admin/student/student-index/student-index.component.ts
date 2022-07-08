@@ -14,7 +14,7 @@ export class StudentIndexComponent implements OnInit {
   // 默认显示第一页内容
   page = 0;
   // 每页默认5条
-  size = 5;
+  size = 3;
 
   // 初始化一个有0条数据的分页
   pageDate = new Page<Student>({

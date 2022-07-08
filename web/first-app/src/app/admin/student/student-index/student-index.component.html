@@ -19,7 +19,7 @@
     </div>
   </div>
 </form>
-
+<pre> {{ pageDate.content | json }}</pre>
 <table class="table table-striped mt-2">
   <thead>
   <tr class="table-primary">
@@ -36,7 +36,7 @@
     <td>{{i + 1}}</td>
     <td>{{student.name}}</td>
     <td>{{student.sex | sex}}</td>
-    <td>{{student.clazz_id}}</td>
+    <td>{{student.klass_id}}</td>
     <td>{{student.sno}}</td>
     <td>
       <a class="btn btn-sm btn-primary" [routerLink]="'edit/' + student.user_id"><i class="fas fa-pen"></i>编辑</a>

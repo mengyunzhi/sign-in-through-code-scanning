@@ -2,11 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {StudentService} from '../../../service/student.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {error} from 'protractor';
 import {Student} from '../../../entity/student';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {Notify, Report} from 'notiflix';
-import {NULL_AS_ANY} from '@angular/compiler-cli/src/ngtsc/typecheck/src/expression';
 
 @Component({
   selector: 'app-student-edit',
@@ -22,7 +20,7 @@ export class StudentEditComponent implements OnInit {
     name: new FormControl('', Validators.required),
     sex: new FormControl(0, Validators.required),
     clazz_id: new FormControl(null, Validators.required),
-    number: new FormControl('', Validators.required)
+    sno: new FormControl(null, Validators.required)
   });
 
   id: number | undefined;
@@ -41,8 +39,8 @@ export class StudentEditComponent implements OnInit {
         console.log('api学生获取成功', student);
         this.formGroup.get('name')?.setValue(student.name);
         this.formGroup.get('sex')?.setValue(student.sex);
-        this.formGroup.get('clazz_id')?.setValue(student.clazz_id);
-        this.formGroup.get('number')?.setValue(student.number);
+        this.formGroup.get('clazz_id')?.setValue(student.klass_id);
+        this.formGroup.get('sno')?.setValue(student.sno);
       });
   }
 
@@ -52,7 +50,7 @@ export class StudentEditComponent implements OnInit {
       name: this.formGroup.get('name')?.value,
       sex: this.formGroup.get('sex')?.value,
       clazz_id: this.formGroup.get('clazz_id')?.value,
-      sno: this.formGroup.get('number')?.value
+      sno: this.formGroup.get('sno')?.value
     } as Student)
       .subscribe(success => {
         console.log('学生更新成功', success);

@@ -1,4 +1,5 @@
 <body class="container" [formGroup]="formGroup">
+<pre>  {{ formGroup.value | json }}   </pre>
 <form style="margin-top: 20px">
   <div class="form-group row">
     <label class="col-sm-1 col-form-label"><code>*</code>姓名</label>
@@ -17,13 +18,13 @@
   <div class="form-group row">
     <label class="col-sm-1 col-form-label"><code>*</code>班级</label>
     <div class="col-sm-4">
-      <app-clazz-select formControlName=clazz_id></app-clazz-select>
+      <app-clazz-select formControlName="clazz_id"></app-clazz-select>
     </div>
   </div>
   <div class="form-group row">
     <label class="col-sm-1 col-form-label">学号</label>
     <div class="col-sm-4">
-      <input type="string" formControlName="number" class="form-control" style="width: 200px">
+      <input type="string" formControlName="sno" class="form-control" style="width: 200px">
     </div>
   </div>
   <div class="form-group row">
