@@ -1,36 +1,36 @@
-<body class="container" [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup)">
+<body class="container" [formGroup]="formGroup">
 <form style="margin-top: 20px">
   <div class="form-group row">
     <label class="col-sm-1 col-form-label"><code>*</code>姓名</label>
     <div class="col-sm-4">
-      <input type="text" [formControlName]="formKeys.name" class="form-control" style="width: 200px" value="张三">
+      <input type="text" formControlName="name" class="form-control" style="width: 200px" value="张三">
     </div>
   </div>
   <div class="form-group row">
     <label class="col-sm-1 col-form-label"><code>*</code>性别</label>
     <div class="col-sm-4">
-      <input type="radio" [formControlName]="formKeys.sex" name="sex" [value]="0" id="sex0" checked="checked" /><label>男</label>
+      <input type="radio" formControlName="sex" name="sex" [value]="0" id="sex0" checked="checked" /><label>男</label>
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <input type="radio" [formControlName]="formKeys.sex" name="sex" [value]="1" id="sex1" /><label>女</label>
+      <input type="radio" formControlName="sex" name="sex" [value]="1" id="sex1" /><label>女</label>
     </div>
   </div>
   <div class="form-group row">
     <label class="col-sm-1 col-form-label"><code>*</code>班级</label>
     <div class="col-sm-4">
-      <app-clazz-select [formControlName]="formKeys.clazz_id"></app-clazz-select>
+      <app-clazz-select formControlName=clazz_id></app-clazz-select>
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-sm-1 col-form-label">手机号</label>
+    <label class="col-sm-1 col-form-label">学号</label>
     <div class="col-sm-4">
-      <input type="string" [formControlName]="formKeys.number" class="form-control" style="width: 200px">
+      <input type="string" formControlName="number" class="form-control" style="width: 200px">
     </div>
   </div>
   <div class="form-group row">
     <div class="col-sm-3">
-      <button type="submit" class="btn btn-primary">保存</button>
+      <button type="submit" class="btn btn-primary"  (click)="onSubmit()">保存</button>
       &nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="btn btn-primary">返回</a>
+      <a class="btn btn-primary" [routerLink]="'../../'">返回</a>
     </div>
   </div>
 </form>

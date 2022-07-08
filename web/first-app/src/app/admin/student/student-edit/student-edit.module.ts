@@ -4,6 +4,7 @@ import {StudentEditComponent} from './student-edit.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ClazzShareModule} from '../../clazz/clazz-share.module';
 import {HttpClientModule} from '@angular/common/http';
+import {RouterModule} from '@angular/router';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import {HttpClientModule} from '@angular/common/http';
     CommonModule,
     ReactiveFormsModule,
     ClazzShareModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule
   ],
   exports: [
     StudentEditComponent

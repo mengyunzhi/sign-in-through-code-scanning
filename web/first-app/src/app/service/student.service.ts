@@ -14,7 +14,7 @@ export class StudentService {
   }
 
 
-  page({page = 0, size = 20}: { page?: number, size?: number }): Observable<Page<Student>> {
+  page(page: number, size: number): Observable<Page<Student>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString());
@@ -40,14 +40,22 @@ export class StudentService {
    * 根据ID获取学生
    */
   getById(id: number): Observable<Student> {
-    return this.httpClient.get<Student>(`/student/${id}`);
+    return this.httpClient.get<Student>('student/getById/id/' + id.toString());
   }
 
   /**
    * 更新学生
    */
   update(id: number, student: Student): Observable<Student>{
-    return this.httpClient.put<Student>(`/student/${id}`, student);
+    return this.httpClient.put<Student>('/student/update/id/' + id.toString(), student);
+  }
+
+  /**
+   * 更新密码
+   */
+  updatePasswordByAdmin(id: number, password: string): Observable<any> {
+    console.log('service');
+    return this.httpClient.post<any>('/student/updatePasswordByAdmin/id/' + id.toString(), password);
   }
 
   /**
