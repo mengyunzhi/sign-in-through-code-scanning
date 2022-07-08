@@ -63,6 +63,6 @@ export class StudentService {
    */
   delete(id: number): Observable<Student>{
     return this.httpClient
-      .delete<Student>(`/student/delete/${id}`);
+      .delete<Student>(`/student/delete/id/${id}`);
   }
 }

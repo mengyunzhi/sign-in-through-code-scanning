@@ -411,6 +411,7 @@ class User extends Model {
         $status = false;
         if ((int)$user->role === User::$ROLE_ADMIN) {
             $obj = Admin::where('user_id', 'eq', $user_id)->find();
+            return $user;
             $status = $obj->delete();
             $msg .= $obj->getError();
         } else if ((int)$user->role === User::$ROLE_TEACHER) {

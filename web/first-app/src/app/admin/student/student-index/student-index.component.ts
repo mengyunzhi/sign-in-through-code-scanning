@@ -56,14 +56,14 @@ export class StudentIndexComponent implements OnInit {
   /**
    * 删除
    */
-  onDelete(studentId: number): void {
+  onDelete(id: number): void {
     this.commonService.confirm((confirm) => {
       if (confirm) {
-        this.studentService.delete(studentId)
+        this.studentService.delete(id)
           .subscribe(() => {
             console.log('删除成功');
             this.ngOnInit();
-          }, error => console.log('删除失败'));
+          }, error => console.log('删除失败', error));
       }
     });
   }

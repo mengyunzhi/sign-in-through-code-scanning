@@ -4,6 +4,8 @@ import {ActivatedRoute} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {Page} from '../../../entity/page';
 import {Student} from '../../../entity/student';
+import {StudentService} from '../../../service/student.service';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-clazz-members',
@@ -24,11 +26,26 @@ export class ClazzMembersComponent implements OnInit {
   clazz_id: number | undefined;
 
   constructor(private clazzService: ClazzService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private studentService: StudentService,
+              private commonService: CommonService) { }
 
   ngOnInit(): void {
     this.clazz_id = +this.route.snapshot.params.clazz_id;
     this.loadByPage();
+  }
+
+  onDelete(id: number): void {
+    console.log('即将删除学生：', id);
+    this.commonService.confirm((confirm) => {
+      if (confirm) {
+        this.studentService.delete(id)
+          .subscribe((success) => {
+            console.log('学生删除成功', success);
+            this.ngOnInit();
+          }, error => console.log('学生删除失败', error));
+      }
+    });
   }
 
   loadByPage(page = 0): void {

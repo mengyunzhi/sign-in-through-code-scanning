@@ -73,12 +73,11 @@ class StudentController extends Controller
 
 	public function delete() {
         $id = Request()->param('id/d');
-        $student = Student::get($id);
-        $status = $student->delete();
+        $status = User::userDelete($id);
         if ($status) {
-            return json_encode($student);
+            return json_encode($status);
         } else {
-            return $student->getError();
+            return $this->error('删除失败：'.$student->getError());
         }
     }
 
