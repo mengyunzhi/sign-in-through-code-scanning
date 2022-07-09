@@ -4,6 +4,7 @@ import {Schedule} from '../../../entity/schedule';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {ScheduleService} from '../../../service/schedule.service';
 import {Confirm, Notify} from 'notiflix';
+import {ScheduleKlass} from '../../../entity/schedule_klass';
 
 @Component({
   selector: 'app-schedule-index',
@@ -15,7 +16,7 @@ export class ScheduleIndexComponent implements OnInit {
   page = 0;
   size = 10;
 
-  pageData = new Page<Schedule>({
+  pageData = new Page<ScheduleKlass>({
     content: [],
     number: this.page,
     size: this.size,
@@ -23,8 +24,7 @@ export class ScheduleIndexComponent implements OnInit {
   });
 
   constructor(
-    private scheduleService: ScheduleService,
-    private httpClient: HttpClient) { }
+    private scheduleService: ScheduleService) { }
 
   ngOnInit(): void {
     this.loadByPage();

@@ -3,7 +3,6 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {StudentService} from '../../../service/student.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
-import {Student} from '../../../entity/student';
 import {Notify, Report} from 'notiflix';
 
 @Component({
@@ -46,7 +45,7 @@ export class ClazzMembersEditComponent implements OnInit {
       sex: this.formGroup.get('sex')?.value,
       sno: this.formGroup.get('sno')?.value,
       clazz_id: this.clazz_id as number
-    } as Student)
+    })
       .subscribe(success => {
         console.log('班级更新成功', success);
         this.router.navigate(['./../../'], {relativeTo: this.route});

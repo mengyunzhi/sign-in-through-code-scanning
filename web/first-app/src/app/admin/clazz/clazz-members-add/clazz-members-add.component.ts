@@ -36,7 +36,7 @@ export class ClazzMembersAddComponent implements OnInit {
       sex: this.formGroup.get('sex')?.value,
       sno: this.formGroup.get('sno')?.value,
       clazz_id: this.clazz_id as number
-    } as Student)
+    })
       .subscribe(success => {
         console.log('添加成功', success);
         this.router.navigate(['../'], {relativeTo: this.route});

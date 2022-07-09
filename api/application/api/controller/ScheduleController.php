@@ -13,12 +13,18 @@ class ScheduleController extends Controller {
 	public function page() {
 		$params = Request()->param();
 		$where = '';
-		// Db::name('Schedule');
-		// $query = Db::table('yunzhi_schedule')->alias('schedule')
-		// ->join('yunzhi_schedule_klass scheduleKlass', 'schedule.id = scheduleKlass.schedule_id')
-		// ->join('yunzhi_klass klass', 'scheduleKlass.klass_id = klass.id')
-		// ->order(['schedule.id desc'])->where($where);
-		$query = Schedule::order(['id desc'])->where($where);
+		Db::name('Schedule');
+		$query = Db::table('yunzhi_schedule')->alias('schedule')
+		->join('yunzhi_schedule_klass scheduleKlass', 'schedule.id = scheduleKlass.schedule_id')
+		->join('yunzhi_klass klass', 'scheduleKlass.klass_id = klass.id')
+        ->join('yunzhi_course course', 'schedule.course_id = course.id')
+        ->join('yunzhi_term term', 'schedule.term_id = term.id')
+        ->field('
+            schedule.id as schedule_id,
+            klass.name as clazz_name,
+            course.name as course_name,
+            term.name as term_name')
+		->order(['schedule.id desc'])->where($where);
         $schedules = $query->limit(
             $params['page'] * $params['size'],
             $params['size']

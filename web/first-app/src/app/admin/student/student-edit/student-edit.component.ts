@@ -51,7 +51,7 @@ export class StudentEditComponent implements OnInit {
       sex: this.formGroup.get('sex')?.value,
       clazz_id: this.formGroup.get('clazz_id')?.value,
       sno: this.formGroup.get('sno')?.value
-    } as Student)
+    })
       .subscribe(success => {
         console.log('学生更新成功', success);
         this.router.navigate(['./../../'], {relativeTo: this.route});
