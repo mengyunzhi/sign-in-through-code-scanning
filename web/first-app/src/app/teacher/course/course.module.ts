@@ -5,6 +5,7 @@ import { CourseAddComponent } from './course-add/course-add.component';
 import { CourseEditComponent } from './course-edit/course-edit.component';
 import {CourseIndexComponent} from './course-index/course-index.component';
 import {PageModule} from '../../page/page.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 
@@ -14,6 +15,7 @@ import {PageModule} from '../../page/page.module';
         CommonModule,
         CourseRoutingModule,
         PageModule,
+        ReactiveFormsModule,
     ],
 })
 export class CourseModule { }
