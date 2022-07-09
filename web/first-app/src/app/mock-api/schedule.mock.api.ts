@@ -8,7 +8,7 @@ export class ScheduleMockApi implements MockApiInterface {
     return [
       {
         method: 'GET',
-        url: '/task/page',
+        url: '/schedule/page',
         result: (urlMatches: string[], option: RequestOptions) => {
           let size = 20;
           let page = 0;
