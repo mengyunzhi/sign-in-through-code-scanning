@@ -56,6 +56,8 @@ class RoomController extends Controller
         $status = $room->validate(true)->save();
         if ($status) {
             return $json_raw;
+        } else {
+            $this->error('添加失败:'.$msg);
         }
     }
 

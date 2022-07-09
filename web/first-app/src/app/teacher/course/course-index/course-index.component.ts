@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Page} from '../../../entity/page';
-import {Schedule} from '../../../entity/schedule';
-import {HttpClient, HttpParams} from '@angular/common/http';
 import {Course} from '../../../entity/course';
+import {CourseService} from '../../../service/course.service';
 
 @Component({
   selector: 'app-course-index',
@@ -20,25 +19,24 @@ export class CourseIndexComponent implements OnInit {
     numberOfElements: 0
   });
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private courseService: CourseService) { }
 
   ngOnInit(): void {
     this.loadByPage();
   }
 
   loadByPage(page: number = 0): void {
-    const httpParams = new HttpParams().append('page', page.toString())
-      .append('size', this.size.toString());
-    this.httpClient.get<Page<Course>>('/course/page', {params: httpParams})
+    console.log('loadByPage', page);
+    this.courseService.page({page, size: this.size})
       .subscribe(pageData => {
-        console.log('请求成功', pageData);
+        console.log('请求成功---', pageData);
         this.page = page;
         this.pageData = pageData;
       });
   }
 
   onPage($event: number): void {
+    console.log('onPage is called', $event);
     this.loadByPage($event);
   }
-
 }
