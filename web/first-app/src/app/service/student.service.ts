@@ -14,13 +14,13 @@ export class StudentService {
   }
 
 
-  page(page: number, size: number): Observable<Page<Student>> {
+  page(page: number, size: number): Observable<Page<T>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString());
-    return this.httpClient.get<{length: number, content: Student[]}>('/student/page', {params: httpParams})
+    return this.httpClient.get<{length: number, content: T[]}>('/student/page', {params: httpParams})
       .pipe(map(data =>
-        new Page<Student>({
+        new Page<T>({
             content: data.content,
             number: page,
             size,
@@ -32,8 +32,8 @@ export class StudentService {
   /**
    * 新增
    */
-  save(student: Student): Observable<Student> {
-    return this.httpClient.post<Student>('/student/add', student);
+  save(student: {sno: any; sex: any; name: any; clazz_id: number}): Observable<{name: string; sex: number; sno: number; clazz_id: number}> {
+    return this.httpClient.post<{name: string, sex: number, sno: number, clazz_id: number}>('/student/add', student);
   }
 
   /**
@@ -46,7 +46,7 @@ export class StudentService {
   /**
    * 更新学生
    */
-  update(id: number, student: Student): Observable<Student>{
+  update(id: number, student: {name: string, sex: number, sno: number, clazz_id: number}): Observable<Student>{
     return this.httpClient.put<Student>('/student/update/id/' + id.toString(), student);
   }
 
@@ -65,4 +65,14 @@ export class StudentService {
     return this.httpClient
       .delete<Student>(`/student/delete/id/${id}`);
   }
+}
+interface T {
+  id: number;
+  user_id: number;
+  number: string;
+  sex: number;
+  name: string;
+  sno: number;
+  clazz_id: number;
+  clazz_name: string;
 }

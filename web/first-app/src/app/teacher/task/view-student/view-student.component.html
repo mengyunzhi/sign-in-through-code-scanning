@@ -35,7 +35,7 @@
       <td>{{ index + 1 }}</td>
       <td>{{ student.sno }}</td>
       <td>{{ student.name }}</td>
-      <td>软件2{{ student.clazz_id }}</td>
+      <td>软件2{{ student.clazz.id }}</td>
       <td>{{ student.sex | sex }}</td>
       <td>
         <a class="btn btn-sm btn-success" [routerLink]="'./fraction/' + student.id.toString()">登记成绩</a>

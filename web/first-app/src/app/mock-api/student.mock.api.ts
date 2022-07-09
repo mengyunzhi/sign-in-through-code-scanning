@@ -29,7 +29,9 @@ export class StudentMockApi implements MockApiInterface {
               id: i,
               name: '学生' + randomNumber(100).toString(),
               sex: (randomNumber(100) % 2),
-              clazz_id: randomNumber(10),
+              clazz: {
+                id: randomNumber(10)
+              },
               sno: randomNumber(),
             } as Student);
           }
@@ -62,8 +64,12 @@ export class StudentMockApi implements MockApiInterface {
               id: i + 1,
               name: '测试学生' + randomNumber(100).toString(),
               sex: randomNumber() % 2,
-              user_id: randomNumber(100),
-              clazz_id: randomNumber(100),
+              user: {
+                id: randomNumber(100)
+              },
+              clazz: {
+                id: randomNumber(100)
+              },
               sno: randomNumber(99999) + (randomNumber(9) + 1) * 100000,
               state: randomNumber(100) % 2,
             } as Student);
@@ -90,7 +96,9 @@ export class StudentMockApi implements MockApiInterface {
             id: randomNumber(),
             name: body.name,
             sex: body.sex,
-            clazz_id: body.clazz_id,
+            clazz: {
+              id: body.clazz_id
+            },
             sno: body.sno,
           } as Student;
         }
@@ -105,7 +113,9 @@ export class StudentMockApi implements MockApiInterface {
             id,
             name: randomString('学生'),
             sex: randomNumber(1),
-            clazz_id: randomNumber(100),
+            clazz: {
+              id: randomNumber(100)
+            },
             sno: randomNumber(),
           } as Student;
         }

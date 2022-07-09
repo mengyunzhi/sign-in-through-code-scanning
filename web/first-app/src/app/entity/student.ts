@@ -1,8 +1,9 @@
 import {User} from './user';
+import {Clazz} from './clazz';
 
 export interface Student extends User {
-  user_id: number;
-  clazz_id: number;
+  user: User;
+  clazz: Clazz;
   sno: number;
   state: number;
 }

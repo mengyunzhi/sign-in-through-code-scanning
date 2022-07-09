@@ -25,10 +25,15 @@ export class ScheduleMockApi implements MockApiInterface {
           for (let i = 0; i < size; i++) {
             schedules.push({
               id: i + 1,
-              teacher_id: randomNumber(),
-              term_id: randomNumber(),
-              course_id: randomNumber(100),
-              test_clazz_name: '测试班级' + randomNumber(100).toString(),
+              teacher: {
+                id: randomNumber()
+              },
+              term: {
+                id: randomNumber()
+              },
+              course: {
+                id: randomNumber(100)
+              },
             } as Schedule);
           }
           return new Page<Schedule>({

@@ -48,7 +48,7 @@ export class StudentAddComponent implements OnInit {
       sex: this.formGroup.get('sex')?.value,
       clazz_id: this.formGroup.get('clazz_id')?.value,
       sno: this.formGroup.get('sno')?.value
-    } as Student;
+    };
 
     console.log('获取的内容：' + student);
 

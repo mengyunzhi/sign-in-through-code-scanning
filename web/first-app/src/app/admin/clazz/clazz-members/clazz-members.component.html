@@ -38,8 +38,8 @@
       <td>{{ student.sno }}</td>
       <td>{{ student.sex | sex }}</td>
       <td>
-        <a class="btn btn-sm btn-primary" [routerLink]="'./edit/' + student.user_id">&nbsp;编辑</a>
-        <a class="btn btn-sm btn-danger" (click)="onDelete(student.user_id)">&nbsp;删除</a>
+        <a class="btn btn-sm btn-primary" [routerLink]="'./edit/' + student.user.id">&nbsp;编辑</a>
+        <a class="btn btn-sm btn-danger" (click)="onDelete(student.user.id)">&nbsp;删除</a>
       </td>
     </tr>
 
