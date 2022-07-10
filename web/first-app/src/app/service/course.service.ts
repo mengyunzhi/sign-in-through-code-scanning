@@ -53,4 +53,14 @@ export class CourseService {
     return this.httpClient
       .get<Course>(`/course/getById/id/` + id.toString());
   }
+
+  update(id: number, course: { name: any; lesson: any }): Observable<any> {
+    console.log('更新课程');
+    return this.httpClient.post('/course/update/id/' + id.toString(), course);
+  }
+
+  delete(id: number): Observable<Course> {
+    console.log(id);
+    return this.httpClient.delete<Course>('/course/delete/id/' + id.toString());
+  }
 }
