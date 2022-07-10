@@ -16,27 +16,27 @@ const routes: Routes = [
     component: ScheduleIndexComponent
   },
   {
-    path: 'edit',
+    path: 'edit/:schedule_id',
     component: ScheduleEditComponent
   },
   {
-    path: 'edit/programAdd',
+    path: 'edit/:schedule_id/programAdd',
     component: ProgramAddComponent
   },
   {
-    path: 'edit/clazzAdd',
+    path: 'edit/:schedule_id/clazzAdd',
     component: ClazzAddComponent
   },
   {
-    path: 'edit/timeAdd',
+    path: 'edit/:schedule_id/timeAdd',
     component: TimeAddComponent
   },
   {
-    path: 'edit/programEdit',
+    path: 'edit/:schedule_id/programEdit',
     component: ProgramEditComponent
   },
   {
-    path: 'edit/nameEdit',
+    path: 'edit/:schedule_id/nameEdit',
     component: NameEditComponent
   },
   {

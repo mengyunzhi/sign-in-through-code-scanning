@@ -8,6 +8,7 @@ import { TimeAddComponent } from './schedule-edit/time-add/time-add.component';
 import { ProgramEditComponent } from './schedule-edit/program-edit/program-edit.component';
 import { NameEditComponent } from './schedule-edit/name-edit/name-edit.component';
 import { ScheduleAddComponent } from './schedule-add/schedule-add.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 
@@ -23,7 +24,8 @@ import { ScheduleAddComponent } from './schedule-add/schedule-add.component';
   ],
   imports: [
     CommonModule,
-    ScheduleRoutingModule
+    ScheduleRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class ScheduleModule { }

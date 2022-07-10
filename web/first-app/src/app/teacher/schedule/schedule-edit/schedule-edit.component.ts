@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ScheduleService} from '../../../service/schedule.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-schedule-edit',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ScheduleEditComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(private scheduleService: ScheduleService,
+              private route: ActivatedRoute) { }
+  id: number | undefined;
+  data = {};
   ngOnInit(): void {
+    this.id = +this.route.snapshot.params.schedule_id;
+    this.scheduleService.editIndex(this.id)
+      .subscribe(data => {
+        this.data = data;
+        console.log('scheduleEditIndex success', data);
+      }, error => {
+        console.log('scheduleEditIndex error', error);
+      });
   }
 
 }

@@ -7,30 +7,52 @@ use app\index\service\MenuService;
 use app\common\model\Teacher;
 use app\common\model\Term;
 use app\common\model\Course;
+use app\common\model\ScheduleKlass;
+use app\common\model\Klass;
+use app\common\model\User;
 use app\common\model\Schedule;
 
 class ScheduleController extends Controller {
 	public function page() {
 		$params = Request()->param();
-		$where = '';
-		Db::name('Schedule');
-		$query = Db::table('yunzhi_schedule')->alias('schedule')
-		->join('yunzhi_schedule_klass scheduleKlass', 'schedule.id = scheduleKlass.schedule_id')
-		->join('yunzhi_klass klass', 'scheduleKlass.klass_id = klass.id')
-        ->join('yunzhi_course course', 'schedule.course_id = course.id')
-        ->join('yunzhi_term term', 'schedule.term_id = term.id')
-        ->field('
-            schedule.id as schedule_id,
-            klass.name as clazz_name,
-            course.name as course_name,
-            term.name as term_name')
-		->order(['schedule.id desc'])->where($where);
-        $schedules = $query->limit(
-            $params['page'] * $params['size'],
-            $params['size']
-        )->select();
-        $data['content'] = $schedules;
+        $currentUser = User::getCurrentLoginUser();
+        $teacher = Teacher::get(['user_id' => $currentUser->id]);
+		$where = "$teacher->id = teacher_id";
+        $content = [];
+        $query = Schedule::where($where);
+        $schedules = $query->page($params['page'], $params['size'])->order('id desc')->select();
+
+        $clazzes = [];
+        foreach ($schedules as $key => $schedule) {
+            $clazzes[$key]['clazzes'] = [];
+            $scheduleKlasses = ScheduleKlass::where('schedule_id', '=', $schedule->id)->select();
+            foreach ($scheduleKlasses as $scheduleKlass) {
+                array_push($clazzes[$key]['clazzes'], Klass::where('id', 'eq', $scheduleKlass->klass_id)->find());
+            }
+        }
+
+        $teachers = [];
+        foreach ($schedules as $key => $schedule) {
+            $teachers[$key] = $schedule->getTeacher();
+        }
+
+        $terms = [];
+        foreach ($schedules as $key => $schedule) {
+            $terms[$key] = $schedule->getTerm();
+        }
+
+        $courses = [];
+        foreach ($schedules as $key => $schedule) {
+            $courses[$key] = $schedule->getCourse();
+        }
+
+        $content['schedules'] = $schedules;
+        $content['clazzes'] = $clazzes;
+        $content['teachers'] = $teachers;
+        $content['terms'] = $terms;
+        $content['courses'] = $courses;
         $data['length'] = $query->count();
+        $data['content'] = $content;
         return json_encode($data);
 	}
 
@@ -43,6 +65,10 @@ class ScheduleController extends Controller {
         } else {
             return $room->getError();
         }
+    }
+
+    public function editIndex() {
+
     }
 
 }
