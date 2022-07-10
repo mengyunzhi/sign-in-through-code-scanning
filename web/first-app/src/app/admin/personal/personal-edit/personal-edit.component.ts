@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../../service/user.service';
 import {Assert} from '@yunzhi/ng-mock-api';
-import {Notify, Report} from 'notiflix';
 import {ActivatedRoute, Router} from '@angular/router';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-personal-edit',
@@ -23,7 +23,8 @@ export class PersonalEditComponent implements OnInit {
   id: number | undefined;
   constructor(private userService: UserService,
               private router: Router,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private commonService: CommonService) { }
 
   ngOnInit(): void {
     this.userService.getCurrentLoginUser()
@@ -55,11 +56,10 @@ export class PersonalEditComponent implements OnInit {
     this.userService.userUpdate(this.id as number, data)
       .subscribe(success => {
         console.log('用户更新成功', success);
-        this.router.navigate(['./../'], {relativeTo: this.route});
-        Notify.success('更新成功', {timeout: 1000});
+        this.commonService.success(() => this.router.navigate(['./../'], {relativeTo: this.route}));
       }, error => {
         console.log('用户更新失败', error);
-        Report.failure('更新失败', '', '确定');
+        this.commonService.error();
       });
 
   }

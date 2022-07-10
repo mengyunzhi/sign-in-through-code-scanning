@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ClazzService} from '../../../service/clazz.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Notify, Report} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-clazz-add',
@@ -18,7 +19,8 @@ export class ClazzAddComponent implements OnInit {
 
   constructor(private clazzService: ClazzService,
               private router: Router,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private commonService: CommonService) { }
 
   ngOnInit(): void {
   }
@@ -31,11 +33,10 @@ export class ClazzAddComponent implements OnInit {
     })
       .subscribe(success => {
         console.log('班级添加成功', success);
-        this.router.navigate(['../'], {relativeTo: this.route});
-        Notify.success('添加成功', {timeout: 1000});
+        this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
       }, error => {
         console.log('班级添加失败', error);
-        Report.failure('添加失败', '', '确定');
+        this.commonService.error();
       });
   }
 }

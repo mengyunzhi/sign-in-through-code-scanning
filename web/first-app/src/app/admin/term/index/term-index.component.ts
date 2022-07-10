@@ -3,6 +3,7 @@ import {Term} from '../../../entity/term';
 import {Page} from '../../../entity/page';
 import {TermService} from '../../../service/term.service';
 import {Confirm, Notify} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-term',
@@ -18,7 +19,8 @@ export class TermIndexComponent implements OnInit {
     size: this.size,
     numberOfElements: 0,
   });
-  constructor(private termService: TermService) { }
+  constructor(private termService: TermService,
+              private commonService: CommonService) { }
 
   ngOnInit(): void {
     this.loadByPage();
@@ -32,15 +34,10 @@ export class TermIndexComponent implements OnInit {
       .subscribe(success => {
         console.log('激活成功', success);
         this.ngOnInit();
-        Notify.success(
-          '激活成功',
-          {
-            timeout: 600,
-          },
-        );
+        this.commonService.success();
       }, error => {
         console.log('激活失败', error);
-        Notify.failure('激活失败');
+        this.commonService.error();
       });
   }
 
@@ -48,23 +45,18 @@ export class TermIndexComponent implements OnInit {
   * 删除学期
   * */
   onDelete(id: number): void {
-    Confirm.show(
-      '请确认',
-      '该操作不可逆',
-      '确认',
-      '取消',
-      () => {
+    this.commonService.confirm((confirm) => {
+      if (confirm) {
         this.termService.delete(id)
           .subscribe(success => {
             console.log('删除成功', success);
+            this.commonService.success();
             this.ngOnInit();
-            Notify.success('删除成功', {timeout: 800});
           }, error => {
             console.log('删除失败', error);
-            Notify.failure('删除失败', {timeout: 800});
+            this.commonService.success();
           });
-      },
-    );
+      }});
   }
 
   /*
