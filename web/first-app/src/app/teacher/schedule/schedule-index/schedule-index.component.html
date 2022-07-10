@@ -25,14 +25,18 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let scheduleKlass of pageData.content index as i">
+  <tr *ngFor="let unit of pageData.content index as i">
     <td>{{ i + 1 }}</td>
-    <td>{{ scheduleKlass.schedule.course.name }}</td>
-    <td>{{ scheduleKlass.schedule.term.name }}</td>
-    <td>{{ scheduleKlass.clazz.name }}</td>
+    <td>{{ unit.schedule.course.name }}</td>
+    <td>{{ unit.schedule.term.name }}</td>
     <td>
-      <a class="btn btn-sm btn-primary" routerLink="edit"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
-      <a class="btn btn-sm btn-danger" (click)="onDelete(scheduleKlass.schedule.id)"><i class="far fa-trash-alt"></i>删除</a>
+      <ng-template ngFor let-item [ngForOf]="unit.clazzes" let-i="index">
+        {{ item.name }}
+      </ng-template>
+    </td>
+    <td>
+      <a class="btn btn-sm btn-primary" [routerLink]="'edit/' + unit.schedule.id"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
+      <a class="btn btn-sm btn-danger" (click)="onDelete(unit.schedule.id)"><i class="far fa-trash-alt"></i>删除</a>
     </td>
   </tr>
   </tbody>

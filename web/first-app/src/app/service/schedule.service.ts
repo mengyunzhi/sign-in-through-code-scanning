@@ -4,7 +4,10 @@ import {Observable} from 'rxjs';
 import {Schedule} from '../entity/schedule';
 import {Page} from '../entity/page';
 import {map} from 'rxjs/operators';
-import {ScheduleKlass} from '../entity/schedule_klass';
+import {UserService} from './user.service';
+import {Course} from '../entity/course';
+import {Clazz} from '../entity/clazz';
+import {Term} from '../entity/term';
 
 @Injectable({
   providedIn: 'root'
@@ -12,39 +15,52 @@ import {ScheduleKlass} from '../entity/schedule_klass';
 export class ScheduleService {
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private userService: UserService
   ) {
   }
 
-  page(page: number, size: number): Observable<Page<ScheduleKlass>> {
+  editIndex(id: number): Observable<any> {
+    const httpParams = new HttpParams()
+      .append('id', id.toString());
+    return this.httpClient.get<any>('/schedule/editIndex', {params: httpParams});
+  }
+
+  page(page: number, size: number): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString());
-    return this.httpClient.get<{length: number, content: {
-        schedule_id: number,
-        clazz_name: string,
-        course_name: string,
-        term_name: string
-      }[]}>('/schedule/page', {params: httpParams})
+    return this.httpClient.get<{
+      length: number,
+      content: {
+        schedules: {id: number}[],
+        clazzes: {clazzes: Clazz[]}[],
+        teachers: {id: number, name: string}[],
+        terms: {id: number, name: string}[],
+        courses: {id: number, name: string}[],
+      }}>('/schedule/page', {params: httpParams})
       .pipe(map(data => {
-          const content: ScheduleKlass[] = [];
-          for (const scheduleKlass  of data.content) {
+          const content: {schedule: Schedule, clazzes: Clazz[]}[] = [];
+          const arrayGroup = data.content;
+          console.log('service schedule', data);
+          for (let i = 0; i < arrayGroup.schedules.length; i++) {
             content.push({
               schedule: {
-                id: scheduleKlass.schedule_id,
+                id: arrayGroup.schedules[i].id,
                 course: {
-                  name: scheduleKlass.course_name
-                },
+                  name: arrayGroup.courses[i].name
+                } as Course,
                 term: {
-                  name: scheduleKlass.term_name
+                  name: arrayGroup.terms[i].name
+                } as Term,
+                teacher: {
+                  name: arrayGroup.teachers[i].name
                 }
-              },
-              clazz: {
-                name: scheduleKlass.clazz_name
-              }
-            } as ScheduleKlass);
+              } as Schedule,
+              clazzes: arrayGroup.clazzes[i].clazzes as Clazz[]
+            });
           }
-          return new Page<ScheduleKlass>({
+          return new Page<{schedule: Schedule, clazzes: Clazz[]}>({
             content,
             number: page,
             size,
