@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {TeacherService} from '../../../service/teacher.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Notify, Report} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-teacher-add',
@@ -19,7 +19,8 @@ export class TeacherAddComponent implements OnInit {
 
   constructor(private teacherService: TeacherService,
               private router: Router,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private commonService: CommonService) { }
 
   ngOnInit(): void {
   }
@@ -33,11 +34,10 @@ export class TeacherAddComponent implements OnInit {
     })
       .subscribe(success => {
         console.log('教师添加成功', success);
-        this.router.navigate(['../'], {relativeTo: this.route});
-        Notify.success('添加成功', {timeout: 1000});
+        this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
       }, error => {
         console.log('教师添加失败', error);
-        Report.failure('添加失败', '', '确定');
+        this.commonService.error();
       });
   }
 

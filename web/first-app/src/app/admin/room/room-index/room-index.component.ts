@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Page} from '../../../entity/page';
 import {Room} from '../../../entity/room';
 import {RoomService} from '../../../service/room.service';
 import {Confirm, Notify} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-room-index',
@@ -20,7 +21,8 @@ export class RoomIndexComponent implements OnInit {
     numberOfElements: 0
   });
 
-  constructor(private roomService: RoomService) {
+  constructor(private roomService: RoomService,
+              private commonService: CommonService) {
 
   }
 
@@ -56,10 +58,10 @@ export class RoomIndexComponent implements OnInit {
           .subscribe(success => {
             console.log('删除成功', success);
             this.ngOnInit();
-            Notify.success('删除成功', {timeout: 800});
+            this.commonService.success();
           }, error => {
             console.log('删除失败', error);
-            Notify.failure('删除失败', {timeout: 800});
+            this.commonService.error();
           });
       },
     );

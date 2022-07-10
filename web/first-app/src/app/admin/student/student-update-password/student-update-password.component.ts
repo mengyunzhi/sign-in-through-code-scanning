@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormControl, Validators} from '@angular/forms';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {Notify, Report} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-student-update-password',
@@ -19,7 +20,8 @@ export class StudentUpdatePasswordComponent implements OnInit {
   constructor(
     private studentService: StudentService,
     private route: ActivatedRoute,
-    private router: Router) {
+    private router: Router,
+    private commonService: CommonService) {
   }
 
   ngOnInit(): void {
@@ -41,11 +43,10 @@ export class StudentUpdatePasswordComponent implements OnInit {
     this.studentService.updatePasswordByAdmin(this.id as number, this.password.value)
       .subscribe(success => {
         console.log('密码修改成功', success);
-        this.router.navigate(['./../../'], {relativeTo: this.route});
-        Notify.success('修改成功', {timeout: 1000});
+        this.commonService.success(() => this.router.navigate(['./../../'], {relativeTo: this.route}));
       }, error => {
         console.log('密码修改失败', error);
-        Report.failure('修改失败', '', '确定');
+        this.commonService.error();
       });
   }
 }

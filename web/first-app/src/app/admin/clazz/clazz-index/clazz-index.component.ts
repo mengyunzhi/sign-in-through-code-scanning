@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Clazz} from '../../../entity/clazz';
 import {Page} from '../../../entity/page';
 import {ClazzService} from '../../../service/clazz.service';
 import {Confirm, Notify} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-clazz-student-index',
@@ -20,7 +21,9 @@ export class ClazzIndexComponent implements OnInit {
     numberOfElements: 0,
   });
 
-  constructor(private clazzService: ClazzService) { }
+  constructor(private clazzService: ClazzService,
+              private commonService: CommonService) {
+  }
 
   ngOnInit(): void {
     this.loadByPage();
@@ -39,23 +42,20 @@ export class ClazzIndexComponent implements OnInit {
   }
 
   onDelete(clazz_id: number): void {
-    Confirm.show(
-      '请确认',
-      '该操作不可逆',
-      '确认',
-      '取消',
-      () => {
+    this.commonService.confirm((confirm) => {
+      if (confirm) {
         this.clazzService.delete(clazz_id)
           .subscribe(success => {
-            console.log('班级删除成功', success);
-            this.ngOnInit();
-            Notify.success('删除成功', {timeout: 800});
-          }, error => {
+              console.log('班级删除成功', success);
+              this.commonService.success();
+              this.ngOnInit();
+            }, error => {
             console.log('班级删除失败', error);
-            Notify.failure('删除失败', {timeout: 800});
-          });
-      },
-    );
+            this.commonService.error();
+            }
+          );
+      }
+    });
 
   }
 
