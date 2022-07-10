@@ -52,7 +52,10 @@ export class ScheduleService {
                 } as Course,
                 term: {
                   name: arrayGroup.terms[i].name
-                } as Term
+                } as Term,
+                teacher: {
+                  name: arrayGroup.teachers[i].name
+                }
               } as Schedule,
               clazzes: arrayGroup.clazzes[i].clazzes as Clazz[]
             });
