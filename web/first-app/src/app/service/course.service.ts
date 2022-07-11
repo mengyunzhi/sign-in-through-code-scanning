@@ -15,11 +15,16 @@ export class CourseService {
   /*
   * 教师端课程管理index页面
   */
-  page({page = 0, size = 20}: { size?: number; page?: number }): Observable<Page<Course>> {
+  page({page = 0, size = 20}: { size?: number; page?: number }, course: { name?: string; lesson?: string} ): Observable<Page<Course>> {
     let courses = [] as Course[];
+    console.log('444');
+    console.log(course);
+    console.log('555');
     return new Observable<Page<Course>>(
       subscriber => {
         const httpParams = new HttpParams()
+          .append('searchName', course.name as string)
+          .append('searchLesson', course.lesson as unknown as string)
           .append('page', page.toString())
           .append('size', size.toString());
         this.httpClient.get<any>('course/page', {params: httpParams})
@@ -52,5 +57,15 @@ export class CourseService {
   getById(id: number): Observable<Course> {
     return this.httpClient
       .get<Course>(`/course/getById/id/` + id.toString());
+  }
+
+  update(id: number, course: { name: any; lesson: any }): Observable<any> {
+    console.log('更新课程');
+    return this.httpClient.post('/course/update/id/' + id.toString(), course);
+  }
+
+  delete(id: number): Observable<Course> {
+    console.log(id);
+    return this.httpClient.delete<Course>('/course/delete/id/' + id.toString());
   }
 }

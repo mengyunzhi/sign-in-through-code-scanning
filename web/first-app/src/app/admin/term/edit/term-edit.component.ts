@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {DatePipe} from '@angular/common';
 import {TermService} from '../../../service/term.service';
 import {Assert} from '@yunzhi/ng-mock-api';
-import {Notify, Report} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-term-edit',
@@ -21,7 +21,8 @@ export class TermEditComponent implements OnInit {
               private route: ActivatedRoute,
               private termService: TermService,
               private datePipe: DatePipe,
-              private router: Router) {
+              private router: Router,
+              private commService: CommonService) {
     this.formGroup = new FormGroup({
       name : new FormControl('', Validators.required),
       start_time : new FormControl('', Validators.required),
@@ -61,12 +62,11 @@ export class TermEditComponent implements OnInit {
     })
       .subscribe(success => {
           console.log('学期更新成功', success);
-          this.router.navigate(['./../../'], {relativeTo: this.route});
-          Notify.success('更新成功', {timeout: 1000});
+          this.commService.success(() => this.router.navigate(['./../../'], {relativeTo: this.route}));
         },
         error => {
           console.log('学期更新失败', error);
-          Report.failure('更新失败', '', '确定');
+         this.commService.error();
         });
   }
 }
