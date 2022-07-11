@@ -5,6 +5,7 @@ import {CourseService} from '../../../service/course.service';
 import {Confirm, Notify} from 'notiflix';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
+
 @Component({
   selector: 'app-course-index',
   templateUrl: './course-index.component.html',
@@ -84,5 +85,26 @@ export class CourseIndexComponent implements OnInit {
     console.log(course);
     console.log('222');
     this.loadByPage(0, course);
+  }
+
+  onDelete(id: number): void {
+    console.log('删除课程');
+    Confirm.show(
+      '请确认',
+      '该操作不可逆',
+      '确认',
+      '取消',
+      () => {
+        this.courseService.delete(id)
+          .subscribe(success => {
+            console.log('删除成功', success);
+            this.ngOnInit();
+            Notify.success('删除成功', {timeout: 800});
+          }, error => {
+            console.log('删除失败', error);
+            Notify.failure('删除失败', {timeout: 800});
+          });
+      },
+    );
   }
 }
