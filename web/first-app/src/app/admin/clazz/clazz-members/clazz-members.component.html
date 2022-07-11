@@ -1,4 +1,3 @@
-<pre>{{ pageData.content | json }}</pre>
 <div class="row">
   <div class="col-md-12 text-right">
     <a class="btn btn-primary" routerLink="./add"><i class="glyphicon"></i>新增</a>
@@ -30,13 +29,14 @@
       <th>操作</th>
     </tr>
   </thead>
-  <tbody>
 
-  <tr *ngFor="let student of pageData.content; index as index">
+  <tbody *ngIf="pageData.content.length">
+
+    <tr *ngFor="let student of pageData.content; index as index">
       <td>{{ index + 1 }}</td>
-      <td>{{ student.name }}</td>
+      <td>{{ student.user.name }}</td>
       <td>{{ student.sno }}</td>
-      <td>{{ student.sex | sex }}</td>
+      <td>{{ student.user.sex | sex }}</td>
       <td>
         <a class="btn btn-sm btn-primary" [routerLink]="'./edit/' + student.user.id">&nbsp;编辑</a>
         <a class="btn btn-sm btn-danger" (click)="onDelete(student.user.id)">&nbsp;删除</a>

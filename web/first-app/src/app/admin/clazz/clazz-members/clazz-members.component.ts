@@ -17,7 +17,7 @@ export class ClazzMembersComponent implements OnInit {
   size = 10;
 
   pageData = new Page<Student>({
-    content: [],
+    content: [] as Student[],
     number: this.page,
     size: this.size,
     numberOfElements: 0

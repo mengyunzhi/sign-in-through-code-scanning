@@ -5,6 +5,7 @@ import {Clazz} from '../entity/clazz';
 import {Page} from '../entity/page';
 import {map} from 'rxjs/operators';
 import {Student} from '../entity/student';
+import {User} from '../entity/user';
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +25,23 @@ export class ClazzService {
       .append('page', page.toString())
       .append('size', size.toString());
     return this.httpClient
-      .get<{length: number, content: Student[]}>('/clazz/clazzMembers/clazz_id/' + clazz_id.toString(), {params: httpParams})
+      .get<{length: number, content: {user_id: number, name: string, sex: number, sno: number}[]}>
+      ('/clazz/clazzMembers/clazz_id/' + clazz_id.toString(), {params: httpParams})
       .pipe(map(data => {
+        console.log('clazzservice', data);
+        const content = [] as Student[];
+        for (const student of data.content) {
+          content.push({
+            user: {
+              id: student.user_id,
+              name: student.name,
+              sex: student.sex,
+            } as User,
+            sno: student.sno
+           } as Student);
+        }
         return new Page<Student>({
-          content: data.content,
+          content,
           number: page,
           size,
           numberOfElements: data.length
