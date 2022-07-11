@@ -27,7 +27,9 @@ class ClazzController extends Controller
         Db::name('student');
         $where['klass_id'] = ["=", $clazz_id];
         $query = Db::table('yunzhi_user')->alias('user')
-        ->join('yunzhi_student student', 'user.id = student.user_id')->order('student.id desc')->where($where);
+        ->join('yunzhi_student student', 'user.id = student.user_id')
+        ->field('user.id as user_id, user.name, user.sex, student.sno')
+        ->order('student.id desc')->where($where);
 
         $data['content'] = $query->limit(
             $params['page'] * $params['size'],
