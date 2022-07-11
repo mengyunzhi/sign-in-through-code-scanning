@@ -4,6 +4,7 @@ import {Page} from '../entity/page';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
+import {User} from '../entity/user';
 
 @Injectable({
   providedIn: 'root'
@@ -29,14 +30,28 @@ export class TeacherService {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString());
-    return  this.httpClient.get<any>('/teacher/page', {params: httpParams})
-      .pipe(map(data =>
-        new Page<Teacher>({
-          content: data.content,
+    return this.httpClient
+      .get<{length: number, content: {user_id: number, name: string, sex: number, number: number}[]}>
+      ('/teacher/page', {params: httpParams})
+      .pipe(map(data => {
+        console.log('teacherService', data);
+        const content = [] as Teacher[];
+        for (const teacher of data.content) {
+          content.push({
+            user: {
+              id: teacher.user_id,
+              name: teacher.name,
+              sex: teacher.sex,
+            } as User
+          } as Teacher);
+        }
+        return new Page<Teacher>({
+          content,
           number: page,
           size,
           numberOfElements: data.length
-        })));
+        });
+      }));
   }
 
   update(id: number, data: {name: string, sex: number, number: string}): Observable<any> {

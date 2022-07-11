@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Page} from '../../../entity/page';
 import {Course} from '../../../entity/course';
 import {CourseService} from '../../../service/course.service';
@@ -20,8 +20,8 @@ export class CourseIndexComponent implements OnInit {
   size = 5;
 
   formGroup = new FormGroup({
-    name : new FormControl('', Validators.required),
-    lesson : new FormControl(null, Validators.required),
+    name: new FormControl('', Validators.required),
+    lesson: new FormControl(null, Validators.required),
   });
 
   pageData = new Page<Course>({
@@ -31,13 +31,14 @@ export class CourseIndexComponent implements OnInit {
     numberOfElements: 0
   });
 
-  constructor(private courseService: CourseService) { }
+  constructor(private courseService: CourseService) {
+  }
 
   ngOnInit(): void {
     this.loadByPage(0, this.course);
   }
 
-  loadByPage(page: number = 0, course: { name: string; lesson: string }): void {
+  loadByPage(page: number = 0, course: {name: string; lesson: string}): void {
     console.log('loadByPage', page);
     console.log('333');
     console.log('loadByPage', course);
@@ -85,26 +86,5 @@ export class CourseIndexComponent implements OnInit {
     console.log(course);
     console.log('222');
     this.loadByPage(0, course);
-  }
-
-  onDelete(id: number): void {
-    console.log('删除课程');
-    Confirm.show(
-      '请确认',
-      '该操作不可逆',
-      '确认',
-      '取消',
-      () => {
-        this.courseService.delete(id)
-          .subscribe(success => {
-            console.log('删除成功', success);
-            this.ngOnInit();
-            Notify.success('删除成功', {timeout: 800});
-          }, error => {
-            console.log('删除失败', error);
-            Notify.failure('删除失败', {timeout: 800});
-          });
-      },
-    );
   }
 }
