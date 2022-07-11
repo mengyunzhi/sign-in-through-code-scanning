@@ -9,6 +9,9 @@ use app\common\model\Term;
 use app\common\model\Course;
 use app\common\model\ScheduleKlass;
 use app\common\model\Klass;
+use app\common\model\DispatchRoom;
+use app\common\model\Room;
+use app\common\model\Dispatch;
 use app\common\model\User;
 use app\common\model\Schedule;
 
@@ -68,6 +71,31 @@ class ScheduleController extends Controller {
     }
 
     public function editIndex() {
+        $id = Request()->param('id/d');
+        $schedule = Schedule::get($id);
+        $clazzes = $schedule->klasses;
+        $teacher = $schedule->getTeacher();
+        $user = $teacher->getUser();
+        $course = $schedule->getCourse();
+        $programs = $course->getProgram();
+        $dispatches = $schedule->getDispatches();
+        $rooms = [];
+        foreach ($dispatches as $key => $dispatch) {
+            $dispatchRooms = DispatchRoom::where('dispatch_id', 'eq', $dispatch->id)->select();
+            $rooms[$key] = [];
+            foreach ($dispatchRooms as $dispatchRoom) {
+                array_push($rooms[$key], Room::where('id', $dispatchRoom->room_id)->find());
+            }
+        }
+        $data['schedule'] = $schedule;
+        $data['clazzes'] = $clazzes;
+        $data['teacher'] = $teacher;
+        $data['user'] = $user;
+        $data['course'] = $course;
+        $data['programs'] = $programs;
+        $data['dispatches'] = $dispatches;
+        $data['rooms'] = $rooms;
+        return json_encode($data);
 
     }
 

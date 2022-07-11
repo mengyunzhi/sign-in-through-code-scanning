@@ -8,6 +8,11 @@ import {UserService} from './user.service';
 import {Course} from '../entity/course';
 import {Clazz} from '../entity/clazz';
 import {Term} from '../entity/term';
+import {Teacher} from '../entity/teacher';
+import {Room} from '../entity/room';
+import {Dispatch} from '../entity/dispatch';
+import {Program} from '../entity/program';
+import {User} from '../entity/user';
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +25,42 @@ export class ScheduleService {
   ) {
   }
 
-  editIndex(id: number): Observable<any> {
+  editIndex(id: number): Observable<{
+    schedule: Schedule,
+    programs: Program[],
+    clazzes: Clazz[],
+    dispatches: Dispatch[],
+    rooms: Room[][]
+  }> {
     const httpParams = new HttpParams()
       .append('id', id.toString());
-    return this.httpClient.get<any>('/schedule/editIndex', {params: httpParams});
+    return this.httpClient.get<{
+      schedule: Schedule,
+      clazzes: Clazz[],
+      teacher: Teacher,
+      user: User,
+      course: Course,
+      programs: Program[],
+      dispatches: Dispatch[],
+      rooms: Room[][]
+    }>('/schedule/editIndex', {params: httpParams})
+      .pipe(map(data => {
+        console.log('editIndex Service:', data);
+        return {
+          schedule: {
+            id: data.schedule.id,
+            course: data.course,
+            teacher: {
+              id: data.teacher.id,
+              user: data.user,
+            } as Teacher,
+          } as Schedule,
+          programs: data.programs as Program[],
+          clazzes: data.clazzes as Clazz[],
+          dispatches: data.dispatches as Dispatch[],
+          rooms: data.rooms as Room[][]
+        };
+      }));
   }
 
   page(page: number, size: number): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
