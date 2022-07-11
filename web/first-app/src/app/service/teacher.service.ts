@@ -42,7 +42,8 @@ export class TeacherService {
               id: teacher.user_id,
               name: teacher.name,
               sex: teacher.sex,
-            } as User
+              number: teacher.number,
+            } as unknown as User
           } as Teacher);
         }
         return new Page<Teacher>({
