@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ClazzService} from '../../../service/clazz.service';
 import {ActivatedRoute} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
@@ -28,7 +28,8 @@ export class ClazzMembersComponent implements OnInit {
   constructor(private clazzService: ClazzService,
               private route: ActivatedRoute,
               private studentService: StudentService,
-              private commonService: CommonService) { }
+              private commonService: CommonService) {
+  }
 
   ngOnInit(): void {
     this.clazz_id = +this.route.snapshot.params.clazz_id;
@@ -42,8 +43,12 @@ export class ClazzMembersComponent implements OnInit {
         this.studentService.delete(id)
           .subscribe((success) => {
             console.log('学生删除成功', success);
+            this.commonService.success();
             this.ngOnInit();
-          }, error => console.log('学生删除失败', error));
+          }, error => {
+            console.log('学生删除失败', error);
+            this.commonService.error();
+          });
       }
     });
   }
