@@ -76,6 +76,7 @@ class RoomController extends Controller
             $id = Request()->param('id/d');
             $postData = json_decode(file_get_contents("php://input"));
             $room = room::get($id);
+            $msg = '';
             if (!is_null($postData)) {
                 // 写入要更新的数据
                 $room->setAttr('name', $postData->name);

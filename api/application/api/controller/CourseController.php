@@ -45,8 +45,47 @@ class CourseController extends Controller
         }
     }
 
+    /*
+    * 通过id获取课程
+    */
     public function getById() {
         $id = Request()->param('id/d');
         return json(Course::get($id));
+    }
+
+    /*
+    * 更新课程
+    */
+    public function update() {
+        $id = Request()->param('id/d');
+        $postData = json_decode(file_get_contents("php://input"));
+        $msg = '';
+        $course = Course::get($id);
+        if (!is_null($postData)) {
+            // 写入更新的数据
+            $course->setAttr('name', $postData->name);
+            $course->lesson = $postData->lesson;
+        }
+        $status = $course->validate(true)->save();
+        if ($status) {
+            return json_encode($status);
+        } else {
+            this.error('添加失败:', $msg);
+            return $msg;
+        }
+    }
+
+    /*
+    * 删除课程
+    */
+    public function delete() {
+        $id = Request()->param('id/d');
+        $course = Course::get($id);
+        $status = $course->delete();
+        if ($status) {
+            return json_encode($course);
+        } else {
+            return $course->getError();
+        }
     }
 }
