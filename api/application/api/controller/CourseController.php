@@ -16,8 +16,9 @@ class CourseController extends Controller
     */
     public function page() {
         $params = Request()->param();
-        $where = '';
-        $query = Course::order(['id desc'])->where($where);
+        $query = Course::order(['id desc'])
+                    ->where('name', 'like', '%' . $params['searchName'] . '%')
+                    ->where('lesson', 'like', '%' . $params['searchLesson'] . '%');
         $courses = $query->limit(
             $params['page'] * $params['size'],
             $params['size']

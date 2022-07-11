@@ -15,11 +15,16 @@ export class CourseService {
   /*
   * 教师端课程管理index页面
   */
-  page({page = 0, size = 20}: { size?: number; page?: number }): Observable<Page<Course>> {
+  page({page = 0, size = 20}: { size?: number; page?: number }, course: { name?: string; lesson?: string} ): Observable<Page<Course>> {
     let courses = [] as Course[];
+    console.log('444');
+    console.log(course);
+    console.log('555');
     return new Observable<Page<Course>>(
       subscriber => {
         const httpParams = new HttpParams()
+          .append('searchName', course.name as string)
+          .append('searchLesson', course.lesson as unknown as string)
           .append('page', page.toString())
           .append('size', size.toString());
         this.httpClient.get<any>('course/page', {params: httpParams})

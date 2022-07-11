@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Page} from '../../../entity/page';
 import {Course} from '../../../entity/course';
 import {CourseService} from '../../../service/course.service';
-import {Confirm, Notify} from "notiflix";
+import {Confirm, Notify} from 'notiflix';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-course-index',
@@ -10,8 +11,17 @@ import {Confirm, Notify} from "notiflix";
   styleUrls: ['./course-index.component.css']
 })
 export class CourseIndexComponent implements OnInit {
+
+  // 初始化查询条件
+  course = {name: '', lesson: ''};
+
   page = 0;
   size = 5;
+
+  formGroup = new FormGroup({
+    name : new FormControl('', Validators.required),
+    lesson : new FormControl(null, Validators.required),
+  });
 
   pageData = new Page<Course>({
     content: [],
@@ -23,12 +33,14 @@ export class CourseIndexComponent implements OnInit {
   constructor(private courseService: CourseService) { }
 
   ngOnInit(): void {
-    this.loadByPage();
+    this.loadByPage(0, this.course);
   }
 
-  loadByPage(page: number = 0): void {
+  loadByPage(page: number = 0, course: { name: string; lesson: string }): void {
     console.log('loadByPage', page);
-    this.courseService.page({page, size: this.size})
+    console.log('333');
+    console.log('loadByPage', course);
+    this.courseService.page({page, size: this.size}, course)
       .subscribe(pageData => {
         console.log('请求成功---', pageData);
         this.page = page;
@@ -38,7 +50,7 @@ export class CourseIndexComponent implements OnInit {
 
   onPage($event: number): void {
     console.log('onPage is called', $event);
-    this.loadByPage($event);
+    this.loadByPage($event, this.course);
   }
 
   onDelete(id: number): void {
@@ -60,5 +72,17 @@ export class CourseIndexComponent implements OnInit {
           });
       },
     );
+  }
+
+  onSubmit(): void {
+    console.log('查询');
+    const course = this.formGroup.value as {
+      name: string,
+      lesson: string,
+    };
+    console.log('111');
+    console.log(course);
+    console.log('222');
+    this.loadByPage(0, course);
   }
 }
