@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col col-md-8">
+  <div class="col col-md-8" *ngIf="data.schedule">
     <div class="col-sm-12">
       <a class="btn btn-primary" routerLink="/teacher/schedule"><i class="glyphicon"></i>&nbsp;返回</a>&nbsp;&nbsp;
       <a class="btn btn-info" routerLink="programAdd"><i class="glyphicon"></i>&nbsp;添加项目</a>&nbsp;&nbsp;
@@ -10,9 +10,9 @@
     <table class="table table-bordered">
       <thead>
       <tr>
-        <th scope="col-md-3">项</th>
-        <th scope="col-md-3">内容</th>
-        <th scope="col-md-3">其它</th>
+        <th>项</th>
+        <th>内容</th>
+        <th>其它</th>
       </tr>
       </thead>
       <tbody>
