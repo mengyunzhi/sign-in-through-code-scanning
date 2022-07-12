@@ -87,4 +87,5 @@ export class CourseIndexComponent implements OnInit {
     console.log('222');
     this.loadByPage(0, course);
   }
+
 }

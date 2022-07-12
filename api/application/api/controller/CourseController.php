@@ -24,6 +24,9 @@ class CourseController extends Controller
             $params['size']
         )->select();
         $data['content'] = $courses;
+
+        $query = $query->where('name', 'like', '%' . $params['searchName'] . '%')
+                    ->where('lesson', 'like', '%' . $params['searchLesson'] . '%');
         $data['length'] = $query->count();
         return json_encode($data);
     }

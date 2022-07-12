@@ -15,7 +15,7 @@ import {Clazz} from '../../../entity/clazz';
 export class ScheduleIndexComponent implements OnInit {
 
   page = 0;
-  size = 10;
+  size = 3;
 
   pageData = new Page<{schedule: Schedule, clazzes: Clazz[]}>({
     content: [],

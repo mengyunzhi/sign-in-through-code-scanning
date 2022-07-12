@@ -63,6 +63,10 @@ export class ScheduleService {
       }));
   }
 
+  getById(id: number): Observable<Schedule> {
+    return this.httpClient.get<Schedule>('/schedule/getById/id/' + id.toString());
+  }
+
   page(page: number, size: number): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())

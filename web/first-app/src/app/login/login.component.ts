@@ -39,11 +39,11 @@ export class LoginComponent implements OnInit {
         this.beLogin.emit(user);
 
         if (+user.role === UserService.ROLE_ADMIN) {
-          this.router.navigateByUrl('/admin/term');
+          this.router.navigateByUrl('/admin/term').then();
         } else if (+user.role === UserService.ROLE_TEACHER) {
-          this.router.navigateByUrl('/teacher/task');
+          this.router.navigateByUrl('/teacher/task').then();
         } else if (+user.role === UserService.ROLE_STUDENT) {
-          this.router.navigateByUrl('/student');
+          this.router.navigateByUrl('/student').then();
         }
 
       }, error => {
