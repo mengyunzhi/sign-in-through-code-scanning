@@ -24,12 +24,12 @@
         <th>操作</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody *ngIf="pageData.content.length">
       <tr *ngFor="let teacher of pageData.content index as i">
         <td>{{i + 1}}</td>
-        <td>{{teacher.name}}</td>
-        <td>{{teacher.sex | sex}}</td>
-        <td>{{teacher.number}}</td>
+        <td>{{teacher.user.name}}</td>
+        <td>{{teacher.user.sex | sex}}</td>
+        <td>{{teacher.user.number}}</td>
         <td>
           <a class="btn btn-sm btn-primary" [routerLink]="'edit/' + teacher.user.id"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
           <a class="btn btn-sm btn-danger" (click)="onDelete(teacher.user.id)"><i class="far fa-trash-alt"></i>删除</a>
