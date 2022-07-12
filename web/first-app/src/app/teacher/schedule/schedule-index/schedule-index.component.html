@@ -24,21 +24,21 @@
     <th>操作</th>
   </tr>
   </thead>
-  <tbody>
-  <tr *ngFor="let unit of pageData.content index as i">
-    <td>{{ i + 1 }}</td>
-    <td>{{ unit.schedule.course.name }}</td>
-    <td>{{ unit.schedule.term.name }}</td>
-    <td>
-      <ng-template ngFor let-item [ngForOf]="unit.clazzes" let-i="index">
-        {{ item.name }}
-      </ng-template>
-    </td>
-    <td>
-      <a class="btn btn-sm btn-primary" [routerLink]="'edit/' + unit.schedule.id"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
-      <a class="btn btn-sm btn-danger" (click)="onDelete(unit.schedule.id)"><i class="far fa-trash-alt"></i>删除</a>
-    </td>
-  </tr>
+  <tbody *ngIf="pageData.content.length">
+    <tr *ngFor="let unit of pageData.content index as i">
+      <td>{{ i + 1 }}</td>
+      <td>{{ unit.schedule.course.name }}</td>
+      <td>{{ unit.schedule.term.name }}</td>
+      <td>
+        <ng-template ngFor let-item [ngForOf]="unit.clazzes" let-i="index">
+          {{ item.name }}
+        </ng-template>
+      </td>
+      <td>
+        <a class="btn btn-sm btn-primary" [routerLink]="'edit/' + unit.schedule.id"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
+        <a class="btn btn-sm btn-danger" (click)="onDelete(unit.schedule.id)"><i class="far fa-trash-alt"></i>删除</a>
+      </td>
+    </tr>
   </tbody>
 </table>
 

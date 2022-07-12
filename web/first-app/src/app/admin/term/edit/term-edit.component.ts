@@ -66,7 +66,7 @@ export class TermEditComponent implements OnInit {
         },
         error => {
           console.log('学期更新失败', error);
-         this.commService.error();
+          this.commService.error();
         });
   }
 }

@@ -32,8 +32,8 @@
         <td>项目{{ i+1 }}</td>
         <td>{{ program.name }}（学时：{{ program.lesson }}）</td>
         <td>
-          <a class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a>
-          <a class="btn btn-success" routerLink="programEdit"><i class="glyphicon"></i>&nbsp;编辑</a>
+          <a class="btn btn-danger" (click)="onDeleteProgram(program.id)"><i class="glyphicon"></i>&nbsp;删除</a>
+          <a class="btn btn-success" [routerLink]="'programEdit/' + program.id"><i class="glyphicon"></i>&nbsp;编辑</a>
           <a class="btn btn-primary"><i class="glyphicon"></i>&nbsp;上移</a>
           <a class="btn btn-primary"><i class="glyphicon"></i>&nbsp;下移</a>
         </td>
@@ -42,7 +42,7 @@
       <tr *ngFor="let clazz of data.clazzes">
         <td>上课班级</td>
         <td>{{ clazz.name }}</td>
-        <td><a class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a></td>
+        <td><a class="btn btn-danger" (click)="onDeleteClazz(clazz.id)"><i class="glyphicon"></i>&nbsp;删除</a></td>
       </tr>
 
       <tr *ngFor="let dispatch of data.dispatches; index as i">
@@ -55,7 +55,7 @@
             {{ room.name }}
           </ng-container>
         </td>
-        <td><a class="btn btn-danger"><i class="glyphicon"></i>&nbsp;删除</a></td>
+        <td><a class="btn btn-danger" (click)="onDeleteDispatch(dispatch.id)"><i class="glyphicon"></i>&nbsp;删除</a></td>
       </tr>
 
       <tr>

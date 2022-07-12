@@ -32,7 +32,7 @@ const routes: Routes = [
     component: TimeAddComponent
   },
   {
-    path: 'edit/:schedule_id/programEdit',
+    path: 'edit/:schedule_id/programEdit/:program_id',
     component: ProgramEditComponent
   },
   {

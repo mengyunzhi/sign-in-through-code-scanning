@@ -6,6 +6,11 @@ import {Clazz} from '../../../entity/clazz';
 import {Dispatch} from '../../../entity/dispatch';
 import {Room} from '../../../entity/room';
 import {Program} from '../../../entity/program';
+import {ProgramService} from '../../../service/program.service';
+import {Confirm} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
+import {ClazzService} from '../../../service/clazz.service';
+import {DispatchService} from '../../../service/dispatch.service';
 
 @Component({
   selector: 'app-schedule-edit',
@@ -16,7 +21,11 @@ export class ScheduleEditComponent implements OnInit {
   component: any;
 
   constructor(private scheduleService: ScheduleService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private programService: ProgramService,
+              private commonService: CommonService,
+              private clazzService: ClazzService,
+              private dispatchService: DispatchService) { }
   id: number | undefined;
   data = {} as {
     schedule: Schedule,
@@ -34,6 +43,65 @@ export class ScheduleEditComponent implements OnInit {
       }, error => {
         console.log('scheduleEditIndex error', error);
       });
+  }
+  onDeleteClazz(id: number): void {
+    Confirm.show(
+      '请确认',
+      '该操作不可逆',
+      '确认',
+      '取消',
+      () => {
+        this.clazzService.delete(id)
+          .subscribe(success => {
+            console.log('班级删除成功', success);
+            this.ngOnInit();
+            this.commonService.success();
+          }, error => {
+            console.log('班级删除失败', error);
+            this.commonService.error();
+          });
+      },
+    );
+  }
+
+  onDeleteDispatch(id: number): void {
+    Confirm.show(
+      '请确认',
+      '该操作不可逆',
+      '确认',
+      '取消',
+      () => {
+        this.dispatchService.delete(id)
+          .subscribe(success => {
+            console.log('调度删除成功', success);
+            this.ngOnInit();
+            this.commonService.success();
+          }, error => {
+            console.log('调度删除失败', error);
+            this.commonService.error();
+          });
+      },
+    );
+  }
+
+  onDeleteProgram(id: number): void {
+    Confirm.show(
+      '请确认',
+      '该操作不可逆',
+      '确认',
+      '取消',
+      () => {
+        this.programService.delete(id)
+          .subscribe(success => {
+            console.log('项目删除成功', success);
+            this.ngOnInit();
+            this.commonService.success();
+          }, error => {
+            console.log('项目删除失败', error);
+            this.commonService.error();
+          });
+      },
+    );
   }
 
 }

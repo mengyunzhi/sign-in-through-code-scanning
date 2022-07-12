@@ -99,4 +99,14 @@ class ScheduleController extends Controller {
 
     }
 
+    public function getById() {
+        $id = Request()->param('id/d');
+        $schedule = Schedule::get($id);
+        $data['id'] = $schedule->id;
+        $data['course'] = $schedule->getCourse();
+        $data['teacher'] = $schedule->getTeacher();
+        $data['term'] = $schedule->getTerm();
+        return json_encode($data);
+    }
+
 }

@@ -19,11 +19,12 @@ class Dispatch extends Model {
             throw new Exception('调度表删除失败');
         }
 
-        $dispatchRooms = new DispatchRoom();
+        $dispatchRooms = DispatchRoom::where('dispatch_id', $dispatchId)->select();
 
-        $dispatchRoom = $dispatchRooms->where('dispatch_id', $dispatchId)->find();
+        foreach ($dispatchRooms as $dispatchRoom) {
+            $status = $status && $dispatchRoom->delete();
+        }
 
-        $status = $dispatchRoom->delete();
         if (!$status) {
             throw new Exception('调度表删除失败');
         }
