@@ -11,7 +11,6 @@ import {Confirm} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
 import {ClazzService} from '../../../service/clazz.service';
 import {DispatchService} from '../../../service/dispatch.service';
-
 @Component({
   selector: 'app-schedule-edit',
   templateUrl: './schedule-edit.component.html',

@@ -15,7 +15,7 @@ export class TeacherIndexComponent implements OnInit {
   size = 10;
 
   pageData = new Page<Teacher>({
-    content: [],
+    content: [] as Teacher[],
     number: this.page,
     size: this.size,
     numberOfElements: 0,
