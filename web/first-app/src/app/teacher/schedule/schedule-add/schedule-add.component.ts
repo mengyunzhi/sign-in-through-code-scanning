@@ -21,8 +21,8 @@ export class ScheduleAddComponent implements OnInit {
   h5_day: string | undefined;
   h5_lesson: number | undefined;
 
-  selectedCourses =  []  as Course[];
-  selectedClazzes = [] as Clazz[];
+  courses =  []  as Course[];
+  Clazzes = [] as Clazz[];
   isShowSelectClazz = false;
   isShowSelectTime = false;
 
@@ -44,7 +44,7 @@ export class ScheduleAddComponent implements OnInit {
     this.scheduleService.getSelectedCourses()
       .subscribe(data => {
         console.log('获取可选择课程成功', data);
-        this.selectedCourses = data;
+        this.courses = data;
       }, error => {
         console.log('获取可可选择的课程失败', error);
     });
@@ -54,7 +54,7 @@ export class ScheduleAddComponent implements OnInit {
     this.scheduleService.getSelectedClazzes()
       .subscribe(data => {
         console.log('获取可选择班级成功', data);
-        this.selectedClazzes = data;
+        this.Clazzes = data;
       }, error => {
         console.log('获取可可选择的班级失败', error);
       });
