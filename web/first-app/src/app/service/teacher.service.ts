@@ -26,10 +26,13 @@ export class TeacherService {
     return this.httpClient.get<Teacher>('/teacher/getById/id/' + id.toString());
   }
 
-  page(page: number, size: number): Observable<Page<Teacher>> {
+  // page(page: number, size: number, teacher: {name?: string, phone?: string}): Observable<Page<Teacher>> {
+  page({page = 0, size = 5}: { size?: number; page?: number }, param: {name?: string, phone?: string}): Observable<Page<Teacher>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
-      .append('size', size.toString());
+      .append('size', size.toString())
+      .append('searchName', param.name as string)
+      .append('searchPhone', param.phone as string);
     return this.httpClient
       .get<{length: number, content: {user_id: number, name: string, sex: number, number: number}[]}>
       ('/teacher/page', {params: httpParams})
