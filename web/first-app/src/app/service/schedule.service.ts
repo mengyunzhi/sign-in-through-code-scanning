@@ -124,4 +124,14 @@ export class ScheduleService {
     console.log('获取可选择课程');
     return this.httpClient.get<[]>('/schedule/getSelectedClazzes');
   }
+
+  getSelectedRooms(): Observable<[]> {
+    console.log('获取可选择教室');
+    return this.httpClient.get<[]>('/schedule/getSelectedRooms');
+  }
+
+  getCurrentTerm(): Observable<Term> {
+    console.log('获取当前学期');
+    return this.httpClient.get<Term>('/schedule/getCurrentTerm');
+  }
 }

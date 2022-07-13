@@ -73,12 +73,12 @@
                         <div class="row">
                           <div class="col-sm-6">
                             <div class="row" *ngFor="let week of weeks">
-                              <input type="checkBox">&nbsp;<label>第{{week}}周</label>
+                              &nbsp;&nbsp;<input type="checkBox">&nbsp;<label>第{{week}}周</label>
                             </div>
                           </div>
                           <div class="col-sm-6">
                             <div class="row" *ngFor="let room of rooms">
-                              <input type="checkBox">&nbsp;<label>教室{{room}}</label>
+                              <input type="checkBox">&nbsp;<label>{{room.name}}</label>
                             </div>
                           </div>
                         </div>

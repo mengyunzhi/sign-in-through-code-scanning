@@ -115,7 +115,16 @@ class ScheduleController extends Controller {
     }
 
     public function getSelectedClazzes() {
-            return json_encode(Klass::All());
+        return json_encode(Klass::All());
+    }
+
+    public function getSelectedRooms() {
+        return json_encode(Room::All());
+    }
+
+    public function getCurrentTerm() {
+        $currentTerm = Term::getCurrentTerm();
+        return json_encode($currentTerm);
     }
 
 }

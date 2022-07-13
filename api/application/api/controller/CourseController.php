@@ -16,6 +16,7 @@ class CourseController extends Controller
     */
     public function page() {
         $params = Request()->param();
+
         $query = Course::order(['id desc'])
                     ->where('name', 'like', '%' . $params['searchName'] . '%')
                     ->where('lesson', 'like', '%' . $params['searchLesson'] . '%');

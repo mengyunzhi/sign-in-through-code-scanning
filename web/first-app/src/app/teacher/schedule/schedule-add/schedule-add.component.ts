@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ScheduleService} from '../../../service/schedule.service';
 import {Course} from '../../../entity/course';
 import {Clazz} from '../../../entity/clazz';
+import {Room} from '../../../entity/room';
 
 
 @Component({
@@ -11,10 +12,12 @@ import {Clazz} from '../../../entity/clazz';
 })
 export class ScheduleAddComponent implements OnInit {
 
+  constructor(private scheduleService: ScheduleService) { }
+
   lessons = [1, 2, 3, 4, 5];
   days = ['一', '二', '三', '四', '五', '六', '日'];
-  weeks = [1, 2, 3, 4, 5, 6, 7, 8];
-  rooms = [1, 2, 3, 4, 5];
+  weeks = [];
+  rooms = [] as Room[];
   h5_day: string | undefined;
   h5_lesson: number | undefined;
 
@@ -23,11 +26,11 @@ export class ScheduleAddComponent implements OnInit {
   isShowSelectClazz = false;
   isShowSelectTime = false;
 
-  constructor(private scheduleService: ScheduleService) { }
-
   ngOnInit(): void {
     this.getSelectedCourses();
     this.getSelectedClazzes();
+    this.getSelectedRooms();
+    this.getSelectedWeeks();
   }
 
 
@@ -54,6 +57,40 @@ export class ScheduleAddComponent implements OnInit {
         this.selectedClazzes = data;
       }, error => {
         console.log('获取可可选择的班级失败', error);
+      });
+  }
+
+  getSelectedRooms(): void {
+    this.scheduleService.getSelectedRooms()
+      .subscribe(data => {
+        console.log('获取可选择教室成功', data);
+        this.rooms = data;
+      }, error => {
+        console.log('获取可可选择的教室失败', error);
+      });
+  }
+
+  getSelectedWeeks(): void {
+    this.scheduleService.getCurrentTerm()
+      .subscribe(term => {
+        console.log('获取可选择周数成功', term);
+        const dateStart = new Date((+term.start_time) * 1000);
+        const dateEnd = new Date((+term.end_time) * 1000);
+
+        console.log(dateStart);
+        console.log(dateEnd);
+
+        const difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
+
+        console.log(difValue);
+        for (let i = 0; i < Math.ceil(difValue / 7); i++) {
+          this.weeks.push(i + 1);
+        }
+
+        console.log(this.weeks);
+
+      }, error => {
+        console.log('获取可可选择的周数失败', error);
       });
   }
 
