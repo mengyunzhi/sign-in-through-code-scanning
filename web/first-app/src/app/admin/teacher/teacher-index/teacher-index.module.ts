@@ -4,6 +4,7 @@ import {TeacherIndexComponent} from './teacher-index.component';
 import {RouterModule} from '@angular/router';
 import {PageModule} from '../../../page/page.module';
 import {PipeModule} from '../../../pipe/pipe.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -12,7 +13,8 @@ import {PipeModule} from '../../../pipe/pipe.module';
     CommonModule,
     RouterModule,
     PageModule,
-    PipeModule
+    PipeModule,
+    ReactiveFormsModule
   ],
   exports: [TeacherIndexComponent]
 })

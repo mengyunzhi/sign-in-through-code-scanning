@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Page} from '../../../entity/page';
-import {HttpClient, HttpParams} from '@angular/common/http';
 import {Teacher} from '../../../entity/teacher';
 import {TeacherService} from '../../../service/teacher.service';
 import {Confirm, Notify} from 'notiflix';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-teacher-index',
@@ -12,7 +12,7 @@ import {Confirm, Notify} from 'notiflix';
 })
 export class TeacherIndexComponent implements OnInit {
   page = 0;
-  size = 10;
+  size = 5;
 
   pageData = new Page<Teacher>({
     content: [] as Teacher[],
@@ -21,15 +21,23 @@ export class TeacherIndexComponent implements OnInit {
     numberOfElements: 0,
   });
 
-  constructor(private teacherService: TeacherService) { }
+  // 初始化查询条件
+  param = {name: '', phone: ''};
+  queryForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+    phone: new FormControl('', Validators.required),
+  });
 
-  ngOnInit(): void {
-    this.loadByPage();
+  constructor(private teacherService: TeacherService) {
   }
 
-  loadByPage(page: number = 0): void {
+  ngOnInit(): void {
+    this.loadByPage(0, this.param);
+  }
+
+  loadByPage(page: number = 0, param: {name: string, phone: string}): void {
     console.log('loadByPage', page);
-    this.teacherService.page(page, this.size)
+    this.teacherService.page({page, size: this.size}, param)
       .subscribe(pageData => {
         this.page = page;
         console.log('教师index请求成功', pageData);
@@ -63,7 +71,16 @@ export class TeacherIndexComponent implements OnInit {
 
   onPage($event: number): void {
     console.log('onPage is called', $event);
-    this.loadByPage($event);
+    this.loadByPage($event, this.param);
+  }
+
+  onSubmit(): void {
+    console.log('onSubmit called');
+    const query = this.queryForm.value as {
+      name: string,
+      phone: string,
+    };
+    this.loadByPage(0, query);
   }
 
 }
