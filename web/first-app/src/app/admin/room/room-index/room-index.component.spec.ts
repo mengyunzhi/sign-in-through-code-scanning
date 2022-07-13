@@ -2,8 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RoomIndexComponent } from './room-index.component';
 import {MockApiTestingModule} from '../../../mock-api/mock-api-testing.module';
+import {RouterTestingModule} from '@angular/router/testing';
 
-describe('RoomIndexComponent', () => {
+describe('admin => room => RoomIndexComponent', () => {
   let component: RoomIndexComponent;
   let fixture: ComponentFixture<RoomIndexComponent>;
 
@@ -11,7 +12,8 @@ describe('RoomIndexComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ RoomIndexComponent ],
       imports: [
-        MockApiTestingModule
+        MockApiTestingModule,
+        RouterTestingModule
       ]
     })
     .compileComponents();

@@ -24,8 +24,7 @@ export class ScheduleIndexComponent implements OnInit {
     numberOfElements: 0
   });
 
-  constructor(
-    private scheduleService: ScheduleService) { }
+  constructor(private scheduleService: ScheduleService) { }
 
   ngOnInit(): void {
     this.loadByPage();

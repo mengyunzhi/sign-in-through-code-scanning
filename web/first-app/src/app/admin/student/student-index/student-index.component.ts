@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Page} from '../../../entity/page';
 import {StudentService} from '../../../service/student.service';
 import {CommonService} from '../../../service/common.service';
+import {Student} from '../../../entity/student';
 
 @Component({
   selector: 'app-student-student-index',
@@ -17,7 +18,7 @@ export class StudentIndexComponent implements OnInit {
 
   // 初始化一个有0条数据的分页
   // 此处的any类型为StudentService的T接口, 暂时没有好的处理方法
-  pageDate = new Page<any>({
+  pageDate = new Page<Student>({
     content: [],
     number: this.page,
     size: this.size,

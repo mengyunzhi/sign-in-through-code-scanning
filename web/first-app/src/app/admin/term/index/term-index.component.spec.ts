@@ -6,15 +6,19 @@ import {MockApiTestingInterceptor} from '@yunzhi/ng-mock-api/testing';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {getTestScheduler} from 'jasmine-marbles';
 import {TermStatePipe} from '../../../pipe/term-state.pipe';
+import {RouterTestingModule} from '@angular/router/testing';
 
-describe('TermIndexComponent', () => {
+describe('admin => term => TermIndexComponent', () => {
   let component: TermIndexComponent;
   let fixture: ComponentFixture<TermIndexComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ TermIndexComponent, TermStatePipe ],
-      imports: [HttpClientModule],
+      imports: [
+        HttpClientModule,
+        RouterTestingModule
+      ],
       providers: [
         {
           provide: HTTP_INTERCEPTORS, multi: true,

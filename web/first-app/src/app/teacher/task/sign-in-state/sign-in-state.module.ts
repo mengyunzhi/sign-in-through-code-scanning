@@ -8,6 +8,9 @@ import {RouterModule} from '@angular/router';
   imports: [
     CommonModule,
     RouterModule,
+  ],
+  exports: [
+    SignInStateComponent
   ]
 })
 export class SignInStateModule { }

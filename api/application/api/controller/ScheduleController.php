@@ -23,7 +23,7 @@ class ScheduleController extends Controller {
 		$where = "$teacher->id = teacher_id";
         $content = [];
         $query = Schedule::where($where);
-        $schedules = $query->page($params['page'], $params['size'])->order('id desc')->select();
+        $schedules = $query->limit($params['page'] * $params['size'], $params['size'])->order('id desc')->select();
 
         $clazzes = [];
         foreach ($schedules as $key => $schedule) {

@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import {Page} from '../../../entity/page';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Schedule} from '../../../entity/schedule';
+import {ScheduleService} from '../../../service/schedule.service';
+import {Teacher} from '../../../entity/teacher';
+import {Program} from '../../../entity/program';
+import {Clazz} from '../../../entity/clazz';
+import {Dispatch} from '../../../entity/dispatch';
+import {Room} from '../../../entity/room';
 
 @Component({
   selector: 'app-task-index',
@@ -13,27 +19,25 @@ export class TaskIndexComponent implements OnInit {
   page = 0;
   size = 10;
 
-  pageData = new Page<Schedule>({
+  pageData = new Page<{schedule: Schedule, clazzes: Clazz[]}>({
     content: [],
     number: this.page,
     size: this.size,
     numberOfElements: 0
   });
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private scheduleService: ScheduleService) { }
 
   ngOnInit(): void {
     this.loadByPage();
   }
 
   loadByPage(page: number = 0): void {
-    const httpParams = new HttpParams().append('page', page.toString())
-      .append('size', this.size.toString());
-    this.httpClient.get<Page<Schedule>>('/task/page', {params: httpParams})
-      .subscribe(pageData => {
-        console.log('请求成功', pageData);
+    this.scheduleService.page(page, this.size)
+      .subscribe(pagedata => {
+        console.log('task', pagedata);
         this.page = page;
-        this.pageData = pageData;
+        this.pageData = pagedata;
       });
   }
 

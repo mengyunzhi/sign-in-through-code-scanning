@@ -14,7 +14,6 @@ import {RouterModule} from '@angular/router';
   declarations: [ScheduleIndexComponent],
     imports: [
         CommonModule,
-        MockApiTestingModule,
         PageModule,
         PipeModule,
         TeacherRoutingModule,
