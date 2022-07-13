@@ -109,4 +109,13 @@ class ScheduleController extends Controller {
         return json_encode($data);
     }
 
+
+    public function getSelectedCourses() {
+        return json_encode(Course::All());
+    }
+
+    public function getSelectedClazzes() {
+            return json_encode(Klass::All());
+    }
+
 }

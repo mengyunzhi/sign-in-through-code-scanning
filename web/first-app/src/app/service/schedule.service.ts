@@ -114,4 +114,14 @@ export class ScheduleService {
   delete(id: number): Observable<any> {
     return this.httpClient.delete<any>('/schedule/delete/id/' + id.toString());
   }
+
+  getSelectedCourses(): Observable<[]> {
+    console.log('获取可选择课程');
+    return this.httpClient.get<[]>('/schedule/getSelectedCourses');
+  }
+
+  getSelectedClazzes(): Observable<[]> {
+    console.log('获取可选择课程');
+    return this.httpClient.get<[]>('/schedule/getSelectedClazzes');
+  }
 }
