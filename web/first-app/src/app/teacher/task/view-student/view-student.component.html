@@ -34,12 +34,12 @@
     <tr *ngFor="let student of pageData.content; index as index">
       <td>{{ index + 1 }}</td>
       <td>{{ student.sno }}</td>
-      <td>{{ student.name }}</td>
-      <td>软件2{{ student.clazz.id }}</td>
-      <td>{{ student.sex | sex }}</td>
+      <td>{{ student.user.name }}</td>
+      <td>{{ student.clazz.name }}</td>
+      <td>{{ student.user.sex | sex }}</td>
       <td>
         <a class="btn btn-sm btn-success" [routerLink]="'./fraction/' + student.id.toString()">登记成绩</a>
-        <a class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> 删除</a>
+        <a class="btn btn-sm btn-danger" (click)="onDelete(student.id)"><i class="fas fa-trash-alt"></i> 删除</a>
       </td>
     </tr>
   </tbody>

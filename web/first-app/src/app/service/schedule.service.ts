@@ -89,6 +89,7 @@ export class ScheduleService {
               schedule: {
                 id: arrayGroup.schedules[i].id,
                 course: {
+                  id: arrayGroup.courses[i].id,
                   name: arrayGroup.courses[i].name
                 } as Course,
                 term: {

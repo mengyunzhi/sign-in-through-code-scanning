@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {Page} from '../../../entity/page';
 import {Student} from '../../../entity/student';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {StudentService} from '../../../service/student.service';
+import {ActivatedRoute} from '@angular/router';
+import {Assert} from '@yunzhi/ng-mock-api';
+import {StudentScheduleService} from '../../../service/studentSchedule.service';
+import {Confirm} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-view-student',
@@ -9,7 +14,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
   styleUrls: ['./view-student.component.css']
 })
 export class ViewStudentComponent implements OnInit {
-  size = 20;
+  size = 3;
   page = 0;
 
   pageData = new Page<Student>({
@@ -18,24 +23,52 @@ export class ViewStudentComponent implements OnInit {
     size: this.size,
     numberOfElements: 0
   });
-
-  constructor(private httpClient: HttpClient) { }
+  schedule_id: number | undefined;
+  constructor(private studentService: StudentService,
+              private route: ActivatedRoute,
+              private studentScheduleService: StudentScheduleService,
+              private commonService: CommonService) { }
 
   ngOnInit(): void {
+    this.schedule_id = +this.route.snapshot.params.schedule_id;
     this.loadByPage();
   }
 
   loadByPage(page: number = 0): void {
-    const httpParams = new HttpParams().append('size', this.size.toString())
-      .append('page', page.toString());
-    this.httpClient.get<Page<Student>>('/task/viewStudent/page', {params: httpParams})
-      .subscribe(pageData => {
+    Assert.isNumber(this.schedule_id, 'schedule_id不是number类型');
+    this.studentService.pageByScheduleId(page, this.size, this.schedule_id as number)
+      .subscribe(pagedata => {
+        console.log('学生数据请求成功', pagedata);
+        this.pageData = pagedata;
         this.page = page;
-        this.pageData = pageData;
-      }, error => console.log('请求失败', error));
+      }, error => {
+        console.log('学生数据请求失败', error);
+      });
   }
 
   onPage($event: number): void {
+    console.log('onpage is called', $event);
     this.loadByPage($event);
+  }
+
+  onDelete(student_id: number): void {
+    Confirm.show(
+      '请确认',
+      '该操作不可逆',
+      '确认',
+      '取消',
+      () => {
+        Assert.isNumber(this.schedule_id, 'schedule_id类型不是number');
+        this.studentScheduleService.delete(student_id, this.schedule_id as number)
+          .subscribe(success => {
+            console.log('删除成功', success);
+            this.loadByPage();
+            this.commonService.success();
+          }, error => {
+            console.log('删除失败', error);
+            this.commonService.error();
+          });
+      },
+    );
   }
 }

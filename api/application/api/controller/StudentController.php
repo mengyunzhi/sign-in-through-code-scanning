@@ -4,6 +4,7 @@ use think\Controller;
 use think\Request;
 use think\Db;
 use app\common\model\Student;
+use app\common\model\StudentSchedule;
 use app\index\service\MenuService;
 use app\common\model\User;
 use app\common\model\Klazz;
@@ -29,6 +30,27 @@ class StudentController extends Controller
 		$data['length'] = $query->count();
 		return json_encode($data);
 	}
+
+	public function pageByScheduleId() {
+		$scheduleId = Request()->param('schedule_id/d');
+		$params = Request()->param();
+		$where = '';
+		$query = Db::table('yunzhi_schedule')->alias('schedule')
+		->where('schedule.id', '=', $scheduleId)
+		->join('yunzhi_student_schedule student_schedule', 'schedule.id = student_schedule.schedule_id')
+		->join('yunzhi_student student', 'student.id = student_schedule.student_id')
+		->join('yunzhi_user user', 'student.user_id = user.id')
+		->join('yunzhi_klass klass', 'student.klass_id = klass.id')
+		->field('student.id, student.user_id, user.number, user.sex, user.name, student.sno,  klass.id as clazz_id, klass.name as clazz_name')
+		->order('student.id desc');
+		$data['content'] = $query->order('id desc')->limit(
+			$params['page'] * $params['size'], $params['size']
+		)->select();
+		$data['length'] = StudentSchedule::where('schedule_id', 'eq', $scheduleId)->count(); 
+		return json_encode($data);
+	}
+
+		
 
 
 	public function add() {

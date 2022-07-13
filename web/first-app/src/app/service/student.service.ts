@@ -4,6 +4,8 @@ import {Page} from '../entity/page';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
+import {User} from '../entity/user';
+import {Clazz} from '../entity/clazz';
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +16,69 @@ export class StudentService {
   }
 
 
-  page(page: number, size: number): Observable<Page<T>> {
+  page(page: number, size: number): Observable<Page<Student>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString());
     return this.httpClient.get<{length: number, content: T[]}>('/student/page', {params: httpParams})
-      .pipe(map(data =>
-        new Page<T>({
-            content: data.content,
-            number: page,
-            size,
-            numberOfElements: data.length
-          }
-        )));
+      .pipe(map(data => {
+        const content = [] as Student[];
+        for (const student of data.content) {
+          content.push({
+            id: student.id,
+            user: {
+              id: student.user_id,
+              number: student.number,
+              sex: student.sex,
+              name: student.name,
+            } as User,
+            sno: student.sno,
+            clazz: {
+              id: student.clazz_id,
+              name: student.clazz_name
+            } as Clazz
+          } as Student);
+        }
+        return new Page<Student>({
+          content,
+          number: page,
+          size,
+          numberOfElements: data.length
+        });
+      }));
+  }
+
+  pageByScheduleId(page: number, size: number, schedule_id: number): Observable<Page<Student>> {
+    const httpParams = new HttpParams()
+      .append('page', page.toString())
+      .append('size', size.toString());
+    return this.httpClient.get<{length: number, content: T[]}>('/student/pageByScheduleId/schedule_id/' + schedule_id, {params: httpParams})
+      .pipe(map(data => {
+        console.log('studentService pageByScheduleId', data);
+        const content = [] as Student[];
+        for (const student of data.content) {
+          content.push({
+            id: student.id,
+            sno: student.sno,
+            user: {
+              id: student.user_id,
+              name: student.name,
+              number: student.number,
+              sex: student.sex
+            } as User,
+            clazz: {
+              id: student.clazz_id,
+              name: student.clazz_name
+            }
+          } as Student);
+        }
+        return new Page<Student>({
+          content,
+          number: page,
+          size,
+          numberOfElements: data.length
+        });
+      }));
   }
 
   /**
@@ -65,6 +117,7 @@ export class StudentService {
     return this.httpClient
       .delete<Student>(`/student/delete/id/${id}`);
   }
+
 }
 interface T {
   id: number;

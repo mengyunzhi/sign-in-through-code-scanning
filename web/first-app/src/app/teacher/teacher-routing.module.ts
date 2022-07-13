@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {WelcomeComponent} from '../welcome/welcome.component';
-import {ViewStudentComponent} from './task/view-student/view-student.component';
 
 
 const routes: Routes = [
