@@ -17,6 +17,11 @@ export class CourseService {
   */
   page({page = 0, size = 20}: { size?: number; page?: number }, course: { name?: string; lesson?: string} ): Observable<Page<Course>> {
     let courses = [] as Course[];
+
+    if (course.lesson === null) {
+      course.lesson = '';
+    }
+
     console.log('444');
     console.log(course);
     console.log('555');
