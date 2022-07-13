@@ -1,43 +1,25 @@
 <body class="container">
-<form style="margin-top: 20px">
-  <div class="form-group row">
-    <label class="col-sm-1 col-form-label"><code>*</code>姓名</label>
-    <div class="col-sm-4">
-      <input type="text" class="form-control" style="width: 200px">
-    </div>
-  </div>
-  <div class="form-group row">
-    <label class="col-sm-1 col-form-label"><code>*</code>性别</label>
-    <div class="col-sm-4">
-      <input type="radio" name="sex" value="0" id="sex0" checked="checked" /><label for="sex0">男</label>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <input type="radio" name="sex" value="1" id="sex1" /><label for="sex1">女</label>
-    </div>
-  </div>
+<pre> {{ formGroup.value | json }}</pre>
+<form style="margin-top: 20px" *ngIf="flag" [formGroup]="formGroup">
   <div class="form-group row">
     <label class="col-sm-1 col-form-label"><code>*</code>班级</label>
     <div class="col-sm-4">
-      <select class="form-control" style="width: 200px">
-        <option>软件2101</option>
-        <option>软件2102</option>
-        <option>软件2103</option>
+      <select class="form-control" formControlName="index" style="width: 200px">
+        <option *ngFor="let clazz of clazzes; index as i" [value]="i"> {{ clazz.name }} </option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row" *ngIf="formGroup.get('index').value">
+    <label class="col-sm-1 col-form-label"><code>*</code>学生</label>
+    <div class="col-sm-4">
+      <select class="form-control" formControlName="student_id" style="width: 200px">
+        <option *ngFor="let student of students[formGroup.get('index').value];" [value]="student.id"> {{ student.user.name + '[' + student.sno + ']' }} </option>
       </select>
     </div>
   </div>
   <div class="form-group row">
-    <label class="col-sm-1 col-form-label">学号</label>
-    <div class="col-sm-4">
-      <input type="string" class="form-control" style="width: 200px">
-    </div>
-  </div>
-  <div class="form-group row">
-    <h4 class="col-sm-4">
-      默认密码为： 2222222
-    </h4>
-  </div>
-  <div class="form-group row">
     <div class="col-sm-3 text-center">
-      <button type="submit" class="btn btn-primary">保存</button>
+      <button type="submit" class="btn btn-primary" [disabled]="formGroup.invalid" (click)="onSubmit()">保存</button>
       <a class="btn btn-primary" [routerLink]="'../'">返回</a>
     </div>
   </div>
