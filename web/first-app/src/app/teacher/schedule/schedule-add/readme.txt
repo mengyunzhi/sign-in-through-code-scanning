@@ -12,9 +12,10 @@ selectedClazzes: number[]
 conflictData: {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}
 // 如果teacher_id对应当前teacher，那么在week这一周应该disabled
 // 如果选中的某个班级被包含在clazzIds， 那么在week这一周应该disabled
-// 如果没有选择clazzIds中的班级并且teacher_id不对应当前teacher, 那么这一周的roomIds中的room应该disabled
+// 如果没有选择clazzIds中的班级并且teacher_id不对应当前teacher, 那么如果选这一周，其中的roomIds应该disabled
 
 // 但是后台的addRoomIds在新增排课时候将所有的同day同lesson的roomIds求并集了。
+
 
 子组件传递给父组件的数据：
 

@@ -6,6 +6,7 @@ import {Room} from '../../../entity/room';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Term} from '../../../entity/term';
 import {ClazzService} from '../../../service/clazz.service';
+import {Teacher} from '../../../entity/teacher';
 
 
 @Component({
@@ -22,6 +23,8 @@ export class ScheduleAddComponent implements OnInit {
   constructor(private scheduleService: ScheduleService,
               private clazzService: ClazzService) { }
 
+  courseTimes = [] as {weeks: number[], roomIds: number[]}[][];
+
   lessons = [1, 2, 3, 4, 5];
   days = ['一', '二', '三', '四', '五', '六', '日'];
 
@@ -33,6 +36,8 @@ export class ScheduleAddComponent implements OnInit {
   clazzes: Clazz[] = [];
 
 
+  /* 当前教师,传给子组件 */
+  teacher = {} as Teacher;
   /* 当前学期，用于获取周数数组  */
   term = {} as Term;
   /* 当前学期周数数组,传递给子组件 */
@@ -52,23 +57,26 @@ export class ScheduleAddComponent implements OnInit {
   }[];
 
   /* 检测：如果当前没有选择课程，那么班级也不应该被选择 */
-  detect(): void {
-    if (this.formGroup.get('course_id')?.value === '') {
-      // 没有选择课程， 将clazz_id设为null
-      this.formGroup.get('clazz_id')?.setValue(null);
-    } else {
-      // 选择课程，请求已选择该课程的班级klassIds, 并在clazzes中筛选掉这些班级
-      this.clazzService.clazzesHaveSelectCourse(this.formGroup.get('course_id')?.value)
-        .subscribe(clazzIds => {
-          console.log('clazzIds', clazzIds);
-          this.clazzes = this.clazzesToBeScreened.filter(clazz => !clazzIds.includes(clazz.id));
-        }, error => {
-          console.log('error', error);
-        });
-    }
+  onCourseIdChange(): void {
+    // 只要course_id有变动, 将clazz_id设为null
+    this.formGroup.get('clazz_ids')?.setValue(null);
+    // 选择课程，请求已选择该课程的班级klassIds, 并在clazzes中筛选掉这些班级
+    this.clazzService.clazzesHaveSelectCourse(this.formGroup.get('course_id')?.value)
+      .subscribe(clazzIds => {
+        console.log('clazzIds', clazzIds);
+        this.clazzes = this.clazzesToBeScreened.filter(clazz => !clazzIds.includes(clazz.id));
+      }, error => {
+        console.log('error', error);
+      });
   }
 
   ngOnInit(): void {
+    for (let i = 0; i < 7; i++) {
+      this.courseTimes[i] = [];
+      for (let j = 0; j < 7; j++) {
+        this.courseTimes[i][j] = {} as {weeks: number[], roomIds: number[]};
+      }
+    }
     // 向后台请求数据
     this.scheduleService.getDataForScheduleAdd()
       .subscribe(data => {
@@ -78,6 +86,7 @@ export class ScheduleAddComponent implements OnInit {
         this.term = data.term;
         this.rooms = data.rooms;
         this.dispatches = data.dispatches;
+        this.teacher = data.teacher;
         // 调用方法，获取周数数组
         this.getWeeks();
       }, error =>  {
@@ -85,7 +94,7 @@ export class ScheduleAddComponent implements OnInit {
       });
   }
 
-  getConflictData(day: number, lesson: number): {week: number, clazzIds: number[], roomIds: number[]}[] {
+  getConflictData(day: number, lesson: number): {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}[] {
     const conflictData = [] as {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}[];
     for (const data of this.dispatches) {
       if (day === data.day && lesson === data.lesson) {
@@ -93,7 +102,7 @@ export class ScheduleAddComponent implements OnInit {
           week: data.week,
           clazzIds: data.clazzIds,
           roomIds: data.roomIds,
-          teacher_id: data.teacher_id
+          teacher_id: data.teacher_id,
         });
       }
     }

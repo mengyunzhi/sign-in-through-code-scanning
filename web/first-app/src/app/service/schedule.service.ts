@@ -71,6 +71,7 @@ export class ScheduleService {
     courses: Course[],
     clazzes: Clazz[],
     term: Term,
+    teacher: Teacher,
     rooms: Room[],
     dispatches: {
       week: number,
@@ -86,6 +87,7 @@ export class ScheduleService {
       courses: Course[],
       clazzes: Clazz[],
       term: Term,
+      teacher: Teacher,
       rooms: Room[],
       dispatches: {
         week: number,

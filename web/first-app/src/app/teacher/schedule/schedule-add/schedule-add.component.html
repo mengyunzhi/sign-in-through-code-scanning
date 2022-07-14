@@ -12,7 +12,7 @@
   <div class="form-group row">
     <label class="col-sm-2 col-form-label" style="width: 162px"><code>*</code>课程</label>
     <div class="col-sm-4">
-      <select class="selectpicker form-control col-sm-12" (change)="detect()" formControlName="course_id" id="course_id" required>
+      <select class="selectpicker form-control col-sm-12" (change)="onCourseIdChange()" formControlName="course_id" id="course_id" required>
         <option [value]="''">请选择课程</option>
         <option *ngFor="let course of courses" [value]="+course.id">{{course.name}}</option>
       </select>
@@ -55,8 +55,9 @@
                   [lesson]="l"
                   [weeks]="weeks"
                   [rooms]="rooms"
+                  [teacher]="teacher"
                   [conflictData]="getConflictData(d, l)"
-                  [selectedClazzes]="formGroup.get('clazz_ids')?.value"
+                  [clazzes]="formGroup.get('clazz_ids')?.value"
                 ></app-course-time>
               </div>
             </td>
