@@ -20,6 +20,10 @@ export class ClazzService {
     return this.httpClient.post('/clazz/add', data);
   }
 
+  clazzesHaveSelectCourse(course_id: number): Observable<number[]> {
+    return this.httpClient.get<number[]>('/clazz/clazzesHaveSelectCourse/course_id/' + course_id.toString());
+  }
+
   clazzMembers(clazz_id: number, page: number, size: number): Observable<Page<Student>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())

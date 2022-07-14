@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Room} from '../../../../entity/room';
 
 @Component({
@@ -9,18 +9,32 @@ import {Room} from '../../../../entity/room';
 export class CourseTimeComponent implements OnInit {
 
   constructor() { }
+  @Input()
+  day: number | undefined;    // 当前单元对应day
+  @Input()
+  lesson: number | undefined; // 当前单元对应lesson
+  @Input()
+  weeks: number[] = [];       // 当前单元对应周
+  @Input()
+  rooms = [] as Room[];       // 当前单元对应rooms
+  @Input()
+  conflictData = [] as {week: number, clazzIds: number[], roomIds: number[]}[]; // 当前单元对应冲突数据
+  @Input()
+  selectedClazzes: number[] = [];   // 已选班级
 
-  h5_day: string | undefined;
-  h5_lesson: number | undefined;
-  weeks: number[] = [];
-  rooms = [] as Room[];
+  // 已经选择的周
+  selectedWeeks = [] as number[];
+  // 已经选择的教室
+  selectedRooms = [] as number[];
+
+
 
   ngOnInit(): void {
+    console.log('-------------------\n unit day', this.day);
+    console.log('unit lesson', this.lesson);
+    console.log('unit weeks', this.weeks);
+    console.log('unit conflictData', this.conflictData);
+    console.log('unit rooms', this.selectedClazzes);
   }
 
-  isShow(day: string, lesson: number): void {
-    console.log('出现模态框');
-    this.h5_day = day;
-    this.h5_lesson = lesson;
-  }
 }
