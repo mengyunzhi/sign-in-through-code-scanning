@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ScheduleService} from '../../../service/schedule.service';
 import {Course} from '../../../entity/course';
 import {Clazz} from '../../../entity/clazz';
@@ -6,6 +6,9 @@ import {Room} from '../../../entity/room';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Term} from '../../../entity/term';
 import {ClazzService} from '../../../service/clazz.service';
+import {TeacherService} from '../../../service/teacher.service';
+import {Notify, Report} from 'notiflix';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -20,7 +23,10 @@ export class ScheduleAddComponent implements OnInit {
   });
 
   constructor(private scheduleService: ScheduleService,
-              private clazzService: ClazzService) { }
+              private clazzService: ClazzService,
+              private teacherService: TeacherService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   lessons = [1, 2, 3, 4, 5];
   days = ['一', '二', '三', '四', '五', '六', '日'];
@@ -51,6 +57,38 @@ export class ScheduleAddComponent implements OnInit {
     clazzIds: number[]
   }[];
 
+  teacherId: number | undefined;
+  courseTime = [];
+
+  ngOnInit(): void {
+    // 初始化courseTime
+    this.initializationCourseTime();
+
+    // 向后台请求数据
+    this.scheduleService.getDataForScheduleAdd()
+      .subscribe(data => {
+        console.log('data:', data);
+        this.courses = data.courses;
+        this.clazzesToBeScreened = data.clazzes;
+        this.term = data.term;
+        this.rooms = data.rooms;
+        this.dispatches = data.dispatches;
+        // 调用方法，获取周数数组
+        this.getWeeks();
+      }, error =>  {
+        console.log('失败', error);
+      });
+  }
+
+  initializationCourseTime(): void {
+    for (let i = 0; i < 7; i++) {
+      this.courseTime[i] = [];
+      for (let j = 0; j < 5; j++) {
+        this.courseTime[i][j] = [];
+      }
+    }
+  }
+
   /* 检测：如果当前没有选择课程，那么班级也不应该被选择 */
   detect(): void {
     if (this.formGroup.get('course_id')?.value === '') {
@@ -66,23 +104,6 @@ export class ScheduleAddComponent implements OnInit {
           console.log('error', error);
         });
     }
-  }
-
-  ngOnInit(): void {
-    // 向后台请求数据
-    this.scheduleService.getDataForScheduleAdd()
-      .subscribe(data => {
-        console.log('data:', data);
-        this.courses = data.courses;
-        this.clazzesToBeScreened = data.clazzes;
-        this.term = data.term;
-        this.rooms = data.rooms;
-        this.dispatches = data.dispatches;
-        // 调用方法，获取周数数组
-        this.getWeeks();
-      }, error =>  {
-        console.log('失败', error);
-      });
   }
 
   getConflictData(day: number, lesson: number): {week: number, clazzIds: number[], roomIds: number[]}[] {
@@ -109,5 +130,47 @@ export class ScheduleAddComponent implements OnInit {
         this.weeks.push(i);
       }
       console.log('this.weeks：', this.weeks);
+  }
+
+  /* 接收子组件传回的数据 */
+  getFooterRun($event: any): void {
+    console.log('父组件1111');
+    console.log($event);
+    console.log('父组件2222');
+    this.courseTime = $event;
+    console.log(this.courseTime);
+    console.log('父组件3333');
+  }
+
+  onSubmit(): void {
+    this.teacherService.getCurrentTeacherId()
+      .subscribe(data => {
+        this.teacherId = data;
+        console.log('hhhhhhhhhh');
+        console.log(this.teacherId);
+        console.log('ppppppppp');
+
+        const schedule = this.formGroup.value as {
+          course_id: [],
+          clazz_ids: []
+        };
+
+        console.log(this.teacherId);
+        console.log(schedule);
+        console.log(this.courseTime);
+
+        this.scheduleService.scheduleSave(schedule, this.teacherId, this.courseTime)
+          .subscribe(success => {
+              console.log('添加成功', success);
+              this.router.navigate(['../'], {relativeTo: this.route});
+              Notify.success('添加成功', {timeout: 1000});
+            },
+            error => {
+              console.log('添加失败', error);
+              Report.failure('添加失败', '', '确定');
+            });
+      }, error => {
+        console.log('获取teacherId失败', error);
+      });
   }
 }
