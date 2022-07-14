@@ -3,6 +3,8 @@ namespace app\api\controller;     //命名空间，也说明了文件所在的�
 use app\common\model\Teacher;
 use app\common\model\User;
 use app\common\model\Student;
+use app\common\model\Schedule;
+use app\common\model\ScheduleKlass;
 use app\common\model\Klass;
 use app\index\service\MenuService;
 use think\Controller;
@@ -19,6 +21,15 @@ class ClazzController extends Controller
             return $this->error('班级添加失败:'. $msg);
         }
         return json_encode($status);
+    }
+
+    /* 已经选过某个课程的班级 */
+    public function clazzesHaveSelectCourse() {
+        $course_id = Request()->param('course_id/d');
+        $scheduleIds = Schedule::where('course_id', $course_id)->column('id');
+        if (!$scheduleIds) $scheduleIds = [0];
+        $klassIds = ScheduleKlass::where('schedule_id', 'in', $scheduleIds)->column('klass_id');
+        return json_encode($klassIds);
     }
 
     public function clazzMembers() {

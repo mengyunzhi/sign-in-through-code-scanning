@@ -67,6 +67,38 @@ export class ScheduleService {
     return this.httpClient.get<Schedule>('/schedule/getById/id/' + id.toString());
   }
 
+  getDataForScheduleAdd(): Observable<{
+    courses: Course[],
+    clazzes: Clazz[],
+    term: Term,
+    rooms: Room[],
+    dispatches: {
+      week: number,
+      day: number,
+      lesson: number,
+      schedule_id: number,
+      teacher_id: number,
+      roomIds: number[],
+      clazzIds: number[]
+    }[]
+  }> {
+    return this.httpClient.get<{
+      courses: Course[],
+      clazzes: Clazz[],
+      term: Term,
+      rooms: Room[],
+      dispatches: {
+        week: number,
+        day: number,
+        lesson: number,
+        schedule_id: number,
+        teacher_id: number,
+        roomIds: number[],
+        clazzIds: number[]
+      }[]
+    }>('/schedule/getDataForScheduleAdd');
+  }
+
   page(page: number, size: number): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
@@ -113,25 +145,5 @@ export class ScheduleService {
 
   delete(id: number): Observable<any> {
     return this.httpClient.delete<any>('/schedule/delete/id/' + id.toString());
-  }
-
-  getCourses(): Observable<[]> {
-    console.log('获取可选择课程');
-    return this.httpClient.get<[]>('/schedule/getCourses');
-  }
-
-  getClazzes(): Observable<[]> {
-    console.log('获取可选择课程');
-    return this.httpClient.get<[]>('/schedule/getClazzes');
-  }
-
-  getRooms(): Observable<[]> {
-    console.log('获取可选择教室');
-    return this.httpClient.get<[]>('/schedule/getRooms');
-  }
-
-  getCurrentTerm(): Observable<Term> {
-    console.log('获取当前学期');
-    return this.httpClient.get<Term>('/schedule/getCurrentTerm');
   }
 }
