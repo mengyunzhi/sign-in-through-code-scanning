@@ -3,6 +3,7 @@ import {ScheduleService} from '../../../service/schedule.service';
 import {Course} from '../../../entity/course';
 import {Clazz} from '../../../entity/clazz';
 import {Room} from '../../../entity/room';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 
 @Component({
@@ -11,6 +12,10 @@ import {Room} from '../../../entity/room';
   styleUrls: ['./schedule-add.component.css']
 })
 export class ScheduleAddComponent implements OnInit {
+  formGroup = new FormGroup({
+    course_id: new FormControl('', Validators.required),
+    clazz_id: new FormControl(null, Validators.required),
+  });
 
   constructor(private scheduleService: ScheduleService) { }
 
@@ -18,27 +23,22 @@ export class ScheduleAddComponent implements OnInit {
   days = ['一', '二', '三', '四', '五', '六', '日'];
   weeks: number[] = [];
   rooms = [] as Room[];
-  h5_day: string | undefined;
-  h5_lesson: number | undefined;
 
   courses =  []  as Course[];
   Clazzes = [] as Clazz[];
-  isShowSelectClazz = false;
 
-  isShowSelectTime = false;
+  /* 检测：如果当前没有选择课程，那么班级也不应该被选择 */
+  detect(): void {
+    if (this.formGroup.get('course_id')?.value === '') {
+      this.formGroup.get('clazz_id')?.setValue(null);
+    }
+  }
 
   ngOnInit(): void {
     this.getCourses();
     this.getClazzes();
     this.getRooms();
     this.getWeeks();
-  }
-
-
-  isShow(day: string, lesson: number): void {
-    console.log('出现模态框');
-    this.h5_day = day;
-    this.h5_lesson = lesson;
   }
 
   getCourses(): void {
@@ -92,22 +92,5 @@ export class ScheduleAddComponent implements OnInit {
       }, error => {
         console.log('获取可可选择的周数失败', error);
       });
-  }
-
-  open(): void {
-    this.isShowSelectClazz = true;
-  }
-
-  close(): void {
-    this.isShowSelectClazz = false;
-    this.isShowSelectTime = false;
-  }
-
-  openTime(): void {
-    this.isShowSelectTime = true;
-  }
-
-  closeTime(): void {
-    this.isShowSelectTime = false;
   }
 }
