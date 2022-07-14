@@ -89,5 +89,12 @@ class TeacherController extends Controller
         return json_encode(true);
     }
 
+    public function getCurrentTeacherId() {
+        $userIdOfCurrentTeacher = User::getCurrentLoginUser()->getId();
+        $teacher = new Teacher();
+        $currentTeacher = $teacher->where('user_id', $userIdOfCurrentTeacher)->find();
+        $currentTeacherId = $currentTeacher->getId();
+        return json_encode($currentTeacherId);
+    }
 
 }
