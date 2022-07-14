@@ -115,19 +115,19 @@ export class ScheduleService {
     return this.httpClient.delete<any>('/schedule/delete/id/' + id.toString());
   }
 
-  getSelectedCourses(): Observable<[]> {
+  getCourses(): Observable<[]> {
     console.log('获取可选择课程');
-    return this.httpClient.get<[]>('/schedule/getSelectedCourses');
+    return this.httpClient.get<[]>('/schedule/getCourses');
   }
 
-  getSelectedClazzes(): Observable<[]> {
+  getClazzes(): Observable<[]> {
     console.log('获取可选择课程');
-    return this.httpClient.get<[]>('/schedule/getSelectedClazzes');
+    return this.httpClient.get<[]>('/schedule/getClazzes');
   }
 
-  getSelectedRooms(): Observable<[]> {
+  getRooms(): Observable<[]> {
     console.log('获取可选择教室');
-    return this.httpClient.get<[]>('/schedule/getSelectedRooms');
+    return this.httpClient.get<[]>('/schedule/getRooms');
   }
 
   getCurrentTerm(): Observable<Term> {

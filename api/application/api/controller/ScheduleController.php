@@ -110,15 +110,15 @@ class ScheduleController extends Controller {
     }
 
 
-    public function getSelectedCourses() {
+    public function getCourses() {
         return json_encode(Course::All());
     }
 
-    public function getSelectedClazzes() {
+    public function getClazzes() {
         return json_encode(Klass::All());
     }
 
-    public function getSelectedRooms() {
+    public function getRooms() {
         return json_encode(Room::All());
     }
 
