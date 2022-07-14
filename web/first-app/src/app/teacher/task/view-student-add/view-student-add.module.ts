@@ -6,7 +6,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
-    ViewStudentAddComponent
+    ViewStudentAddComponent,
   ],
   imports: [
     CommonModule,
