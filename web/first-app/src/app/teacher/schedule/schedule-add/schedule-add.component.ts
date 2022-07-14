@@ -24,6 +24,7 @@ export class ScheduleAddComponent implements OnInit {
   courses =  []  as Course[];
   Clazzes = [] as Clazz[];
   isShowSelectClazz = false;
+
   isShowSelectTime = false;
 
   ngOnInit(): void {
