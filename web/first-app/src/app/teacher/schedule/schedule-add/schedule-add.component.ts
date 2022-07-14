@@ -16,7 +16,7 @@ export class ScheduleAddComponent implements OnInit {
 
   lessons = [1, 2, 3, 4, 5];
   days = ['一', '二', '三', '四', '五', '六', '日'];
-  weeks = [];
+  weeks: number[] = [];
   rooms = [] as Room[];
   h5_day: string | undefined;
   h5_lesson: number | undefined;
@@ -27,10 +27,10 @@ export class ScheduleAddComponent implements OnInit {
   isShowSelectTime = false;
 
   ngOnInit(): void {
-    this.getSelectedCourses();
-    this.getSelectedClazzes();
-    this.getSelectedRooms();
-    this.getSelectedWeeks();
+    this.getCourses();
+    this.getClazzes();
+    this.getRooms();
+    this.getWeeks();
   }
 
 
@@ -40,8 +40,8 @@ export class ScheduleAddComponent implements OnInit {
     this.h5_lesson = lesson;
   }
 
-  getSelectedCourses(): void {
-    this.scheduleService.getSelectedCourses()
+  getCourses(): void {
+    this.scheduleService.getCourses()
       .subscribe(data => {
         console.log('获取可选择课程成功', data);
         this.courses = data;
@@ -50,8 +50,8 @@ export class ScheduleAddComponent implements OnInit {
     });
   }
 
-  getSelectedClazzes(): void {
-    this.scheduleService.getSelectedClazzes()
+  getClazzes(): void {
+    this.scheduleService.getClazzes()
       .subscribe(data => {
         console.log('获取可选择班级成功', data);
         this.Clazzes = data;
@@ -60,8 +60,8 @@ export class ScheduleAddComponent implements OnInit {
       });
   }
 
-  getSelectedRooms(): void {
-    this.scheduleService.getSelectedRooms()
+  getRooms(): void {
+    this.scheduleService.getRooms()
       .subscribe(data => {
         console.log('获取可选择教室成功', data);
         this.rooms = data;
@@ -70,17 +70,16 @@ export class ScheduleAddComponent implements OnInit {
       });
   }
 
-  getSelectedWeeks(): void {
+  getWeeks(): void {
     this.scheduleService.getCurrentTerm()
       .subscribe(term => {
         console.log('获取可选择周数成功', term);
-        const dateStart = new Date((+term.start_time) * 1000);
-        const dateEnd = new Date((+term.end_time) * 1000);
-
+        const dateStart = +term.start_time;
+        const dateEnd = +term.end_time;
         console.log(dateStart);
         console.log(dateEnd);
 
-        const difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
+        const difValue = (dateEnd - dateStart) / (60 * 60 * 24);
 
         console.log(difValue);
         for (let i = 0; i < Math.ceil(difValue / 7); i++) {
