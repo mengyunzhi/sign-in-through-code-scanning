@@ -4,6 +4,7 @@ import {Room} from '../../../entity/room';
 import {RoomService} from '../../../service/room.service';
 import {Confirm, Notify} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-room-index',
@@ -21,21 +22,27 @@ export class RoomIndexComponent implements OnInit {
     numberOfElements: 0
   });
 
+  // 初始化查询条件
+  param = {name: '', capacity: ''};
+  queryForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+    capacity: new FormControl('', Validators.required),
+  });
+
   constructor(private roomService: RoomService,
               private commonService: CommonService) {
-
   }
 
   ngOnInit(): void {
-    this.loadByPage();
+    this.loadByPage(0, this.param);
   }
 
   /*
   * 获取页面数据
   * */
-  loadByPage(page: number = 0): void {
+  loadByPage(page: number = 0, param: {name: string, capacity: string}): void {
     console.log('loadByPage', page);
-    this.roomService.page({page, size: this.size})
+    this.roomService.page({page, size: this.size}, param)
       .subscribe(pageData => {
         console.log('请求成功---', pageData);
         this.page = page;
@@ -69,6 +76,15 @@ export class RoomIndexComponent implements OnInit {
 
   onPage($event: number): void {
     console.log('onPage is called', $event);
-    this.loadByPage($event);
+    this.loadByPage($event, this.param);
+  }
+
+  onSubmit(): void {
+    console.log('onSubmit called');
+    const query = this.queryForm.value as {
+      name: string,
+      capacity: string,
+    };
+    this.loadByPage(0, query);
   }
 }

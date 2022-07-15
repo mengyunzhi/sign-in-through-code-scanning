@@ -4,6 +4,7 @@ import {StudentIndexComponent} from './student-index.component';
 import {PageModule} from '../../../page/page.module';
 import {RouterModule} from '@angular/router';
 import {PipeModule} from '../../../pipe/pipe.module';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [StudentIndexComponent],
@@ -12,6 +13,7 @@ import {PipeModule} from '../../../pipe/pipe.module';
     PageModule,
     RouterModule,
     PipeModule,
+    ReactiveFormsModule,
   ],
   exports: [
     StudentIndexComponent

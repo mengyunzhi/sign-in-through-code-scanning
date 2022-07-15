@@ -13,13 +13,14 @@ class TermController extends Controller
 {
     public function page() {
         $params = Request()->param();
-        $where = '';
-        $query = Term::order(['state desc', 'id desc'])->where($where);
+        $query = Term::order(['state desc', 'id desc'])
+                 ->where('name', 'like', '%' . $params['searchName'] . '%');
         $terms = $query->limit(
             $params['page'] * $params['size'],
             $params['size']
         )->select();
         $data['content'] = $terms;
+        $query = $query->where('name', 'like', '%' . $params['searchName'] . '%');
         $data['length'] = $query->count();
         return json_encode($data);
     }
