@@ -54,6 +54,8 @@ class ScheduleController extends Controller {
         $content['teachers'] = $teachers;
         $content['terms'] = $terms;
         $content['courses'] = $courses;
+
+        $query = Schedule::where($where);
         $data['length'] = $query->count();
         $data['content'] = $content;
         return json_encode($data);
