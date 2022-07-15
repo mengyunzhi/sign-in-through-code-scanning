@@ -64,13 +64,7 @@ export class ScheduleAddComponent implements OnInit {
 
   ngOnInit(): void {
 
-    for (let i = 0; i < 7; i++) {
-      this.courseTimes[i] = [];
-      for (let j = 0; j < 7; j++) {
-        this.courseTimes[i][j] = {} as {weeks: number[], roomIds: number[]};
-      }
-    }
-
+    this.initialCourseTimes();
     // 向后台请求数据
     this.scheduleService.getDataForScheduleAdd()
       .subscribe(data => {
@@ -88,6 +82,15 @@ export class ScheduleAddComponent implements OnInit {
       });
   }
 
+  initialCourseTimes(): void {
+    for (let i = 0; i < 7; i++) {
+      this.courseTimes[i] = [];
+      for (let j = 0; j < 7; j++) {
+        this.courseTimes[i][j] = {} as {weeks: number[], roomIds: number[]};
+      }
+    }
+  }
+
   getConflictData(day: number, lesson: number): {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}[] {
     const conflictData = [] as {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}[];
     for (const data of this.dispatches) {
@@ -103,8 +106,15 @@ export class ScheduleAddComponent implements OnInit {
     return conflictData;
   }
 
+  onClazzIdsChange(): void {
+    // 班级有变动，courseTimes要清空， 防止之前的班级选择的某些数据影响之后的选择
+    this.initialCourseTimes();
+  }
 
   onCourseIdChange(): void {
+    // 课程有变动，courseTimes要清空， 防止之前的课程选择的某些数据影响之后的选择
+    this.initialCourseTimes();
+
     if (this.formGroup.get('course_id')?.value === '') {
       // 没有选择课程， 将clazz_id设为null
       this.formGroup.get('clazz_id')?.setValue(null);
@@ -140,10 +150,12 @@ export class ScheduleAddComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const schedule = this.formGroup.value as {
-      course_id: [],
-      clazz_ids: []
-    };
+    console.log('onsubmit', {
+      teacherId: this.teacher.id,
+      courseId: this.formGroup.get('course_id')?.value,
+      clazzIds: this.formGroup.get('clazz_ids')?.value,
+      courseTimes: this.courseTimes
+    });
     this.scheduleService.scheduleSave({
       teacherId: this.teacher.id,
       courseId: this.formGroup.get('course_id')?.value,

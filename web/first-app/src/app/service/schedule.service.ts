@@ -101,6 +101,10 @@ export class ScheduleService {
     }>('/schedule/getDataForScheduleAdd');
   }
 
+  // getDataForScheduleEdit(schedule_id: number): Observable<any> {
+  //   re
+  // }
+
   page(page: number, size: number): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
