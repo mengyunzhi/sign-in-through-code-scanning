@@ -133,13 +133,10 @@ export class ScheduleAddComponent implements OnInit {
   }
 
   /* 接收子组件传回的数据 */
-  getFooterRun($event: any): void {
-    console.log('父组件1111');
-    console.log($event);
-    console.log('父组件2222');
-    this.courseTimes = $event;
-    console.log(this.courseTimes);
-    console.log('父组件3333');
+  getFooterRun(data: {day: number, lesson: number, weeks: number[], roomIds: number[]}): void {
+    console.log('data', data);
+    this.courseTimes[data.day][data.lesson] = {weeks: data.weeks, roomIds: data.roomIds};
+    console.log('courseTimes', this.courseTimes);
   }
 
   onSubmit(): void {
@@ -147,7 +144,12 @@ export class ScheduleAddComponent implements OnInit {
       course_id: [],
       clazz_ids: []
     };
-    this.scheduleService.scheduleSave(schedule, this.teacher.id, this.courseTimes)
+    this.scheduleService.scheduleSave({
+      teacherId: this.teacher.id,
+      courseId: this.formGroup.get('course_id')?.value,
+      clazzIds: this.formGroup.get('clazz_ids')?.value,
+      courseTimes: this.courseTimes
+    })
       .subscribe(success => {
           console.log('添加成功', success);
           this.router.navigate(['../'], {relativeTo: this.route}).then();

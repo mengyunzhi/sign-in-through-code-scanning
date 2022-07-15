@@ -55,6 +55,7 @@ class Dispatch extends Model {
         // 4、通过dispatchIds和roomIds来存dispatch_room表
         for ($i=0; $i < 7; $i++) {
             for ($j=0; $j < 5; $j++) { 
+
                 if ((!empty($courseTimes[$i][$j]->weeks)) && (!empty($courseTimes[$i][$j]->roomIds))) {
                     $day = $i;$lesson = $j;
                     $weeks = $courseTimes[$i][$j]->weeks;
@@ -70,6 +71,7 @@ class Dispatch extends Model {
                 }
             }
         }
+        return true;
     }
 
 
