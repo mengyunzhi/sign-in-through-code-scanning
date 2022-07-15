@@ -31,13 +31,14 @@ conflictData: {week: number, clazzIds: number[], roomIds: number[], teacher_id: 
 3、对于conflictData中data.schedule_id和当前schedule_id相等的数据的week和roomIds应该放到selected中
 4、可以在loaddata中放到selectedWeeks和selectedRooms中
 5、在onWeekChange和onRoomChange中不对schedule_id进行考虑
-6、所以其实唯一不同的就是编辑刚开始会有一些默认项
-7、不过这些默认项不能被disable, 比如某个week1 room1;不选择week1后week1不能变灰。
- 除非此时选择room2并且room2对week1有冲突
+6、所以其实不同的就是编辑刚开始会有一些默认项
+7、不过这些默认项不能被disable, 比如某个week1 room1;
+比如此时选择week1 room1不能变灰，可以不执行onRoomChange中对conflictWeek的操作,
+如果取消选择week1 在选择room2如果room2对week1有冲突，那week1应该被disable
 week   room
   1     1
   2     2
 selectedWeeks 1
-defaultWeeks 1
+defaultWeeks  1
 conflictWeeks 1
 
