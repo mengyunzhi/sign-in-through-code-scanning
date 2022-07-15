@@ -73,7 +73,7 @@ export class CourseTimeComponent implements OnInit {
   }
 
   onWeekChange(week: number): void {
-    console.log(this.conflictData);
+    console.log('onWeekChange', this.conflictData);
     const index = this.selectedWeeks.indexOf(week);
     console.log(index);
     if (index === -1) {
@@ -104,6 +104,7 @@ export class CourseTimeComponent implements OnInit {
   }
 
   onRoomChange(room_id: number): void {
+    console.log('onRoomChange', this.conflictData);
     // 如果是-1代表数组中不含此room_id
     const index = this.selectedRooms.indexOf(room_id);
     console.log('onRoomChange', index);
