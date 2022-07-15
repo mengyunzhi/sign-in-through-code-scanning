@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Clazz} from '../../../entity/clazz';
 import {Page} from '../../../entity/page';
 import {ClazzService} from '../../../service/clazz.service';
-import {Confirm, Notify} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-clazz-student-index',
@@ -12,7 +12,7 @@ import {CommonService} from '../../../service/common.service';
 })
 export class ClazzIndexComponent implements OnInit {
   page = 0;
-  size = 10;
+  size = 3;
 
   pageData = new Page<Clazz>({
     content: [],
@@ -21,17 +21,23 @@ export class ClazzIndexComponent implements OnInit {
     numberOfElements: 0,
   });
 
+  // 初始化查询条件
+  param = {name: ''};
+  queryForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+  });
+
   constructor(private clazzService: ClazzService,
               private commonService: CommonService) {
   }
 
   ngOnInit(): void {
-    this.loadByPage();
+    this.loadByPage(0, this.param);
   }
 
-  loadByPage(page: number = 0): void {
+  loadByPage(page: number = 0, param: {name: string}): void {
     console.log('loadByPage', page);
-    this.clazzService.page(page, this.size)
+    this.clazzService.page({page, size: this.size}, param)
       .subscribe(pagedate => {
         console.log('班级数据请求成功', pagedate);
         this.page = page;
@@ -50,8 +56,8 @@ export class ClazzIndexComponent implements OnInit {
               this.commonService.success();
               this.ngOnInit();
             }, error => {
-            console.log('班级删除失败', error);
-            this.commonService.error();
+              console.log('班级删除失败', error);
+              this.commonService.error();
             }
           );
       }
@@ -61,6 +67,14 @@ export class ClazzIndexComponent implements OnInit {
 
   onPage($event: number): void {
     console.log('onPage is called', $event);
-    this.loadByPage($event);
+    this.loadByPage($event, this.param);
+  }
+
+  onSubmit(): void {
+    console.log('onSubmit called');
+    const query = this.queryForm.value as {
+      name: string,
+    };
+    this.loadByPage(0, query);
   }
 }

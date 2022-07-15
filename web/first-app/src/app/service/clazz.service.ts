@@ -38,7 +38,7 @@ export class ClazzService {
               sex: student.sex,
             } as User,
             sno: student.sno
-           } as Student);
+          } as Student);
         }
         return new Page<Student>({
           content,
@@ -64,10 +64,11 @@ export class ClazzService {
     return this.httpClient.get<Array<Clazz>>('/clazz/getAll');
   }
 
-  page(page: number, size: number): Observable<Page<Clazz>> {
+  page({page = 0, size = 3}: {page?: number, size?: number}, param: {name?: string}): Observable<Page<Clazz>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
-      .append('size', size.toString());
+      .append('size', size.toString())
+      .append('searchName', param.name as string);
     return this.httpClient
       .get<{length: number, content: Clazz[]}>
       ('/clazz/page', {params: httpParams})
