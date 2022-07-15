@@ -11,7 +11,7 @@
   <div class="form-group row">
     <label class="col-sm-2 col-form-label" style="width: 162px"><code>*</code>课程</label>
     <div class="col-sm-4">
-      <input type="text" disabled class="form-control" value="待填课程">
+      <input type="text" disabled class="form-control" [value]="course.name">
     </div>
   </div>
 
@@ -19,7 +19,7 @@
   <div class="form-group row">
     <label class="col-sm-2 col-form-label"><code>*</code>上课班级<br></label>
     <div class="col-sm-4">
-      <input type="text" class="form-control"  value="计2101" style="width: 100px" disabled>
+      <ng-container *ngFor="let clazz of clazzes">{{ clazz.name }}&nbsp;</ng-container>
     </div>
   </div>
   <!--选择时间-->
@@ -45,7 +45,7 @@
             <td>周{{day}}</td>
             <td *ngFor="let lesson of lessons; index as l">
               <div class="row">
-                <app-course-time
+                <app-course-time2
                   [day]="d"
                   [lesson]="l"
                   [weeks]="weeks"
@@ -54,7 +54,7 @@
                   [conflictData]="getConflictData(d, l)"
                   [clazzes]="formGroup.get('clazz_ids')?.value"
                   (outer)="getFooterRun($event)"
-                ></app-course-time>
+                ></app-course-time2>
 
               </div>
             </td>

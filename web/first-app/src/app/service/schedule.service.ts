@@ -101,9 +101,24 @@ export class ScheduleService {
     }>('/schedule/getDataForScheduleAdd');
   }
 
-  // getDataForScheduleEdit(schedule_id: number): Observable<any> {
-  //   re
-  // }
+  getDataForScheduleEdit(schedule_id: number): Observable<{
+    course: Course,
+    clazzes: Clazz[],
+    term: Term,
+    teacher: Teacher,
+    rooms: Room[],
+    dispatches: {
+      week: number,
+      day: number,
+      lesson: number,
+      schedule_id: number,
+      teacher_id: number,
+      roomIds: number[],
+      clazzIds: number[]
+    }[]
+  }> {
+    return this.httpClient.get<any>('/schedule/getDataForScheduleEdit/schedule_id/' + schedule_id.toString());
+  }
 
   page(page: number, size: number): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
     const httpParams = new HttpParams()

@@ -10,6 +10,7 @@ import { ScheduleAddComponent } from './schedule-add/schedule-add.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ScheduleEditComponent} from './schedule-edit/schedule-edit.component';
 import {CourseTimeComponent} from './schedule-add/course-time/course-time.component';
+import { CourseTime2Component } from './schedule-edit/time-add/course-time2/course-time2.component';
 
 
 
@@ -22,7 +23,8 @@ import {CourseTimeComponent} from './schedule-add/course-time/course-time.compon
     NameEditComponent,
     ScheduleAddComponent,
     ScheduleEditComponent,
-    CourseTimeComponent
+    CourseTimeComponent,
+    CourseTime2Component
   ],
   imports: [
     CommonModule,

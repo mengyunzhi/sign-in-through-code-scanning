@@ -114,9 +114,20 @@ class ScheduleController extends Controller {
         $data['clazzes'] = Klass::All();
         $data['rooms'] = Room::All();
         $data['term'] = Term::getCurrentTerm();
-        $data['courses'] = Course::All();
         $data['dispatches'] = $this->getDispatches();
-        $data['teacher'] = $this->getTeacherByLoginUser();
+        $data['teacher'] = $this->getLoginTeacher();
+        return json_encode($data);
+    }
+
+    public function getDataForScheduleEdit() {
+        $schedule_id = Request()->param('schedule_id/d');
+        $schedule = Schedule::get($schedule_id);
+        $data['course'] = $schedule->getCourse();
+        $data['clazzes'] = $schedule->Klasses;
+        $data['rooms'] = Room::All();
+        $data['term'] = Term::getCurrentTerm();
+        $data['dispatches'] = $this->getDispatches();
+        $data['teacher'] = $this->getLoginTeacher();
         return json_encode($data);
     }
 
@@ -150,7 +161,7 @@ class ScheduleController extends Controller {
         foreach ($DisWithRoomIds as $DisWithRoomId) {
             $DisWithRoomId['clazzIds'] = ScheduleKlass::where('schedule_id', 'eq', $DisWithRoomId['schedule_id'])->column('klass_id'); 
             //去除无用项
-            unset($DisWithRoomId['id'], $DisWithRoomId['schedule_id']);
+            unset($DisWithRoomId['id']);
             $DisWithRoomIdsAndKlassIds[] = $DisWithRoomId;
         }
         return ($DisWithRoomIdsAndKlassIds);
@@ -195,7 +206,7 @@ class ScheduleController extends Controller {
         return $DisWithRoomIds;
     }
 
-    public function getTeacherByLoginUser() {
+    public function getLoginTeacher() {
         $user = User::getCurrentLoginUser();
         $teacher = Teacher::where('user_id', $user->id)->find();
         unset($teacher->user_id);
