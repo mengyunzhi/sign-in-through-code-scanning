@@ -45,7 +45,7 @@
             <td>周{{day}}</td>
             <td *ngFor="let lesson of lessons; index as l">
               <div class="row">
-                <app-course-time
+                <app-course-time2
                   [day]="d"
                   [lesson]="l"
                   [weeks]="weeks"
@@ -54,7 +54,7 @@
                   [conflictData]="getConflictData(d, l)"
                   [clazzes]="formGroup.get('clazz_ids')?.value"
                   (outer)="getFooterRun($event)"
-                ></app-course-time>
+                ></app-course-time2>
 
               </div>
             </td>
