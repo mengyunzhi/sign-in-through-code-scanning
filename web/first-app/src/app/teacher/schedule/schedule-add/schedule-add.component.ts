@@ -18,16 +18,16 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./schedule-add.component.css']
 })
 export class ScheduleAddComponent implements OnInit {
-  formGroup = new FormGroup({
-    course_id: new FormControl('', Validators.required),
-    clazz_ids: new FormControl(null, Validators.required),
-  });
 
   constructor(private scheduleService: ScheduleService,
               private clazzService: ClazzService,
               private teacherService: TeacherService,
               private router: Router,
               private route: ActivatedRoute) { }
+  formGroup = new FormGroup({
+    course_id: new FormControl('', Validators.required),
+    clazz_ids: new FormControl(null, Validators.required),
+  });
 
   courseTimes = [] as {weeks: number[], roomIds: number[]}[][];
 
@@ -62,6 +62,22 @@ export class ScheduleAddComponent implements OnInit {
     clazzIds: number[]
   }[];
 
+  checkCourseTimes(): boolean {
+    let count = 0;
+    for (let i = 0; i < 7; i++) {
+      for (let j = 0; j < 5; j++) {
+        console.log(this.courseTimes[i][j]);
+        if ( (this.courseTimes[i][j].weeks.length === 0 && this.courseTimes[i][j].roomIds.length !== 0)
+          || (this.courseTimes[i][j].weeks.length !== 0 && this.courseTimes[i][j].roomIds.length === 0)) {
+          return false;
+        } else if (this.courseTimes[i][j].weeks.length !== 0 && this.courseTimes[i][j].roomIds.length !== 0) {
+          count++;
+        }
+      }
+    }
+    return count !== 0;
+  }
+
   ngOnInit(): void {
 
     this.initCourseTimes();
@@ -85,8 +101,10 @@ export class ScheduleAddComponent implements OnInit {
   initCourseTimes(): void {
     for (let i = 0; i < 7; i++) {
       this.courseTimes[i] = [];
-      for (let j = 0; j < 7; j++) {
+      for (let j = 0; j < 5; j++) {
         this.courseTimes[i][j] = {} as {weeks: number[], roomIds: number[]};
+        this.courseTimes[i][j].weeks = [];
+        this.courseTimes[i][j].roomIds = [];
       }
     }
   }
@@ -149,26 +167,32 @@ export class ScheduleAddComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('onsubmit', {
-      teacherId: this.teacher.id,
-      courseId: this.formGroup.get('course_id')?.value,
-      clazzIds: this.formGroup.get('clazz_ids')?.value,
-      courseTimes: this.courseTimes
-    });
-    this.scheduleService.scheduleSave({
-      teacherId: this.teacher.id,
-      courseId: this.formGroup.get('course_id')?.value,
-      clazzIds: this.formGroup.get('clazz_ids')?.value,
-      courseTimes: this.courseTimes
-    })
-      .subscribe(success => {
-          console.log('添加成功', success);
-          this.router.navigate(['../'], {relativeTo: this.route}).then();
-          Notify.success('添加成功', {timeout: 1000});
-        },
-        error => {
-          console.log('添加失败', error);
-          Report.failure('添加失败', '', '确定');
-        });
+    const status = this.checkCourseTimes();
+    console.log(status);
+    if (status) {
+      console.log('onsubmit', {
+        teacherId: this.teacher.id,
+        courseId: this.formGroup.get('course_id')?.value,
+        clazzIds: this.formGroup.get('clazz_ids')?.value,
+        courseTimes: this.courseTimes
+      });
+      this.scheduleService.scheduleSave({
+        teacherId: this.teacher.id,
+        courseId: this.formGroup.get('course_id')?.value,
+        clazzIds: this.formGroup.get('clazz_ids')?.value,
+        courseTimes: this.courseTimes
+      })
+        .subscribe(success => {
+            console.log('添加成功', success);
+            this.router.navigate(['../'], {relativeTo: this.route}).then();
+            Notify.success('添加成功', {timeout: 1000});
+          },
+          error => {
+            console.log('添加失败', error);
+            Report.failure('添加失败', '', '确定');
+          });
+    } else {
+      Report.failure('请完善上课时间信息', '', '确定');
+    }
   }
 }
