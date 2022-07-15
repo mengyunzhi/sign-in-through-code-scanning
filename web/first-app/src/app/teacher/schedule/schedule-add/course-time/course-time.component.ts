@@ -8,6 +8,7 @@ import {Teacher} from '../../../../entity/teacher';
   styleUrls: ['./course-time.component.css']
 })
 export class CourseTimeComponent implements OnInit {
+  status = 1;
 
   constructor() {
   }
@@ -173,6 +174,32 @@ export class CourseTimeComponent implements OnInit {
     // console.log('selectedWeeks', this.selectedWeeks);
     // console.log('selectedRooms', this.selectedRooms);
     this.outer.emit({day: this.day, lesson: this.lesson, weeks: this.selectedWeeks, roomIds: this.selectedRooms});
+  }
+
+  getContent(): string {
+    if (this.selectedWeeks.length === 0 && this.selectedRooms.length === 0) {
+      this.status = 1;
+      return '周' + this.day + '第' + this.lesson + '节';
+    } else if (this.selectedWeeks.length > 0 && this.selectedRooms.length > 0) {
+      this.status = 0;
+      let content = '';
+      content += `周:${this.selectedWeeks}    `;
+      content += this.getRoomNames();
+      return content;
+    } else {
+      this.status = -1;
+      return '请选择完整数据';
+    }
+  }
+
+  private getRoomNames(): string {
+    let roomNames = '教室:';
+    for (let i = this.rooms.length - 1; i >= 0; i--) {
+      if (this.selectedRooms.includes(this.rooms[i].id)) {
+        roomNames += this.rooms[i].name + ';';
+      }
+    }
+    return roomNames;
   }
 
 }
