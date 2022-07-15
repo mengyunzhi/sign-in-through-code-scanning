@@ -35,12 +35,10 @@ export class TimeAddComponent implements OnInit {
   lessons = [1, 2, 3, 4, 5];
   days = ['一', '二', '三', '四', '五', '六', '日'];
 
-  /* 可选课程 */
-  courses =  []  as Course[];
-  /* 待处理班级，需要筛选掉已经上过该门课的班级 */
-  clazzesToBeScreened = [] as Clazz[];
-  /* 可选班级，clazzes筛选过后的班级 */
-  clazzes: Clazz[] = [];
+  /* 课程 */
+  course =  {} as Course;
+  /* 班级 */
+  clazzes = [] as Clazz[];
 
 
   /* 当前教师,传给子组件 */
@@ -67,21 +65,16 @@ export class TimeAddComponent implements OnInit {
   }[];
 
   ngOnInit(): void {
-    for (let i = 0; i < 7; i++) {
-      this.courseTimes[i] = [];
-      for (let j = 0; j < 7; j++) {
-        this.courseTimes[i][j] = {} as {weeks: number[], roomIds: number[]};
-      }
-    }
     this.schedule_id = +this.route.snapshot.params.schedule_id;
     console.log('schedule_id', this.schedule_id);
+    this.initCourseTimes();
 
     // 向后台请求数据
-    this.scheduleService.getDataForScheduleAdd()
+    this.scheduleService.getDataForScheduleEdit(this.schedule_id)
       .subscribe(data => {
         console.log('data:', data);
-        this.courses = data.courses;
-        this.clazzesToBeScreened = data.clazzes;
+        this.course = data.course;
+        this.clazzes = data.clazzes;
         this.term = data.term;
         this.rooms = data.rooms;
         this.dispatches = data.dispatches;
@@ -91,6 +84,15 @@ export class TimeAddComponent implements OnInit {
       }, error =>  {
         console.log('失败', error);
       });
+  }
+
+  initCourseTimes(): void {
+    for (let i = 0; i < 7; i++) {
+      this.courseTimes[i] = [];
+      for (let j = 0; j < 7; j++) {
+        this.courseTimes[i][j] = {} as {weeks: number[], roomIds: number[]};
+      }
+    }
   }
 
   getConflictData(day: number, lesson: number): {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}[] {
@@ -107,24 +109,6 @@ export class TimeAddComponent implements OnInit {
     }
     return conflictData;
   }
-
-
-  onCourseIdChange(): void {
-    if (this.formGroup.get('course_id')?.value === '') {
-      // 没有选择课程， 将clazz_id设为null
-      this.formGroup.get('clazz_id')?.setValue(null);
-    } else {
-      // 选择课程，请求已选择该课程的班级klassIds, 并在clazzes中筛选掉这些班级
-      this.clazzService.clazzesHaveSelectCourse(this.formGroup.get('course_id')?.value)
-        .subscribe(clazzIds => {
-          console.log('clazzIds', clazzIds);
-          this.clazzes = this.clazzesToBeScreened.filter(clazz => !clazzIds.includes(clazz.id));
-        }, error => {
-          console.log('error', error);
-        });
-    }
-  }
-
 
   /* 通过term获取周的数组，传给子组件 */
   getWeeksByTerm(): void {

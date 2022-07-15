@@ -1,6 +1,4 @@
-注意：
-thinkphp的周数为1基，
-angular的周数为0基
+注意
 
 以下为新增排课功能：
 
@@ -22,6 +20,24 @@ conflictData: {week: number, clazzIds: number[], roomIds: number[], teacher_id: 
 // 但是后台的addRoomIds在新增排课时候将所有的同day同lesson的roomIds求并集了。
 
 
-
 子组件传递给父组件的数据：
 (outer)="getFooterRun($event)"   $event: {day: number, lesson: number, weeks: number[], roomIds: number[]}
+
+
+编辑排课功能：
+1、课程和班级是通过schedule_id获得的
+2、每个小单元在初始化需要返回数据给父组件courseTime[][]
+
+3、对于conflictData中data.schedule_id和当前schedule_id相等的数据的week和roomIds应该放到selected中
+4、可以在loaddata中放到selectedWeeks和selectedRooms中
+5、在onWeekChange和onRoomChange中不对schedule_id进行考虑
+6、所以其实唯一不同的就是编辑刚开始会有一些默认项
+7、不过这些默认项不能被disable, 比如某个week1 room1;不选择week1后week1不能变灰。
+ 除非此时选择room2并且room2对week1有冲突
+week   room
+  1     1
+  2     2
+selectedWeeks 1
+defaultWeeks 1
+conflictWeeks 1
+

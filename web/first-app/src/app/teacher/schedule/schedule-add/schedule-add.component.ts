@@ -64,7 +64,7 @@ export class ScheduleAddComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.initialCourseTimes();
+    this.initCourseTimes();
     // 向后台请求数据
     this.scheduleService.getDataForScheduleAdd()
       .subscribe(data => {
@@ -82,7 +82,7 @@ export class ScheduleAddComponent implements OnInit {
       });
   }
 
-  initialCourseTimes(): void {
+  initCourseTimes(): void {
     for (let i = 0; i < 7; i++) {
       this.courseTimes[i] = [];
       for (let j = 0; j < 7; j++) {
@@ -108,13 +108,12 @@ export class ScheduleAddComponent implements OnInit {
 
   onClazzIdsChange(): void {
     // 班级有变动，courseTimes要清空， 防止之前的班级选择的某些数据影响之后的选择
-    this.initialCourseTimes();
+    this.initCourseTimes();
   }
 
   onCourseIdChange(): void {
     // 课程有变动，courseTimes要清空， 防止之前的课程选择的某些数据影响之后的选择
-    this.initialCourseTimes();
-
+    this.initCourseTimes();
     if (this.formGroup.get('course_id')?.value === '') {
       // 没有选择课程， 将clazz_id设为null
       this.formGroup.get('clazz_id')?.setValue(null);
