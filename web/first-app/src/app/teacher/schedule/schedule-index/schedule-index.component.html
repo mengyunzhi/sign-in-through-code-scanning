@@ -16,13 +16,13 @@
 <!--表格-->
 <table class="table table-striped" style="margin-top: 20px">
   <thead>
-  <tr  class="table-primary">
-    <th>序号</th>
-    <th>课程名称</th>
-    <th>学期名称</th>
-    <th>班级</th>
-    <th>操作</th>
-  </tr>
+    <tr  class="table-primary">
+      <th>序号</th>
+      <th>课程名称</th>
+      <th>学期名称</th>
+      <th>班级</th>
+      <th>操作</th>
+    </tr>
   </thead>
   <tbody *ngIf="pageData.content.length">
     <tr *ngFor="let unit of pageData.content index as i">

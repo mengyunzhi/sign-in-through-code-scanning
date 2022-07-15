@@ -674,7 +674,8 @@ app.component('week-select', {
                                 var difValue = (dateEnd - dateStart) / (1000 * 60 * 60 * 24);
                                 // console.log(Math.ceil(difValue / 7));
                                 for (var i = 0; i < Math.ceil(difValue / 7); i++) {
-                                    this.weeks[i] = i+1;
+                                    // 此处改动将1基修改为0基, 2022/07/15,
+                                    this.weeks[i] = i;
                                 }
                             })
                             .catch(function (error) { // 请求失败处理
