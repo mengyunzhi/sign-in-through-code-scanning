@@ -60,17 +60,18 @@ class Schedule extends Model {
     }
 
     static public function scheduleSave($teacherId, $courseId, $klassIds, $courseTimes, &$msg='') {
-        //1、通过teacherId、termId、courseId先存schedule表
+        //1、通过 teacherId、termId、courseId 先存schedule表
         $term = Term::getCurrentTerm();
         $schedule = Schedule::saveSchedule($teacherId, $term->id, $courseId, $msg);
         if (is_null($schedule)) return false;
-        //2、通过scheduleId、klassIds 存schedule_klass表
+        //2、通过 scheduleId、klassIds 存schedule_klass 表
         foreach ($klassIds as $klassId) {
             $scheduleKlass = ScheduleKlass::saveScheduleKlass($schedule->id, $klassId, $msg);
             if (is_null($scheduleKlass)) return false;
         }
+        //存dispatch、dispatchroom
         $status = Dispatch::dispatchSave($schedule->id, $courseTimes, $msg);
-        return true;
+        return $status;
     }
 
     static public function courseTimeSave($teacherId, $courseId, $scheduleId, $courseTimes, &$msg) {

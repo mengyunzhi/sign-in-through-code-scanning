@@ -11,6 +11,16 @@
         <h5 class="modal-title" [id]="'exampleModalCenterTitle' + day.toString() + lesson.toString()">
           周{{day}}第{{lesson}}节
         </h5>
+        {{'---------'}}
+        {{'selectedWeeks'}}
+        {{selectedWeeks | json}}
+        {{'conflictWeeks'}}
+        {{conflictWeeks | json}}
+        {{'selectedRooms'}}
+        {{selectedRooms | json}}
+        {{'conflictRooms'}}
+        {{conflictRooms | json}}
+        {{'---------'}}
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -20,12 +30,13 @@
           <div class="col-sm-6">
             <div class="row" *ngFor="let week of weeks; index as index">
               {{ isWeekDisabled(index) }}
-              &nbsp;&nbsp;<input type="checkBox" (change)="onWeekChange(week)" [id]="day.toString() + lesson.toString() + week.toString()" [disabled]="isWeekDisabled(index)">&nbsp;<label [for]="day.toString() + lesson.toString() + week.toString()">第{{ week }}周</label>
+              &nbsp;&nbsp;
+              <input type="checkBox" (click)="onWeekChange(week)"  [disabled]="isWeekDisabled(index)" [id]="day.toString() + lesson.toString() + week.toString()">&nbsp;<label [for]="day.toString() + lesson.toString() + week.toString()">第{{ week }}周</label>
             </div>
           </div>
           <div class="col-sm-6">
-            <div class="row" *ngFor="let room of rooms">
-              <input type="checkBox" (change)="onRoomChange(room.id)" [id]="day.toString() + lesson.toString() + room.id.toString()">&nbsp;<label [for]="day.toString() + lesson.toString() + room.id.toString()">{{room.name}}</label>
+            <div class="row" *ngFor="let room of rooms; index as index">
+              <input type="checkBox" (click)="onRoomChange(room.id)"  [disabled]="isRoomDisabled(room.id)" [id]="day.toString() + lesson.toString() + room.id.toString()">&nbsp;<label [for]="day.toString() + lesson.toString() + room.id.toString()">{{room.name}}</label>
             </div>
           </div>
         </div>

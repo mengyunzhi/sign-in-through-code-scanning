@@ -1,3 +1,7 @@
+注意：
+thinkphp的周数为1基，
+angular的周数为0基
+
 以下为新增排课功能：
 
    父组件内容 ：  课程选择， 班级选择， 时间选择框
@@ -7,8 +11,9 @@
 day: number
 lesson: number
 weeks: number[]
-rooms: Room[]
-selectedClazzes: number[]
+rooms: Room[],
+teacher: Teacher,
+clazzes: number[]
 conflictData: {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}
 // 如果teacher_id对应当前teacher，那么在week这一周应该disabled
 // 如果选中的某个班级被包含在clazzIds， 那么在week这一周应该disabled
@@ -17,5 +22,6 @@ conflictData: {week: number, clazzIds: number[], roomIds: number[], teacher_id: 
 // 但是后台的addRoomIds在新增排课时候将所有的同day同lesson的roomIds求并集了。
 
 
-子组件传递给父组件的数据：
 
+子组件传递给父组件的数据：
+(outer)="getFooterRun($event)"   $event: {day: number, lesson: number, weeks: number[], roomIds: number[]}

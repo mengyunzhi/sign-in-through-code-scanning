@@ -202,18 +202,20 @@ class ScheduleController extends Controller {
         $teacher->user = $user;
         return $teacher;
     }
-    
+
     public function scheduleSave()
     {
-        $data = Request()->param(); //获取前端传来的json数据
-        return json_encode($data);
-        $teacherId = $data["teacherId"];
-        $courseId = $data["courseId"];
-        $klassIds = $data["klassIds"];
-        $courseTimes = $data["courseTimes"];
+        $data = json_decode(file_get_contents("php://input"));
+        $teacherId = $data->teacherId;
+        $courseId = $data->courseId;
+        $klassIds = $data->clazzIds;
+        $courseTimes = $data->courseTimes;
         $msg='';
         $status = Schedule::scheduleSave($teacherId , $courseId, $klassIds, $courseTimes, $msg);
-        return $status ? 1 : 0;
+        if (!$status) {
+            return $this->error('排课新增失败:'. $msg);
+        }
+        return json_encode(true);
     }
 
 }
