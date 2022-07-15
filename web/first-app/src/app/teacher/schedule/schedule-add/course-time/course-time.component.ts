@@ -32,12 +32,9 @@ export class CourseTimeComponent implements OnInit {
 
   @Input()
   set clazzes(selectedClazzes: number[]) {
-    if (selectedClazzes.length === 0 ) {
       this.clearData();
-    } else {
       this.selectedClazzes = selectedClazzes;
       this.loadData();
-    }
   }
 
   @Output()
@@ -76,6 +73,7 @@ export class CourseTimeComponent implements OnInit {
   }
 
   onWeekChange(week: number): void {
+    console.log(this.conflictData);
     const index = this.selectedWeeks.indexOf(week);
     console.log(index);
     if (index === -1) {
@@ -84,8 +82,10 @@ export class CourseTimeComponent implements OnInit {
       // 通过week加入冲突的的roomIds
       const dataEqualWeek = this.conflictData.filter(data => data.week === week);
       if (dataEqualWeek.length > 0) {
-        for (const roomId of dataEqualWeek[0].roomIds) {
-          this.conflictRooms.push(roomId);
+        for (const data of dataEqualWeek) {
+          for (const roomId of data.roomIds) {
+            this.conflictRooms.push(roomId);
+          }
         }
       }
     } else {
@@ -94,8 +94,10 @@ export class CourseTimeComponent implements OnInit {
       // 去除当前week对应的不可用roomIds
       const dataEqualWeek = this.conflictData.filter(data => data.week === week);
       if (dataEqualWeek.length > 0) {
-        for (const roomId of dataEqualWeek[0].roomIds) {
-          this.conflictRooms.splice(this.conflictRooms.indexOf(roomId), 1);
+        for (const data of dataEqualWeek) {
+          for (const roomId of data.roomIds) {
+            this.conflictRooms.splice(this.conflictRooms.indexOf(roomId), 1);
+          }
         }
       }
     }
