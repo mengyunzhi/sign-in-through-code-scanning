@@ -89,5 +89,4 @@ class TeacherController extends Controller
         return json_encode(true);
     }
 
-
 }

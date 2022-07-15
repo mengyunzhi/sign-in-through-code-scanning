@@ -58,6 +58,7 @@
                   [teacher]="teacher"
                   [conflictData]="getConflictData(d, l)"
                   [clazzes]="formGroup.get('clazz_ids')?.value"
+                  (outer)="getFooterRun($event)"
                 ></app-course-time>
               </div>
             </td>
@@ -66,7 +67,7 @@
       </div>
       <div class="form-group row">
         <div class="col">
-          <a type="submit" class="btn btn-primary">确定</a>
+          <a type="submit" class="btn btn-primary" (click)="onSubmit()">确定</a>
         </div>
       </div>
     </div>

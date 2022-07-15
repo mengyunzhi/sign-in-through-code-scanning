@@ -148,4 +148,23 @@ export class ScheduleService {
   delete(id: number): Observable<any> {
     return this.httpClient.delete<any>('/schedule/delete/id/' + id.toString());
   }
+
+  scheduleSave(schedule: { course_id: []; clazz_ids: [] }, teacherId: number, courseTime: any[]): Observable<any> {
+    console.log('service层111111');
+    console.log(schedule);
+    console.log(teacherId);
+    console.log(courseTime);
+    console.log('service层2222222222');
+    const httpParams = new HttpParams()
+      .append('teacherId', teacherId.toString())
+      .append('courseTimes', courseTime.toString())
+      .append('klassIds', schedule.clazz_ids.toString())
+      .append('courseId', schedule.course_id.toString());
+
+    console.log(httpParams);
+    console.log('444444444');
+    console.log(this.httpClient.get<any>('/schedule/scheduleSave', {params: httpParams}));
+    console.log('555555555');
+    return this.httpClient.get<any>('/schedule/scheduleSave', {params: httpParams});
+  }
 }

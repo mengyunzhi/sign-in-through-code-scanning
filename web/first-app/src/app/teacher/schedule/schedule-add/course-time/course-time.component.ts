@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {Room} from '../../../../entity/room';
 import {Teacher} from '../../../../entity/teacher';
 
@@ -9,7 +9,9 @@ import {Teacher} from '../../../../entity/teacher';
 })
 export class CourseTimeComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
+
   @Input()
   day = -1;    // 当前单元对应day
 
@@ -34,6 +36,10 @@ export class CourseTimeComponent implements OnInit {
     this.selectedClazzes = selectedClazzes;
   }
 
+  @Output()
+  private outer = new EventEmitter<{day: number, lesson: number, weeks: number[], roomIds: number[]}>();
+  public msg = '我是子组件course-time的一个msg';
+
   selectedClazzes = [] as number[];
   // 已经选择的周
   selectedWeeks = [] as number[];
@@ -46,7 +52,7 @@ export class CourseTimeComponent implements OnInit {
   // 不可用的教室
   conflictRooms = [] as number[];
 
-
+  courseTime = [] as {weeks: number[], roomIds: number[]}[][];
 
   ngOnInit(): void {
     this.loadData();
@@ -63,7 +69,16 @@ export class CourseTimeComponent implements OnInit {
   }
 
   onRoomChange(room_id: number): void {
-
+    let sta = true;
+    for (const item of this.selectedRooms) {
+      if (item === room_id) {
+        this.selectedRooms.splice(this.selectedRooms.indexOf(room_id), 1);
+        sta = !sta;
+      }
+    }
+    if (sta) {
+      this.selectedRooms.push(room_id);
+    }
   }
 
   isWeekDisabled(week: number): boolean {
@@ -83,6 +98,42 @@ export class CourseTimeComponent implements OnInit {
         this.disableWeeks.push(data.week);
       }
     }
+    console.log('unit lesson', this.lesson);
+    console.log('unit weeks', this.weeks);
+    console.log('unit conflictData', this.conflictData);
+    console.log('unit rooms', this.selectedClazzes);
+    // 初始化courseTime
+    this.initializationCourseTime();
+  }
+
+  initializationCourseTime(): void {
+    for (let i = 0; i < 7; i++) {
+      this.courseTime[i] = [];
+      for (let j = 0; j < 5; j++) {
+        this.courseTime[i][j] = {} as {weeks: number[], roomIds: number[]};
+      }
+    }
+  }
+
+  addSelectWeeks(week: number): void {
+    let sta = true;
+    for (const item of this.selectedWeeks) {
+      if (item === week) {
+        this.selectedWeeks.splice(this.selectedWeeks.indexOf(week), 1);
+        sta = !sta;
+      }
+    }
+    if (sta) {
+      this.selectedWeeks.push(week);
+    }
+  }
+
+  sendParent(): void {
+    // console.log('this.Day', this.day);
+    // console.log('this.Lesson', this.lesson);
+    // console.log('selectedWeeks', this.selectedWeeks);
+    // console.log('selectedRooms', this.selectedRooms);
+    this.outer.emit({day: this.day, lesson: this.lesson, weeks: this.selectedWeeks, roomIds: this.selectedRooms});
   }
 
 }

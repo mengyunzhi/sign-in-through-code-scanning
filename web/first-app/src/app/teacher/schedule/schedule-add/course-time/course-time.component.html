@@ -4,8 +4,6 @@
 <button type="button" class="btn btn-info" data-toggle="modal" style="margin-left: 50px" [attr.data-target]="'#exampleModalCenter' + day.toString() + lesson.toString()"> <!-- (click)="isShow(day, lesson)"-->
   周{{day}}第{{lesson}}节
 </button>
-
-<!-- Modal -->
 <div [id]="'exampleModalCenter' + day.toString() + lesson.toString()" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="exampleModalCenterTitle">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -22,18 +20,18 @@
           <div class="col-sm-6">
             <div class="row" *ngFor="let week of weeks; index as index">
               {{ isWeekDisabled(index) }}
-              &nbsp;&nbsp;<input type="checkBox" [id]="day.toString() + lesson.toString() + week.toString()" [disabled]="isWeekDisabled(index)" (change)="onWeekChange(week)">&nbsp;<label [for]="day.toString() + lesson.toString() + week.toString()">第{{ week }}周</label>
+              &nbsp;&nbsp;<input type="checkBox" (change)="onWeekChange(week)" [id]="day.toString() + lesson.toString() + week.toString()" [disabled]="isWeekDisabled(index)">&nbsp;<label [for]="day.toString() + lesson.toString() + week.toString()">第{{ week }}周</label>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="row" *ngFor="let room of rooms">
-              <input type="checkBox" [id]="day.toString() + lesson.toString() + room.id.toString()" (change)="onRoomChange(room.id)">&nbsp;<label [for]="day.toString() + lesson.toString() + room.id.toString()">{{room.name}}</label>
+              <input type="checkBox" (change)="onRoomChange(room.id)" [id]="day.toString() + lesson.toString() + room.id.toString()">&nbsp;<label [for]="day.toString() + lesson.toString() + room.id.toString()">{{room.name}}</label>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">保存数据</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="sendParent()">保存数据</button>
       </div>
     </div>
   </div>
