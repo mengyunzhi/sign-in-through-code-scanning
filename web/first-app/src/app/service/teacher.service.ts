@@ -67,7 +67,4 @@ export class TeacherService {
     return this.httpClient.post<any>('/teacher/updatePasswordByAdmin/id/' + id.toString(), password);
   }
 
-  getCurrentTeacherId(): Observable<number> {
-    return this.httpClient.get<number>('/teacher/getCurrentTeacherId');
-  }
 }

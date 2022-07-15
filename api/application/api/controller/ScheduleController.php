@@ -116,6 +116,7 @@ class ScheduleController extends Controller {
         $data['term'] = Term::getCurrentTerm();
         $data['courses'] = Course::All();
         $data['dispatches'] = $this->getDispatches();
+        $data['teacher'] = $this->getTeacherByLoginUser();
         return json_encode($data);
     }
 
@@ -194,6 +195,14 @@ class ScheduleController extends Controller {
         return $DisWithRoomIds;
     }
 
+    public function getTeacherByLoginUser() {
+        $user = User::getCurrentLoginUser();
+        $teacher = Teacher::where('user_id', $user->id)->find();
+        unset($teacher->user_id);
+        $teacher->user = $user;
+        return $teacher;
+    }
+    
     public function scheduleSave()
     {
         $data = Request()->param(); //获取前端传来的json数据

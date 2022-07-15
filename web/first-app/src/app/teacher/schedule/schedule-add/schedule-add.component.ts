@@ -6,6 +6,7 @@ import {Room} from '../../../entity/room';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Term} from '../../../entity/term';
 import {ClazzService} from '../../../service/clazz.service';
+import {Teacher} from '../../../entity/teacher';
 import {TeacherService} from '../../../service/teacher.service';
 import {Notify, Report} from 'notiflix';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -28,6 +29,8 @@ export class ScheduleAddComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute) { }
 
+  courseTimes = [] as {weeks: number[], roomIds: number[]}[][];
+
   lessons = [1, 2, 3, 4, 5];
   days = ['一', '二', '三', '四', '五', '六', '日'];
 
@@ -39,6 +42,8 @@ export class ScheduleAddComponent implements OnInit {
   clazzes: Clazz[] = [];
 
 
+  /* 当前教师,传给子组件 */
+  teacher = {} as Teacher;
   /* 当前学期，用于获取周数数组  */
   term = {} as Term;
   /* 当前学期周数数组,传递给子组件 */
@@ -57,12 +62,14 @@ export class ScheduleAddComponent implements OnInit {
     clazzIds: number[]
   }[];
 
-  teacherId: number | undefined;
-  courseTime = [];
-
   ngOnInit(): void {
-    // 初始化courseTime
-    this.initializationCourseTime();
+
+    for (let i = 0; i < 7; i++) {
+      this.courseTimes[i] = [];
+      for (let j = 0; j < 7; j++) {
+        this.courseTimes[i][j] = {} as {weeks: number[], roomIds: number[]};
+      }
+    }
 
     // 向后台请求数据
     this.scheduleService.getDataForScheduleAdd()
@@ -73,24 +80,31 @@ export class ScheduleAddComponent implements OnInit {
         this.term = data.term;
         this.rooms = data.rooms;
         this.dispatches = data.dispatches;
+        this.teacher = data.teacher;
         // 调用方法，获取周数数组
-        this.getWeeks();
+        this.getWeeksByTerm();
       }, error =>  {
         console.log('失败', error);
       });
   }
 
-  initializationCourseTime(): void {
-    for (let i = 0; i < 7; i++) {
-      this.courseTime[i] = [];
-      for (let j = 0; j < 5; j++) {
-        this.courseTime[i][j] = [];
+  getConflictData(day: number, lesson: number): {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}[] {
+    const conflictData = [] as {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}[];
+    for (const data of this.dispatches) {
+      if (data.day === day && data.lesson === lesson) {
+        conflictData.push({
+          week: data.week,
+          clazzIds: data.clazzIds,
+          roomIds: data.roomIds,
+          teacher_id: data.teacher_id
+        });
       }
     }
+    return conflictData;
   }
 
-  /* 检测：如果当前没有选择课程，那么班级也不应该被选择 */
-  detect(): void {
+
+  onCourseIdChange(): void {
     if (this.formGroup.get('course_id')?.value === '') {
       // 没有选择课程， 将clazz_id设为null
       this.formGroup.get('clazz_id')?.setValue(null);
@@ -106,23 +120,9 @@ export class ScheduleAddComponent implements OnInit {
     }
   }
 
-  getConflictData(day: number, lesson: number): {week: number, clazzIds: number[], roomIds: number[]}[] {
-    const conflictData = [] as {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}[];
-    for (const data of this.dispatches) {
-      if (day === data.day && lesson === data.lesson) {
-        conflictData.push({
-          week: data.week,
-          clazzIds: data.clazzIds,
-          roomIds: data.roomIds,
-          teacher_id: data.teacher_id
-        });
-      }
-    }
-    return conflictData;
-  }
 
   /* 通过term获取周的数组，传给子组件 */
-  getWeeks(): void {
+  getWeeksByTerm(): void {
       const term = this.term;
       const difValue = (+term.end_time - +term.start_time) / (60 * 60 * 24);
       console.log('周的个数：', difValue);
@@ -137,40 +137,25 @@ export class ScheduleAddComponent implements OnInit {
     console.log('父组件1111');
     console.log($event);
     console.log('父组件2222');
-    this.courseTime = $event;
-    console.log(this.courseTime);
+    this.courseTimes = $event;
+    console.log(this.courseTimes);
     console.log('父组件3333');
   }
 
   onSubmit(): void {
-    this.teacherService.getCurrentTeacherId()
-      .subscribe(data => {
-        this.teacherId = data;
-        console.log('hhhhhhhhhh');
-        console.log(this.teacherId);
-        console.log('ppppppppp');
-
-        const schedule = this.formGroup.value as {
-          course_id: [],
-          clazz_ids: []
-        };
-
-        console.log(this.teacherId);
-        console.log(schedule);
-        console.log(this.courseTime);
-
-        this.scheduleService.scheduleSave(schedule, this.teacherId, this.courseTime)
-          .subscribe(success => {
-              console.log('添加成功', success);
-              this.router.navigate(['../'], {relativeTo: this.route});
-              Notify.success('添加成功', {timeout: 1000});
-            },
-            error => {
-              console.log('添加失败', error);
-              Report.failure('添加失败', '', '确定');
-            });
-      }, error => {
-        console.log('获取teacherId失败', error);
-      });
+    const schedule = this.formGroup.value as {
+      course_id: [],
+      clazz_ids: []
+    };
+    this.scheduleService.scheduleSave(schedule, this.teacher.id, this.courseTimes)
+      .subscribe(success => {
+          console.log('添加成功', success);
+          this.router.navigate(['../'], {relativeTo: this.route}).then();
+          Notify.success('添加成功', {timeout: 1000});
+        },
+        error => {
+          console.log('添加失败', error);
+          Report.failure('添加失败', '', '确定');
+        });
   }
 }
