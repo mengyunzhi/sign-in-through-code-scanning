@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {ScheduleService} from '../../../../service/schedule.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ClazzService} from '../../../../service/clazz.service';
 import {Clazz} from '../../../../entity/clazz';
 import {Dispatch} from '../../../../entity/dispatch';
 import {DispatchService} from '../../../../service/dispatch.service';
 import {ClazzScheduleService} from '../../../../service/clazzSchedule.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Notify, Report} from 'notiflix';
 
 @Component({
   selector: 'app-clazz-add',
@@ -13,12 +15,16 @@ import {ClazzScheduleService} from '../../../../service/clazzSchedule.service';
   styleUrls: ['./clazz-add.component.css']
 })
 export class ClazzAddComponent implements OnInit {
+  formGroup = new FormGroup({
+    clazz_id : new FormControl(null, Validators.required),
+  });
 
   constructor(private scheduleService: ScheduleService,
               private route: ActivatedRoute,
               private clazzService: ClazzService,
               private dispoatchService: DispatchService,
-              private clazzScheduleService: ClazzScheduleService) { }
+              private clazzScheduleService: ClazzScheduleService,
+              private router: Router) { }
   courseName = '';
   id: number | undefined;
   alreadyExitClazzes = [] as Clazz[];
@@ -51,10 +57,10 @@ export class ClazzAddComponent implements OnInit {
   * */
   getAllDispatches(): void {
     this.dispoatchService.getAllDispatches().
-      subscribe(allDispatches => {
-        this.allDispatches = allDispatches;
-        console.log('get all allDispatches success', this.allDispatches);
-        this.getSecondFilerClazzes();
+    subscribe(allDispatches => {
+      this.allDispatches = allDispatches;
+      console.log('get all allDispatches success', this.allDispatches);
+      this.getSecondFilerClazzes();
     }, error => {
       console.log('get all allDispatches error', error);
     });
@@ -90,14 +96,14 @@ export class ClazzAddComponent implements OnInit {
   * */
   getSecondFilerClazzes(): void {
     for (const item of this.allDispatches) {
-        for (const dispatch of this.alreadyExitDispatches) {
-            if ( item.day === dispatch.day
-              && item.lesson === dispatch.lesson
-              && item.week === dispatch.week) {
-              this.scheduleIdOfDispatchConflictClazzes.push(item.schedule_id);
-              console.log('打印scheduleIdOfDispatchConflictClazzes', this.scheduleIdOfDispatchConflictClazzes);
-            }
+      for (const dispatch of this.alreadyExitDispatches) {
+        if ( item.day === dispatch.day
+          && item.lesson === dispatch.lesson
+          && item.week === dispatch.week) {
+          this.scheduleIdOfDispatchConflictClazzes.push(item.schedule_id);
+          console.log('打印scheduleIdOfDispatchConflictClazzes', this.scheduleIdOfDispatchConflictClazzes);
         }
+      }
     }
     this.getDispatchConflictClazzesByScheduleId();
   }
@@ -111,5 +117,23 @@ export class ClazzAddComponent implements OnInit {
           .filter((x) => !this.dispatchConflictClazzes.some((item) => x.id === item.id));
         console.log('打印最终的可选择的班级', this.secondFilerClazzes);
       });
+  }
+
+  onSubmit(): void {
+    this.id = +this.route.snapshot.params.schedule_id;
+    const clazz_id = this.formGroup.value as {
+      clazz_id: string,
+    };
+    this.scheduleService.courseKlassSave(this.id, this.formGroup.get('clazz_id')?.value)
+      .subscribe(success => {
+        console.log('添加成功', success);
+        this.router.navigate(['../'], {relativeTo: this.route});
+        Notify.success('添加成功', {timeout: 1000});
+      }, error => {
+        console.log('添加失败', error);
+        Report.failure('添加失败', '', '确定');
+      });
+    console.log('edit class-add save', this.formGroup.get('clazz_id')?.value);
+    console.log('currentScheduleId', this.id);
   }
 }

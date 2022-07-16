@@ -43,14 +43,15 @@ export class ScheduleEditComponent implements OnInit {
         console.log('scheduleEditIndex error', error);
       });
   }
-  onDeleteClazz(id: number): void {
+  onDeleteClazz(clazzId: number): void {
+    const scheduleId = this.id;
     Confirm.show(
       '请确认',
       '该操作不可逆',
       '确认',
       '取消',
       () => {
-        this.clazzService.delete(id)
+        this.clazzService.courseClazzDelete(clazzId, scheduleId)
           .subscribe(success => {
             console.log('班级删除成功', success);
             this.ngOnInit();
