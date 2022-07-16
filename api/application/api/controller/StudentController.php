@@ -85,6 +85,7 @@ class StudentController extends Controller
         $user = Db::table('yunzhi_user')->alias('user')
         ->join('yunzhi_student student',  'user.id = student.user_id')
         ->join('yunzhi_klass klass', 'student.klass_id = klass.id')
+        ->field('student.id, student.user_id, user.number, user.sex, user.name, student.sno,  klass.id as klass_id')
         ->where("user.id=$id")->find();
         return json_encode($user);
     }
