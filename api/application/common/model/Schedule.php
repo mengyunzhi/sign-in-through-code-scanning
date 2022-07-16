@@ -74,7 +74,8 @@ class Schedule extends Model {
         return $status;
     }
 
-    static public function courseTimeSave($teacherId, $courseId, $scheduleId, $courseTimes, &$msg) {
+    // 此处删掉了第一个参数$teacherId, Csh 20220716
+    static public function courseTimeSave($courseId, $scheduleId, $courseTimes, &$msg) {
         $dispatchIds = Dispatch::where('schedule_id', 'eq', $scheduleId)->column('id');
         $status = Dispatch::where('schedule_id', 'eq', $scheduleId)->delete();
         if (!$status) return false;

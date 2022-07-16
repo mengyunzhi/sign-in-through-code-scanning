@@ -42,3 +42,18 @@ selectedWeeks 1
 defaultWeeks  1
 conflictWeeks 1
 
+在加载数据的时候筛选出符合当前schedule_id的data，
+将符合的week和RoomIds添加到defaultWeeks和defaultRooms中
+并且对其中的week和roomIds执行onWeekChange和OnRoomChange,在
+这两个方法的执行中，加上如果是默认选择的周和教室的话，就不应该再往conflictRooms和ConflictWeeks中加添加内容
+
+编辑功能测试：
+1、其他老师带clazz1在0 0 选择了week: 1,2 room:1,2,4
+         带clazz3在0 0 选择了week：3、4 room：4
+  当前老师带clazz2在0 0 选择了week: 3,4 room: 1,2,3,
+2、如果当前老师点开编辑，那么就会默认选择上week：3、4 以及room:1、2、3 √
+  并且week：1、2,room:4应该处于不可选状态,       √
+3、如果当前的选择情况是room: 4 week:1、2应该不可选   √
+4、如果当前选择情况是week: 1,3 那么room 1、2、4应该不可选 √
+
+
