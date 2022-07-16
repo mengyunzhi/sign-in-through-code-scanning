@@ -10,6 +10,7 @@ import {Teacher} from '../../../../entity/teacher';
 import {TeacherService} from '../../../../service/teacher.service';
 import {Notify, Report} from 'notiflix';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Assert} from '@yunzhi/ng-mock-api';
 
 
 @Component({
@@ -32,7 +33,7 @@ export class TimeAddComponent implements OnInit {
 
   courseTimes = [] as {weeks: number[], roomIds: number[]}[][];
 
-  lessons = [1, 2, 3, 4, 5];
+  lessons = [0, 1, 2, 3, 4];
   days = ['一', '二', '三', '四', '五', '六', '日'];
 
   /* 课程 */
@@ -95,15 +96,23 @@ export class TimeAddComponent implements OnInit {
     }
   }
 
-  getConflictData(day: number, lesson: number): {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}[] {
-    const conflictData = [] as {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}[];
+  getConflictData(day: number, lesson: number):
+    {schedule_id: number, week: number, clazzIds: number[], roomIds: number[], teacher_id: number}[] {
+    const conflictData = [] as {
+        week: number,
+        schedule_id: number,
+        teacher_id: number,
+        roomIds: number[],
+        clazzIds: number[]
+      }[];
     for (const data of this.dispatches) {
       if (data.day === day && data.lesson === lesson) {
         conflictData.push({
           week: data.week,
-          clazzIds: data.clazzIds,
+          schedule_id: data.schedule_id,
+          teacher_id: data.teacher_id,
           roomIds: data.roomIds,
-          teacher_id: data.teacher_id
+          clazzIds: data.clazzIds,
         });
       }
     }
@@ -114,7 +123,7 @@ export class TimeAddComponent implements OnInit {
   getWeeksByTerm(): void {
     const term = this.term;
     const difValue = (+term.end_time - +term.start_time) / (60 * 60 * 24);
-    console.log('周的个数：', difValue);
+    console.log('天数：', difValue);
     for (let i = 0; i < Math.ceil(difValue / 7); i++) {
       this.weeks.push(i);
     }
@@ -129,23 +138,20 @@ export class TimeAddComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const schedule = this.formGroup.value as {
-      course_id: [],
-      clazz_ids: []
-    };
-    this.scheduleService.scheduleSave({
-      teacherId: this.teacher.id,
-      courseId: this.formGroup.get('course_id')?.value,
-      clazzIds: this.formGroup.get('clazz_ids')?.value,
+    console.log(this.courseTimes);
+    Assert.isNumber(this.schedule_id, 'schedule_id的类型不是number');
+    this.scheduleService.scheduleUpdate({
+      courseId: this.course.id,
+      scheduleId: this.schedule_id as number,
       courseTimes: this.courseTimes
     })
       .subscribe(success => {
-          console.log('添加成功', success);
-          this.router.navigate(['../'], {relativeTo: this.route}).then();
+          console.log('更新成功', success);
+          this.router.navigate(['../../'], {relativeTo: this.route}).then();
           Notify.success('添加成功', {timeout: 1000});
         },
         error => {
-          console.log('添加失败', error);
+          console.log('更新失败', error);
           Report.failure('添加失败', '', '确定');
         });
   }

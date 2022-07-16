@@ -30,7 +30,16 @@ export class CourseTime2Component implements OnInit {
   rooms = [] as Room[];       // 当前单元对应rooms
 
   @Input()
-  conflictData = [] as {week: number, clazzIds: number[], roomIds: number[], teacher_id: number}[]; // 当前单元对应冲突数据
+  schedule_id: number | undefined; // 当前编辑排课对应的id
+
+  @Input()
+  conflictData = [] as {
+    week: number,
+    schedule_id: number,
+    teacher_id: number,
+    roomIds: number[],
+    clazzIds: number[]
+  }[]; // 当前单元对应冲突数据
 
   @Input()
   set clazzes(selectedClazzes: number[]) {
@@ -54,12 +63,18 @@ export class CourseTime2Component implements OnInit {
   conflictWeeks = [] as number[];
   // 不可用的教室
   conflictRooms = [] as number[];
+  // 默认周
+  defaultWeeks = [] as number[];
+  // 默认教室
+  defaultRooms = [] as number[];
 
   courseTime = [] as {weeks: number[], roomIds: number[]}[][];
 
   ngOnInit(): void {
     this.loadData();
-    console.log(this.day, this.lesson, this.conflictData, this.disableWeeks, this.conflictWeeks);
+    this.sendParent();
+    console.log('coursetime-conflictData', this.day, this.lesson, this.conflictData);
+    // console.log(this.day, this.lesson, this.conflictData, this.disableWeeks, this.conflictWeeks);
     // console.log('-------------------\n unit day', this.day);
     // console.log('unit lesson', this.lesson);
     // console.log('unit weeks', this.weeks);
@@ -75,30 +90,59 @@ export class CourseTime2Component implements OnInit {
   }
 
   onWeekChange(week: number): void {
-    console.log('onWeekChange', this.conflictData);
+    // console.log('onWeekChange', this.conflictData);
     const index = this.selectedWeeks.indexOf(week);
-    console.log(index);
+    // console.log(index);
     if (index === -1) {
       // 将week加入selectedWeeks
       this.selectedWeeks.push(week);
-      // 通过week加入冲突的的roomIds
-      const dataEqualWeek = this.conflictData.filter(data => data.week === week);
-      if (dataEqualWeek.length > 0) {
-        for (const data of dataEqualWeek) {
-          for (const roomId of data.roomIds) {
-            this.conflictRooms.push(roomId);
+      // 当前周不属于default再添加conflictRooms
+      if (!this.defaultWeeks.includes(week)) {
+        // 通过week加入冲突的的roomIds
+        const dataEqualWeek = this.conflictData.filter(data => data.week === week);
+        if (dataEqualWeek.length > 0) {
+          for (const data of dataEqualWeek) {
+            for (const roomId of data.roomIds) {
+              this.conflictRooms.push(roomId);
+            }
+          }
+        }
+      } else if (this.defaultWeeks.includes(week)) {
+        const dataEqualWeek = this.conflictData.filter(data => data.week === week);
+        if (dataEqualWeek.length > 0) {
+          for (const data of dataEqualWeek) {
+            console.warn('test', data, this.day, this.lesson, data.roomIds.filter(room => this.defaultRooms.includes(room)));
+            if (data.schedule_id !== this.schedule_id) {
+              for (const roomId of data.roomIds) {
+                this.conflictRooms.push(roomId);
+              }
+            }
           }
         }
       }
     } else {
       // 去除当前week
       this.selectedWeeks.splice(index, 1);
-      // 去除当前week对应的不可用roomIds
-      const dataEqualWeek = this.conflictData.filter(data => data.week === week);
-      if (dataEqualWeek.length > 0) {
-        for (const data of dataEqualWeek) {
-          for (const roomId of data.roomIds) {
-            this.conflictRooms.splice(this.conflictRooms.indexOf(roomId), 1);
+      // 当前教室不属于default再移除conflictWeeks,因为没添加就不需要移除
+      if (!this.defaultWeeks.includes(week)) {
+        // 去除当前week对应的不可用roomIds
+        const dataEqualWeek = this.conflictData.filter(data => data.week === week);
+        if (dataEqualWeek.length > 0) {
+          for (const data of dataEqualWeek) {
+            for (const roomId of data.roomIds) {
+              this.conflictRooms.splice(this.conflictRooms.indexOf(roomId), 1);
+            }
+          }
+        }
+      } else if (this.defaultWeeks.includes(week)) {
+        const dataEqualWeek = this.conflictData.filter(data => data.week === week);
+        if (dataEqualWeek.length > 0) {
+          for (const data of dataEqualWeek) {
+            if (data.schedule_id !== this.schedule_id) {
+              for (const roomId of data.roomIds) {
+                this.conflictRooms.splice(this.conflictRooms.indexOf(roomId), 1);
+              }
+            }
           }
         }
       }
@@ -106,25 +150,52 @@ export class CourseTime2Component implements OnInit {
   }
 
   onRoomChange(room_id: number): void {
-    console.log('onRoomChange', this.conflictData);
+    // console.log('onRoomChange', this.conflictData);
     // 如果是-1代表数组中不含此room_id
     const index = this.selectedRooms.indexOf(room_id);
-    console.log('onRoomChange', index);
+    // console.log('onRoomChange', index);
     if (index === -1) {
       // 将room_id加入selectedRooms
       this.selectedRooms.push(room_id);
-      // 通过room_id加入冲突的week
-      const dataEqualRoomId = this.conflictData.filter(data => data.roomIds.includes(room_id));
-      dataEqualRoomId.filter(data => this.conflictWeeks.push(data.week));
+      // 当前教室不属于default再添加conflictWeeks
+      // 如果room不是默认的就可以添加conclictweek
+      // 如果已经选的room和默认的room没有交集，可以添加到conflictweek
+      if (!this.defaultRooms.includes(room_id)) {
+        // 通过room_id加入冲突的week
+        const dataHasRoomId = this.conflictData.filter(data => data.roomIds.includes(room_id));
+        for (const data of dataHasRoomId) {
+          if (!this.defaultWeeks.includes(data.week)) {
+            this.conflictWeeks.push(data.week);
+          }
+        }
+      } else if (this.defaultRooms.includes(room_id)) {
+        // 通过room_id加入冲突的week
+        const dataHasRoomId = this.conflictData.filter(data => data.roomIds.includes(room_id));
+        for (const data of dataHasRoomId) {
+          if (data.schedule_id !== this.schedule_id) {
+            this.conflictWeeks.push(data.week);
+          }
+        }
+      }
     } else {
       // 去除当前room_id
       this.selectedRooms.splice(index, 1);
       // 通过room_id去除冲突的week
-      console.log('conflictData', this.conflictData);
-      const dataHasRoomId = this.conflictData.filter(data => data.roomIds.includes(room_id));
-      console.log('dataHasRoomId', dataHasRoomId);
-      for (const data of dataHasRoomId) {
-        this.conflictWeeks.splice(this.conflictWeeks.indexOf(data.week), 1);
+      // console.log('conflictData', this.conflictData);
+      // 当前教室不属于default再移除conflictWeeks,因为没添加就不需要移除
+      if (!this.defaultRooms.includes(room_id)) {
+        const dataHasRoomId = this.conflictData.filter(data => data.roomIds.includes(room_id));
+        // console.log('dataHasRoomId', dataHasRoomId);
+        for (const data of dataHasRoomId) {
+          this.conflictWeeks.splice(this.conflictWeeks.indexOf(data.week), 1);
+        }
+      } else if (this.defaultRooms.includes(room_id)) {
+        const dataHasRoomId = this.conflictData.filter(data => data.roomIds.includes(room_id));
+        for (const data of dataHasRoomId) {
+          if (data.schedule_id !== this.schedule_id) {
+            this.conflictWeeks.splice(this.conflictWeeks.indexOf(data.week), 1);
+          }
+        }
       }
     }
   }
@@ -134,46 +205,56 @@ export class CourseTime2Component implements OnInit {
     return this.disableWeeks.includes(week) || this.conflictWeeks.includes(week);
   }
 
+  isWeekChecked(week: number): boolean {
+    return this.selectedWeeks.includes(week);
+  }
+
   isRoomDisabled(room_id: number): boolean {
     return this.conflictRooms.includes(room_id);
   }
 
-  // 筛选出disableWeeks
-  loadData(): void {
-    for (const data of this.conflictData) {
-      if (data.teacher_id === this.teacher.id) {
-        this.disableWeeks.push(data.week);
-        continue;
-      }
-      // data中clazzIds和selectedClazzes有交集
-      if (data.clazzIds.filter(clazzId => this.selectedClazzes.includes(clazzId)).length > 0) {
-        this.disableWeeks.push(data.week);
-      }
-    }
-    console.log('unit lesson', this.lesson);
-    console.log('unit weeks', this.weeks);
-    console.log('unit conflictData', this.conflictData);
-    console.log('unit rooms', this.selectedClazzes);
+  isRoomChecked(room_id: number): boolean {
+    return this.selectedRooms.includes(room_id);
   }
 
-  addSelectWeeks(week: number): void {
-    let sta = true;
-    for (const item of this.selectedWeeks) {
-      if (item === week) {
-        this.selectedWeeks.splice(this.selectedWeeks.indexOf(week), 1);
-        sta = !sta;
-      }
+
+  // 筛选出disableWeeks
+  loadData(): void {
+    if (this.day === 0 && this.lesson === 0) {
     }
-    if (sta) {
-      this.selectedWeeks.push(week);
+    if (this.conflictData.length > 0) {
+      console.log('unit conflictData', this.day, this.lesson, this.conflictData);
+    }
+    for (const data of this.conflictData) {
+      if (data.schedule_id === this.schedule_id) {
+        // console.warn('data', data);
+        // 如果schedule_id对应，将week和room_id列为default,并调用相关方法
+        if (!this.defaultWeeks.includes(data.week)) {
+          this.defaultWeeks.push(data.week);
+          this.onWeekChange(data.week);
+        }
+        for (const roomId of data.roomIds) {
+          if (!this.defaultRooms.includes(roomId)) {
+            this.defaultRooms.push(roomId);
+            this.onRoomChange(roomId);
+          }
+        }
+      } else {
+        // 如果不对应，根据教师和班级的冲突条件添加disableWeek
+        if (data.teacher_id === this.teacher.id) {
+          this.disableWeeks.push(data.week);
+          continue;
+        }
+        // data中clazzIds和selectedClazzes有交集
+        if (data.clazzIds.filter(clazzId => this.selectedClazzes?.includes(clazzId))?.length > 0) {
+          this.disableWeeks.push(data.week);
+        }
+      }
     }
   }
 
   sendParent(): void {
-    // console.log('this.Day', this.day);
-    // console.log('this.Lesson', this.lesson);
-    // console.log('selectedWeeks', this.selectedWeeks);
-    // console.log('selectedRooms', this.selectedRooms);
+    console.log('unit sendParent conflic', this.day, this.lesson, this.conflictData, this.defaultWeeks, this.defaultRooms);
     this.outer.emit({day: this.day, lesson: this.lesson, weeks: this.selectedWeeks, roomIds: this.selectedRooms});
   }
 

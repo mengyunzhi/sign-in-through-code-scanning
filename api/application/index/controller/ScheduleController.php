@@ -287,7 +287,7 @@ class ScheduleController extends IndexController {
         $scheduleId = $data->scheduleId;
         $courseTimes = $data->courseTimes;
         $msg='';
-        $status = Schedule::courseTimeSave($teacherId, $courseId, $scheduleId, $courseTimes, $msg);
+        $status = Schedule::courseTimeSave($courseId, $scheduleId, $courseTimes, $msg);
         return $status ? 1 : 0;
     }
 
