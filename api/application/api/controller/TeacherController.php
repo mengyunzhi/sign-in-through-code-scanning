@@ -47,6 +47,7 @@ class TeacherController extends Controller
     public function page() {
         $params = Request()->param();
         Db::name('Teacher');
+
         $query = Db::table('yunzhi_user')->alias('user')
         ->join('yunzhi_teacher teacher', 'user.id = teacher.user_id')
         ->order(['teacher.id desc'])
@@ -57,8 +58,12 @@ class TeacherController extends Controller
             $params['size']
         )->select();
         $data['content'] = $teachers;
-        // $query = $query->where('name', 'like', '%' . $params['searchName'] . '%')
-        //            ->where('number', 'like', '%' . $params['searchPhone'] . '%');
+
+        $query = Db::table('yunzhi_user')->alias('user')
+        ->join('yunzhi_teacher teacher', 'user.id = teacher.user_id')
+        ->order(['teacher.id desc'])
+        ->where('name', 'like', '%' . $params['searchName'] . '%')
+        ->where('number', 'like', '%' . $params['searchPhone'] . '%');
         $data['length'] = $query->count();
         return json_encode($data);
     }

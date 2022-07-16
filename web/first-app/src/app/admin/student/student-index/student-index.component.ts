@@ -4,6 +4,7 @@ import {Page} from '../../../entity/page';
 import {StudentService} from '../../../service/student.service';
 import {CommonService} from '../../../service/common.service';
 import {Student} from '../../../entity/student';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-student-student-index',
@@ -11,9 +12,7 @@ import {Student} from '../../../entity/student';
   styleUrls: ['./student-index.component.css']
 })
 export class StudentIndexComponent implements OnInit {
-  // 默认显示第一页内容
   page = 0;
-  // 每页默认5条
   size = 3;
 
   // 初始化一个有0条数据的分页
@@ -25,26 +24,34 @@ export class StudentIndexComponent implements OnInit {
     numberOfElements: 0
   });
 
+  // 初始化查询条件
+  param = {clazz: '', name: '', sno: ''};
+  queryForm = new FormGroup({
+    clazz: new FormControl('', Validators.required),
+    name: new FormControl('', Validators.required),
+    sno: new FormControl('', Validators.required),
+  });
+
   constructor(private httpClient: HttpClient,
               private studentService: StudentService,
               private commonService: CommonService) {
   }
 
   ngOnInit(): void {
-    this.loadByPage();
+    this.loadByPage(0, this.param);
   }
 
-  onPage(page: number): void {
-    this.loadByPage(page);
+  onPage($event: number): void {
+    this.loadByPage($event, this.param);
   }
 
   /**
    * 获取页面数据
    * @param page pageDte
    */
-  loadByPage(page = 0): void {
+  loadByPage(page: number = 0, param: {clazz: string, name: string, sno: string}): void {
     console.log('触发loadByPage方法');
-    this.studentService.page(page, this.size)
+    this.studentService.page({page, size: this.size}, param)
       .subscribe(pageDate => {
         // 请求数据之后设置当前页
         console.log('请求成功', pageDate);
@@ -71,5 +78,15 @@ export class StudentIndexComponent implements OnInit {
           });
       }
     });
+  }
+
+  onSubmit(): void {
+    console.log('onSubmit called');
+    const query = this.queryForm.value as {
+      clazz: string,
+      name: string,
+      sno: string,
+    };
+    this.loadByPage(0, query);
   }
 }

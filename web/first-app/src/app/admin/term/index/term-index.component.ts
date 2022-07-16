@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Term} from '../../../entity/term';
 import {Page} from '../../../entity/page';
 import {TermService} from '../../../service/term.service';
-import {Confirm, Notify} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-term',
@@ -19,11 +19,20 @@ export class TermIndexComponent implements OnInit {
     size: this.size,
     numberOfElements: 0,
   });
+
+  // 初始化查询条件
+  param = {name: ''};
+  queryForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+  });
+
   constructor(private termService: TermService,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+  ) {
+  }
 
   ngOnInit(): void {
-    this.loadByPage();
+    this.loadByPage(0, this.param);
   }
 
   /*
@@ -56,15 +65,16 @@ export class TermIndexComponent implements OnInit {
             console.log('删除失败', error);
             this.commonService.success();
           });
-      }});
+      }
+    });
   }
 
   /*
   * 获取页面数据
   * */
-  loadByPage(page: number = 0): void {
+  loadByPage(page: number = 0, param: {name: string}): void {
     console.log('loadByPage', page);
-    this.termService.page({page, size: this.size})
+    this.termService.page({page, size: this.size}, param)
       .subscribe(pageData => {
         console.log('请求成功---', pageData);
         this.page = page;
@@ -74,7 +84,14 @@ export class TermIndexComponent implements OnInit {
 
   onPage($event: number): void {
     console.log('onPage is called', $event);
-    this.loadByPage($event);
+    this.loadByPage($event, this.param);
   }
 
+  onSubmit(): void {
+    console.log('onSubmit called');
+    const query = this.queryForm.value as {
+      name: string,
+    };
+    this.loadByPage(0, query);
+  }
 }

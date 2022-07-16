@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Page} from '../entity/page';
 import {Term} from '../entity/term';
@@ -10,9 +10,11 @@ import {map} from 'rxjs/operators';
 })
 export class TermService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+  }
 
   terms = [] as Term[];
+
   /**
    * 获取学期
    * @param id 学生ID
@@ -25,19 +27,20 @@ export class TermService {
   /*
   * 管理端学期管理页面
   * */
-  page({page = 0, size = 20}: { page?: number, size?: number }): Observable<Page<Term>> {
+  page({page = 0, size = 3}: {page?: number, size?: number}, param: {name?: string}): Observable<Page<Term>> {
     const httpParams = new HttpParams()
       .append('size', size.toString())
-      .append('page', page.toString());
+      .append('page', page.toString())
+      .append('searchName', param.name as string);
     return this.httpClient.get<{length: number, content: Term[]}>('/term/page', {params: httpParams})
       .pipe(map(data =>
-          new Page<Term>({
+        new Page<Term>({
             content: data.content,
             number: page,
             size,
             numberOfElements: data.length
           }
-      )));
+        )));
   }
 
 

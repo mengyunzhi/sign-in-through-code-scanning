@@ -1,16 +1,16 @@
-<form>
+<form  [formGroup]="queryForm">
   <div class="form-row">
     <div class="form-group col-md-2">
-      <input type="text" class="form-control" placeholder="班级">
+      <input type="text" class="form-control" placeholder="班级" formControlName="clazz">
     </div>
     <div class="form-group col-md-2">
-      <input type="text" class="form-control" placeholder="姓名">
+      <input type="text" class="form-control" placeholder="姓名" formControlName="name">
     </div>
     <div class="form-group col-md-2">
-      <input type="text" class="form-control" placeholder="学号">
+      <input type="text" class="form-control" placeholder="学号" formControlName="sno">
     </div>
     <div class="form-group text-left col-md-3 search">
-      <button type="submit" class="btn btn-info">
+      <button type="submit" class="btn btn-info" (click)="onSubmit()">
         <i class="fas fa-search"></i> 查询
       </button>
     </div>
@@ -19,7 +19,6 @@
     </div>
   </div>
 </form>
-<pre> {{ pageDate.content | json }}</pre>
 <table class="table table-striped mt-2">
   <thead>
   <tr class="table-primary">
