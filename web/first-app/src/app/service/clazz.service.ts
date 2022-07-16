@@ -90,4 +90,11 @@ export class ClazzService {
     return this.httpClient.post('/clazz/update/id/' + id.toString(), data);
   }
 
+  courseClazzDelete(clazzId: number, scheduleId: number | undefined): Observable<boolean> {
+    const data = [];
+    data[0] = clazzId;
+    data[1] = scheduleId;
+    return this.httpClient.post<boolean>('/schedule/courseKlassDelete', data);
+  }
+
 }
