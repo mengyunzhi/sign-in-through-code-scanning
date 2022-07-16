@@ -239,4 +239,21 @@ class ScheduleController extends Controller {
         return json_encode($disableKlasses);
     }
 
+    public function courseKlassSave()
+    {
+        $json_raw = file_get_contents("php://input"); //获取前端传来的json数据
+        $postData = json_decode($json_raw);
+        $status = Teacher::courseKlassSave($postData['1'], $postData['0']);
+        return json_encode($status);
+    }
+
+    public function courseKlassDelete()
+    {
+
+        $json_raw = file_get_contents("php://input"); //获取前端传来的json数据
+        $postData = json_decode($json_raw);
+        $status = Teacher::courseKlassDelete($postData['1'], $postData['0']);
+        return json_encode($status);
+    }
+
 }

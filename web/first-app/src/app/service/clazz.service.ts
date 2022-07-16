@@ -57,6 +57,13 @@ export class ClazzService {
     return this.httpClient.delete('/clazz/delete/id/' + id.toString());
   }
 
+  courseClazzDelet(clazzId: number, scheduleId: number | undefined): Observable<boolean> {
+    const data = [];
+    data[0] = clazzId;
+    data[1] = scheduleId;
+    return this.httpClient.post<boolean>('/schedule/courseKlassDelete', data);
+  }
+
   getById(id: number): Observable<any> {
     return this.httpClient.get('/clazz/getById/id/' + id.toString());
   }

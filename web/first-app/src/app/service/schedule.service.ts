@@ -180,4 +180,12 @@ export class ScheduleService {
     console.log('schedule service', data);
     return this.httpClient.post<boolean>('/schedule/scheduleSave', data);
   }
+
+  courseKlassSave(id: number, clazz_id: { clazz_id: string }): Observable<boolean> {
+    const data = [];
+    data[0] = clazz_id;
+    data[1] = id;
+    console.log('service', data);
+    return this.httpClient.post<boolean>('/schedule/courseKlassSave', data);
+  }
 }

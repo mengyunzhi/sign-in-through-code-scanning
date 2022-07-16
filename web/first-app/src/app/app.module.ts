@@ -7,7 +7,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DatePipe, Location} from '@angular/common';
 import { NavComponent } from './nav/nav.component';
-import {MockApiTestingModule} from './mock-api/mock-api-testing.module';
 import { LoginComponent } from './login/login.component';
 import { IndexComponent } from './index/index.component';
 import { WelcomeComponent } from './welcome/welcome.component';
