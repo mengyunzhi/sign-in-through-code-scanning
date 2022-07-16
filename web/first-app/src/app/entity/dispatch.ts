@@ -8,4 +8,5 @@ export interface Dispatch extends BaseEntity {
   lesson: number;
   start_time: string;
   end_time: string;
+  schedule_id: never;
 }

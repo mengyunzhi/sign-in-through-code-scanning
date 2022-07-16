@@ -231,4 +231,12 @@ class ScheduleController extends Controller {
         return json_encode(true);
     }
 
+    public function getClazzesByScheduleId() {
+        $json_raw = file_get_contents("php://input"); //获取前端传来的json数据
+        $scheduleIds = json_decode($json_raw);
+        $klassIdsOfSameTime = ScheduleKlass::findklassIdsOfSameTime($scheduleIds);
+        $disableKlasses = Klass::findDisableKlassesByIds($klassIdsOfSameTime);
+        return json_encode($disableKlasses);
+    }
+
 }
