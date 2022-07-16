@@ -2,10 +2,10 @@
 <!--查询和添加-->
 <div class="row">
   <div class="col-md-10">
-    <form class="form-inline">
-      <input type="text" class="form-control" style="margin-right: 10px" placeholder="名称">
-      <input type="text" class="form-control" style="margin-right: 10px" placeholder="容量">
-      <button type="submit" class="btn btn-info"><i class="fas fa-search"></i>查询</button>
+    <form class="form-inline" [formGroup]="queryForm">
+      <input type="text" class="form-control" style="margin-right: 10px" placeholder="名称" formControlName="name">
+      <input type="text" class="form-control" style="margin-right: 10px" placeholder="容量" formControlName="capacity">
+      <button type="submit" class="btn btn-info" (click)="onSubmit()"><i class="fas fa-search"></i>查询</button>
     </form>
   </div>
   <div class="col-md-2">

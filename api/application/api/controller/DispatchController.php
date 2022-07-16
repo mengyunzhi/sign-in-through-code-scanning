@@ -19,5 +19,9 @@ class DispatchController extends Controller
         }
         return json_encode(true);
     }
+
+    public function getAll() {
+        return json_encode(Dispatch::all());
+    }
     
 }

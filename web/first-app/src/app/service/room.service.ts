@@ -19,13 +19,15 @@ export class RoomService {
   /*
   * 管理端教室管理index页面
   * */
-  page({page = 0,  size = 20}: {page?: number, size?: number }): Observable<Page<Room>> {
+  page({page = 0, size = 5}: { size?: number; page?: number }, param: {name?: string, capacity?: string}): Observable<Page<Room>> {
     let rooms = [] as Room[];
     return new Observable<Page<Room>>(
       subscriber => {
         const httpParams = new HttpParams()
           .append('page', page.toString())
-          .append('size', size.toString());
+          .append('size', size.toString())
+          .append('searchName', param.name as string)
+          .append('searchCapacity', param.capacity as string);
         this.httpClient.get<any>('/room/page', {params: httpParams})
           .subscribe(data => {
             rooms = data.content;

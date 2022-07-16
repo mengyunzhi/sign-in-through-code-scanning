@@ -67,8 +67,8 @@ class ClazzController extends Controller
     public function page() {
         // page 和 size
         $params = Request()->param();
-        $where = [];
-        $query = Klass::order(['id desc'])->where($where);
+        $query = Klass::order(['id desc'])
+                  ->where('name', 'like', '%' . $params['searchName'] . '%');
 
         $clazzes = $query->limit(
             $params['page'] * $params['size'],
@@ -79,6 +79,7 @@ class ClazzController extends Controller
             $clazz['number_of_students'] = Student::where('klass_id', 'eq', $clazz->id)->count();
         }
         $data['content'] = $clazzes;
+        $query = $query->where('name', 'like', '%' . $params['searchName'] . '%');
         $data['length'] = $query->count();
         return json_encode($data);
     }

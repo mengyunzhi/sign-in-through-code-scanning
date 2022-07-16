@@ -14,19 +14,29 @@ class StudentController extends Controller
 {
 	public function page() {
 		$params = Request()->param();
-		$where = '';
 		Db::name('Student');
 		$query = Db::table('yunzhi_user')->alias('user')
 		->join('yunzhi_student student', 'user.id = student.user_id')
 		->join('yunzhi_klass klass', 'student.klass_id = klass.id')
 		->field('student.id, student.user_id, user.number, user.sex, user.name, student.sno,  klass.id as clazz_id, klass.name as clazz_name')
-		->order(['student.id desc'])->where($where);
+		->order(['student.id desc'])
+		->where('klass.name', 'like', '%' . $params['searchClazz'] . '%')
+		->where('user.name', 'like', '%' . $params['searchName'] . '%')
+        ->where('sno', 'like', '%' . $params['searchSno'] . '%');
 		
 		$students = $query->limit(
 			$params['page'] * $params['size'],
 			$params['size']
 		)->select();
 		$data['content'] = $students;
+		$query = Db::table('yunzhi_user')->alias('user')
+		->join('yunzhi_student student', 'user.id = student.user_id')
+		->join('yunzhi_klass klass', 'student.klass_id = klass.id')
+		->field('student.id, student.user_id, user.number, user.sex, user.name, student.sno,  klass.id as clazz_id, klass.name as clazz_name')
+		->order(['student.id desc'])
+		->where('klass.name', 'like', '%' . $params['searchClazz'] . '%')
+		->where('user.name', 'like', '%' . $params['searchName'] . '%')
+        ->where('sno', 'like', '%' . $params['searchSno'] . '%');
 		$data['length'] = $query->count();
 		return json_encode($data);
 	}
