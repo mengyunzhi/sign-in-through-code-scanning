@@ -231,6 +231,20 @@ class ScheduleController extends Controller {
         return json_encode(true);
     }
 
+    public function scheduleUpdate() {
+        $data = json_decode(file_get_contents("php://input"));
+        $courseId = $data->courseId;
+        $scheduleId = $data->scheduleId;
+        $courseTimes = $data->courseTimes;
+        $msg = '';
+        $status = Schedule::courseTimeSave($courseId, $scheduleId, $courseTimes, $msg);
+        return json_encode($status);
+        if (true) {
+            return $this->error('更新失败：'. $msg);
+        }
+        return json_encode(true);
+    }
+
     public function getClazzesByScheduleId() {
         $json_raw = file_get_contents("php://input"); //获取前端传来的json数据
         $scheduleIds = json_decode($json_raw);
