@@ -111,6 +111,22 @@ class Teacher extends Model {
         return $Klasses;
     }
 
+    /*
+            {
+                id: teacer_id
+                user: {
+                    ...
+                } as User
+            } as Teacher
+     */
+    static public function getLoginTeacher() {
+        $user = User::getCurrentLoginUser();
+        $teacher = Teacher::where('user_id', $user->id)->find();
+        unset($teacher->user_id);
+        $teacher->user = $user;
+        return $teacher;
+    }
+
     /**
      * 添加课程
      */

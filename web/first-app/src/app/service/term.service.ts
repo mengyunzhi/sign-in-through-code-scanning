@@ -72,6 +72,19 @@ export class TermService {
       .delete<Term>('/term/delete/id/' + id.toString());
   }
 
+  getCurrentTerm(): Observable<Term> {
+    return this.httpClient.get<Term>('/term/getCurrentTerm');
+  }
+
+  getWeeksByTerm(term: Term): number[] {
+    const difValue = (+term.end_time - +term.start_time) / (60 * 60 * 24);
+    const weeks = [];
+    for (let i = 0; i < Math.ceil(difValue / 7); i++) {
+      weeks.push(i);
+    }
+    return weeks;
+  }
+
   /*
   * 更新学期
   * */
@@ -79,4 +92,5 @@ export class TermService {
     return this.httpClient
       .post<any>('/term/update/id/' + id.toString(), term);
   }
+
 }
