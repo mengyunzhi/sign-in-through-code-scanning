@@ -129,7 +129,7 @@ class ScheduleController extends Controller {
         $data['rooms'] = Room::All();
         $data['term'] = Term::getCurrentTerm();
         $data['dispatches'] = $this->getDispatches();
-        $data['teacher'] = $this->getLoginTeacher();
+        $data['teacher'] = Teacher::getLoginTeacher();
         return json_encode($data);
     }
 

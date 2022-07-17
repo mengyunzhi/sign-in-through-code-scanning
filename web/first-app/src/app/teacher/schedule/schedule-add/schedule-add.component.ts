@@ -10,6 +10,7 @@ import {Teacher} from '../../../entity/teacher';
 import {TeacherService} from '../../../service/teacher.service';
 import {Notify, Report} from 'notiflix';
 import {ActivatedRoute, Router} from '@angular/router';
+import {TermService} from '../../../service/term.service';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class ScheduleAddComponent implements OnInit {
               private clazzService: ClazzService,
               private teacherService: TeacherService,
               private router: Router,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private termService: TermService) { }
   formGroup = new FormGroup({
     course_id: new FormControl('', Validators.required),
     clazz_ids: new FormControl(null, Validators.required),
@@ -91,8 +93,7 @@ export class ScheduleAddComponent implements OnInit {
         this.rooms = data.rooms;
         this.dispatches = data.dispatches;
         this.teacher = data.teacher;
-        // 调用方法，获取周数数组
-        this.getWeeksByTerm();
+        this.weeks = this.termService.getWeeksByTerm(this.term);
       }, error =>  {
         console.log('失败', error);
       });
@@ -145,18 +146,6 @@ export class ScheduleAddComponent implements OnInit {
           console.log('error', error);
         });
     }
-  }
-
-
-  /* 通过term获取周的数组，传给子组件 */
-  getWeeksByTerm(): void {
-      const term = this.term;
-      const difValue = (+term.end_time - +term.start_time) / (60 * 60 * 24);
-      console.log('周的个数：', difValue);
-      for (let i = 0; i < Math.ceil(difValue / 7); i++) {
-        this.weeks.push(i);
-      }
-      console.log('this.weeks：', this.weeks);
   }
 
   /* 接收子组件传回的数据 */
