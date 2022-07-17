@@ -11,6 +11,7 @@ import {TeacherService} from '../../../../service/teacher.service';
 import {Notify, Report} from 'notiflix';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
+import {TermService} from '../../../../service/term.service';
 
 
 @Component({
@@ -29,7 +30,8 @@ export class TimeAddComponent implements OnInit {
               private clazzService: ClazzService,
               private teacherService: TeacherService,
               private router: Router,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute,
+              private termService: TermService) { }
 
   courseTimes = [] as {weeks: number[], roomIds: number[]}[][];
 
@@ -80,8 +82,7 @@ export class TimeAddComponent implements OnInit {
         this.rooms = data.rooms;
         this.dispatches = data.dispatches;
         this.teacher = data.teacher;
-        // 调用方法，获取周数数组
-        this.getWeeksByTerm();
+        this.weeks = this.termService.getWeeksByTerm(this.term);
       }, error =>  {
         console.log('失败', error);
       });
@@ -119,17 +120,6 @@ export class TimeAddComponent implements OnInit {
     return conflictData;
   }
 
-  /* 通过term获取周的数组，传给子组件 */
-  getWeeksByTerm(): void {
-    const term = this.term;
-    const difValue = (+term.end_time - +term.start_time) / (60 * 60 * 24);
-    console.log('天数：', difValue);
-    for (let i = 0; i < Math.ceil(difValue / 7); i++) {
-      this.weeks.push(i);
-    }
-    console.log('this.weeks：', this.weeks);
-  }
-
   /* 接收子组件传回的数据 */
   getFooterRun(data: {day: number, lesson: number, weeks: number[], roomIds: number[]}): void {
     console.log('data', data);
@@ -147,7 +137,7 @@ export class TimeAddComponent implements OnInit {
     })
       .subscribe(success => {
           console.log('更新成功', success);
-          this.router.navigate(['../../'], {relativeTo: this.route}).then();
+          this.router.navigate(['../'], {relativeTo: this.route}).then();
           Notify.success('添加成功', {timeout: 1000});
         },
         error => {
