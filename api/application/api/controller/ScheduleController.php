@@ -117,7 +117,7 @@ class ScheduleController extends Controller {
         $data['rooms'] = Room::All();
         $data['term'] = Term::getCurrentTerm();
         $data['dispatches'] = $this->getDispatches();
-        $data['teacher'] = $this->getLoginTeacher();
+        $data['teacher'] = Teacher::getLoginTeacher();
         return json_encode($data);
     }
 
@@ -208,13 +208,6 @@ class ScheduleController extends Controller {
         return $DisWithRoomIds;
     }
 
-    public function getLoginTeacher() {
-        $user = User::getCurrentLoginUser();
-        $teacher = Teacher::where('user_id', $user->id)->find();
-        unset($teacher->user_id);
-        $teacher->user = $user;
-        return $teacher;
-    }
 
     public function scheduleSave()
     {

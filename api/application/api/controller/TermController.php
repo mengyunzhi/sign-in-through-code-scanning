@@ -50,6 +50,10 @@ class TermController extends Controller
         return json(Term::get($id));
     }
 
+    public function getCurrentTerm() {
+        return json_encode(Term::getCurrentTerm());
+    }
+
     public function update() {
         $id = Request()->param('id/d');
         $term = json_decode(file_get_contents("php://input"));
