@@ -24,12 +24,7 @@ class Term extends Model {
             }
         }
         //激活学期
-        $status = $Term->where("id=$termId")->update(['state'=>1]);
-        $status = $Term->where('state=1')->update(['state'=>0]);
-        if (!$status) {
-            $msg .= $Term->getError();
-            throw new \Exception('激活失败:'.$Term->getError());
-        }
+        $Term->where('state=1')->update(['state'=>0]);
         $status = $Term->where("id=$termId")->update(['state'=>1]);
         if (!$status) {
             $msg .= $Term->getError();
