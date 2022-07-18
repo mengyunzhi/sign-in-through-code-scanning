@@ -17,7 +17,7 @@ export class CourseIndexComponent implements OnInit {
   course = {name: '', lesson: ''};
 
   page = 0;
-  size = 5;
+  size = 2;
 
   formGroup = new FormGroup({
     name: new FormControl('', Validators.required),

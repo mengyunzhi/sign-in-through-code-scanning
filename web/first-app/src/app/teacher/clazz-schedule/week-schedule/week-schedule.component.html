@@ -6,7 +6,10 @@
         <option *ngFor="let week of weeks;" [value]="week">第{{ week + 1 }}周</option>
       </select>
     </div>
-    <div class="col-md-7 text-right">
+    <div class="col-md-5" *ngIf="term">
+      <h4>学期：{{ term.name }}</h4>
+    </div>
+    <div class="col-md-3 text-right">
       <a class="btn btn-primary" [routerLink]="'/teacher/term-schedule'">查看学期课程表</a>
     </div>
   </div>

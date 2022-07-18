@@ -39,7 +39,7 @@ export class TimeAddComponent implements OnInit {
   days = ['一', '二', '三', '四', '五', '六', '日'];
 
   /* 课程 */
-  course =  {} as Course;
+  course =  {name: '正在加载...'} as Course;
   /* 班级 */
   clazzes = [] as Clazz[];
 

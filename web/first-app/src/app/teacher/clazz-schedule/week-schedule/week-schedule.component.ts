@@ -90,7 +90,13 @@ export class WeekScheduleComponent implements OnInit {
     let str = '';
     if (this.dispatch.clazzes?.length) {
       for (const clazz of this.dispatch.clazzes) {
-        str += clazz.name + ' ';
+        if (clazz) {
+          // 班级不为空，加班级名称
+          str += clazz.name + ' ';
+        } else {
+          // 如果没有对应班级为了保证 ‘课程‘ 显示，加一个空格
+          str += ' ';
+        }
       }
     }
     if (str) {

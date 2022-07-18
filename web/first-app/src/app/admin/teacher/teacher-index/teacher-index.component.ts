@@ -12,7 +12,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class TeacherIndexComponent implements OnInit {
   page = 0;
-  size = 5;
+  size = 2;
 
   pageData = new Page<Teacher>({
     content: [] as Teacher[],

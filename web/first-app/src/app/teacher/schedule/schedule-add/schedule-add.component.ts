@@ -133,6 +133,8 @@ export class ScheduleAddComponent implements OnInit {
   onCourseIdChange(): void {
     // 课程有变动，courseTimes要清空， 防止之前的课程选择的某些数据影响之后的选择
     this.initCourseTimes();
+    this.formGroup.get('clazz_ids')?.setValue([]);
+
     if (this.formGroup.get('course_id')?.value === '') {
       // 没有选择课程， 将clazz_id设为null
       this.formGroup.get('clazz_id')?.setValue(null);

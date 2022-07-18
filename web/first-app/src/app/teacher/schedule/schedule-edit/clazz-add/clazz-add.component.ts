@@ -5,7 +5,7 @@ import {ClazzService} from '../../../../service/clazz.service';
 import {Clazz} from '../../../../entity/clazz';
 import {Dispatch} from '../../../../entity/dispatch';
 import {DispatchService} from '../../../../service/dispatch.service';
-import {ClazzScheduleService} from '../../../../service/clazzSchedule.service';
+import {CourseScheduleService} from '../../../../service/courseSchedule.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Notify, Report} from 'notiflix';
 
@@ -22,7 +22,7 @@ export class ClazzAddComponent implements OnInit {
   constructor(private scheduleService: ScheduleService,
               private route: ActivatedRoute,
               private clazzService: ClazzService,
-              private dispoatchService: DispatchService,
+              private dispoatchService: DispatchService
               private clazzScheduleService: ClazzScheduleService,
               private router: Router) { }
   courseName = '';
@@ -109,7 +109,7 @@ export class ClazzAddComponent implements OnInit {
   }
 
   getDispatchConflictClazzesByScheduleId(): void {
-    this.clazzScheduleService.getClazzesByScheduleId(this.scheduleIdOfDispatchConflictClazzes)
+    this.clazzService.getClazzesByScheduleId(this.scheduleIdOfDispatchConflictClazzes)
       .subscribe(dispatchConflictClazzes => {
         this.dispatchConflictClazzes = dispatchConflictClazzes;
         console.log('打印 dispatchConflictClazzes', this.dispatchConflictClazzes);
