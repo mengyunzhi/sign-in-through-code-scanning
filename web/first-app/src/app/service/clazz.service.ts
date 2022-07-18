@@ -90,4 +90,8 @@ export class ClazzService {
     return this.httpClient.post('/clazz/update/id/' + id.toString(), data);
   }
 
+  getClazzesByScheduleId(scheduleIdOfDispatchConflictClazzes: any[]): Observable<Array<Clazz>> {
+    return this.httpClient.post<Array<Clazz>>('/schedule/getClazzesByScheduleId', scheduleIdOfDispatchConflictClazzes);
+  }
+
 }

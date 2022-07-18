@@ -4,6 +4,7 @@ use app\common\model\Teacher;
 use app\common\model\User;
 use app\common\model\Student;
 use app\common\model\Schedule;
+use app\common\model\Term;
 use app\common\model\ScheduleKlass;
 use app\common\model\DispatchRoom;
 use app\common\model\Dispatch;
@@ -21,7 +22,9 @@ class CourseScheduleController extends Controller
     // 
     public function getDataForWeek() {
         $teacher = Teacher::getLoginTeacher();
-        $schedules = Schedule::where('teacher_id', $teacher->id)->select();
+        $term = Term::getCurrentTerm();
+        $schedules = Schedule::where('teacher_id', $teacher->id)
+            ->where('term_id', $term->id)->select();
         $courses = [];
         $clazzes = [];
         $dispatches = [];

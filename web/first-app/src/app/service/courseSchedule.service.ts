@@ -12,11 +12,11 @@ import {map} from 'rxjs/operators';
 })
 export class CourseScheduleService {
 
-  constructor(private httpService: HttpClient) {
+  constructor(private httpClient: HttpClient) {
   }
 
   getDataForWeek(): Observable<{week: number, day: number, lesson: number, course: Course, rooms: Room[], clazzes: Clazz[]}[]> {
-    return this.httpService.get<{
+    return this.httpClient.get<{
       clazzes: Clazz[][],
       courses: Course[],
       dispatches: {
@@ -47,4 +47,5 @@ export class CourseScheduleService {
         return content;
       }));
   }
+
 }

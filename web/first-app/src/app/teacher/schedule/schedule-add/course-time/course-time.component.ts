@@ -102,6 +102,7 @@ export class CourseTimeComponent implements OnInit {
         }
       }
     }
+    this.setStatus();
   }
 
   onRoomChange(room_id: number): void {
@@ -126,6 +127,7 @@ export class CourseTimeComponent implements OnInit {
         this.conflictWeeks.splice(this.conflictWeeks.indexOf(data.week), 1);
       }
     }
+    this.setStatus();
   }
 
   isWeekDisabled(week: number): boolean {
@@ -176,18 +178,25 @@ export class CourseTimeComponent implements OnInit {
     this.outer.emit({day: this.day, lesson: this.lesson, weeks: this.selectedWeeks, roomIds: this.selectedRooms});
   }
 
-  getContent(): string {
+  setStatus(): void {
     if (this.selectedWeeks.length === 0 && this.selectedRooms.length === 0) {
       this.status = 1;
-      return '周' + this.day + '第' + this.lesson + '节';
     } else if (this.selectedWeeks.length > 0 && this.selectedRooms.length > 0) {
       this.status = 0;
+    } else {
+      this.status = -1;
+    }
+  }
+
+  getContent(): string {
+    if (this.status === 1) {
+      return '周' + (this.day + 1) + '第' + (this.lesson + 1) + '节';
+    } else if (this.status === 0) {
       let content = '';
       content += `周:${this.selectedWeeks}    `;
       content += this.getRoomNames();
       return content;
     } else {
-      this.status = -1;
       return '请选择完整数据';
     }
   }

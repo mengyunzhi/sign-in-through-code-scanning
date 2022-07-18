@@ -17,7 +17,7 @@ import {Room} from '../../../entity/room';
 export class TaskIndexComponent implements OnInit {
 
   page = 0;
-  size = 10;
+  size = 3;
 
   pageData = new Page<{schedule: Schedule, clazzes: Clazz[]}>({
     content: [],

@@ -30,9 +30,9 @@
       <td>{{ unit.schedule.course.name }}</td>
       <td>{{ unit.schedule.term.name }}</td>
       <td>
-        <ng-template ngFor let-item [ngForOf]="unit.clazzes" let-i="index">
-          {{ item.name }}
-        </ng-template>
+        <ng-container *ngFor="let item of unit.clazzes">
+            {{ item?.name }}
+        </ng-container>
       </td>
       <td>
         <a class="btn btn-sm btn-primary" [routerLink]="'edit/' + unit.schedule.id"><i class="fas fa-pen"></i>编辑</a>&nbsp;&nbsp;
