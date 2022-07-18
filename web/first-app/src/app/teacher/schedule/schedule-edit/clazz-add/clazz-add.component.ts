@@ -5,7 +5,6 @@ import {ClazzService} from '../../../../service/clazz.service';
 import {Clazz} from '../../../../entity/clazz';
 import {Dispatch} from '../../../../entity/dispatch';
 import {DispatchService} from '../../../../service/dispatch.service';
-import {CourseScheduleService} from '../../../../service/courseSchedule.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Notify, Report} from 'notiflix';
 
@@ -22,8 +21,7 @@ export class ClazzAddComponent implements OnInit {
   constructor(private scheduleService: ScheduleService,
               private route: ActivatedRoute,
               private clazzService: ClazzService,
-              private dispoatchService: DispatchService
-              private clazzScheduleService: ClazzScheduleService,
+              private dispatchService: DispatchService,
               private router: Router) { }
   courseName = '';
   id: number | undefined;
@@ -56,7 +54,7 @@ export class ClazzAddComponent implements OnInit {
   *  获取数据库中所有调度信息
   * */
   getAllDispatches(): void {
-    this.dispoatchService.getAllDispatches().
+    this.dispatchService.getAllDispatches().
     subscribe(allDispatches => {
       this.allDispatches = allDispatches;
       console.log('get all allDispatches success', this.allDispatches);
