@@ -276,7 +276,9 @@ export class CourseTime2Component implements OnInit {
       return '周' + (this.day + 1) + '第' + (this.lesson + 1) + '节';
     } else if (this.status === 0) {
       let content = '';
-      content += `周:${this.selectedWeeks}    `;
+      const selectedWeeks = [] as number[];
+      this.selectedWeeks.filter(week => selectedWeeks.push(week + 1));
+      content += `周:${selectedWeeks}    `;
       content += this.getRoomNames();
       return content;
     } else {
