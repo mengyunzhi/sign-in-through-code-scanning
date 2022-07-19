@@ -29,7 +29,7 @@ const routes: Routes = [
     component: WelcomeComponent
   },
   {
-    path: 'clazz-schedule',
+    path: 'courseSchedule',
     loadChildren: () => import('./clazz-schedule/clazz-schedule.module').then(m => m.ClazzScheduleModule),
   },
 ];

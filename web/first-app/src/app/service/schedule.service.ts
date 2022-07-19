@@ -200,4 +200,5 @@ export class ScheduleService {
     console.log('service', data);
     return this.httpClient.post<boolean>('/schedule/courseKlassSave', data);
   }
+
 }
