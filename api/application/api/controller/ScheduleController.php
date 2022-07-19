@@ -10,6 +10,7 @@ use app\common\model\Course;
 use app\common\model\ScheduleKlass;
 use app\common\model\Klass;
 use app\common\model\DispatchRoom;
+use app\common\model\StudentSchedule;
 use app\common\model\Room;
 use app\common\model\Dispatch;
 use app\common\model\User;
@@ -63,12 +64,12 @@ class ScheduleController extends Controller {
 
 	public function delete() {
         $id = Request()->param('id/d');
-        $schedule = Schedule::get($id);
-        $status = $schedule->delete();
+        $status = Schedule::deleteById($id);
+        
         if ($status) {
-            return json_encode($schedule);
+            return true;
         } else {
-            return $room->getError();
+            return false;
         }
     }
 

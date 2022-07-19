@@ -62,7 +62,6 @@ export class TermScheduleComponent implements OnInit {
 
   loadData(): void {
     this.weeks.valueChanges.subscribe(() => {
-      console.log('123333333333333333333333333333333333333333333333333');
       this.initDispatchesMatrix();
       for (const dispatch of this.dispatches) {
         console.log(dispatch);
@@ -94,7 +93,6 @@ export class TermScheduleComponent implements OnInit {
 
   loadDispatch(day: number, lesson: number): boolean {
     // console.log('load', this.dispatchesMatrix[day][lesson]);
-    console.log('123112312123123123123231', this.dispatch[day]);
     this.dispatch = this.dispatchesMatrix[day][lesson];
     // console.log(day, lesson, this.dispatch);
     return true;

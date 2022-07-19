@@ -39,7 +39,7 @@
             <div class="row" *ngFor="let week of weeks; index as index">
               {{ isWeekDisabled(index) }}
               &nbsp;&nbsp;
-              <input type="checkBox" (click)="onWeekChange(week)"  [disabled]="isWeekDisabled(index)" [id]="day.toString() + lesson.toString() + week.toString()">&nbsp;<label [for]="day.toString() + lesson.toString() + week.toString()">第{{ week }}周</label>
+              <input type="checkBox" (click)="onWeekChange(week)"  [disabled]="isWeekDisabled(index)" [id]="day.toString() + lesson.toString() + week.toString()">&nbsp;<label [for]="day.toString() + lesson.toString() + week.toString()">第{{ week + 1 }}周</label>
             </div>
           </div>
           <div class="col-sm-6">
