@@ -18,18 +18,13 @@ class Term extends Model {
         }
         //获取学期，state是1直接返回
         $Term = Term::get($termId);
-        // 如果是插入数据时选择未激活， 则返回, 如果修改某个未激活学期为激活状态，则应继续执行。
         if ($judge) {
             if (!$Term->state) {
                 return true;
             }
         }
         //激活学期
-        $status = $Term->where('state=1')->update(['state'=>0]);
-        if (!$status) {
-            $msg .= $Term->getError();
-            throw new \Exception('激活失败:'.$Term->getError());
-        }
+        $Term->where('state=1')->update(['state'=>0]);
         $status = $Term->where("id=$termId")->update(['state'=>1]);
         if (!$status) {
             $msg .= $Term->getError();

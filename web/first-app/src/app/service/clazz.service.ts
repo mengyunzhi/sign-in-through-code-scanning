@@ -24,10 +24,12 @@ export class ClazzService {
     return this.httpClient.get<number[]>('/clazz/clazzesHaveSelectCourse/course_id/' + course_id.toString());
   }
 
-  clazzMembers(clazz_id: number, page: number, size: number): Observable<Page<Student>> {
+  clazzMembers(clazz_id: number, page: number, size: number, param: {name?: string, sno?: string}): Observable<Page<Student>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
-      .append('size', size.toString());
+      .append('size', size.toString())
+      .append('searchName', param.name ? param.name : '')
+      .append('searchSno', param.sno ? param.sno : '');
     return this.httpClient
       .get<{length: number, content: {user_id: number, name: string, sex: number, sno: number}[]}>
       ('/clazz/clazzMembers/clazz_id/' + clazz_id.toString(), {params: httpParams})
@@ -72,7 +74,7 @@ export class ClazzService {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())
-      .append('searchName', param.name as string);
+      .append('searchName', param.name ? param.name : '');
     return this.httpClient
       .get<{length: number, content: Clazz[]}>
       ('/clazz/page', {params: httpParams})
