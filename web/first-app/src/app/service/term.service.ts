@@ -31,7 +31,7 @@ export class TermService {
     const httpParams = new HttpParams()
       .append('size', size.toString())
       .append('page', page.toString())
-      .append('searchName', param.name as string);
+      .append('searchName', param.name ? param.name : '');
     return this.httpClient.get<{length: number, content: Term[]}>('/term/page', {params: httpParams})
       .pipe(map(data =>
         new Page<Term>({

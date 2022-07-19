@@ -21,9 +21,9 @@ export class StudentService {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())
-      .append('searchClazz', param.clazz as string)
-      .append('searchName', param.name as string)
-      .append('searchSno', param.sno as string);
+      .append('searchClazz', param.clazz ? param.clazz : '')
+      .append('searchName', param.name ? param.name : '')
+      .append('searchSno', param.sno ? param.sno : '');
     return this.httpClient.get<{length: number, content: T[]}>('/student/page', {params: httpParams})
       .pipe(map(data => {
         const content = [] as Student[];

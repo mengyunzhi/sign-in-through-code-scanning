@@ -26,8 +26,8 @@ export class RoomService {
         const httpParams = new HttpParams()
           .append('page', page.toString())
           .append('size', size.toString())
-          .append('searchName', param.name as string)
-          .append('searchCapacity', param.capacity as string);
+          .append('searchName', param.name ? param.name : '')
+          .append('searchCapacity', param.capacity ? param.capacity : '');
         this.httpClient.get<any>('/room/page', {params: httpParams})
           .subscribe(data => {
             rooms = data.content;

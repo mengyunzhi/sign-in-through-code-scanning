@@ -6,6 +6,7 @@ import {Page} from '../../../entity/page';
 import {Student} from '../../../entity/student';
 import {StudentService} from '../../../service/student.service';
 import {CommonService} from '../../../service/common.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-clazz-members',
@@ -14,7 +15,7 @@ import {CommonService} from '../../../service/common.service';
 })
 export class ClazzMembersComponent implements OnInit {
   page = 0;
-  size = 10;
+  size = 5;
 
   pageData = new Page<Student>({
     content: [] as Student[],
@@ -25,6 +26,13 @@ export class ClazzMembersComponent implements OnInit {
 
   clazz_id: number | undefined;
 
+  // 初始化查询条件
+  param = {name: '', sno: ''};
+  queryForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+    sno: new FormControl('', Validators.required),
+  });
+
   constructor(private clazzService: ClazzService,
               private route: ActivatedRoute,
               private studentService: StudentService,
@@ -33,7 +41,7 @@ export class ClazzMembersComponent implements OnInit {
 
   ngOnInit(): void {
     this.clazz_id = +this.route.snapshot.params.clazz_id;
-    this.loadByPage();
+    this.loadByPage(0, this.param);
   }
 
   onDelete(id: number): void {
@@ -53,10 +61,10 @@ export class ClazzMembersComponent implements OnInit {
     });
   }
 
-  loadByPage(page = 0): void {
+  loadByPage(page: number = 0, param: { name: string, sno: string}): void {
     console.log('loadByPage', page);
     Assert.isNumber(this.clazz_id, 'clazz_id不是number类型');
-    this.clazzService.clazzMembers(this.clazz_id as number, page, this.size)
+    this.clazzService.clazzMembers(this.clazz_id as number, page, this.size, param)
       .subscribe(pageData => {
         console.log('班级成员请求成功', pageData);
         this.pageData = pageData;
@@ -67,6 +75,15 @@ export class ClazzMembersComponent implements OnInit {
   }
 
   onPage($event: number): void {
-    this.loadByPage($event);
+    this.loadByPage($event, this.param);
+  }
+
+  onSubmit(): void {
+    console.log('onSubmit called');
+    const query = this.queryForm.value as {
+      name: string,
+      sno: string,
+    };
+    this.loadByPage(0, query);
   }
 }

@@ -40,11 +40,22 @@ class ClazzController extends Controller
         $query = Db::table('yunzhi_user')->alias('user')
         ->join('yunzhi_student student', 'user.id = student.user_id')
         ->field('user.id as user_id, user.name, user.sex, student.sno')
-        ->order('student.id desc')->where($where);
+        ->order('student.id desc')
+        ->where($where)
+        ->where('user.name', 'like', '%' . $params['searchName'] . '%')
+        ->where('student.sno', 'like', '%' . $params['searchSno'] . '%');
+        
 
         $data['content'] = $query->limit(
             $params['page'] * $params['size'],
             $params['size'])->select();
+        $query = Db::table('yunzhi_user')->alias('user')
+        ->join('yunzhi_student student', 'user.id = student.user_id')
+        ->field('user.id as user_id, user.name, user.sex, student.sno')
+        ->order('student.id desc')
+        ->where($where)
+        ->where('user.name', 'like', '%' . $params['searchName'] . '%')
+        ->where('student.sno', 'like', '%' . $params['searchSno'] . '%');
         $data['length'] = $query->where($where)->count();
         return json_encode($data);
     }
