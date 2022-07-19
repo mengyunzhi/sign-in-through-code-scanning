@@ -31,10 +31,10 @@ export class TeacherService {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())
-      .append('searchName', param.name as string)
-      .append('searchPhone', param.phone as string);
+      .append('searchName', param.name ? param.name : '')
+      .append('searchPhone', param.phone ? param.phone : '');
     return this.httpClient
-      .get<{length: number, content: {user_id: number, name: string, sex: number, number: number}[]}>
+      .get<{length: number, content: {user_id: number, name: string, sex: number, number: string}[]}>
       ('/teacher/page', {params: httpParams})
       .pipe(map(data => {
         console.log('teacherService', data);
@@ -46,7 +46,7 @@ export class TeacherService {
               name: teacher.name,
               sex: teacher.sex,
               number: teacher.number,
-            } as unknown as User
+            } as User
           } as Teacher);
         }
         return new Page<Teacher>({
