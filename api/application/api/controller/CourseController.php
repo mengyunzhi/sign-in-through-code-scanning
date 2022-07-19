@@ -3,6 +3,7 @@ namespace app\api\controller;     //命名空间，也说明了文件所在的�
 use app\common\model\Teacher;
 use app\common\model\User;
 use app\common\model\Schedule;
+use app\common\model\Program;
 use app\common\model\Course;
 use app\index\service\MenuService;
 use think\Controller;
@@ -86,11 +87,9 @@ class CourseController extends Controller
     public function delete() {
         $id = Request()->param('id/d');
         $course = Course::get($id);
-        $status = $course->delete();
-        if ($status) {
-            return json_encode($course);
-        } else {
-            return $course->getError();
-        }
+        
+        Program::where('course_id', $id)->delete();
+        $course->delete();
+        return json_encode($course);
     }
 }

@@ -10,6 +10,7 @@ use app\common\model\Course;
 use app\common\model\ScheduleKlass;
 use app\common\model\Klass;
 use app\common\model\DispatchRoom;
+use app\common\model\StudentSchedule;
 use app\common\model\Room;
 use app\common\model\Dispatch;
 use app\common\model\User;
@@ -63,12 +64,12 @@ class ScheduleController extends Controller {
 
 	public function delete() {
         $id = Request()->param('id/d');
-        $schedule = Schedule::get($id);
-        $status = $schedule->delete();
+        $status = Schedule::deleteById($id);
+
         if ($status) {
-            return json_encode($schedule);
+            return true;
         } else {
-            return $room->getError();
+            return false;
         }
     }
 
@@ -80,7 +81,8 @@ class ScheduleController extends Controller {
         $user = $teacher->getUser();
         $course = $schedule->getCourse();
         $programs = $course->getProgram();
-        $dispatches = $schedule->getDispatches();
+
+        $dispatches = $schedule->getDispatches($schedule->term_id);
         $rooms = [];
         foreach ($dispatches as $key => $dispatch) {
             $dispatchRooms = DispatchRoom::where('dispatch_id', 'eq', $dispatch->id)->select();
@@ -139,12 +141,17 @@ class ScheduleController extends Controller {
         return json_encode($currentTerm);
     }
 
-    public function getDispatches() {
+    public function getDispatches($termId = null) {
         $json_raw = file_get_contents("php://input"); //获取前端传来的json数据
         $isForEdit = json_decode($json_raw);
         //通过学期获取调度
         $user = User::getCurrentLoginUser();
-        $term = Term::getCurrentTerm();
+        if (is_null($termId)) {
+            $term = Term::getCurrentTerm();
+        } else {
+            $term = Term::get($termId);
+        }
+        
         $scheduleIds = Schedule::where("term_id=$term->id")->column('id');
         if (empty($scheduleIds)) $scheduleIds = [0];
         $Dispatches = Dispatch::where('schedule_id', 'in', $scheduleIds)->column('id, schedule_id, week, day, lesson');

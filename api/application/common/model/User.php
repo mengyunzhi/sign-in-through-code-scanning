@@ -416,10 +416,17 @@ class User extends Model {
             $msg .= $obj->getError();
         } else if ((int)$user->role === User::$ROLE_TEACHER) {
             $obj = Teacher::where('user_id', 'eq', $user_id)->find();
+            // 删除该教师名下排课
+            $scheduleIds = Schedule::where('teacher_id', $obj->id)->column('id');
+            foreach ($scheduleIds as $scheduleId) {
+                Schedule::deleteById($scheduleId);
+            }
+            
             $status = $obj->delete();
             $msg .= $obj->getError();
         } else if ((int)$user->role === User::$ROLE_STUDENT) {
             $obj = Student::where('user_id', 'eq', $user_id)->find();
+            StudentSchedule::where('student_id', $obj->id)->delete();
             $status = $obj->delete();
             $msg .= $obj->getError();
         }

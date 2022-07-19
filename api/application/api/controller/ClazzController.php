@@ -63,6 +63,12 @@ class ClazzController extends Controller
     public function delete() {
         $id = Request()->param('id/d');
         $clazz = Klass::get($id);
+        ScheduleKlass::where('klass_id', $id)->delete();
+        $userIds = Student::where('klass_id', $id)->column('user_id');
+        foreach ($userIds as $userId) {
+            User::userDelete($userId);
+        }
+
         $status = $clazz->delete();
         if (!$status) {
             return $this->error('班级删除失败:'.$clazz->getError());

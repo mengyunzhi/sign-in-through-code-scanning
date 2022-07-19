@@ -83,6 +83,10 @@ class TermController extends Controller
     public function delete() {
         $id = Request()->param('id/d');
         $term = Term::get($id);
+        $scheduleIds = Schedule::where('term_id', $id)->column('id');
+        foreach ($scheduleIds as $scheduleId) {
+            Schedule::deleteById($scheduleId);
+        }
         $status = $term->delete();
         if ($status) {
             return json_encode($term);

@@ -77,10 +77,9 @@ class Schedule extends Model {
     // 此处删掉了第一个参数$teacherId, Csh 20220716
     static public function courseTimeSave($courseId, $scheduleId, $courseTimes, &$msg) {
         $dispatchIds = Dispatch::where('schedule_id', 'eq', $scheduleId)->column('id');
-        $status = Dispatch::where('schedule_id', 'eq', $scheduleId)->delete();
-        if (!$status) return false;
-        $status = DispatchRoom::where('dispatch_id', 'in', $dispatchIds)->delete();
-        if (!$status) return false;
+        Dispatch::where('schedule_id', 'eq', $scheduleId)->delete();
+        if (empty($dispatchIds)) $dispatchIds = [0];
+        DispatchRoom::where('dispatch_id', 'in', $dispatchIds)->delete();
         $status = Dispatch::dispatchSave($scheduleId, $courseTimes, $msg);
         return $status;
     }
@@ -88,6 +87,21 @@ class Schedule extends Model {
     public function Students()
     {
         return $this->belongsToMany('Student', 'yunzhi_student_schedule', 'student_id', 'schedule_id');
+    }
+
+    static public function deleteById($id) {
+        $schedule = Schedule::get($id);
+
+        StudentSchedule::where('schedule_id', $id)->delete();
+        ScheduleKlass::where('schedule_id', $id)->delete();
+        
+        $dispatchIds = Dispatch::where('schedule_id', $id)->column('id');
+        foreach ($dispatchIds as $dispatchId) {
+            Dispatch::courseTimeAndRoomDelete($dispatchId);
+        }
+        
+        $status = $schedule->delete();
+        return true;
     }
     
 

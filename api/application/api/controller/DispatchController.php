@@ -5,6 +5,7 @@ use app\common\model\User;
 use app\common\model\Schedule;
 use app\common\model\Course;
 use app\common\model\Dispatch;
+use app\common\model\DispatchRoom;
 use app\index\service\MenuService;
 use think\Controller;
 use think\Request;
