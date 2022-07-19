@@ -9,7 +9,10 @@ const routes: Routes = [
     path: '',
     component: WeekScheduleComponent
   }, {
-    path: 'term-schedule',
+    path: 'week',
+    component: WeekScheduleComponent
+  }, {
+    path: 'term',
     component: TermScheduleComponent
   },
 ];

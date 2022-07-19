@@ -1,6 +1,5 @@
 <form>
   <div class="form-group row">
-    {{ week.value | json }}
     <div class="col-sm-3">
       <select class="form-control col-sm-12" [formControl]="week">
         <option *ngFor="let week of weeks;" [value]="week">第{{ week + 1 }}周</option>
@@ -10,7 +9,7 @@
       <h4>学期：{{ term.name }}</h4>
     </div>
     <div class="col-md-3 text-right">
-      <a class="btn btn-primary" [routerLink]="'/teacher/term-schedule'">查看学期课程表</a>
+      <a class="btn btn-primary" routerLink="/teacher/courseSchedule/term">查看学期课程表</a>
     </div>
   </div>
 </form>
