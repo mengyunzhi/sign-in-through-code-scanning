@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Page} from '../../../entity/page';
-import {HttpClient, HttpParams} from '@angular/common/http';
 import {Schedule} from '../../../entity/schedule';
 import {ScheduleService} from '../../../service/schedule.service';
-import {Teacher} from '../../../entity/teacher';
-import {Program} from '../../../entity/program';
 import {Clazz} from '../../../entity/clazz';
-import {Dispatch} from '../../../entity/dispatch';
-import {Room} from '../../../entity/room';
+import {FormControl, FormGroup} from '@angular/forms';
+import {TermService} from '../../../service/term.service';
 
 @Component({
   selector: 'app-task-index',
@@ -19,6 +16,11 @@ export class TaskIndexComponent implements OnInit {
   page = 0;
   size = 3;
 
+  queryGroup = new FormGroup({
+    course: new FormControl(''),
+    term: new FormControl('')
+  });
+
   pageData = new Page<{schedule: Schedule, clazzes: Clazz[]}>({
     content: [],
     number: this.page,
@@ -26,14 +28,19 @@ export class TaskIndexComponent implements OnInit {
     numberOfElements: 0
   });
 
-  constructor(private scheduleService: ScheduleService) { }
+  constructor(private scheduleService: ScheduleService,
+              private termService: TermService) { }
 
   ngOnInit(): void {
-    this.loadByPage();
+    this.termService.getCurrentTerm()
+      .subscribe(term => {
+        this.queryGroup.get('term')?.setValue(term.name);
+        this.loadByPage();
+      });
   }
 
   loadByPage(page: number = 0): void {
-    this.scheduleService.page(page, this.size)
+    this.scheduleService.page(page, this.size, this.queryGroup.value)
       .subscribe(pagedata => {
         console.log('task', pagedata);
         this.page = page;

@@ -7,6 +7,7 @@ import {Confirm, Notify} from 'notiflix';
 import {ScheduleKlass} from '../../../entity/schedule_klass';
 import {Clazz} from '../../../entity/clazz';
 import {CommonService} from '../../../service/common.service';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-schedule-index',
@@ -17,6 +18,11 @@ export class ScheduleIndexComponent implements OnInit {
 
   page = 0;
   size = 3;
+
+  queryGroup = new FormGroup({
+    course: new FormControl(''),
+    term: new FormControl('')
+  });
 
   pageData = new Page<{schedule: Schedule, clazzes: Clazz[]}>({
     content: [],
@@ -34,7 +40,7 @@ export class ScheduleIndexComponent implements OnInit {
 
   loadByPage(page: number = 0): void {
     console.log('loadByPage', page);
-    this.scheduleService.page(page, this.size)
+    this.scheduleService.page(page, this.size, this.queryGroup.value as {course: string, term: string})
       .subscribe(pageData => {
         this.page = page;
         console.log('排课请求数据', pageData);

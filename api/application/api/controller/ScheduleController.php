@@ -23,7 +23,15 @@ class ScheduleController extends Controller {
         $teacher = Teacher::get(['user_id' => $currentUser->id]);
 		$where = "$teacher->id = teacher_id";
         $content = [];
-        $query = Schedule::where($where);
+
+        $queryTermIds = Term::where('name', 'like', '%'. $params['term'] .'%')->column('id');
+        $queryCourseIds = Course::where('name', 'like', '%'. $params['course'] .'%')->column('id');
+        if (empty($queryTermIds)) $queryTermIds = [0];
+        if (empty($queryCourseIds)) $queryCourseIds = [0];
+
+        $query = Schedule::where($where)
+        ->where('term_id', 'in', $queryTermIds)
+        ->where('course_id', 'in', $queryCourseIds);
         $schedules = $query->limit($params['page'] * $params['size'], $params['size'])->order('id desc')->select();
 
         $clazzes = [];
@@ -56,7 +64,9 @@ class ScheduleController extends Controller {
         $content['terms'] = $terms;
         $content['courses'] = $courses;
 
-        $query = Schedule::where($where);
+        $query = Schedule::where($where)
+        ->where('term_id', 'in', $queryTermIds)
+        ->where('course_id', 'in', $queryCourseIds);
         $data['length'] = $query->count();
         $data['content'] = $content;
         return json_encode($data);
