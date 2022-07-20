@@ -4,6 +4,7 @@ import {Course} from '../../../entity/course';
 import {CourseService} from '../../../service/course.service';
 import {Confirm, Notify} from 'notiflix';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {CommonService} from '../../../service/common.service';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class CourseIndexComponent implements OnInit {
   course = {name: '', lesson: ''};
 
   page = 0;
-  size = 2;
+  size = 3;
 
   formGroup = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -31,7 +32,8 @@ export class CourseIndexComponent implements OnInit {
     numberOfElements: 0
   });
 
-  constructor(private courseService: CourseService) {
+  constructor(private courseService: CourseService,
+              private commonService: CommonService) {
   }
 
   ngOnInit(): void {
@@ -60,20 +62,15 @@ export class CourseIndexComponent implements OnInit {
 
   onDelete(id: number): void {
     console.log('删除课程');
-    Confirm.show(
-      '请确认',
-      '该操作不可逆',
-      '确认',
-      '取消',
-      () => {
-        this.courseService.delete(id)
+    this.commonService.confirm((confirm) => {
+      this.courseService.delete(id)
           .subscribe(success => {
             console.log('删除成功', success);
+            this.commonService.success();
             this.ngOnInit();
-            Notify.success('删除成功', {timeout: 800});
           }, error => {
             console.log('删除失败', error);
-            Notify.failure('删除失败', {timeout: 800});
+            this.commonService.success();
           });
       },
     );

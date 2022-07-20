@@ -35,7 +35,7 @@ export class WeekScheduleComponent implements OnInit {
   flag = 0;
 
   ngOnInit(): void {
-    this.courseScheduleService.getDataForWeek()
+    this.courseScheduleService.getData()
       .subscribe(dispatches => {
         console.log('getDataForWeek 请求成功', dispatches);
         this.dispatches = dispatches;

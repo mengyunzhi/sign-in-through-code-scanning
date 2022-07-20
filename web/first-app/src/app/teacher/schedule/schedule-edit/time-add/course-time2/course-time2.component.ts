@@ -67,6 +67,7 @@ export class CourseTime2Component implements OnInit {
   defaultWeeks = [] as number[];
   // 默认教室
   defaultRooms = [] as number[];
+  days = ['一', '二', '三', '四', '五', '六', '日'];
 
   courseTime = [] as {weeks: number[], roomIds: number[]}[][];
 
@@ -273,7 +274,7 @@ export class CourseTime2Component implements OnInit {
 
   getContent(): string {
     if (this.status === 1) {
-      return '周' + (this.day + 1) + '第' + (this.lesson + 1) + '节';
+      return '周' + (this.days[this.day]) + '第' + (this.lesson + 1) + '节';
     } else if (this.status === 0) {
       let content = '';
       const selectedWeeks = [] as number[];

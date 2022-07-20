@@ -67,9 +67,9 @@ class ScheduleController extends Controller {
         $status = Schedule::deleteById($id);
 
         if ($status) {
-            return true;
+            return json_encode(true);
         } else {
-            return false;
+            return json_encode(false);
         }
     }
 

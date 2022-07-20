@@ -4,6 +4,7 @@ import {ProgramService} from '../../../../service/program.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {Notify, Report} from 'notiflix';
+import {CommonService} from '../../../../service/common.service';
 
 @Component({
   selector: 'app-program-edit',
@@ -14,7 +15,8 @@ export class ProgramEditComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private programService: ProgramService,
-              private router: Router) { }
+              private router: Router,
+              private commService: CommonService) { }
 
   program_id: number | undefined;
 
@@ -41,11 +43,10 @@ export class ProgramEditComponent implements OnInit {
     this.programService.update(this.program_id as number, this.formGroup.value)
       .subscribe(success => {
         console.log('项目更新成功', success);
-        Notify.success('更新成功', {timeout: 1000});
-        this.router.navigate(['./../../'], {relativeTo: this.route});
+        this.commService.success(() => this.router.navigate(['./../../'], {relativeTo: this.route}));
       }, error => {
         console.log('项目更新失败', error);
-        Report.failure('更新失败', '', '确定');
+        this.commService.error();
       });
   }
 

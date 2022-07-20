@@ -4,6 +4,7 @@ import {TeacherService} from '../../../service/teacher.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {Notify, Report} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-teacher-edit',
@@ -20,7 +21,8 @@ export class TeacherEditComponent implements OnInit {
   id: number | undefined;
   constructor(private teacherService: TeacherService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,
+              private commonService: CommonService) { }
 
   ngOnInit(): void {
     // id为teacher所对应的user_id
@@ -46,11 +48,10 @@ export class TeacherEditComponent implements OnInit {
     })
       .subscribe(success => {
         console.log('教师更新成功', success);
-        this.router.navigate(['./../../'], {relativeTo: this.route});
-        Notify.success('更新成功', {timeout: 1000});
+        this.commonService.success(() => this.router.navigate(['./../../'], {relativeTo: this.route}));
       }, error => {
         console.log('教师更新失败', error);
-        Report.failure('更新失败', '', '确定');
+        this.commonService.error();
       });
 
   }

@@ -45,12 +45,7 @@ export class ScheduleEditComponent implements OnInit {
   }
   onDeleteClazz(clazzId: number): void {
     const scheduleId = this.id;
-    Confirm.show(
-      '请确认',
-      '该操作不可逆',
-      '确认',
-      '取消',
-      () => {
+    this.commonService.confirm((confirm) => {
         this.clazzService.courseClazzDelete(clazzId, scheduleId)
           .subscribe(success => {
             console.log('班级删除成功', success);
@@ -65,12 +60,7 @@ export class ScheduleEditComponent implements OnInit {
   }
 
   onDeleteDispatch(id: number): void {
-    Confirm.show(
-      '请确认',
-      '该操作不可逆',
-      '确认',
-      '取消',
-      () => {
+    this.commonService.confirm((confirm) => {
         this.dispatchService.delete(id)
           .subscribe(success => {
             console.log('调度删除成功', success);
@@ -85,13 +75,8 @@ export class ScheduleEditComponent implements OnInit {
   }
 
   onDeleteProgram(id: number): void {
-    Confirm.show(
-      '请确认',
-      '该操作不可逆',
-      '确认',
-      '取消',
-      () => {
-        this.programService.delete(id)
+    this.commonService.confirm((confirm) => {
+      this.programService.delete(id)
           .subscribe(success => {
             console.log('项目删除成功', success);
             this.ngOnInit();

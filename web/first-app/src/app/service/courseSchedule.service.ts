@@ -15,7 +15,7 @@ export class CourseScheduleService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getDataForWeek(): Observable<{week: number, day: number, lesson: number, course: Course, rooms: Room[], clazzes: Clazz[]}[]> {
+  getData(): Observable<{week: number, day: number, lesson: number, course: Course, rooms: Room[], clazzes: Clazz[]}[]> {
     return this.httpClient.get<{
       clazzes: Clazz[][],
       courses: Course[],
@@ -26,7 +26,7 @@ export class CourseScheduleService {
         schedule_id: number
       }[][],
       rooms: Room[][][]
-    }>('/course_schedule/getDataForWeek')
+    }>('/course_schedule/getData')
       .pipe(map(data => {
         console.log(data);
         const content = [] as {week: number, day: number, lesson: number, course: Course, rooms: Room[], clazzes: Clazz[]}[];

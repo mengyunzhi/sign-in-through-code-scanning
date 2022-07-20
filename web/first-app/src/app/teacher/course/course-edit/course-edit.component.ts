@@ -5,7 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CourseService} from '../../../service/course.service';
 import {DatePipe} from '@angular/common';
 import {Assert} from '@yunzhi/ng-mock-api';
-import {Notify, Report} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-course-edit',
@@ -21,7 +21,8 @@ export class CourseEditComponent implements OnInit {
               private route: ActivatedRoute,
               private courseService: CourseService,
               private datePipe: DatePipe,
-              private router: Router) {
+              private router: Router,
+              private commService: CommonService) {
     this.formGroup = new FormGroup({
       name : new FormControl('', Validators.required),
       lesson : new FormControl('', Validators.required),
@@ -50,11 +51,10 @@ export class CourseEditComponent implements OnInit {
       lesson: this.formGroup.get('lesson')?.value,
     }).subscribe(success => {
       console.log('课程更新成功');
-      this.router.navigate(['./../../'], {relativeTo: this.route});
-      Notify.success('更新成功', {timeout: 1000});
+      this.commService.success(() => this.router.navigate(['./../../'], {relativeTo: this.route}));
     }, error => {
       console.log('更新失败', error);
-      Report.failure('更新失败', '', '确定');
+      this.commService.error();
     });
   }
 }

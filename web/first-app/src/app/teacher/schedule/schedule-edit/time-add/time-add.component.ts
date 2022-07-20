@@ -12,6 +12,7 @@ import {Notify, Report} from 'notiflix';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {TermService} from '../../../../service/term.service';
+import {CommonService} from '../../../../service/common.service';
 
 
 @Component({
@@ -31,7 +32,8 @@ export class TimeAddComponent implements OnInit {
               private teacherService: TeacherService,
               private router: Router,
               private route: ActivatedRoute,
-              private termService: TermService) { }
+              private termService: TermService,
+              private commonService: CommonService) { }
 
   courseTimes = [] as {weeks: number[], roomIds: number[]}[][];
 
@@ -137,12 +139,11 @@ export class TimeAddComponent implements OnInit {
     })
       .subscribe(success => {
           console.log('更新成功', success);
-          this.router.navigate(['../'], {relativeTo: this.route}).then();
-          Notify.success('添加成功', {timeout: 1000});
+          this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
         },
         error => {
           console.log('更新失败', error);
-          Report.failure('添加失败', '', '确定');
+          this.commonService.error();
         });
   }
 }

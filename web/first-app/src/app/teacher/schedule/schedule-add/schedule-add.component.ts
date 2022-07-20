@@ -11,6 +11,7 @@ import {TeacherService} from '../../../service/teacher.service';
 import {Notify, Report} from 'notiflix';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TermService} from '../../../service/term.service';
+import {CommonService} from '../../../service/common.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class ScheduleAddComponent implements OnInit {
               private teacherService: TeacherService,
               private router: Router,
               private route: ActivatedRoute,
-              private termService: TermService) { }
+              private termService: TermService,
+              private commonService: CommonService) { }
   formGroup = new FormGroup({
     course_id: new FormControl('', Validators.required),
     clazz_ids: new FormControl(null, Validators.required),
@@ -175,12 +177,11 @@ export class ScheduleAddComponent implements OnInit {
       })
         .subscribe(success => {
             console.log('添加成功', success);
-            this.router.navigate(['../'], {relativeTo: this.route}).then();
-            Notify.success('添加成功', {timeout: 1000});
+            this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
           },
           error => {
             console.log('添加失败', error);
-            Report.failure('添加失败', '', '确定');
+            this.commonService.error();
           });
     } else {
       Report.failure('请完善上课时间信息', '', '确定');

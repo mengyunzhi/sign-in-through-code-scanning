@@ -55,12 +55,7 @@ export class RoomIndexComponent implements OnInit {
   * */
   onDelete(id: number): void {
     console.log(id);
-    Confirm.show(
-      '请确认',
-      '该操作不可逆',
-      '确认',
-      '取消',
-      () => {
+    this.commonService.confirm(() => {
         this.roomService.delete(id)
           .subscribe(success => {
             console.log('删除成功', success);
