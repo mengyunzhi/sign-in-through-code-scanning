@@ -67,12 +67,14 @@ export class TeacherIndexComponent implements OnInit {
   }
 
   onPage($event: number): void {
-    console.log('onPage is called', $event);
-    this.loadByPage($event, this.param);
+    const query = this.queryForm.value as {
+      name: string,
+      phone: string,
+    };
+    this.loadByPage($event, query);
   }
 
   onSubmit(): void {
-    console.log('onSubmit called');
     const query = this.queryForm.value as {
       name: string,
       phone: string,
