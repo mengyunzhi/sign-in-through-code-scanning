@@ -247,7 +247,7 @@ class ScheduleController extends Controller {
         $scheduleId = $data->scheduleId;
         $courseTimes = $data->courseTimes;
         $msg = '';
-        $status = Schedule::courseTimeSave($courseId, $scheduleId, $courseTimes, $msg);
+        $status = Schedule::eidtCourseTimeSave($courseId, $scheduleId, $courseTimes, $msg);
         return json_encode($status);
         if (true) {
             return $this->error('更新失败：'. $msg);
