@@ -1,6 +1,5 @@
 <!-- 模态框 -->
 <!-- Button trigger modal -->
-{{ 'disableWeeks:' + disableWeeks + '\n conflictWeeks' + conflictWeeks }}
 <ng-container [ngSwitch]="status">
   <button *ngSwitchCase="1" type="button" class="btn btn-info" data-toggle="modal" style="margin-left: 50px" [attr.data-target]="'#exampleModalCenter' + day.toString() + lesson.toString()"> <!-- (click)="isShow(day, lesson)"-->
     {{getContent()}}
@@ -17,18 +16,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" [id]="'exampleModalCenterTitle' + day.toString() + lesson.toString()">
-          周{{day}}第{{lesson}}节
+          周{{ days[day] }}第{{lesson + 1}}节
         </h5>
-        {{'---------'}}
-        {{'selectedWeeks'}}
-        {{selectedWeeks | json}}
-        {{'conflictWeeks'}}
-        {{conflictWeeks | json}}
-        {{'selectedRooms'}}
-        {{selectedRooms | json}}
-        {{'conflictRooms'}}
-        {{conflictRooms | json}}
-        {{'---------'}}
         <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="sendParent()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -37,8 +26,7 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="row" *ngFor="let week of weeks; index as index">
-              {{ isWeekDisabled(index) }}
-              &nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <input type="checkBox" (click)="onWeekChange(week)"  [disabled]="isWeekDisabled(index)" [id]="day.toString() + lesson.toString() + week.toString()">&nbsp;<label [for]="day.toString() + lesson.toString() + week.toString()">第{{ week + 1 }}周</label>
             </div>
           </div>

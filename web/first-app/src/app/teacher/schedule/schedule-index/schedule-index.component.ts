@@ -6,6 +6,7 @@ import {ScheduleService} from '../../../service/schedule.service';
 import {Confirm, Notify} from 'notiflix';
 import {ScheduleKlass} from '../../../entity/schedule_klass';
 import {Clazz} from '../../../entity/clazz';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-schedule-index',
@@ -24,7 +25,8 @@ export class ScheduleIndexComponent implements OnInit {
     numberOfElements: 0
   });
 
-  constructor(private scheduleService: ScheduleService) { }
+  constructor(private scheduleService: ScheduleService,
+              private commonService: CommonService) { }
 
   ngOnInit(): void {
     this.loadByPage();
@@ -45,20 +47,15 @@ export class ScheduleIndexComponent implements OnInit {
   }
 
   onDelete(id: number): void {
-    Confirm.show(
-      '请确认',
-      '该操作不可逆',
-      '确认',
-      '取消',
-      () => {
+    this.commonService.confirm((confirm) => {
         this.scheduleService.delete(id)
           .subscribe(success => {
             console.log('删除成功', success);
+            this.commonService.success();
             this.ngOnInit();
-            Notify.success('删除成功', {timeout: 800});
           }, error => {
             console.log('删除失败', error);
-            Notify.failure('删除失败', {timeout: 800});
+            this.commonService.success();
           });
       },
     );

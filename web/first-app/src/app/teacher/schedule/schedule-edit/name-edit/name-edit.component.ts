@@ -5,6 +5,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CourseService} from '../../../../service/course.service';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {Notify, Report} from 'notiflix';
+import {CommonService} from '../../../../service/common.service';
 
 @Component({
   selector: 'app-name-edit',
@@ -16,7 +17,8 @@ export class NameEditComponent implements OnInit {
   constructor(private scheduleService: ScheduleService,
               private route: ActivatedRoute,
               private courseService: CourseService,
-              private router: Router) { }
+              private router: Router,
+              private commService: CommonService) { }
   formGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     lesson: new FormControl('', Validators.required),
@@ -41,11 +43,10 @@ export class NameEditComponent implements OnInit {
     this.courseService.update(this.course_id as number, this.formGroup.value)
       .subscribe(success => {
         console.log('课程更新成功', success);
-        Notify.success('更新成功', {timeout: 1000});
-        this.router.navigate(['./../'], {relativeTo: this.route});
+        this.commService.success(() => this.router.navigate(['./../'], {relativeTo: this.route}));
       }, error => {
         console.log('课程更新失败', error);
-        Report.failure('更新失败', '', '确定');
+        this.commService.error();
       });
   }
 

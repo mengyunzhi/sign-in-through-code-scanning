@@ -20,7 +20,7 @@ class CourseScheduleController extends Controller
 
     //{week day lesson rooms clazzes course}
     // 
-    public function getDataForWeek() {
+    public function getData() {
         $teacher = Teacher::getLoginTeacher();
         $term = Term::getCurrentTerm();
         $schedules = Schedule::where('teacher_id', $teacher->id)

@@ -5,6 +5,7 @@ import {ScheduleService} from '../../../../service/schedule.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Course} from '../../../../entity/course';
 import {Notify, Report} from 'notiflix';
+import {CommonService} from '../../../../service/common.service';
 
 @Component({
   selector: 'app-program-add',
@@ -20,7 +21,8 @@ export class ProgramAddComponent implements OnInit {
   constructor(private programService: ProgramService,
               private scheduleService: ScheduleService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,
+              private commonService: CommonService) { }
 
   course = {} as Course;
   schedule_id: number | undefined;
@@ -43,11 +45,10 @@ export class ProgramAddComponent implements OnInit {
         course_id: this.course.id,
       }).subscribe(success => {
         console.log('项目添加成功', success);
-        this.router.navigate(['../'], {relativeTo: this.route});
-        Notify.success('添加成功', {timeout: 1000});
+        this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
       }, error => {
         console.log('项目添加失败', error);
-        Report.failure('添加失败', '', '确定');
+        this.commonService.error();
       });
     }
   }

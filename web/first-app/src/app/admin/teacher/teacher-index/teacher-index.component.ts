@@ -4,6 +4,7 @@ import {Teacher} from '../../../entity/teacher';
 import {TeacherService} from '../../../service/teacher.service';
 import {Confirm, Notify} from 'notiflix';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-teacher-index',
@@ -12,7 +13,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class TeacherIndexComponent implements OnInit {
   page = 0;
-  size = 2;
+  size = 3;
 
   pageData = new Page<Teacher>({
     content: [] as Teacher[],
@@ -28,7 +29,8 @@ export class TeacherIndexComponent implements OnInit {
     phone: new FormControl('', Validators.required),
   });
 
-  constructor(private teacherService: TeacherService) {
+  constructor(private teacherService: TeacherService,
+              private commonService: CommonService) {
   }
 
   ngOnInit(): void {
@@ -50,20 +52,15 @@ export class TeacherIndexComponent implements OnInit {
   * @params id 教师对应的user_id
   * */
   onDelete(id: number): void {
-    Confirm.show(
-      '请确认',
-      '该操作不可逆',
-      '确认',
-      '取消',
-      () => {
+    this.commonService.confirm(() => {
         this.teacherService.delete(id)
           .subscribe(success => {
             console.log('删除成功', success);
+            this.commonService.success();
             this.ngOnInit();
-            Notify.success('删除成功', {timeout: 800});
           }, error => {
             console.log('删除失败', error);
-            Notify.failure('删除失败', {timeout: 800});
+            this.commonService.success();
           });
       },
     );

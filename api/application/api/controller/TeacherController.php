@@ -18,7 +18,12 @@ class TeacherController extends Controller
         $data = json_decode(file_get_contents("php://input"));
         $params['name'] = $data->name;
         $params['sex'] = $data->sex;
-        $params['number'] = $data->number;
+        $params['number'] = null;
+        if (empty($data->number)) {
+            return $this->error('教师添加失败：' . '手机号为空');
+        } else {
+            $params['number'] = $data->number;
+        }
         $msg = '';
         $status = User::userSave($params, User::$ROLE_TEACHER, $msg);
         if (!$status) {

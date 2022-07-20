@@ -7,6 +7,7 @@ import {Dispatch} from '../../../../entity/dispatch';
 import {DispatchService} from '../../../../service/dispatch.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Notify, Report} from 'notiflix';
+import {CommonService} from '../../../../service/common.service';
 
 @Component({
   selector: 'app-clazz-add',
@@ -22,7 +23,8 @@ export class ClazzAddComponent implements OnInit {
               private route: ActivatedRoute,
               private clazzService: ClazzService,
               private dispatchService: DispatchService,
-              private router: Router) { }
+              private router: Router,
+              private commonService: CommonService) { }
   courseName = '';
   id: number | undefined;
   alreadyExitClazzes = [] as Clazz[];
@@ -125,11 +127,10 @@ export class ClazzAddComponent implements OnInit {
     this.scheduleService.courseKlassSave(this.id, this.formGroup.get('clazz_id')?.value)
       .subscribe(success => {
         console.log('添加成功', success);
-        this.router.navigate(['../'], {relativeTo: this.route});
-        Notify.success('添加成功', {timeout: 1000});
+        this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
       }, error => {
         console.log('添加失败', error);
-        Report.failure('添加失败', '', '确定');
+        this.commonService.error();
       });
     console.log('edit class-add save', this.formGroup.get('clazz_id')?.value);
     console.log('currentScheduleId', this.id);

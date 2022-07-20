@@ -52,13 +52,8 @@ export class ViewStudentComponent implements OnInit {
   }
 
   onDelete(student_id: number): void {
-    Confirm.show(
-      '请确认',
-      '该操作不可逆',
-      '确认',
-      '取消',
-      () => {
-        Assert.isNumber(this.schedule_id, 'schedule_id类型不是number');
+    this.commonService.confirm((confirm) => {
+      Assert.isNumber(this.schedule_id, 'schedule_id类型不是number');
         this.studentScheduleService.delete(student_id, this.schedule_id as number)
           .subscribe(success => {
             console.log('删除成功', success);

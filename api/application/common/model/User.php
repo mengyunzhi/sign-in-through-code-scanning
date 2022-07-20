@@ -369,9 +369,6 @@ class User extends Model {
      * 存用户
      * @author chenshihang 858190647@qq.com
      * @param  array    $data   保存的数据 
-     * 含学生  姓名/性别/学号/班级 
-     * 可能有  手机号/密码 
-     * 没有    角色/学生状态
      * @param  int      $role   角色
      * @param  string   &$msg   报错信息
      * @param  int      $userId 用户id， 区分新增和更新

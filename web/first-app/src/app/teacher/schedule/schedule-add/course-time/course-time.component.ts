@@ -53,6 +53,7 @@ export class CourseTimeComponent implements OnInit {
   conflictWeeks = [] as number[];
   // 不可用的教室
   conflictRooms = [] as number[];
+  days = ['一', '二', '三', '四', '五', '六', '日'];
 
   courseTime = [] as {weeks: number[], roomIds: number[]}[][];
 
@@ -190,7 +191,7 @@ export class CourseTimeComponent implements OnInit {
 
   getContent(): string {
     if (this.status === 1) {
-      return '周' + (this.day + 1) + '第' + (this.lesson + 1) + '节';
+      return '周' + (this.days[this.day]) + '第' + (this.lesson + 1) + '节';
     } else if (this.status === 0) {
       let content = '';
       const selectedWeeks = [] as number[];

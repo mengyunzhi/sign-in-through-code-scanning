@@ -40,7 +40,7 @@ export class TermAddComponent implements OnInit {
         },
         error => {
           console.log('添加失败', error);
-         this.commonService.error();
+          this.commonService.error();
         });
   }
 }

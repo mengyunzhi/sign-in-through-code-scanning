@@ -6,6 +6,7 @@ import {Student} from '../../../entity/student';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {Notify, Report} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-view-student-add',
@@ -26,7 +27,8 @@ export class ViewStudentAddComponent implements OnInit {
   flag = 0;
   constructor(private route: ActivatedRoute,
               private studentScheduleService: StudentScheduleService,
-              private router: Router) { }
+              private router: Router,
+              private commonService: CommonService) { }
 
   ngOnInit(): void {
     this.schedule_id = +this.route.snapshot.params.schedule_id;
@@ -52,11 +54,10 @@ export class ViewStudentAddComponent implements OnInit {
     })
       .subscribe(success => {
         console.log('添加成功', success);
-        this.router.navigate(['../'], {relativeTo: this.route});
-        Notify.success('添加成功', {timeout: 1000});
+        this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
       }, error => {
         console.log('添加失败', error);
-        Report.failure('添加失败', '', '确定');
+        this.commonService.error();
       });
   }
 
