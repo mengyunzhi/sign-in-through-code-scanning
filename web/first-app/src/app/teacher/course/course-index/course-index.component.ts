@@ -51,8 +51,11 @@ export class CourseIndexComponent implements OnInit {
   }
 
   onPage($event: number): void {
-    console.log('onPage is called', $event);
-    this.loadByPage($event, this.course);
+    const course = this.formGroup.value as {
+      name: string,
+      lesson: string,
+    };
+    this.loadByPage($event, course);
   }
 
   onDelete(id: number): void {

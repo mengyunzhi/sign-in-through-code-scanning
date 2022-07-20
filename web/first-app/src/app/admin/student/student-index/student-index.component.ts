@@ -42,7 +42,12 @@ export class StudentIndexComponent implements OnInit {
   }
 
   onPage($event: number): void {
-    this.loadByPage($event, this.param);
+    const query = this.queryForm.value as {
+      clazz: string,
+      name: string,
+      sno: string,
+    };
+    this.loadByPage($event, query);
   }
 
   /**
@@ -81,7 +86,6 @@ export class StudentIndexComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('onSubmit called');
     const query = this.queryForm.value as {
       clazz: string,
       name: string,

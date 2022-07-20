@@ -75,11 +75,14 @@ export class ClazzMembersComponent implements OnInit {
   }
 
   onPage($event: number): void {
-    this.loadByPage($event, this.param);
+    const query = this.queryForm.value as {
+      name: string,
+      sno: string,
+    };
+    this.loadByPage($event, query);
   }
 
   onSubmit(): void {
-    console.log('onSubmit called');
     const query = this.queryForm.value as {
       name: string,
       sno: string,
