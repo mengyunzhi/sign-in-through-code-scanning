@@ -97,7 +97,8 @@ export class ClazzAddComponent implements OnInit {
       for (const dispatch of this.alreadyExitDispatches) {
         if ( item.day === dispatch.day
           && item.lesson === dispatch.lesson
-          && item.week === dispatch.week) {
+          && item.week === dispatch.week
+          && item.schedule_id !== dispatch.schedule_id) {
           this.scheduleIdOfDispatchConflictClazzes.push(item.schedule_id);
           console.log('打印scheduleIdOfDispatchConflictClazzes', this.scheduleIdOfDispatchConflictClazzes);
         }
