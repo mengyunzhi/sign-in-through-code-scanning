@@ -3,6 +3,7 @@ namespace app\api\controller;     //命名空间，也说明了文件所在的�
 use app\common\model\Teacher;
 use app\common\model\User;
 use app\common\model\Schedule;
+use app\common\model\Student;
 use app\common\model\Room;
 use app\index\service\MenuService;
 use think\Controller;
@@ -52,6 +53,28 @@ class UserController extends Controller
             return $this->error('您并不拥有操作当前模块的权限');
         }
         return json_encode(true);
+    }
+
+    public function studentRegister() {
+        $data = json_decode(file_get_contents("php://input"));
+        $student = Student::where('sno', $data->sno)->find();
+        if (is_null($student)) {
+            $this->error('注册失败：学号不存在');
+            return '学号不存在';
+        }
+        $user = $student->getUser();
+        if ($student->state === 1) {
+            $this->error('注册失败：该用户已注册');
+            return '该用户已注册';
+        }
+        $user->number = $data->number;
+        $user->password = $data->password;
+        $status = $user->validate(true)->save();
+        if ($status) {
+            $student->state = 1;
+            $status = $student->validate(true)->save();
+        }
+        return json_encode($status);
     }
 
     public function userUpdate() {

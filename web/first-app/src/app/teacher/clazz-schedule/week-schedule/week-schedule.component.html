@@ -13,7 +13,7 @@
     </div>
   </div>
 </form>
-<div class="row" *ngIf="flag">
+<div class="row">
   <div class="col-md-12">
     <table class="table table-striped table-bordered">
       <thead class="table-primary">
@@ -30,7 +30,7 @@
         </tr>
       </thead>
 
-      <tbody>
+      <tbody  *ngIf="flag">
         <tr *ngFor="let lesson of lessons; index as l">
           <th scope="row">第{{ lesson }}节</th>
           <td *ngFor="let day of days; index as d">

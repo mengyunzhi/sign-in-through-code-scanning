@@ -36,9 +36,12 @@ export class UserService {
     return this.httpClient.get<User>('/user/getCurrentLoginUser');
   }
 
+  studentRegister(data: {sno: string, password: string, number: string}): Observable<boolean> {
+    return this.httpClient.post<boolean>('/user/studentRegister', data);
+  }
+
   userUpdate(id: number, data: {name: string, sex: number, number: string, role: number, password: string}): Observable<boolean> {
     return this.httpClient.post<boolean>('/user/userUpdate/id/' + id.toString(), data);
   }
-
 
 }

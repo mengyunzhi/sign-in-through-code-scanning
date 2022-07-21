@@ -36,7 +36,7 @@ export class StudentService {
               sex: student.sex,
               name: student.name,
             } as User,
-            sno: student.sno,
+            sno: student.sno.toString(),
             clazz: {
               id: student.clazz_id,
               name: student.clazz_name
@@ -63,7 +63,7 @@ export class StudentService {
         for (const student of data.content) {
           content.push({
             id: student.id,
-            sno: student.sno,
+            sno: student.sno.toString(),
             user: {
               id: student.user_id,
               name: student.name,

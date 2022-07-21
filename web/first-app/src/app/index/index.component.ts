@@ -62,7 +62,6 @@ export class IndexComponent implements OnInit {
     // 将登录状态写入缓存
     window.sessionStorage.setItem('login', 'true');
     window.sessionStorage.setItem('role', user.role.toString());
-
   }
 
   onLogout(): void {

@@ -4,6 +4,6 @@ import {Clazz} from './clazz';
 export interface Student extends User {
   user: User;
   clazz: Clazz;
-  sno: number;
+  sno: string;
   state: number;
 }
