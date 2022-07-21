@@ -90,6 +90,22 @@ export class TimeAddComponent implements OnInit {
       });
   }
 
+  checkCourseTimes(): boolean {
+    let count = 0;
+    for (let i = 0; i < 7; i++) {
+      for (let j = 0; j < 5; j++) {
+        console.log(this.courseTimes[i][j]);
+        if ( (this.courseTimes[i][j].weeks.length === 0 && this.courseTimes[i][j].roomIds.length !== 0)
+          || (this.courseTimes[i][j].weeks.length !== 0 && this.courseTimes[i][j].roomIds.length === 0)) {
+          return false;
+        } else if (this.courseTimes[i][j].weeks.length !== 0 && this.courseTimes[i][j].roomIds.length !== 0) {
+          count++;
+        }
+      }
+    }
+    return count !== 0;
+  }
+
   initCourseTimes(): void {
     for (let i = 0; i < 7; i++) {
       this.courseTimes[i] = [];
@@ -130,20 +146,26 @@ export class TimeAddComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.courseTimes);
-    Assert.isNumber(this.schedule_id, 'schedule_id的类型不是number');
-    this.scheduleService.scheduleUpdate({
-      courseId: this.course.id,
-      scheduleId: this.schedule_id as number,
-      courseTimes: this.courseTimes
-    })
-      .subscribe(success => {
-          console.log('更新成功', success);
-          this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
-        },
-        error => {
-          console.log('更新失败', error);
-          this.commonService.error();
-        });
+    const status = this.checkCourseTimes();
+    console.log(status);
+    if (status) {
+      console.log(this.courseTimes);
+      Assert.isNumber(this.schedule_id, 'schedule_id的类型不是number');
+      this.scheduleService.scheduleUpdate({
+        courseId: this.course.id,
+        scheduleId: this.schedule_id as number,
+        courseTimes: this.courseTimes
+      })
+        .subscribe(success => {
+            console.log('更新成功', success);
+            this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
+          },
+          error => {
+            console.log('更新失败', error);
+            this.commonService.error();
+          });
+    } else {
+      Report.failure('请完善上课时间信息', '', '确定');
+    }
   }
 }
