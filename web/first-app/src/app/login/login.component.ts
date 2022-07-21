@@ -4,6 +4,7 @@ import {User} from '../entity/user';
 import {UserService} from '../service/user.service';
 import {Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {CommonService} from '../service/common.service';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +34,8 @@ export class LoginComponent implements OnInit {
   constructor(private httpClient: HttpClient,
               private ngZone: NgZone,
               private userService: UserService,
-              private router: Router) {
+              private router: Router,
+              private commonService: CommonService) {
   }
 
   ngOnInit(): void {
@@ -82,8 +84,10 @@ export class LoginComponent implements OnInit {
     this.userService.studentRegister(this.registerGroup.value)
       .subscribe(success => {
         console.log('注册成功', success);
+        this.commonService.success(() => this.changeRegister());
       }, error => {
         console.log('注册失败', error);
+        this.commonService.error();
       });
   }
 }
