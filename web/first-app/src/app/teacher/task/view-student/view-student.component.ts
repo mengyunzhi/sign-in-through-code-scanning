@@ -53,16 +53,18 @@ export class ViewStudentComponent implements OnInit {
 
   onDelete(student_id: number): void {
     this.commonService.confirm((confirm) => {
-      Assert.isNumber(this.schedule_id, 'schedule_id类型不是number');
-        this.studentScheduleService.delete(student_id, this.schedule_id as number)
-          .subscribe(success => {
-            console.log('删除成功', success);
-            this.loadByPage();
-            this.commonService.success();
-          }, error => {
-            console.log('删除失败', error);
-            this.commonService.error();
-          });
+        if (confirm) {
+          Assert.isNumber(this.schedule_id, 'schedule_id类型不是number');
+          this.studentScheduleService.delete(student_id, this.schedule_id as number)
+            .subscribe(success => {
+              console.log('删除成功', success);
+              this.loadByPage();
+              this.commonService.success();
+            }, error => {
+              console.log('删除失败', error);
+              this.commonService.error();
+            });
+        }
       },
     );
   }
