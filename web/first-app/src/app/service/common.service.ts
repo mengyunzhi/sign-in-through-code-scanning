@@ -45,8 +45,12 @@ export class CommonService {
    * @param description  描述
    * @param title 标题
    */
-  confirm(callback?: (state?: boolean) => void, description: string = '该操作不可逆，请谨慎操作', title: string = '请确认',
-          confirmButtonText = '确定', cancelButtonText = '取消', options = {icon: 'question' as SweetAlertIcon}): void {
+  confirm(callback?: (state?: boolean) => void,
+          description: string = '该操作不可逆，请谨慎操作',
+          title: string = '请确认',
+          confirmButtonText = '确定',
+          cancelButtonText = '取消',
+          options = {icon: 'question' as SweetAlertIcon}): void {
     swal.fire({
       titleText: title,
       text: description,
