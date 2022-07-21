@@ -70,7 +70,7 @@ export class StudentIndexComponent implements OnInit {
    * 删除
    */
   onDelete(id: number): void {
-    this.commonService.confirm((confirm) => {
+    this.commonService.confirm(confirm => {
       if (confirm) {
         this.studentService.delete(id)
           .subscribe(() => {

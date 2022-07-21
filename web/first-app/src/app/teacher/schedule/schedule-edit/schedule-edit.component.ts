@@ -60,7 +60,8 @@ export class ScheduleEditComponent implements OnInit {
   }
 
   onDeleteDispatch(id: number): void {
-    this.commonService.confirm((confirm) => {
+    this.commonService.confirm(confirm => {
+      if (confirm) {
         this.dispatchService.delete(id)
           .subscribe(success => {
             console.log('调度删除成功', success);
@@ -70,6 +71,7 @@ export class ScheduleEditComponent implements OnInit {
             console.log('调度删除失败', error);
             this.commonService.error();
           });
+      }
       },
     );
   }

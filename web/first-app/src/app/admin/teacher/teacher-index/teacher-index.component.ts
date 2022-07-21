@@ -52,7 +52,8 @@ export class TeacherIndexComponent implements OnInit {
   * @params id 教师对应的user_id
   * */
   onDelete(id: number): void {
-    this.commonService.confirm(() => {
+    this.commonService.confirm(confirm => {
+      if (confirm) {
         this.teacherService.delete(id)
           .subscribe(success => {
             console.log('删除成功', success);
@@ -62,6 +63,7 @@ export class TeacherIndexComponent implements OnInit {
             console.log('删除失败', error);
             this.commonService.success();
           });
+      }
       },
     );
   }

@@ -55,16 +55,18 @@ export class RoomIndexComponent implements OnInit {
   * */
   onDelete(id: number): void {
     console.log(id);
-    this.commonService.confirm(() => {
-        this.roomService.delete(id)
-          .subscribe(success => {
-            console.log('删除成功', success);
-            this.ngOnInit();
-            this.commonService.success();
-          }, error => {
-            console.log('删除失败', error);
-            this.commonService.error();
-          });
+    this.commonService.confirm(confirm => {
+        if (confirm) {
+          this.roomService.delete(id)
+            .subscribe(success => {
+              console.log('删除成功', success);
+              this.ngOnInit();
+              this.commonService.success();
+            }, error => {
+              console.log('删除失败', error);
+              this.commonService.error();
+            });
+        }
       },
     );
   }
