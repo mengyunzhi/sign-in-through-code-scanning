@@ -86,13 +86,13 @@ class Schedule extends Model {
     }
 
     static public function eidtCourseTimeSave($courseId, $scheduleId, $newCourseTimes, &$msg) {
-        $status = 0;
+        $status1 = 0;
+        $status2 = 0;
+        $status3 = 0;
+        $status4 = 0;
+        $status5 = 0;
+        $status6 = 0;
         $msg = '';
-        // 通过scheduleId去dispatch表找对应的dispatch(1) 
-        // 在dispatch(1)中找出dispatch.day === courseTime.changeDay; dispatch.lesson === courseTime.changeLesson的dispatch(2)
-        // 通过dispatch(2).id去dispatch_room里找对应的alreadExitRoomIds
-        // 从courseTimes.selectRoomIds中除去alreadExitRoomIds得到courseTimes(1)
-        // 调用Dispatch::dispatchSave($scheduleId, $courseTimes(1), $msg)
         $dispatch_1 = Dispatch::where('schedule_id', 'eq', $scheduleId)->select();
         for ($i = 0; $i < 7; $i++) {
             for ($j = 0; $j < 5; $j++) { 
@@ -110,44 +110,23 @@ class Schedule extends Model {
                                 array_push($indexCourseTimes[$i][$j]['roomIds'], $room_id[$a]);
                             }
                         }
-                        // if (count($indexCourseTimes[$i][$j]['roomIds']) === 0) 
-                        // {
-                        //     for ($a = 0; $a < count($room_id); $a++) 
-                        //     {
-                        //         array_push($indexCourseTimes[$i][$j]['roomIds'], $room_id[$a]);
-                        //     }
-                        // } 
-                        // else 
-                        // {
-                        //     $staa = 1;
-                        //     for ($p = 0; $p < count($indexCourseTimes[$i][$j]['roomIds']); $p++) 
-                        //     {
-                        //         for ($a = 0; $a < count($room_id); $a++) 
-                        //         {
-                        //             if ($room_id[$a] === $indexCourseTimes[$i][$j]['roomIds'][$p]) 
-                        //             {
-                        //                 $staa = 0;
-                        //             }
-                        //             if ($staa) 
-                        //             {
-                        //                 array_push($indexCourseTimes[$i][$j]['roomIds'], $room_id[$a]);
-                        //             }
-                        //         }
-                        //     }
-                        // }
                     }
                 }
 
 
                 $eidtAddCourseTimes[$i][$j]['weeks'] = [];
                 $eidtAddCourseTimes[$i][$j]['roomIds'] = [];
+
+                $eidtDeleteCourseTimes[$i][$j]['weeks'] = [];
+                $eidtDeleteCourseTimes[$i][$j]['roomIds'] = [];
             }
         }
         for ($i = 0; $i < 7; $i++) {
             for ($j = 0; $j < 5; $j++) { 
+                // 当小单元中又选week又选room时：$status1
                 if (count($indexCourseTimes[$i][$j]['weeks']) < count($newCourseTimes[$i][$j]->weeks)
                  && count($indexCourseTimes[$i][$j]['roomIds']) < count($newCourseTimes[$i][$j]->roomIds)) {
-                    $status = 1;
+                    $status1 = 1;
                     for ($x = 0; $x < count($newCourseTimes[$i][$j]->weeks); $x++) {
                         $sta = 1;
                         for ($y = 0; $y < count($indexCourseTimes[$i][$j]['weeks']); $y++) {
@@ -171,16 +150,81 @@ class Schedule extends Model {
                             array_push($eidtAddCourseTimes[$i][$j]['roomIds'], $newCourseTimes[$i][$j]->roomIds[$x]);
                         }
                     }
-                 }
+                }
+
+                // 当小单元中只选week不选room时：$status2
+                if (count($indexCourseTimes[$i][$j]['weeks']) < count($newCourseTimes[$i][$j]->weeks)
+                 && count($indexCourseTimes[$i][$j]['roomIds']) === count($newCourseTimes[$i][$j]->roomIds)) {
+                    $status2 = 1;
+                    // 原indexCourseTimes不变，新选周默认在当前单元所有已选教室上课
+                    for ($x = 0; $x < count($newCourseTimes[$i][$j]->weeks); $x++) {
+                        $sta = 1;
+                        for ($y = 0; $y < count($indexCourseTimes[$i][$j]['weeks']); $y++) {
+                            if ($newCourseTimes[$i][$j]->weeks[$x] === $indexCourseTimes[$i][$j]['weeks'][$y]) {
+                                $sta = 0;
+                            }
+                        }
+                        if ($sta === 1) {
+                            array_push($eidtAddCourseTimes[$i][$j]['weeks'], $newCourseTimes[$i][$j]->weeks[$x]);
+                        }
+                    }
+
+                    for ($x = 0; $x < count($newCourseTimes[$i][$j]->roomIds); $x++) {
+                        array_push($eidtAddCourseTimes[$i][$j]['roomIds'], $newCourseTimes[$i][$j]->roomIds[$x]);
+                    }
+                }
+
+                // 当小单元中不选week只选room时：$status3
+                if (count($indexCourseTimes[$i][$j]['weeks']) === count($newCourseTimes[$i][$j]->weeks)
+                 && count($indexCourseTimes[$i][$j]['roomIds']) < count($newCourseTimes[$i][$j]->roomIds)) {
+                    $status3 = 1;
+                    // 原week的教室中加入新选教室
+                    for ($x = 0; $x < count($newCourseTimes[$i][$j]->weeks); $x++) {
+                        array_push($eidtAddCourseTimes[$i][$j]['weeks'], $newCourseTimes[$i][$j]->weeks[$x]);
+                    }
+                    for ($x = 0; $x < count($newCourseTimes[$i][$j]->roomIds); $x++) {
+                        array_push($eidtAddCourseTimes[$i][$j]['roomIds'], $newCourseTimes[$i][$j]->roomIds[$x]);
+                    }
+                }
+
+
+                // 当小单元中不选week不选room时：$status4
+                if (count($indexCourseTimes[$i][$j]['weeks']) === count($newCourseTimes[$i][$j]->weeks)
+                 && count($indexCourseTimes[$i][$j]['roomIds']) === count($newCourseTimes[$i][$j]->roomIds)) {
+                    $status4 = 1;
+                    // 没有需要新增的数据
+                    $eidtAddCourseTimes[$i][$j]['weeks'] = [];
+                    $eidtAddCourseTimes[$i][$j]['roomIds'] = [];
+                }
+
+                // 当小单元中对week取消勾选且room不变时：$status5
+                if (count($indexCourseTimes[$i][$j]['weeks']) > count($newCourseTimes[$i][$j]->weeks)
+                 && count($indexCourseTimes[$i][$j]['roomIds']) === count($newCourseTimes[$i][$j]->roomIds)) {
+                    $status5 = 1;
+                    for ($x = 0; $x < count($indexCourseTimes[$i][$j]['weeks']); $x++) {
+                        $sta = 1;
+                        for ($y = 0; $y < count($newCourseTimes[$i][$j]->weeks); $y++) {
+                            if ($indexCourseTimes[$i][$j]['weeks'][$x] === $newCourseTimes[$i][$j]->weeks[$y]) {
+                                $sta = 0;
+                            }
+                        }
+                        if ($sta === 1) {
+                            array_push($eidtDeleteCourseTimes[$i][$j]['weeks'], $indexCourseTimes[$i][$j]['weeks'][$x]);
+                            $dispatch = new Dispatch();
+                            $deleteDispatch = $dispatch->where('day', $i)
+                                                        ->where('lesson', $j)
+                                                        ->where('week', $indexCourseTimes[$i][$j]['weeks'][$x])
+                                                        ->find();
+                            DispatchRoom::where('dispatch_id', $deleteDispatch->id)->delete();
+                            $deleteDispatch->delete();
+                        }
+                    }            
+                }
             }
         }
-        if ($status) {
-            $statu = Dispatch::editDispatchSave($scheduleId, $eidtAddCourseTimes, $msg);
-            return $statu;
-        } else {
-            $statu = self::courseTimeSave($courseId, $scheduleId, $newCourseTimes, $msg);
-            return $statu;
-        }
+
+        $statu = Dispatch::editDispatchSave($scheduleId, $eidtAddCourseTimes, $msg);
+        return $statu;
         // dump($newCourseTimes[0][0]->weeks);
         // dump($newCourseTimes[0][0]->roomIds);
         // dump($indexCourseTimes[0][0]['weeks']);
