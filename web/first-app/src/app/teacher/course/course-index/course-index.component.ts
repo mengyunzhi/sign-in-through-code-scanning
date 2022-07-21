@@ -62,8 +62,9 @@ export class CourseIndexComponent implements OnInit {
 
   onDelete(id: number): void {
     console.log('删除课程');
-    this.commonService.confirm((confirm) => {
-      this.courseService.delete(id)
+    this.commonService.confirm(confirm => {
+      if (confirm) {
+        this.courseService.delete(id)
           .subscribe(success => {
             console.log('删除成功', success);
             this.commonService.success();
@@ -72,6 +73,7 @@ export class CourseIndexComponent implements OnInit {
             console.log('删除失败', error);
             this.commonService.success();
           });
+      }
       },
     );
   }

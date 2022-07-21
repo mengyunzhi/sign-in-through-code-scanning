@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Page} from '../../../entity/page';
 import {Schedule} from '../../../entity/schedule';
 import {HttpClient, HttpParams} from '@angular/common/http';
@@ -32,7 +32,8 @@ export class ScheduleIndexComponent implements OnInit {
   });
 
   constructor(private scheduleService: ScheduleService,
-              private commonService: CommonService) { }
+              private commonService: CommonService) {
+  }
 
   ngOnInit(): void {
     this.loadByPage();
@@ -53,16 +54,18 @@ export class ScheduleIndexComponent implements OnInit {
   }
 
   onDelete(id: number): void {
-    this.commonService.confirm((confirm) => {
-        this.scheduleService.delete(id)
-          .subscribe(success => {
-            console.log('删除成功', success);
-            this.commonService.success();
-            this.ngOnInit();
-          }, error => {
-            console.log('删除失败', error);
-            this.commonService.success();
-          });
+    this.commonService.confirm(confirm => {
+        if (confirm) {
+          this.scheduleService.delete(id)
+            .subscribe(success => {
+              console.log('删除成功', success);
+              this.commonService.success();
+              this.ngOnInit();
+            }, error => {
+              console.log('删除失败', error);
+              this.commonService.success();
+            });
+        }
       },
     );
   }

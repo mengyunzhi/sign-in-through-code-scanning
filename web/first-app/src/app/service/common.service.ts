@@ -11,34 +11,6 @@ export class CommonService {
   constructor(private router: Router) {
   }
 
-  /** 所有路由信息 */
-  public routeStates: Array<{url: string, state: {[k: string]: any} | undefined}> = [];
-  /** 当前是否处于后退状态 */
-  private isBack = false;
-
-  /**
-   * 清空当前路由信息
-   */
-  clearCurrentRoute(): void {
-    this.routeStates.pop();
-  }
-
-  /** 路由回退 */
-  back(url = '../', route = null): void {
-    /** 清空当前路由信息 */
-    this.clearCurrentRoute();
-    if (this.routeStates.length > 0) {
-      /** 获取待后退的url */
-      const state = this.routeStates[this.routeStates.length - 1];
-      /** 设置后退状态 */
-      this.isBack = true;
-      /** 路由跳转 */
-      this.router.navigateByUrl(state.url, {state: state.state});
-    } else if (route !== null) {
-      this.router.navigate([url], {relativeTo: route});
-    }
-  }
-
   /**
    * 是否确认提示框
    * @param callback  回调
@@ -94,6 +66,7 @@ export class CommonService {
       }
     });
   }
+
   /**
    * 操作失败提示框
    * @param callback  回调
