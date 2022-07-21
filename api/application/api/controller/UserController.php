@@ -59,7 +59,6 @@ class UserController extends Controller
         $id = Request()->param('id/d');
         $status = User::userSave($data, $data['role'], $msg, $id);
         User::updateUserSession();
-        // return json_encode($status);
         if (!$status) {
             return $this->error('用户更新失败:'. $msg);
         }

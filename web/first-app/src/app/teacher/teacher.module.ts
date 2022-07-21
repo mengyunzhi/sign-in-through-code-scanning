@@ -8,19 +8,21 @@ import {CourseModule} from './course/course.module';
 import {ClazzScheduleModule} from './clazz-schedule/clazz-schedule.module';
 import { ScheduleIndexComponent } from './schedule/schedule-index/schedule-index.component';
 import {RouterModule} from '@angular/router';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
   declarations: [ScheduleIndexComponent],
-    imports: [
-        CommonModule,
-        PageModule,
-        PipeModule,
-        TeacherRoutingModule,
-        CourseModule,
-        ClazzScheduleModule,
-        RouterModule,
-    ],
+  imports: [
+    CommonModule,
+    PageModule,
+    PipeModule,
+    TeacherRoutingModule,
+    CourseModule,
+    ClazzScheduleModule,
+    RouterModule,
+    ReactiveFormsModule,
+  ],
   providers: [
   ]
 })

@@ -120,10 +120,12 @@ export class ScheduleService {
     return this.httpClient.get<any>('/schedule/getDataForScheduleEdit/schedule_id/' + schedule_id.toString());
   }
 
-  page(page: number, size: number): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
+  page(page: number, size: number, query: {course: string, term: string}): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
-      .append('size', size.toString());
+      .append('size', size.toString())
+      .append('course', query.course)
+      .append('term', query.term);
     return this.httpClient.get<{
       length: number,
       content: {
@@ -134,6 +136,7 @@ export class ScheduleService {
         courses: {id: number, name: string}[],
       }}>('/schedule/page', {params: httpParams})
       .pipe(map(data => {
+          console.warn('page service', data);
           const content: {schedule: Schedule, clazzes: Clazz[]}[] = [];
           const arrayGroup = data.content;
           console.log('service schedule', data);
