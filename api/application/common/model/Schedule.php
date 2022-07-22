@@ -123,6 +123,22 @@ class Schedule extends Model {
                 $eidtDeleteCourseTimes[$i][$j]['roomIds'] = [];
             }
         }
+
+        for ($i = 0; $i < 7; $i++) {
+            for ($j = 0; $j < 5; $j++) {
+                if (count($indexCourseTimes[$i][$j]['weeks']) === count($newCourseTimes[$i][$j]->weeks)) {
+                    if ($indexCourseTimes[$i][$j]['weeks'] !== $newCourseTimes[$i][$j]->weeks) {
+                        return false; 
+                    }
+                }
+                if (count($indexCourseTimes[$i][$j]['roomIds']) === count($newCourseTimes[$i][$j]->roomIds)) {
+                    if ($indexCourseTimes[$i][$j]['roomIds'] !== $newCourseTimes[$i][$j]->roomIds) {
+                        return false; 
+                    }
+                }
+            }
+        }
+
         for ($i = 0; $i < 7; $i++) {
             for ($j = 0; $j < 5; $j++) { 
                 // 当小单元中又选week又选room时：$status1
