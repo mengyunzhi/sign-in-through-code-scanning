@@ -31,7 +31,7 @@ export class ClazzService {
       .append('searchName', param.name ? param.name : '')
       .append('searchSno', param.sno ? param.sno : '');
     return this.httpClient
-      .get<{length: number, content: {user_id: number, name: string, sex: number, sno: number}[]}>
+      .get<{length: number, content: {user_id: number, name: string, sex: number, sno: string}[]}>
       ('/clazz/clazzMembers/clazz_id/' + clazz_id.toString(), {params: httpParams})
       .pipe(map(data => {
         console.log('clazzservice', data);

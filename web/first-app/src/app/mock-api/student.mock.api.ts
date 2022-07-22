@@ -32,7 +32,7 @@ export class StudentMockApi implements MockApiInterface {
               clazz: {
                 id: randomNumber(10)
               },
-              sno: randomNumber(),
+              sno: randomNumber().toString(),
             } as Student);
           }
 
@@ -70,7 +70,7 @@ export class StudentMockApi implements MockApiInterface {
               clazz: {
                 id: randomNumber(100)
               },
-              sno: randomNumber(99999) + (randomNumber(9) + 1) * 100000,
+              sno: (randomNumber(99999) + (randomNumber(9) + 1) * 100000).toString(),
               state: randomNumber(100) % 2,
             } as Student);
           }
@@ -99,7 +99,7 @@ export class StudentMockApi implements MockApiInterface {
             clazz: {
               id: body.clazz_id
             },
-            sno: body.sno,
+            sno: body.sno.toString(),
           } as Student;
         }
       },
@@ -116,7 +116,7 @@ export class StudentMockApi implements MockApiInterface {
             clazz: {
               id: randomNumber(100)
             },
-            sno: randomNumber(),
+            sno: randomNumber().toString(),
           } as Student;
         }
       },

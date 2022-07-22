@@ -3,6 +3,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../entity/user';
 import {UserService} from '../service/user.service';
 import {Router} from '@angular/router';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {CommonService} from '../service/common.service';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +14,16 @@ import {Router} from '@angular/router';
 export class LoginComponent implements OnInit {
   user = {} as User;
 
+  registerGroup = new FormGroup({
+    sno: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
+    number: new FormControl('', Validators.required)
+  });
+
   @Output()
   beLogin = new EventEmitter<User>();
+
+  isRegister = false;
 
   /**
    * 是否显示错误信息
@@ -24,10 +34,15 @@ export class LoginComponent implements OnInit {
   constructor(private httpClient: HttpClient,
               private ngZone: NgZone,
               private userService: UserService,
-              private router: Router) {
+              private router: Router,
+              private commonService: CommonService) {
   }
 
   ngOnInit(): void {
+  }
+
+  changeRegister(): void {
+    this.isRegister = !this.isRegister;
   }
 
   onSubmit(): void {
@@ -63,5 +78,16 @@ export class LoginComponent implements OnInit {
         this.showError = false;
       }, 1500);
     });
+  }
+
+  studentRegister(): void {
+    this.userService.studentRegister(this.registerGroup.value)
+      .subscribe(success => {
+        console.log('注册成功', success);
+        this.commonService.success(() => this.changeRegister());
+      }, error => {
+        console.log('注册失败', error);
+        this.commonService.error();
+      });
   }
 }
