@@ -158,7 +158,13 @@ export class TimeAddComponent implements OnInit {
       })
         .subscribe(success => {
             console.log('更新成功', success);
-            this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
+            console.log(typeof(success));
+            if (success === 'false') {
+              console.log('不支持此类操作');
+              this.commonService.error(() => this.router.navigate(['../'], {relativeTo: this.route}), '', '不支持此类操作');
+            } else {
+              this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
+            }
           },
           error => {
             console.log('更新失败', error);

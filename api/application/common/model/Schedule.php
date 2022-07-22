@@ -93,6 +93,8 @@ class Schedule extends Model {
         $status5 = 0;
         $status6 = 0;
         $msg = '';
+        $newRoomIds = [];
+        $deleteRoomIds = [];
         $dispatch_1 = Dispatch::where('schedule_id', 'eq', $scheduleId)->select();
         for ($i = 0; $i < 7; $i++) {
             for ($j = 0; $j < 5; $j++) { 
@@ -153,7 +155,7 @@ class Schedule extends Model {
                 }
 
                 // 当小单元中只选week不选room时：$status2
-                if (count($indexCourseTimes[$i][$j]['weeks']) < count($newCourseTimes[$i][$j]->weeks)
+                else if (count($indexCourseTimes[$i][$j]['weeks']) < count($newCourseTimes[$i][$j]->weeks)
                  && count($indexCourseTimes[$i][$j]['roomIds']) === count($newCourseTimes[$i][$j]->roomIds)) {
                     $status2 = 1;
                     // 原indexCourseTimes不变，新选周默认在当前单元所有已选教室上课
@@ -175,21 +177,43 @@ class Schedule extends Model {
                 }
 
                 // 当小单元中不选week只选room时：$status3
-                if (count($indexCourseTimes[$i][$j]['weeks']) === count($newCourseTimes[$i][$j]->weeks)
+                else if (count($indexCourseTimes[$i][$j]['weeks']) === count($newCourseTimes[$i][$j]->weeks)
                  && count($indexCourseTimes[$i][$j]['roomIds']) < count($newCourseTimes[$i][$j]->roomIds)) {
                     $status3 = 1;
                     // 原week的教室中加入新选教室
+                    for ($x = 0; $x < count($newCourseTimes[$i][$j]->roomIds); $x++) {
+                        $sta = 1;
+                        for ($y = 0; $y < count($indexCourseTimes[$i][$j]['roomIds']); $y++) {
+                            if ($newCourseTimes[$i][$j]->roomIds[$x] === $indexCourseTimes[$i][$j]['roomIds'][$y]) {
+                                $sta = 0;
+                            }
+                        }
+                        if ($sta === 1) {
+                            array_push($newRoomIds, $newCourseTimes[$i][$j]->roomIds[$x]);
+                        }
+                    }
+
                     for ($x = 0; $x < count($newCourseTimes[$i][$j]->weeks); $x++) {
                         array_push($eidtAddCourseTimes[$i][$j]['weeks'], $newCourseTimes[$i][$j]->weeks[$x]);
-                    }
-                    for ($x = 0; $x < count($newCourseTimes[$i][$j]->roomIds); $x++) {
-                        array_push($eidtAddCourseTimes[$i][$j]['roomIds'], $newCourseTimes[$i][$j]->roomIds[$x]);
+                        $dispatch = new Dispatch();
+                        $dispatchId = $dispatch->where('day', $i)
+                                                        ->where('lesson', $j)
+                                                        ->where('week', $indexCourseTimes[$i][$j]['weeks'][$x])
+                                                        ->find()->getId();
+                        $room_id = DispatchRoom::where('dispatch_id', $dispatchId)->column('room_id');
+                        if (!empty($newRoomIds)) {
+                            for ($y = 0; $y < count($newRoomIds); $y++) {
+                                if (!in_array($newRoomIds[$y], $room_id)) {
+                                    DispatchRoom::saveDispatchRoom($dispatchId, $newRoomIds[$y], $msg);
+                                }
+                            }
+                        }
                     }
                 }
 
 
                 // 当小单元中不选week不选room时：$status4
-                if (count($indexCourseTimes[$i][$j]['weeks']) === count($newCourseTimes[$i][$j]->weeks)
+                else if (count($indexCourseTimes[$i][$j]['weeks']) === count($newCourseTimes[$i][$j]->weeks)
                  && count($indexCourseTimes[$i][$j]['roomIds']) === count($newCourseTimes[$i][$j]->roomIds)) {
                     $status4 = 1;
                     // 没有需要新增的数据
@@ -198,7 +222,7 @@ class Schedule extends Model {
                 }
 
                 // 当小单元中对week取消勾选且room不变时：$status5
-                if (count($indexCourseTimes[$i][$j]['weeks']) > count($newCourseTimes[$i][$j]->weeks)
+                else if (count($indexCourseTimes[$i][$j]['weeks']) > count($newCourseTimes[$i][$j]->weeks)
                  && count($indexCourseTimes[$i][$j]['roomIds']) === count($newCourseTimes[$i][$j]->roomIds)) {
                     $status5 = 1;
                     for ($x = 0; $x < count($indexCourseTimes[$i][$j]['weeks']); $x++) {
@@ -220,6 +244,44 @@ class Schedule extends Model {
                         }
                     }            
                 }
+
+                // 当小单元中对room取消勾选且week不变时：$status6
+                else if (count($indexCourseTimes[$i][$j]['weeks']) === count($newCourseTimes[$i][$j]->weeks)
+                 && count($indexCourseTimes[$i][$j]['roomIds']) > count($newCourseTimes[$i][$j]->roomIds)) {
+                    $status6 = 1;
+                    for ($x = 0; $x < count($indexCourseTimes[$i][$j]['roomIds']); $x++) {
+                        $sta = 1;
+                        for ($y = 0; $y < count($newCourseTimes[$i][$j]->roomIds); $y++) {
+                            if ($indexCourseTimes[$i][$j]['roomIds'][$x] === $newCourseTimes[$i][$j]->roomIds[$y]) {
+                                $sta = 0;
+                            }
+                        }
+                        if ($sta === 1) {
+                            // array_push($deleteRoomIds, $indexCourseTimes[$i][$j]['roomIds'][$x]);
+                            // for ($t = 0; $t < count($deleteRoomIds); $t++) {
+                                $deleteRoomId = $indexCourseTimes[$i][$j]['roomIds'][$x];
+                                // dump($deleteRoomId);
+                                $dispatch_idOfDispatch_rooms = DispatchRoom::where('room_id', 'eq', $deleteRoomId)->column('dispatch_id');
+                                // dump($dispatch_idOfDispatch_rooms);
+                                for ($a = 0; $a < count($dispatch_idOfDispatch_rooms); $a++) {
+                                    $dispatch_room_roomIds = DispatchRoom::where('dispatch_id', 'eq', $dispatch_idOfDispatch_rooms[$a])->column('room_id');
+                                    // dump($dispatch_room_roomIds);
+                                    if (count($dispatch_room_roomIds) === 1) {
+                                        Dispatch::where('id', $dispatch_idOfDispatch_rooms[$a])->find()->delete();
+                                    }
+                                    // DispatchRoom::where('dispatch_id', $dispatch_idOfDispatch_rooms[$a])->delete();
+                                    $dispatchRoom = new DispatchRoom();
+                                    $dispatchRoom->where('dispatch_id', $dispatch_idOfDispatch_rooms[$a])
+                                                 ->where('room_id', $deleteRoomId)->delete();
+                                    // dump(DispatchRoom::where('dispatch_id', $dispatch_idOfDispatch_rooms[$a]);
+                                }
+                            // }
+                        }
+                    }
+                }
+                else {
+                    return json_encode(false);
+                }
             }
         }
 
@@ -232,6 +294,7 @@ class Schedule extends Model {
         // dump($newCourseTimes[0][0]);
         // dump($indexCourseTimes[0][0]);
         // dump($eidtAddCourseTimes[0][0]);
+        // dump($deleteRoomIds);
         
 
 
