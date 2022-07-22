@@ -280,7 +280,7 @@ class Schedule extends Model {
                     }
                 }
                 else {
-                    return json_encode(false);
+                    return false;
                 }
             }
         }

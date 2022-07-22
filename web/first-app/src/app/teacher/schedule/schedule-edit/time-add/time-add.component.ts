@@ -159,7 +159,7 @@ export class TimeAddComponent implements OnInit {
         .subscribe(success => {
             console.log('更新成功', success);
             console.log(typeof(success));
-            if (success === 'false') {
+            if (!success) {
               console.log('不支持此类操作');
               this.commonService.error(() => this.router.navigate(['../'], {relativeTo: this.route}), '', '不支持此类操作');
             } else {
