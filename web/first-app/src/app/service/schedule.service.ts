@@ -179,9 +179,9 @@ export class ScheduleService {
       weeks: number[],
       roomIds: number[]
     }[][]
-  }): Observable<boolean> {
+  }): Observable<string> {
     console.log('schedule service', data);
-    return this.httpClient.post<boolean>('/schedule/scheduleSave', data);
+    return this.httpClient.post<string>('/schedule/scheduleSave', data);
   }
 
   scheduleUpdate(data: {
