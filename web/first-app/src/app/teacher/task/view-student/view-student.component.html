@@ -7,11 +7,11 @@
 </div>
 <div class="row mt-2">
   <div class="col-md-10">
-    <form class="form-inline">
-      <input type="text" class="form-control mr-2" placeholder="学号">
-      <input type="text" class="form-control mr-2" placeholder="姓名">
-      <input type="text" class="form-control mr-2" placeholder="班级">
-      <button type="submit" class="btn btn-info ml-2">
+    <form class="form-inline" [formGroup]="queryForm">
+      <input type="text" formControlName="sno" class="form-control mr-2" placeholder="学号">
+      <input type="text" formControlName="name" class="form-control mr-2" placeholder="姓名">
+      <input type="text" formControlName="clazz" class="form-control mr-2" placeholder="班级">
+      <button type="submit" class="btn btn-info ml-2" (click)="loadByPage()">
         <i class="fas fa-search"></i> 查询
       </button>
     </form>

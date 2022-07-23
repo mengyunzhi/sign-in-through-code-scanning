@@ -4,6 +4,7 @@ import {StudentService} from '../../../service/student.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {Notify, Report} from 'notiflix';
+import {CommonService} from '../../../service/common.service';
 
 @Component({
   selector: 'app-clazz-mebers-edit',
@@ -23,7 +24,8 @@ export class ClazzMembersEditComponent implements OnInit {
 
   constructor(private studentService: StudentService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,
+              private commonService: CommonService) { }
 
   ngOnInit(): void {
     this.clazz_id = +this.route.snapshot.params.clazz_id;
@@ -48,11 +50,12 @@ export class ClazzMembersEditComponent implements OnInit {
     })
       .subscribe(success => {
         console.log('班级更新成功', success);
-        this.router.navigate(['./../../'], {relativeTo: this.route});
-        Notify.success('更新成功', {timeout: 1000});
+        this.commonService.success(() => {
+          this.router.navigate(['./../../'], {relativeTo: this.route});
+        });
       }, error => {
         console.log('班级更新失败', error);
-        Report.failure('更新失败', '', '确定');
+        this.commonService.error(() => {});
       });
   }
 

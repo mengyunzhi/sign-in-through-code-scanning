@@ -52,10 +52,14 @@ export class StudentService {
       }));
   }
 
-  pageByScheduleId(page: number, size: number, schedule_id: number): Observable<Page<Student>> {
+  pageByScheduleId(page: number, size: number, schedule_id: number, query: {clazz: string, name: string, sno: string}):
+    Observable<Page<Student>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
-      .append('size', size.toString());
+      .append('size', size.toString())
+      .append('clazz', query.clazz)
+      .append('name', query.name)
+      .append('sno', query.sno);
     return this.httpClient.get<{length: number, content: T[]}>('/student/pageByScheduleId/schedule_id/' + schedule_id, {params: httpParams})
       .pipe(map(data => {
         console.log('studentService pageByScheduleId', data);

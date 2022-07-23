@@ -4,6 +4,7 @@ import {ViewStudentComponent} from './view-student.component';
 import {PipeModule} from '../../../pipe/pipe.module';
 import {PageModule} from '../../../page/page.module';
 import {RouterModule} from '@angular/router';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {RouterModule} from '@angular/router';
     CommonModule,
     PipeModule,
     PageModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   exports: [
     ViewStudentComponent

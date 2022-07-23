@@ -73,6 +73,9 @@ class UserController extends Controller
         if ($status) {
             $student->state = 1;
             $status = $student->validate(true)->save();
+        } else {
+            $this->error('注册失败:'. $user->getError());
+            return $usert->getError();
         }
         return json_encode($status);
     }
@@ -87,4 +90,5 @@ class UserController extends Controller
         }
         return json_decode(true);
     }
+
 }

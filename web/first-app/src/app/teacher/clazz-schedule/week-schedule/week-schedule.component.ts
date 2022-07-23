@@ -100,7 +100,7 @@ export class WeekScheduleComponent implements OnInit {
       }
     }
     if (str) {
-      return '课程：' + str;
+      return '班级：' + str;
     }
   }
 
