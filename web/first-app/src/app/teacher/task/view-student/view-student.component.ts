@@ -7,6 +7,7 @@ import {Assert} from '@yunzhi/ng-mock-api';
 import {StudentScheduleService} from '../../../service/studentSchedule.service';
 import {Confirm} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-view-student',
@@ -16,6 +17,12 @@ import {CommonService} from '../../../service/common.service';
 export class ViewStudentComponent implements OnInit {
   size = 3;
   page = 0;
+
+  queryForm = new FormGroup({
+    clazz: new FormControl('', Validators.required),
+    name: new FormControl('', Validators.required),
+    sno: new FormControl('', Validators.required),
+  });
 
   pageData = new Page<Student>({
     content: [],
@@ -36,7 +43,7 @@ export class ViewStudentComponent implements OnInit {
 
   loadByPage(page: number = 0): void {
     Assert.isNumber(this.schedule_id, 'schedule_id不是number类型');
-    this.studentService.pageByScheduleId(page, this.size, this.schedule_id as number)
+    this.studentService.pageByScheduleId(page, this.size, this.schedule_id as number, this.queryForm.value)
       .subscribe(pagedata => {
         console.log('学生数据请求成功', pagedata);
         this.pageData = pagedata;

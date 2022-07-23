@@ -44,6 +44,9 @@ class StudentController extends Controller
 	public function pageByScheduleId() {
 		$scheduleId = Request()->param('schedule_id/d');
 		$params = Request()->param();
+		$queryWhere['klass.name'] = ['like', '%'. $params['clazz'] .'%'];
+		$queryWhere['sno'] = ['like', '%'. $params['sno'] .'%'];
+		$queryWhere['user.name'] = ['like', '%'. $params['name'] .'%'];
 		$where = '';
 		$query = Db::table('yunzhi_schedule')->alias('schedule')
 		->where('schedule.id', '=', $scheduleId)
@@ -52,11 +55,15 @@ class StudentController extends Controller
 		->join('yunzhi_user user', 'student.user_id = user.id')
 		->join('yunzhi_klass klass', 'student.klass_id = klass.id')
 		->field('student.id, student.user_id, user.number, user.sex, user.name, student.sno,  klass.id as clazz_id, klass.name as clazz_name')
-		->order('student.id desc');
+		->where($queryWhere);
+
+		$queryCopy = clone $query;
+
 		$data['content'] = $query->order('id desc')->limit(
 			$params['page'] * $params['size'], $params['size']
 		)->select();
-		$data['length'] = StudentSchedule::where('schedule_id', 'eq', $scheduleId)->count(); 
+
+		$data['length'] = $queryCopy->where($queryWhere)->count(); 
 		return json_encode($data);
 	}
 
