@@ -46,15 +46,17 @@ export class ScheduleEditComponent implements OnInit {
   onDeleteClazz(clazzId: number): void {
     const scheduleId = this.id;
     this.commonService.confirm((confirm) => {
-        this.clazzService.courseClazzDelete(clazzId, scheduleId)
-          .subscribe(success => {
-            console.log('班级删除成功', success);
-            this.ngOnInit();
-            this.commonService.success();
-          }, error => {
-            console.log('班级删除失败', error);
-            this.commonService.error();
-          });
+        if (confirm) {
+          this.clazzService.courseClazzDelete(clazzId, scheduleId)
+            .subscribe(success => {
+              console.log('班级删除成功', success);
+              this.ngOnInit();
+              this.commonService.success();
+            }, error => {
+              console.log('班级删除失败', error);
+              this.commonService.error();
+            });
+        }
       },
     );
   }
@@ -77,16 +79,18 @@ export class ScheduleEditComponent implements OnInit {
   }
 
   onDeleteProgram(id: number): void {
-    this.commonService.confirm((confirm) => {
-      this.programService.delete(id)
-          .subscribe(success => {
-            console.log('项目删除成功', success);
-            this.ngOnInit();
-            this.commonService.success();
-          }, error => {
-            console.log('项目删除失败', error);
-            this.commonService.error();
-          });
+    this.commonService.confirm(confirm => {
+        if (confirm) {
+          this.programService.delete(id)
+            .subscribe(success => {
+              console.log('项目删除成功', success);
+              this.ngOnInit();
+              this.commonService.success();
+            }, error => {
+              console.log('项目删除失败', error);
+              this.commonService.error();
+            });
+        }
       },
     );
   }
