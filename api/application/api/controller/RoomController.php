@@ -16,17 +16,19 @@ class RoomController extends Controller
     */
     public function page() {
         $params = Request()->param();
+        $where['name'] = ['like', '%' . $params['searchName'] . '%'];
+        if (!empty($params['searchCapacity'])) {
+            $where['capacity'] = ['eq', $params['searchCapacity']];
+        }
         $query = Room::order(['id desc'])
-                   ->where('name', 'like', '%' . $params['searchName'] . '%')
-                    ->where('capacity', 'like', $params['searchCapacity']);
+                   ->where($where);                    ;
         $rooms = $query->limit(
             $params['page'] * $params['size'],
             $params['size']
         )->select();
         $data['content'] = $rooms;
 
-        $query = $query ->where('name', 'like', '%' . $params['searchName'] . '%')
-                        ->where('capacity', 'eq', $params['searchCapacity']);
+        $query = $query ->where($where);
         $data['length'] = $query->count();
         return json_encode($data);
     }
