@@ -55,6 +55,9 @@ export class ScheduleAddComponent implements OnInit {
   /* 所有教室（Room::all）， 传递给子组件 */
   rooms = [] as Room[];
 
+  /*是否在请求中*/
+  isRequesting = false;
+
   /* 调度表中当前学期所有调度数据，筛选后传递给子组件 */
   dispatches = [] as {
     week: number,
@@ -162,13 +165,7 @@ export class ScheduleAddComponent implements OnInit {
   onSubmit(): void {
     const status = this.checkCourseTimes();
     console.log(status);
-    if (status) {
-      console.log('onsubmit', {
-        teacherId: this.teacher.id,
-        courseId: this.formGroup.get('course_id')?.value,
-        clazzIds: this.formGroup.get('clazz_ids')?.value,
-        courseTimes: this.courseTimes
-      });
+    if (status && !this.isRequesting) {
       this.scheduleService.scheduleSave({
         teacherId: this.teacher.id,
         courseId: this.formGroup.get('course_id')?.value,
@@ -182,6 +179,8 @@ export class ScheduleAddComponent implements OnInit {
           error => {
             console.log('添加失败', error);
             this.commonService.error();
+          }, () => {
+            this.isRequesting = false;
           });
     } else {
       Report.failure('请完善上课时间信息', '', '确定');
