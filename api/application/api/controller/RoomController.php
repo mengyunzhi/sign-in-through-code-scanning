@@ -18,7 +18,7 @@ class RoomController extends Controller
         $params = Request()->param();
         $query = Room::order(['id desc'])
                    ->where('name', 'like', '%' . $params['searchName'] . '%')
-                    ->where('capacity', 'like', '%' . $params['searchCapacity'] . '%');
+                    ->where('capacity', 'like', $params['searchCapacity']);
         $rooms = $query->limit(
             $params['page'] * $params['size'],
             $params['size']
@@ -26,7 +26,7 @@ class RoomController extends Controller
         $data['content'] = $rooms;
 
         $query = $query ->where('name', 'like', '%' . $params['searchName'] . '%')
-                        ->where('capacity', 'like', '%' . $params['searchCapacity'] . '%');
+                        ->where('capacity', 'eq', $params['searchCapacity']);
         $data['length'] = $query->count();
         return json_encode($data);
     }

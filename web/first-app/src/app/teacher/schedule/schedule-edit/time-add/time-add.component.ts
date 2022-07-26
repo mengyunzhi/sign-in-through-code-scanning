@@ -55,6 +55,9 @@ export class TimeAddComponent implements OnInit {
   /* 所有教室（Room::all）， 传递给子组件 */
   rooms = [] as Room[];
 
+  /*是否在请求中*/
+  isRequesting = false;
+
   /* 当前编辑的schedule_id */
   schedule_id: number | undefined;
 
@@ -148,8 +151,8 @@ export class TimeAddComponent implements OnInit {
   onSubmit(): void {
     const status = this.checkCourseTimes();
     console.log(status);
-    if (status) {
-      console.log(this.courseTimes);
+    if (status && !this.isRequesting) {
+      this.isRequesting = true;
       Assert.isNumber(this.schedule_id, 'schedule_id的类型不是number');
       this.scheduleService.scheduleUpdate({
         courseId: this.course.id,
@@ -169,6 +172,8 @@ export class TimeAddComponent implements OnInit {
           error => {
             console.log('更新失败', error);
             this.commonService.error();
+          }, () => {
+            this.isRequesting = false;
           });
     } else {
       Report.failure('请完善上课时间信息', '', '确定');

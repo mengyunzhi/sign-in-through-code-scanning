@@ -55,6 +55,7 @@
                   [weeks]="weeks"
                   [rooms]="rooms"
                   [teacher]="teacher"
+                  [style]="formGroup.get('clazz_ids')?.value"
                   [conflictData]="getConflictData(d, l)"
                   [clazzes]="formGroup.get('clazz_ids')?.value"
                   (outer)="getFooterRun($event)"

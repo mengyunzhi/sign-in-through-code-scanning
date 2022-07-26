@@ -38,6 +38,13 @@ export class CourseTimeComponent implements OnInit {
       this.loadData();
   }
 
+  @Input()
+  set style(param: undefined) {
+    this.selectedWeeks = [];
+    this.selectedRooms = [];
+    this.setStatus();
+  }
+
   @Output()
   private outer = new EventEmitter<{day: number, lesson: number, weeks: number[], roomIds: number[]}>();
   public msg = '我是子组件course-time的一个msg';
