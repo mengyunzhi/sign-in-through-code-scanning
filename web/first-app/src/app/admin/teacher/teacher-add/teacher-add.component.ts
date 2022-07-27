@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {TeacherService} from '../../../service/teacher.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
+import {Validator} from '../../../validator/validator';
 
 @Component({
   selector: 'app-teacher-add',
@@ -15,15 +16,24 @@ export class TeacherAddComponent implements OnInit {
   formGroup = new FormGroup({
     name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
     sex: new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])),
-    number: new FormControl('', Validators.required)
+    number: new FormControl('', [Validators.required, Validator.isPhoneNumber])
   });
+  // formKeys = {
+  //   name: 'name',
+  //   sex: 'sex',
+  //   number: 'number'
+  // };
 
   constructor(private teacherService: TeacherService,
               private router: Router,
               private route: ActivatedRoute,
-              private commonService: CommonService) { }
+              private commonService: CommonService) {
+  }
 
   ngOnInit(): void {
+    // this.formGroup.addControl(this.formKeys.name, new FormControl('', Validators.required));
+    // this.formGroup.addControl(this.formKeys.sex, new FormControl('', Validators.required));
+    // this.formGroup.addControl(this.formKeys.number, new FormControl('', [Validators.required, Validator.isPhoneNumber]));
   }
 
   onSubmit(): void {

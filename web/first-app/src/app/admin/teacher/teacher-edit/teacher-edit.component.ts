@@ -3,9 +3,9 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {TeacherService} from '../../../service/teacher.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
-import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
+import {Validator} from '../../../validator/validator';
 
 @Component({
   selector: 'app-teacher-edit',
@@ -17,7 +17,7 @@ export class TeacherEditComponent implements OnInit {
   formGroup = new FormGroup({
     name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
     sex: new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])),
-    number: new FormControl('', Validators.required)
+    number: new FormControl('', [Validators.required, Validator.isPhoneNumber])
   });
   id: number | undefined;
   constructor(private teacherService: TeacherService,

@@ -295,6 +295,30 @@ class Schedule extends Model {
                         }
                     }
                 }
+
+                // 当小单元中取消勾选所有选项（week和room）
+                else if (count($newCourseTimes[$i][$j]->weeks) === 0
+                      && count($newCourseTimes[$i][$j]->roomIds) === 0) {
+                    for ($x = 0; $x < count($indexCourseTimes[$i][$j]['weeks']); $x++) {
+                        $sta = 1;
+                        for ($y = 0; $y < count($newCourseTimes[$i][$j]->weeks); $y++) {
+                            if ($indexCourseTimes[$i][$j]['weeks'][$x] === $newCourseTimes[$i][$j]->weeks[$y]) {
+                                $sta = 0;
+                            }
+                        }
+                        if ($sta === 1) {
+                            array_push($eidtDeleteCourseTimes[$i][$j]['weeks'], $indexCourseTimes[$i][$j]['weeks'][$x]);
+                            $dispatch = new Dispatch();
+                            $deleteDispatch = $dispatch->where('day', $i)
+                                                        ->where('lesson', $j)
+                                                        ->where('week', $indexCourseTimes[$i][$j]['weeks'][$x])
+                                                        ->find();
+                            DispatchRoom::where('dispatch_id', $deleteDispatch->id)->delete();
+                            $deleteDispatch->delete();
+                        }
+                    }
+                }
+
                 else {
                     return false;
                 }

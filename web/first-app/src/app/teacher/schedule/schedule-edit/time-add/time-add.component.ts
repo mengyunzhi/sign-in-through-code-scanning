@@ -94,19 +94,16 @@ export class TimeAddComponent implements OnInit {
   }
 
   checkCourseTimes(): boolean {
-    let count = 0;
     for (let i = 0; i < 7; i++) {
       for (let j = 0; j < 5; j++) {
         console.log(this.courseTimes[i][j]);
         if ( (this.courseTimes[i][j].weeks.length === 0 && this.courseTimes[i][j].roomIds.length !== 0)
           || (this.courseTimes[i][j].weeks.length !== 0 && this.courseTimes[i][j].roomIds.length === 0)) {
           return false;
-        } else if (this.courseTimes[i][j].weeks.length !== 0 && this.courseTimes[i][j].roomIds.length !== 0) {
-          count++;
         }
       }
     }
-    return count !== 0;
+    return true;
   }
 
   initCourseTimes(): void {
