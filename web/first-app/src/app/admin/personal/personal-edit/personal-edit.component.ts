@@ -4,6 +4,7 @@ import {UserService} from '../../../service/user.service';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
+import {Validator} from '../../../validator/validator';
 
 @Component({
   selector: 'app-personal-edit',
@@ -16,7 +17,7 @@ export class PersonalEditComponent implements OnInit {
     name: new FormControl('', Validators.required),
     sex: new FormControl(null, Validators.required),
     role: new FormControl(null, Validators.required),
-    number: new FormControl('', Validators.required),
+    number: new FormControl('', [Validators.required, Validator.isPhoneNumber]),
     password: new FormControl(null)
   });
   password: string | undefined;

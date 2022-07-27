@@ -12,11 +12,7 @@ import {Validator} from '../../../validator/validator';
 })
 export class TeacherAddComponent implements OnInit {
 
-  formGroup = new FormGroup({
-    // name: new FormControl('', Validators.required),
-    // sex: new FormControl(0, Validators.required),
-    // number: new FormControl('',[Validators.required, Validator.isPhoneNumber])
-  });
+  formGroup = new FormGroup({});
 
   formKeys = {
     name: 'name',
