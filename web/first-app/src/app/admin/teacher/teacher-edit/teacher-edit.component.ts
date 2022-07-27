@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
+import {Validator} from '../../../validator/validator';
 
 @Component({
   selector: 'app-teacher-edit',
@@ -16,7 +17,7 @@ export class TeacherEditComponent implements OnInit {
   formGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     sex: new FormControl(0, Validators.required),
-    number: new FormControl(null)
+    number: new FormControl(null,[Validators.required, Validator.isPhoneNumber])
   });
   id: number | undefined;
   constructor(private teacherService: TeacherService,

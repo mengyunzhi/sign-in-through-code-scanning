@@ -8,6 +8,7 @@ import {PageModule} from '../../page/page.module';
 import {TeacherIndexModule} from './teacher-index/teacher-index.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {PipeModule} from '../../pipe/pipe.module';
+import {ValidatorClassModule} from '../../validator/validator/validator-class.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import {PipeModule} from '../../pipe/pipe.module';
     TeacherRoutingModule,
     PageModule,
     ReactiveFormsModule,
+    ValidatorClassModule,
   ]
 })
 export class TeacherModule { }
