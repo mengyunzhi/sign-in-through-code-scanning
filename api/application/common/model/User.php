@@ -123,14 +123,33 @@ class User extends Model {
     }
 
     static public function getDefaultPassword($role) {
+        // dump($_SESSION['newTeacherIndexPassword']);
+        if (isset($_SESSION['newTeacherIndexPassword'])) {
+            $teacherIndexPassword = $_SESSION['newTeacherIndexPassword'];
+        } else {
+            $teacherIndexPassword = '111111';
+        }
+        $_teacherIndexPassword = $teacherIndexPassword;
+        // dump($teacherIndexPassword);
+        // dump($_teacherIndexPassword);
+        // unset($_SESSION['newTeacherIndexPassword']);
+        // dump($teacherIndexPassword);
+        // dump($_teacherIndexPassword);
+        
+        if (isset($_SESSION['newStudentIndexPassword'])) {
+            $studentIndexPassword = $_SESSION['newStudentIndexPassword'];
+        } else {
+            $studentIndexPassword = '222222';
+        }
+        $_studentIndexPassword = $studentIndexPassword;
         $password = '';
         switch ($role) {
             case User::$ROLE_ADMIN :
                 $password = '000000';break;
             case User::$ROLE_TEACHER :
-                $password = '111111';break;
+                $password = $teacherIndexPassword;break;
             case User::$ROLE_STUDENT :
-                $password = '222222';break;
+                $password = $studentIndexPassword;break;
         }
         return $password;
     }

@@ -100,4 +100,28 @@ class UserController extends Controller
         return json_decode(true);
     }
 
+    public function updateTeacherIndexPassword() {
+        $newTeacherIndexPassword = json_decode(file_get_contents("php://input"));
+        $_SESSION['newTeacherIndexPassword'] = $newTeacherIndexPassword;
+        // dump($_SESSION['newTeacherIndexPassword']);
+        return json_decode($newTeacherIndexPassword);
+    }
+
+    public function getTeacherDefaultPassword() {
+        $indexTeacherPassword = User::getDefaultPassword(User::$ROLE_TEACHER);
+        return $indexTeacherPassword;
+    }
+
+    public function updateStudentIndexPassword() {
+        $newStudentIndexPassword = json_decode(file_get_contents("php://input"));
+        $_SESSION['newStudentIndexPassword'] = $newStudentIndexPassword;
+        // dump($_SESSION['newStudentIndexPassword']);
+        return json_decode($newStudentIndexPassword);
+    }
+
+    public function getStudentDefaultPassword() {
+        $indexStudentPassword = User::getDefaultPassword(User::$ROLE_STUDENT);
+        return $indexStudentPassword;
+    }
+
 }

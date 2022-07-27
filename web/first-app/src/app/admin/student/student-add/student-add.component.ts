@@ -6,6 +6,7 @@ import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
 import {HttpClient} from '@angular/common/http';
+import {UserService} from "../../../service/user.service";
 
 @Component({
   selector: 'app-student-add',
@@ -28,12 +29,15 @@ export class StudentAddComponent implements OnInit {
     sno: 'sno',
   };
 
+  indexStudentPassword = '';
+
   constructor(
     private studentService: StudentService,
     private router: Router,
     private route: ActivatedRoute,
     private commonService: CommonService,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private  userService: UserService
   ) {
     const commonValidator = new CommonValidator(httpClient);
     this.formGroup.addControl(this.formKeys.name, new FormControl('',
@@ -47,6 +51,13 @@ export class StudentAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.userService.getStudentDefaultPassword()
+      .subscribe(success => {
+        this.indexStudentPassword = success;
+        console.log(this.indexStudentPassword);
+      }, error => {
+        console.log(error);
+      });
   }
 
 
