@@ -5,8 +5,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {RoomService} from '../../../service/room.service';
 import {Assert} from '@yunzhi/ng-mock-api';
-import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
 
 @Component({
   selector: 'app-room-edit',
@@ -25,8 +25,8 @@ export class RoomEditComponent implements OnInit {
               private router: Router,
               private commonService: CommonService) {
     this.formGroup = new FormGroup({
-      name: new FormControl('', Validators.required),
-      capacity: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
+      capacity: new FormControl('', Validators.compose([Validators.required, Validators.min(1), CommonValidator.integer])),
     });
   }
 

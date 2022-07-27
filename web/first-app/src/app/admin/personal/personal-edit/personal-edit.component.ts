@@ -4,6 +4,7 @@ import {UserService} from '../../../service/user.service';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
 
 @Component({
   selector: 'app-personal-edit',
@@ -13,13 +14,13 @@ import {CommonService} from '../../../service/common.service';
 export class PersonalEditComponent implements OnInit {
 
   formGroup: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    sex: new FormControl(null, Validators.required),
+    name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
+    sex: new FormControl(null, Validators.compose([Validators.required, CommonValidator.sex])),
     role: new FormControl(null, Validators.required),
     number: new FormControl('', Validators.required),
-    password: new FormControl(null),
-    newPassword: new FormControl(null),
-    newPasswordAgain: new FormControl(null)
+    password: new FormControl('', Validators.compose([Validators.minLength(4), Validators.maxLength(40)])),
+    newPassword: new FormControl('', Validators.compose([Validators.minLength(4), Validators.maxLength(40)])),
+    newPasswordAgain: new FormControl('', Validators.compose([Validators.minLength(4), Validators.maxLength(40)]))
   });
 
   password: string | undefined;
@@ -63,7 +64,7 @@ export class PersonalEditComponent implements OnInit {
       if (newPassword === newPasswordAgain) {
         return true;
       } else {
-        this.commonService.error(() => {}, '新密码不一致');
+        this.commonService.error(() => {}, '两次输入的新密码不一致');
         return false;
       }
     } else {

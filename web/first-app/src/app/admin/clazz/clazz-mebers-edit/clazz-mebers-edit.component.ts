@@ -3,8 +3,8 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {StudentService} from '../../../service/student.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
-import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
 
 @Component({
   selector: 'app-clazz-mebers-edit',
@@ -14,9 +14,10 @@ import {CommonService} from '../../../service/common.service';
 export class ClazzMembersEditComponent implements OnInit {
 
   formGroup: FormGroup = new FormGroup({
-    name:　new FormControl('', Validators.required),
-    sex:　new FormControl(null, Validators.required),
-    sno:　new FormControl(null, Validators.required),
+    name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
+    sex: new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])),
+    sno: new FormControl('',
+      Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), CommonValidator.sno]))
   });
 
   clazz_id: number | undefined;
@@ -51,7 +52,7 @@ export class ClazzMembersEditComponent implements OnInit {
       .subscribe(success => {
         console.log('班级更新成功', success);
         this.commonService.success(() => {
-          this.router.navigate(['./../../'], {relativeTo: this.route});
+          this.router.navigate(['./../../'], {relativeTo: this.route}).then();
         });
       }, error => {
         console.log('班级更新失败', error);

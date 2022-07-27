@@ -3,7 +3,10 @@
   <div class="form-group row">
     <label class="col-sm-1 col-form-label"><code>*</code>姓名</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" style="width: 200px" formControlName="name" value="张三">
+      <input type="text" class="form-control" style="width: 200px" formControlName="name">
+      <small class="text-danger" *ngIf="formGroup.get('name').invalid">
+        长度应该在2-25之间
+      </small>
     </div>
   </div>
   <div class="form-group row">

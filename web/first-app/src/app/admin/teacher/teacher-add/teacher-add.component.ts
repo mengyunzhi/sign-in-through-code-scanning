@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {TeacherService} from '../../../service/teacher.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
 
 @Component({
   selector: 'app-teacher-add',
@@ -12,9 +13,9 @@ import {CommonService} from '../../../service/common.service';
 export class TeacherAddComponent implements OnInit {
 
   formGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    sex: new FormControl(0, Validators.required),
-    number: new FormControl('')
+    name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
+    sex: new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])),
+    number: new FormControl('', Validators.required)
   });
 
   constructor(private teacherService: TeacherService,

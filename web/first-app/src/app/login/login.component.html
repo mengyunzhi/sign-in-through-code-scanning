@@ -24,13 +24,19 @@
   <div class="row">
     <div class="col-md-12">
       <label for="sno">学号:</label>
-      <input type="text" formControlName="sno" id="sno" class="form-control" required />
+      <input type="text" formControlName="sno" id="sno" class="form-control" required/>
+      <small class="text-danger" *ngIf="registerGroup.get('sno').invalid">
+        长度应该在2-25之间
+      </small>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12">
       <label for="password">密码:</label>
       <input type="password" formControlName="password" id="password" class="form-control" required />
+      <small class="text-danger" *ngIf="registerGroup.get('password').invalid">
+        长度应该在4-40之间
+      </small>
     </div>
   </div>
   <div class="row">

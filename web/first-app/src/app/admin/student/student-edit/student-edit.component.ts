@@ -6,6 +6,7 @@ import {Student} from '../../../entity/student';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
 
 @Component({
   selector: 'app-student-edit',
@@ -18,10 +19,11 @@ export class StudentEditComponent implements OnInit {
    * 初始化表单组
    */
   formGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    sex: new FormControl(0, Validators.required),
+    name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
+    sex: new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])),
     clazz_id: new FormControl(null, Validators.required),
-    sno: new FormControl(null, Validators.required)
+    sno: new FormControl('',
+      Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), CommonValidator.sno]))
   });
 
   id: number | undefined;

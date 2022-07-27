@@ -5,6 +5,6 @@ use think\Validate;
 class Program extends Validate
 {
     protected $rule = [
-        'name'      => 'require|length:1,25|unique:program',
+        'name'      => 'require|length:2,25|unique:program',
     ];
 }

@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {TermService} from '../../../service/term.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
 
 @Component({
   selector: 'app-add',
@@ -11,7 +12,7 @@ import {CommonService} from '../../../service/common.service';
 })
 export class TermAddComponent implements OnInit {
   formGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
+    name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
     start_time: new FormControl(null, Validators.required),
     end_time: new FormControl(null, Validators.required),
     state: new FormControl(0, Validators.required),

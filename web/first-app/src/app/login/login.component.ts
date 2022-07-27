@@ -5,6 +5,7 @@ import {UserService} from '../service/user.service';
 import {Router} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CommonService} from '../service/common.service';
+import {CommonValidator} from '../validator/common-validator';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +16,9 @@ export class LoginComponent implements OnInit {
   user = {} as User;
 
   registerGroup = new FormGroup({
-    sno: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
+    sno: new FormControl('',
+      Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), CommonValidator.sno])),
+    password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(40)])),
     number: new FormControl('', Validators.required)
   });
 

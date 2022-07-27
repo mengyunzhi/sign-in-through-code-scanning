@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 export class ApiInterceptor implements HttpInterceptor {
 
   // private static api = 'http://localhost:8080/api/sign-in-through-code-scanning/api/public/api';
-  private static api = '/api/sign-in-through-code-scanning/api/public/api';
+  static api = '/api/sign-in-through-code-scanning/api/public/api';
 
   private static getApiUrl(url: string): string {
     if (url.startsWith('/')) {

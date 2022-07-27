@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Course} from '../../../../entity/course';
 import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../../service/common.service';
+import {CommonValidator} from '../../../../validator/common-validator';
 
 @Component({
   selector: 'app-program-add',
@@ -14,8 +15,8 @@ import {CommonService} from '../../../../service/common.service';
 })
 export class ProgramAddComponent implements OnInit {
   formGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    lesson: new FormControl(null, Validators.required),
+    name: new FormControl('', Validators.compose([Validators.required, Validators.minLength(2), Validators.maxLength(25)])),
+    lesson: new FormControl(null, Validators.compose([Validators.required, Validators.min(1), CommonValidator.integer])),
   });
 
   constructor(private programService: ProgramService,

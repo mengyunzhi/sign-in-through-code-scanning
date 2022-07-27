@@ -60,6 +60,15 @@ class ClazzController extends Controller
         return json_encode($data);
     }
 
+    public function clazzNameUnique() {
+        $name = Request()->param('name');
+        $clazz = Klass::where('name', 'eq', $name)->find();
+        if (!is_null($clazz)) {
+            $e = [];
+            return json_encode('名称已存在');
+        }
+    }
+
     public function delete() {
         $id = Request()->param('id/d');
         $clazz = Klass::get($id);

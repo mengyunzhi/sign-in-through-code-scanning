@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {DatePipe} from '@angular/common';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
 
 @Component({
   selector: 'app-clazz-edit',
@@ -13,9 +14,9 @@ import {CommonService} from '../../../service/common.service';
 })
 export class ClazzEditComponent implements OnInit {
   formGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
+    name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
     entrance_date: new FormControl(null, Validators.required),
-    length: new FormControl(null, Validators.required)
+    length: new FormControl(null, Validators.compose([Validators.required, Validators.max(10), Validators.min(1), CommonValidator.integer]))
   });
 
   clazz_id: number | undefined;
