@@ -55,6 +55,15 @@ class UserController extends Controller
         return json_encode(true);
     }
 
+    public function numberUnique() {
+        $number = Request()->param('number');
+        $id = Request()->param('id/d');
+        $user = User::where('number', 'eq', $number)->find();
+        if (!is_null($user) && ($id !== $user->getId())) {
+            return json_encode('手机号已存在');
+        }
+    }
+
     public function studentRegister() {
         $data = json_decode(file_get_contents("php://input"));
         $student = Student::where('sno', $data->sno)->find();

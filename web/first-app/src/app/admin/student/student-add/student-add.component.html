@@ -1,9 +1,12 @@
-<body class="container" [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup)">
-<form style="margin-top: 20px">
+<body class="container">
+<form style="margin-top: 20px" [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup)">
   <div class="form-group row">
     <label class="col-sm-1 col-form-label"><code>*</code>姓名</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" style="width: 200px" [formControlName]="formKeys.name">
+      <small class="text-danger" *ngIf="formGroup.get('name')?.invalid">
+        长度应该在2-25之间
+      </small>
     </div>
   </div>
   <div class="form-group row">
@@ -23,8 +26,13 @@
   <div class="form-group row">
     <label class="col-sm-1 col-form-label">学号</label>
     <div class="col-sm-4">
-      <input type="string" class="form-control" style="width: 200px" [formControlName]="formKeys.sno">
-      <code *ngIf="!(formGroup.get(formKeys.sno)?.value?.length >= 3 && formGroup.get(formKeys.sno)?.value?.length <= 20)">长度为3-20</code>
+      <input type="text" class="form-control" style="width: 200px" [formControlName]="formKeys.sno">
+      <small class="text-danger" *ngIf="formGroup.get('sno')?.invalid">
+        <ng-container *ngIf="formGroup.get('sno')?.errors?.required || formGroup.get('sno')?.errors?.minlength || formGroup.get('sno')?.errors?.maxlength || formGroup.get('sno')?.errors?.sno">
+          应为长度在3-20之间的数字串
+        </ng-container>
+        <ng-container *ngIf="formGroup.get('sno')?.errors?.snoUnique">学号已存在</ng-container>
+      </small>
     </div>
   </div>
   <div class="form-group row">

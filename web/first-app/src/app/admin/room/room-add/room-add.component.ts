@@ -4,6 +4,8 @@ import {Notify, Report} from 'notiflix';
 import {RoomService} from '../../../service/room.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-room-add',
@@ -12,15 +14,19 @@ import {CommonService} from '../../../service/common.service';
 })
 export class RoomAddComponent implements OnInit {
 
-  formGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    capacity: new FormControl(null, Validators.required),
-  });
+  formGroup: FormGroup;
 
   constructor(private roomService: RoomService,
               private router: Router,
               private route: ActivatedRoute,
-              private commonService: CommonService) {
+              private commonService: CommonService,
+              private httpClient: HttpClient) {
+    const commonValidator = new CommonValidator(httpClient);
+    this.formGroup = new FormGroup({
+      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength]),
+        commonValidator.roomNameUnique()),
+      capacity: new FormControl('', Validators.compose([Validators.required, Validators.min(1), CommonValidator.integer])),
+    });
   }
 
   ngOnInit(): void {

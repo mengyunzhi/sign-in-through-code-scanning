@@ -22,8 +22,6 @@ import {ReactiveFormsModule} from '@angular/forms';
     ClazzScheduleModule,
     RouterModule,
     ReactiveFormsModule,
-  ],
-  providers: [
   ]
 })
 export class TeacherModule { }

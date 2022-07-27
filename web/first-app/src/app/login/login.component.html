@@ -24,19 +24,33 @@
   <div class="row">
     <div class="col-md-12">
       <label for="sno">学号:</label>
-      <input type="text" formControlName="sno" id="sno" class="form-control" required />
+      <input type="text" formControlName="sno" id="sno" class="form-control" required/>
+      <small class="text-danger" *ngIf="registerGroup.get('sno')?.invalid">
+        <ng-container *ngIf="registerGroup.get('sno')?.errors?.required || registerGroup.get('sno')?.errors?.minlength || registerGroup.get('sno')?.errors?.maxlength || registerGroup.get('sno')?.errors?.sno">
+          应为长度在3-20之间的数字串
+        </ng-container>
+        <ng-container *ngIf="registerGroup.get('sno')?.errors?.snoExist">学号不存在</ng-container>
+      </small>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12">
       <label for="password">密码:</label>
       <input type="password" formControlName="password" id="password" class="form-control" required />
+      <small class="text-danger" *ngIf="registerGroup.get('password')?.invalid">
+        长度应该在4-40之间
+      </small>
     </div>
   </div>
+  {{ registerGroup.get('number')?.errors | json }}
   <div class="row">
     <div class="col-md-12">
       <label for="number">手机号:</label>
       <input type="text" formControlName="number" id="number" class="form-control" />
+      <small class="text-danger" *ngIf="registerGroup.get('number')?.errors">
+        <ng-container *ngIf="registerGroup.get('number')?.errors?.isPhoneNumber">手机号格式错误</ng-container>
+        <ng-container *ngIf="registerGroup.get('number')?.errors?.numberUnique">该手机号已存在</ng-container>
+      </small>
     </div>
   </div>
   &nbsp;
@@ -55,7 +69,7 @@
   &nbsp;
   <div class="row">
     <div class="col-md-12">
-      <button type="submit" [disabled]="registerGroup.invalid" (click)="studentRegister()" class="btn btn-primary btn-block">确定</button>
+      <button type="submit" [disabled]="registerGroup.invalid || registerGroup.pending" (click)="studentRegister()" class="btn btn-primary btn-block">确定</button>
     </div>
     <div class="col-md-12">
       <button type="submit" (click)="changeRegister()" class="mt-3 btn btn-primary btn-block">返回</button>

@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Form, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ProgramService} from '../../../../service/program.service';
 import {ScheduleService} from '../../../../service/schedule.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Course} from '../../../../entity/course';
 import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../../service/common.service';
+import {CommonValidator} from '../../../../validator/common-validator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-program-add',
@@ -13,16 +15,21 @@ import {CommonService} from '../../../../service/common.service';
   styleUrls: ['./program-add.component.css']
 })
 export class ProgramAddComponent implements OnInit {
-  formGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    lesson: new FormControl(null, Validators.required),
-  });
+  formGroup: FormGroup;
 
   constructor(private programService: ProgramService,
               private scheduleService: ScheduleService,
               private route: ActivatedRoute,
               private router: Router,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+              private httpClient: HttpClient) {
+    const commonValidator = new CommonValidator(httpClient);
+    this.formGroup = new FormGroup({
+      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength]),
+        commonValidator.programNameUnique()),
+      lesson: new FormControl(null, Validators.compose([Validators.required, Validators.min(1), CommonValidator.integer])),
+    });
+  }
 
   course = {} as Course;
   schedule_id: number | undefined;

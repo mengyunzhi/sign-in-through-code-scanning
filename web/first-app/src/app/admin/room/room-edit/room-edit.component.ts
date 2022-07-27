@@ -5,8 +5,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
 import {RoomService} from '../../../service/room.service';
 import {Assert} from '@yunzhi/ng-mock-api';
-import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
 
 @Component({
   selector: 'app-room-edit',
@@ -24,17 +24,18 @@ export class RoomEditComponent implements OnInit {
               private datePipe: DatePipe,
               private router: Router,
               private commonService: CommonService) {
+    this.id = +this.route.snapshot.params.id;
+    const commonValidator = new CommonValidator(httpClient);
     this.formGroup = new FormGroup({
-      name: new FormControl('', Validators.required),
-      capacity: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength]),
+        commonValidator.roomNameUnique(this.id)),
+      capacity: new FormControl('', Validators.compose([Validators.required, Validators.min(1), CommonValidator.integer])),
     });
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params.id;
-    this.id = +id;
     console.log('ngOnInit__id为', this.id, typeof this.id);
-    this.loadData(+id);
+    this.loadData(this.id);
   }
 
   loadData(id: number | undefined): void {

@@ -3,7 +3,9 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {TeacherService} from '../../../service/teacher.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
 import {Validator} from '../../../validator/validator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-teacher-add',
@@ -12,24 +14,30 @@ import {Validator} from '../../../validator/validator';
 })
 export class TeacherAddComponent implements OnInit {
 
-  formGroup = new FormGroup({});
-
-  formKeys = {
-    name: 'name',
-    sex: 'sex',
-    number: 'number'
-  };
+  formGroup: FormGroup;
+  // formKeys = {
+  //   name: 'name',
+  //   sex: 'sex',
+  //   number: 'number'
+  // };
 
   constructor(private teacherService: TeacherService,
               private router: Router,
               private route: ActivatedRoute,
-              private commonService: CommonService) {
+              private commonService: CommonService,
+              private httpClient: HttpClient) {
+    const commonValidator = new CommonValidator(httpClient);
+    this.formGroup = new FormGroup({
+      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
+      sex: new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])),
+      number: new FormControl('', [Validators.required, Validator.isPhoneNumber], commonValidator.numberUnique())
+    });
   }
 
   ngOnInit(): void {
-    this.formGroup.addControl(this.formKeys.name, new FormControl('', Validators.required));
-    this.formGroup.addControl(this.formKeys.sex, new FormControl('', Validators.required));
-    this.formGroup.addControl(this.formKeys.number, new FormControl('', [Validators.required, Validator.isPhoneNumber]));
+    // this.formGroup.addControl(this.formKeys.name, new FormControl('', Validators.required));
+    // this.formGroup.addControl(this.formKeys.sex, new FormControl('', Validators.required));
+    // this.formGroup.addControl(this.formKeys.number, new FormControl('', [Validators.required, Validator.isPhoneNumber]));
   }
 
   onSubmit(): void {

@@ -4,7 +4,9 @@ import {UserService} from '../../../service/user.service';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
 import {Validator} from '../../../validator/validator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-personal-edit',
@@ -14,13 +16,13 @@ import {Validator} from '../../../validator/validator';
 export class PersonalEditComponent implements OnInit {
 
   formGroup: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.required),
-    sex: new FormControl(null, Validators.required),
+    name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
+    sex: new FormControl(null, Validators.compose([Validators.required, CommonValidator.sex])),
     role: new FormControl(null, Validators.required),
     number: new FormControl('', [Validators.required, Validator.isPhoneNumber]),
-    password: new FormControl(null),
-    newPassword: new FormControl(null),
-    newPasswordAgain: new FormControl(null)
+    password: new FormControl('', Validators.compose([Validators.minLength(4), Validators.maxLength(40)])),
+    newPassword: new FormControl('', Validators.compose([Validators.minLength(4), Validators.maxLength(40)])),
+    newPasswordAgain: new FormControl('', Validators.compose([Validators.minLength(4), Validators.maxLength(40)]))
   });
 
   password: string | undefined;
@@ -28,13 +30,17 @@ export class PersonalEditComponent implements OnInit {
   constructor(private userService: UserService,
               private router: Router,
               private route: ActivatedRoute,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+              private httpClient: HttpClient) {
+  }
 
   ngOnInit(): void {
     this.userService.getCurrentLoginUser()
       .subscribe(user => {
         console.log('当前用户请求成功', user);
         this.id = +user.id;
+        const commonValidator = new CommonValidator(this.httpClient);
+        this.formGroup.get('number')?.setAsyncValidators(commonValidator.numberUnique(this.id));
         this.formGroup.get('name')?.setValue(user.name);
         this.formGroup.get('sex')?.setValue(+user.sex);
         this.formGroup.get('role')?.setValue(+user.role);
@@ -64,7 +70,7 @@ export class PersonalEditComponent implements OnInit {
       if (newPassword === newPasswordAgain) {
         return true;
       } else {
-        this.commonService.error(() => {}, '新密码不一致');
+        this.commonService.error(() => {}, '两次输入的新密码不一致');
         return false;
       }
     } else {

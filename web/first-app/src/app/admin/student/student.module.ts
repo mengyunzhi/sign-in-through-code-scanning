@@ -22,7 +22,6 @@ import {StudentEditModule} from './student-edit/student-edit.module';
     ReactiveFormsModule,
     PageModule,
     FormsModule,
-    MockApiTestingModule,
     StudentIndexModule,
     StudentAddModule,
     StudentRoutingModule,

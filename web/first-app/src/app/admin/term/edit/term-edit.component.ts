@@ -6,6 +6,7 @@ import {DatePipe} from '@angular/common';
 import {TermService} from '../../../service/term.service';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
 
 @Component({
   selector: 'app-term-edit',
@@ -23,19 +24,27 @@ export class TermEditComponent implements OnInit {
               private datePipe: DatePipe,
               private router: Router,
               private commService: CommonService) {
+    this.id = +this.route.snapshot.params.id;
+    const commonValidator = new CommonValidator(httpClient);
     this.formGroup = new FormGroup({
-      name : new FormControl('', Validators.required),
-      start_time : new FormControl('', Validators.required),
-      end_time : new FormControl('', Validators.required),
-      state : new FormControl(0, Validators.required),
+      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength]),
+        commonValidator.termNameUnique(this.id)),
+      start_time: new FormControl(null, Validators.required),
+      end_time: new FormControl(null, Validators.required),
+      state: new FormControl(0, Validators.required),
     });
   }
+  isDateRight = true;
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params.id;
-    this.id = +id;
     console.log('ngOnInit__id为', this.id, typeof this.id);
-    this.loadData(+id);
+    this.loadData(this.id);
+    this.formGroup.get('end_time')?.valueChanges
+      .subscribe(() => {
+        const start_time = this.formGroup.get('start_time')?.value;
+        const end_time = this.formGroup.get('end_time')?.value;
+        this.isDateRight = !(start_time && end_time && start_time > end_time);
+      });
   }
 
   loadData(id: number | undefined): void {
