@@ -6,6 +6,8 @@ import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
 import {Validator} from '../../../validator/validator';
 import {HttpClient} from '@angular/common/http';
+import {User} from "../../../entity/user";
+import {UserService} from "../../../service/user.service";
 
 @Component({
   selector: 'app-teacher-add',
@@ -21,11 +23,14 @@ export class TeacherAddComponent implements OnInit {
   //   number: 'number'
   // };
 
+  indexTeacherPassword = '';
+
   constructor(private teacherService: TeacherService,
               private router: Router,
               private route: ActivatedRoute,
               private commonService: CommonService,
-              private httpClient: HttpClient) {
+              private httpClient: HttpClient,
+              private userService: UserService) {
     const commonValidator = new CommonValidator(httpClient);
     this.formGroup = new FormGroup({
       name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
@@ -38,6 +43,13 @@ export class TeacherAddComponent implements OnInit {
     // this.formGroup.addControl(this.formKeys.name, new FormControl('', Validators.required));
     // this.formGroup.addControl(this.formKeys.sex, new FormControl('', Validators.required));
     // this.formGroup.addControl(this.formKeys.number, new FormControl('', [Validators.required, Validator.isPhoneNumber]));
+    this.userService.getTeacherDefaultPassword()
+      .subscribe(success => {
+        this.indexTeacherPassword = success;
+        console.log(this.indexTeacherPassword);
+      }, error => {
+        console.log(error);
+      });
   }
 
   onSubmit(): void {

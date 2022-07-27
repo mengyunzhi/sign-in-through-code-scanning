@@ -7,8 +7,7 @@ import {AdminRoutingModule} from './admin-routing.module';
 import {PipeModule} from '../pipe/pipe.module';
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -16,6 +15,10 @@ import {PipeModule} from '../pipe/pipe.module';
     PageModule,
     ReactiveFormsModule,
     PipeModule,
+  ],
+  exports: [
+  ],
+  providers: [
   ]
 })
 export class AdminModule { }

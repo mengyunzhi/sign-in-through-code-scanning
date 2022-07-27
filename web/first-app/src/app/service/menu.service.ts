@@ -17,6 +17,7 @@ export class MenuService {
       {name: '班级管理', routerLink: '/admin/clazz', roles: [UserService.ROLE_ADMIN]} as Menu,
       {name: '教室管理', routerLink: '/admin/room', roles: [UserService.ROLE_ADMIN]} as Menu,
       {name: '个人中心', routerLink: '/admin/personal', roles: [UserService.ROLE_ADMIN]} as Menu,
+      {name: '系统设置', routerLink: '/admin/site', roles: [UserService.ROLE_ADMIN]} as Menu,
 
       {name: '课程任务', routerLink: '/teacher/task', roles: [UserService.ROLE_TEACHER]} as Menu,
       {name: '排课管理', routerLink: '/teacher/schedule', roles: [UserService.ROLE_TEACHER]} as Menu,

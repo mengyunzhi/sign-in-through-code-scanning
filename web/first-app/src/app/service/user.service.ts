@@ -44,4 +44,21 @@ export class UserService {
     return this.httpClient.post<boolean>('/user/userUpdate/id/' + id.toString(), data);
   }
 
+  updateTeacherIndexPassword(newIndexPassWord: any): Observable<boolean> {
+    console.log('service', newIndexPassWord);
+    return this.httpClient.post<boolean>('/user/updateTeacherIndexPassword', newIndexPassWord);
+  }
+
+  getTeacherDefaultPassword(): Observable<string> {
+    return this.httpClient.get<string>('/user/getTeacherDefaultPassword');
+  }
+
+  updateStudentIndexPassword(newIndexPassWord: any): Observable<boolean> {
+    return this.httpClient.post<boolean>('/user/updateStudentIndexPassword', newIndexPassWord);
+  }
+
+  getStudentDefaultPassword(): Observable<string> {
+    return this.httpClient.get<string>('/user/getStudentDefaultPassword');
+  }
+
 }
