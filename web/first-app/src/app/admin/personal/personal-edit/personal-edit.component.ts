@@ -17,8 +17,11 @@ export class PersonalEditComponent implements OnInit {
     sex: new FormControl(null, Validators.required),
     role: new FormControl(null, Validators.required),
     number: new FormControl('', Validators.required),
-    password: new FormControl(null)
+    password: new FormControl(null),
+    newPassword: new FormControl(null),
+    newPasswordAgain: new FormControl(null)
   });
+
   password: string | undefined;
   id: number | undefined;
   constructor(private userService: UserService,
@@ -41,7 +44,36 @@ export class PersonalEditComponent implements OnInit {
       });
   }
 
+  checkPassword(): boolean {
+    console.log('onSubmit h');
+    // 通过原密码确认身份
+    if (this.formGroup.get('password')?.value === this.password) {
+      // 对新密码验证
+      const newPassword = this.formGroup.get('newPassword')?.value;
+      const newPasswordAgain = this.formGroup.get('newPasswordAgain')?.value;
+      if (!newPassword) {
+        this.commonService.error(() => {}, '请输入新密码');
+        return false;
+      }
+      if (!newPasswordAgain) {
+        this.commonService.error(() => {}, '请确认密码');
+        return false;
+      }
+      console.log(!newPasswordAgain, newPasswordAgain);
+      if (newPassword === newPasswordAgain) {
+        return true;
+      } else {
+        this.commonService.error(() => {}, '新密码不一致');
+        return false;
+      }
+    } else {
+      this.commonService.error(() => {}, '旧密码错误');
+      return false;
+    }
+  }
+
   onSubmit(): void {
+    console.log('onSubmit is called');
     const data = {
       name: this.formGroup.get('name')?.value,
       sex: this.formGroup.get('sex')?.value,
@@ -51,6 +83,12 @@ export class PersonalEditComponent implements OnInit {
     };
     if (!this.formGroup.get('password')?.value) {
       data.password = this.password;
+    } else {
+      if (this.checkPassword()) {
+        data.password = this.formGroup.get('newPassword')?.value;
+      } else {
+        return ;
+      }
     }
     Assert.isNumber(this.id, 'id的类型错误');
     this.userService.userUpdate(this.id as number, data)
@@ -59,9 +97,8 @@ export class PersonalEditComponent implements OnInit {
         this.commonService.success(() => this.router.navigate(['./../'], {relativeTo: this.route}));
       }, error => {
         console.log('用户更新失败', error);
-        this.commonService.error();
+        this.commonService.error(() => {}, error);
       });
-
   }
 
 }
