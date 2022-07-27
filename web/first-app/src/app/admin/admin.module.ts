@@ -16,10 +16,6 @@ import {PipeModule} from '../pipe/pipe.module';
     PageModule,
     ReactiveFormsModule,
     PipeModule,
-  ],
-  exports: [
-  ],
-  providers: [
   ]
 })
 export class AdminModule { }

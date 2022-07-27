@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
 import {Validator} from '../../../validator/validator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-personal-edit',
@@ -29,13 +30,17 @@ export class PersonalEditComponent implements OnInit {
   constructor(private userService: UserService,
               private router: Router,
               private route: ActivatedRoute,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+              private httpClient: HttpClient) {
+  }
 
   ngOnInit(): void {
     this.userService.getCurrentLoginUser()
       .subscribe(user => {
         console.log('当前用户请求成功', user);
         this.id = +user.id;
+        const commonValidator = new CommonValidator(this.httpClient);
+        this.formGroup.get('number')?.setAsyncValidators(commonValidator.numberUnique(this.id));
         this.formGroup.get('name')?.setValue(user.name);
         this.formGroup.get('sex')?.setValue(+user.sex);
         this.formGroup.get('role')?.setValue(+user.role);

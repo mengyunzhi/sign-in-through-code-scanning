@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-student-add',
@@ -31,17 +32,21 @@ export class StudentAddComponent implements OnInit {
     private studentService: StudentService,
     private router: Router,
     private route: ActivatedRoute,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private httpClient: HttpClient
   ) {
-  }
-
-  ngOnInit(): void {
+    const commonValidator = new CommonValidator(httpClient);
     this.formGroup.addControl(this.formKeys.name, new FormControl('',
       Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])));
     this.formGroup.addControl(this.formKeys.sex, new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])));
     this.formGroup.addControl(this.formKeys.clazz_id, new FormControl(null, Validators.required));
     this.formGroup.addControl(this.formKeys.sno, new FormControl('',
-      Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), CommonValidator.sno])));
+      Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), CommonValidator.sno]),
+      commonValidator.snoUnique()));
+
+  }
+
+  ngOnInit(): void {
   }
 
 

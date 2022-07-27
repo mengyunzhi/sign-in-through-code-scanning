@@ -1,12 +1,14 @@
 <body class="container">
-{{ +formGroup.get('capacity').invalid }}
   <form [formGroup]="formGroup">
     <div class="form-group row">
       <label class="col-sm-1 col-form-label"><code>*</code>名称</label>
       <div class="col-sm-4">
         <input type="text" class="form-control" style="width: 200px" formControlName="name" required>
-        <small class="text-danger" *ngIf="formGroup.get('name').invalid">
-          长度应在2-25之间
+        <small class="text-danger" *ngIf="formGroup.get('name')?.invalid">
+          <ng-container *ngIf="formGroup.get('name')?.errors?.required || formGroup.get('name')?.errors?.nameMinLength || formGroup.get('name')?.errors?.nameMaxLength">
+            长度应在2-25之间
+          </ng-container>
+          <ng-container *ngIf="formGroup.get('name')?.errors?.roomNameUnique">名称已存在</ng-container>
         </small>
       </div>
     </div>
@@ -14,7 +16,7 @@
       <label class="col-sm-1 col-form-label"><code>*</code>容量</label>
       <div class="col-sm-4">
         <input type="number" class="form-control" style="width: 200px" formControlName="capacity" required>
-        <small class="text-danger" *ngIf="formGroup.get('capacity').invalid">
+        <small class="text-danger" *ngIf="formGroup.get('capacity')?.invalid">
           应为大于0的整数
         </small>
       </div>

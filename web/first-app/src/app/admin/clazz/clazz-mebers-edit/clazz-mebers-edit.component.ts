@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-clazz-mebers-edit',
@@ -13,12 +14,7 @@ import {CommonValidator} from '../../../validator/common-validator';
 })
 export class ClazzMembersEditComponent implements OnInit {
 
-  formGroup: FormGroup = new FormGroup({
-    name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
-    sex: new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])),
-    sno: new FormControl('',
-      Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), CommonValidator.sno]))
-  });
+  formGroup: FormGroup;
 
   clazz_id: number | undefined;
   id: number | undefined;
@@ -26,7 +22,19 @@ export class ClazzMembersEditComponent implements OnInit {
   constructor(private studentService: StudentService,
               private route: ActivatedRoute,
               private router: Router,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+              private httpClient: HttpClient) {
+    this.id = +this.route.snapshot.params.id;
+    const commonValidator = new CommonValidator(httpClient);
+    this.formGroup = new FormGroup({
+      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
+      sex: new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])),
+      sno: new FormControl('',
+        Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), CommonValidator.sno]),
+        commonValidator.snoUnique(this.id))
+    });
+
+  }
 
   ngOnInit(): void {
     this.clazz_id = +this.route.snapshot.params.clazz_id;

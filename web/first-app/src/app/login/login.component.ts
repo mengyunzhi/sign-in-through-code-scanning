@@ -3,9 +3,10 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../entity/user';
 import {UserService} from '../service/user.service';
 import {Router} from '@angular/router';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Form, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CommonService} from '../service/common.service';
 import {CommonValidator} from '../validator/common-validator';
+import {Validator} from '../validator/validator';
 
 @Component({
   selector: 'app-login',
@@ -15,12 +16,7 @@ import {CommonValidator} from '../validator/common-validator';
 export class LoginComponent implements OnInit {
   user = {} as User;
 
-  registerGroup = new FormGroup({
-    sno: new FormControl('',
-      Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), CommonValidator.sno])),
-    password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(40)])),
-    number: new FormControl('', Validators.required)
-  });
+  registerGroup: FormGroup;
 
   @Output()
   beLogin = new EventEmitter<User>();
@@ -38,6 +34,14 @@ export class LoginComponent implements OnInit {
               private userService: UserService,
               private router: Router,
               private commonService: CommonService) {
+    const commonValidator = new CommonValidator(httpClient);
+    this.registerGroup = new FormGroup({
+      sno: new FormControl('',
+        Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), CommonValidator.sno]),
+        commonValidator.snoExist()),
+      password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(4), Validators.maxLength(40)])),
+      number: new FormControl('', [Validators.required, Validator.isPhoneNumber], commonValidator.numberUniqueForStudentRegister())
+    });
   }
 
   ngOnInit(): void {

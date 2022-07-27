@@ -7,6 +7,7 @@ import {Assert} from '@yunzhi/ng-mock-api';
 import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-student-edit',
@@ -18,13 +19,7 @@ export class StudentEditComponent implements OnInit {
   /**
    * 初始化表单组
    */
-  formGroup = new FormGroup({
-    name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
-    sex: new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])),
-    clazz_id: new FormControl(null, Validators.required),
-    sno: new FormControl('',
-      Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), CommonValidator.sno]))
-  });
+  formGroup: FormGroup;
 
   id: number | undefined;
 
@@ -32,14 +27,24 @@ export class StudentEditComponent implements OnInit {
     private studentService: StudentService,
     private route: ActivatedRoute,
     private router: Router,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private httpClient: HttpClient
   ) {
+    this.id = +this.route.snapshot.params.id;
+    const commonValidator = new CommonValidator(httpClient);
+    this.formGroup = new FormGroup({
+      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
+      sex: new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])),
+      clazz_id: new FormControl(null, Validators.required),
+      sno: new FormControl('',
+        Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(20), CommonValidator.sno]),
+        commonValidator.snoUnique(this.id))
+    });
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params.id;
-    this.id = +id;
-    this.studentService.getById(this.id)
+    Assert.isNumber(this.id, 'id类型错误');
+    this.studentService.getById(this.id as number)
       .subscribe(student => {
         console.log('api学生获取成功', student);
         this.formGroup.get('name')?.setValue(student.name);

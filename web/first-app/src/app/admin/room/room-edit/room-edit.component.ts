@@ -24,17 +24,18 @@ export class RoomEditComponent implements OnInit {
               private datePipe: DatePipe,
               private router: Router,
               private commonService: CommonService) {
+    this.id = +this.route.snapshot.params.id;
+    const commonValidator = new CommonValidator(httpClient);
     this.formGroup = new FormGroup({
-      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
+      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength]),
+        commonValidator.roomNameUnique(this.id)),
       capacity: new FormControl('', Validators.compose([Validators.required, Validators.min(1), CommonValidator.integer])),
     });
   }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.params.id;
-    this.id = +id;
     console.log('ngOnInit__id为', this.id, typeof this.id);
-    this.loadData(+id);
+    this.loadData(this.id);
   }
 
   loadData(id: number | undefined): void {

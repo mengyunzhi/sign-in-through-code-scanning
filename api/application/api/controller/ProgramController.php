@@ -39,6 +39,15 @@ class ProgramController extends Controller
         return json_encode(Program::get($id));
     }
 
+    public function programNameUnique() {
+        $name = Request()->param('name');
+        $progarm_id = Request()->param('progarm_id/d');
+        $program = Program::where('name', 'eq', $name)->find();
+        if (!is_null($program) && ($progarm_id !== $program->getId())) {
+            return json_encode('名称已存在');
+        }
+    }
+
     public function update() {
         $id = Request()->param('id/d');
         $data = json_decode(file_get_contents("php://input"));

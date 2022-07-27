@@ -75,25 +75,34 @@ class RoomController extends Controller
         return json(Room::get($id));
     }
 
+    public function roomNameUnique() {
+        $name = Request()->param('name');
+        $room_id = Request()->param('room_id/d');
+        $room = Room::where('name', 'eq', $name)->find();
+        if (!is_null($room) && ($room_id !== $room->getId())) {
+            return json_encode('名称已存在');
+        }
+    }
+
     /*
     * 更新教室
     */
     public function update() {
-            $id = Request()->param('id/d');
-            $postData = json_decode(file_get_contents("php://input"));
-            $room = room::get($id);
-            $msg = '';
-            if (!is_null($postData)) {
-                // 写入要更新的数据
-                $room->setAttr('name', $postData->name);
-                $room->capacity = $postData->capacity;
-            }
-            $status = $room->validate(true)->save();
-            if ($status) {
-                return json_encode($status);
-            } else {
-                $this->error('添加失败:'.$msg);
-                return $msg;
-            }
+        $id = Request()->param('id/d');
+        $postData = json_decode(file_get_contents("php://input"));
+        $room = room::get($id);
+        $msg = '';
+        if (!is_null($postData)) {
+            // 写入要更新的数据
+            $room->setAttr('name', $postData->name);
+            $room->capacity = $postData->capacity;
         }
+        $status = $room->validate(true)->save();
+        if ($status) {
+            return json_encode($status);
+        } else {
+            $this->error('添加失败:'.$msg);
+            return $msg;
+        }
+    }
 }

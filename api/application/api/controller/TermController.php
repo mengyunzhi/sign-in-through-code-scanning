@@ -54,6 +54,15 @@ class TermController extends Controller
         return json_encode(Term::getCurrentTerm());
     }
 
+    public function termNameUnique() {
+        $name = Request()->param('name');
+        $term_id = Request()->param('term_id/d');
+        $term = Term::where('name', 'eq', $name)->find();
+        if (!is_null($term) && ($term_id !== $term->getId())) {
+            return json_encode('名称已存在');
+        }
+    }
+
     public function update() {
         $id = Request()->param('id/d');
         $term = json_decode(file_get_contents("php://input"));

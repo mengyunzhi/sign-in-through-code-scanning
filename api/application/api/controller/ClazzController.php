@@ -62,9 +62,9 @@ class ClazzController extends Controller
 
     public function clazzNameUnique() {
         $name = Request()->param('name');
+        $clazz_id = Request()->param('clazz_id/d');
         $clazz = Klass::where('name', 'eq', $name)->find();
-        if (!is_null($clazz)) {
-            $e = [];
+        if (!is_null($clazz) && ($clazz_id !== $clazz->getId())) {
             return json_encode('名称已存在');
         }
     }

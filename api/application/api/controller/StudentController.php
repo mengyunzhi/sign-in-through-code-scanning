@@ -123,6 +123,16 @@ class StudentController extends Controller
         }
     }
 
+    public function snoUnique() {
+        $sno = Request()->param('sno');
+        $user_id = Request()->param('user_id/d');
+        $student = Student::where('sno', 'eq', $sno)->find();
+    	$user = $student ? $student->getUser() : null;
+        if (!is_null($user) && ($user_id !== $user->getId())) {
+            return json_encode('学号已存在');
+        }
+    }
+
     public function updatePasswordByAdmin() {
         $password = file_get_contents("php://input");
         $id = Request()->param('id/d');

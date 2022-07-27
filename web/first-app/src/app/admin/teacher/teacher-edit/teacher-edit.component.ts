@@ -6,6 +6,7 @@ import {Assert} from '@yunzhi/ng-mock-api';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
 import {Validator} from '../../../validator/validator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-teacher-edit',
@@ -14,22 +15,26 @@ import {Validator} from '../../../validator/validator';
 })
 export class TeacherEditComponent implements OnInit {
 
-  formGroup = new FormGroup({
-    name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
-    sex: new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])),
-    number: new FormControl('', [Validators.required, Validator.isPhoneNumber])
-  });
+  formGroup: FormGroup;
   id: number | undefined;
   constructor(private teacherService: TeacherService,
               private route: ActivatedRoute,
               private router: Router,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+              private httpClient: HttpClient) {
+    // id为teacher所对应的user_id
+    this.id = +this.route.snapshot.params.id;
+    const commonValidator = new CommonValidator(httpClient);
+    this.formGroup = new FormGroup({
+      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
+      sex: new FormControl(0, Validators.compose([Validators.required, CommonValidator.sex])),
+      number: new FormControl('', [Validators.required, Validator.isPhoneNumber], commonValidator.numberUnique(this.id))
+    });
+  }
 
   ngOnInit(): void {
-    // id为teacher所对应的user_id
-    const id = this.route.snapshot.params.id;
-    this.id = +id;
-    this.teacherService.getById(this.id)
+    Assert.isNumber(this.id, 'id类型错误');
+    this.teacherService.getById(this.id as number)
       .subscribe(teacher => {
         console.log('api教师获取成功', teacher);
         this.formGroup.get('name')?.setValue(teacher.name);

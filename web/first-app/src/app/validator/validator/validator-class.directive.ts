@@ -35,7 +35,7 @@ export class ValidatorClassDirective implements OnDestroy {
    * 设置宿主元素样式
    * @param formControl 表单控制器
    */
-  setClass(formControl: NgControl) {
+  setClass(formControl: NgControl): void {
     const htmlElement = this.elementRef.nativeElement as HTMLElement;
     const classes = htmlElement.className.split(' ')
       .filter(value => value !== 'is-invalid' && value !== 'is-valid' && value !== 'is-required');

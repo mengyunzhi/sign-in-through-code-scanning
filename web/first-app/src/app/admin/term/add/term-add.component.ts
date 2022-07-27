@@ -4,6 +4,7 @@ import {TermService} from '../../../service/term.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-add',
@@ -11,20 +12,32 @@ import {CommonValidator} from '../../../validator/common-validator';
   styleUrls: ['./term-add.component.css']
 })
 export class TermAddComponent implements OnInit {
-  formGroup = new FormGroup({
-    name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
-    start_time: new FormControl(null, Validators.required),
-    end_time: new FormControl(null, Validators.required),
-    state: new FormControl(0, Validators.required),
-  });
+  formGroup: FormGroup;
 
   constructor(private termService: TermService,
               private router: Router,
               private route: ActivatedRoute,
+              private httpClient: HttpClient,
               private commonService: CommonService) {
+    const commonValidator = new CommonValidator(httpClient);
+    this.formGroup = new FormGroup({
+      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength]),
+        commonValidator.termNameUnique()),
+      start_time: new FormControl(null, Validators.required),
+      end_time: new FormControl(null, Validators.required),
+      state: new FormControl(0, Validators.required),
+    });
   }
 
+  isDateRight = true;
+
   ngOnInit(): void {
+    this.formGroup.get('end_time')?.valueChanges
+      .subscribe(() => {
+        const start_time = this.formGroup.get('start_time')?.value;
+        const end_time = this.formGroup.get('end_time')?.value;
+        this.isDateRight = !(start_time && end_time && start_time > end_time);
+      });
   }
 
   onSubmit(): void {

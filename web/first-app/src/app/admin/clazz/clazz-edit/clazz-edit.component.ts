@@ -6,6 +6,7 @@ import {Assert} from '@yunzhi/ng-mock-api';
 import {DatePipe} from '@angular/common';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-clazz-edit',
@@ -13,11 +14,7 @@ import {CommonValidator} from '../../../validator/common-validator';
   styleUrls: ['./clazz-edit.component.css']
 })
 export class ClazzEditComponent implements OnInit {
-  formGroup = new FormGroup({
-    name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
-    entrance_date: new FormControl(null, Validators.required),
-    length: new FormControl(null, Validators.compose([Validators.required, Validators.max(10), Validators.min(1), CommonValidator.integer]))
-  });
+  formGroup: FormGroup;
 
   clazz_id: number | undefined;
 
@@ -25,11 +22,22 @@ export class ClazzEditComponent implements OnInit {
               private route: ActivatedRoute,
               private datePipe: DatePipe,
               private router: Router,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+              private httpClient: HttpClient) {
+    this.clazz_id = +(this.route.snapshot.params.clazz_id);
+    const commonValidator = new CommonValidator(httpClient);
+    this.formGroup = new FormGroup({
+      name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength]),
+        commonValidator.clazzNameUnique(this.clazz_id)),
+      entrance_date: new FormControl(null, Validators.required),
+      length: new FormControl(null,
+        Validators.compose([Validators.required, Validators.max(10), Validators.min(1), CommonValidator.integer]))
+    });
+  }
 
   ngOnInit(): void {
-    const clazz_id = +(this.route.snapshot.params.clazz_id);
-    this.clazz_id = clazz_id;
+    Assert.isNumber(this.clazz_id, 'clazz_id类型错误');
+    const clazz_id = this.clazz_id as number;
     Assert.isNumber(clazz_id, 'clazz_id类型不是number');
     this.clazzService.getById(clazz_id)
       .subscribe(data => {
