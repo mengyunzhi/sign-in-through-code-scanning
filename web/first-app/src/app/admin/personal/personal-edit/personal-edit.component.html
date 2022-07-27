@@ -1,4 +1,6 @@
 <body class="container">
+{{ formGroup.value | json }}
+{{ password }}
 <form style="margin-top: 20px" [formGroup]="formGroup">
   <div class="form-group row">
     <label class="col-sm-1 col-form-label"><code>*</code>姓名</label>
@@ -21,11 +23,25 @@
     </div>
   </div>
   <div class="form-row">
-    <label for="password" class="col-sm-1 col-form-label">密码</label>
+  <label for="password" class="col-sm-1 col-form-label">旧密码</label>
+    <div class="form-group col-md-3">
+      <input type="password" class="form-control" id="password" formControlName="password" style="width: 200px" placeholder="旧密码">
+    </div>
+  </div>
+  <ng-container *ngIf="formGroup.get('password')?.value">
+    <div class="form-row">
+      <label for="password" class="col-sm-1 col-form-label">新密码</label>
       <div class="form-group col-md-3">
-        <input type="password" class="form-control" id="password" formControlName="password" style="width: 200px" placeholder="新密码">
+        <input type="password" class="form-control" id="password" formControlName="newPassword" style="width: 200px" placeholder="新密码">
       </div>
     </div>
+    <div class="form-row">
+      <label for="password" class="col-sm-1 col-form-label">&nbsp;</label>
+      <div class="form-group col-md-3">
+        <input type="password" class="form-control" id="password" formControlName="newPasswordAgain" style="width: 200px" placeholder="确认密码">
+      </div>
+    </div>
+  </ng-container>
   <div class="form-group row">
     <div class="col-sm-6 text-center">
       <button type="submit" class="btn btn-primary" (click)="onSubmit()" [disabled]="formGroup.invalid">保存</button>
