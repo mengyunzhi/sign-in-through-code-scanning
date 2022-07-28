@@ -6,6 +6,7 @@ import {CourseService} from '../../../service/course.service';
 import {DatePipe} from '@angular/common';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
 
 @Component({
   selector: 'app-course-edit',
@@ -23,16 +24,17 @@ export class CourseEditComponent implements OnInit {
               private datePipe: DatePipe,
               private router: Router,
               private commService: CommonService) {
+    this.id = +this.route.snapshot.params.id;
+    const commonValidator = new CommonValidator(httpClient);
     this.formGroup = new FormGroup({
-      name : new FormControl('', Validators.required),
-      lesson : new FormControl('', Validators.required),
+      name : new FormControl('', [Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength],
+        commonValidator.courseNameUnique(this.id)),
+      lesson : new FormControl(null, [Validators.required, CommonValidator.integer, Validators.min(1)]),
     });
   }
 
   ngOnInit(): void {
-    const  id = this.route.snapshot.params.id;
-    this.id = +id;
-    this.loadData(+id);
+    this.loadData(this.id);
   }
 
   loadData(id: number | undefined): void {

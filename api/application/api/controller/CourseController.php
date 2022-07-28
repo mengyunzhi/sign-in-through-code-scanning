@@ -51,6 +51,15 @@ class CourseController extends Controller
         }
     }
 
+    public function courseNameUnique() {
+        $name = Request()->param('name');
+        $course_id = Request()->param('course_id/d');
+        $course = Course::where('name', 'eq', $name)->find();
+        if (!is_null($course) && ($course_id !== $course->getId())) {
+            return json_encode('名称已存在');
+        }
+    }
+
     /*
     * 通过id获取课程
     */

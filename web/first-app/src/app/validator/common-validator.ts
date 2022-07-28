@@ -85,6 +85,24 @@ export class CommonValidator {
     };
   }
 
+  courseNameUnique(course_id = 0): (control: AbstractControl) => Observable<ValidationErrors | null> {
+    return (control) => {
+      const name = control.value;
+      const httpParams = new HttpParams()
+        .append('name', name)
+        .append('course_id', course_id.toString());
+      return this.httpClient.get('/course/courseNameUnique', {params: httpParams})
+        .pipe(map(data => {
+          console.log('courseNameUnique', data);
+          if (data) {
+            return {courseNameUnique: data};
+          } else {
+            return null;
+          }
+        }));
+    };
+  }
+
   numberUnique(id = 0, url = this.url): (control: AbstractControl) => Observable<ValidationErrors | null> {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const num = control.value;
