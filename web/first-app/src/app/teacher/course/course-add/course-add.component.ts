@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Form, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CourseService} from '../../../service/course.service';
 import {Notify, Report} from 'notiflix';
 import {ActivatedRoute, Router, Routes} from '@angular/router';
 import {CommonService} from '../../../service/common.service';
+import {CommonValidator} from '../../../validator/common-validator';
+import {Validator} from '../../../validator/validator';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-course-add',
@@ -12,15 +15,20 @@ import {CommonService} from '../../../service/common.service';
 })
 export class CourseAddComponent implements OnInit {
 
-  formGroup = new FormGroup({
-    name : new FormControl('', Validators.required),
-    lesson : new FormControl(null, Validators.required),
-  });
+  formGroup: FormGroup;
 
   constructor(private courseService: CourseService,
               private router: Router,
               private route: ActivatedRoute,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+              private httpClient: HttpClient) {
+    const commonValidator = new CommonValidator(httpClient);
+    this.formGroup = new FormGroup({
+      name : new FormControl('', [Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength],
+        commonValidator.courseNameUnique()),
+      lesson : new FormControl(null, [Validators.required, CommonValidator.integer, Validators.min(1)]),
+    });
+  }
 
   ngOnInit(): void {
   }
