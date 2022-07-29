@@ -18,7 +18,12 @@
       <tbody>
       <tr>
         <td>姓名</td>
-        <td>{{ user.name }}</td>
+        <td>
+          {{ user.name }}
+          <ng-container *ngIf="sno">
+          (学号：{{ sno}})
+          </ng-container>
+        </td>
       </tr>
       <tr>
         <td>性别</td>

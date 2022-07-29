@@ -18,7 +18,7 @@ class StudentController extends Controller
 		$query = Db::table('yunzhi_user')->alias('user')
 		->join('yunzhi_student student', 'user.id = student.user_id')
 		->join('yunzhi_klass klass', 'student.klass_id = klass.id')
-		->field('student.id, student.user_id, user.number, user.sex, user.name, student.sno,  klass.id as clazz_id, klass.name as clazz_name')
+		->field('student.id, student.user_id, user.number, user.sex, user.name, student.sno,  klass.id as clazz_id, klass.name as clazz_name, student.state')
 		->order(['student.id desc'])
 		->where('klass.name', 'like', '%' . $params['searchClazz'] . '%')
 		->where('user.name', 'like', '%' . $params['searchName'] . '%')

@@ -39,7 +39,7 @@ class ClazzController extends Controller
         $where['klass_id'] = ["=", $clazz_id];
         $query = Db::table('yunzhi_user')->alias('user')
         ->join('yunzhi_student student', 'user.id = student.user_id')
-        ->field('user.id as user_id, user.name, user.sex, student.sno')
+        ->field('user.id as user_id, user.name, user.sex, student.sno, student.state, user.number')
         ->order('student.id desc')
         ->where($where)
         ->where('user.name', 'like', '%' . $params['searchName'] . '%')

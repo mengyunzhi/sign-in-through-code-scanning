@@ -5,6 +5,9 @@ import {ScheduleService} from '../../../service/schedule.service';
 import {Clazz} from '../../../entity/clazz';
 import {FormControl, FormGroup} from '@angular/forms';
 import {TermService} from '../../../service/term.service';
+import {CommonService} from '../../../service/common.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Notify} from 'notiflix';
 
 @Component({
   selector: 'app-task-index',
@@ -34,8 +37,10 @@ export class TaskIndexComponent implements OnInit {
   ngOnInit(): void {
     this.termService.getCurrentTerm()
       .subscribe(term => {
-        this.queryGroup.get('term')?.setValue(term.name);
-        this.loadByPage();
+        if (term) {
+          this.queryGroup.get('term')?.setValue(term.name);
+          this.loadByPage();
+        }
       });
   }
 

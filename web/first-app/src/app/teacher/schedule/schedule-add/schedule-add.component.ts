@@ -8,7 +8,7 @@ import {Term} from '../../../entity/term';
 import {ClazzService} from '../../../service/clazz.service';
 import {Teacher} from '../../../entity/teacher';
 import {TeacherService} from '../../../service/teacher.service';
-import {Notify, Report} from 'notiflix';
+import {Report} from 'notiflix';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TermService} from '../../../service/term.service';
 import {CommonService} from '../../../service/common.service';
@@ -101,6 +101,25 @@ export class ScheduleAddComponent implements OnInit {
         this.weeks = this.termService.getWeeksByTerm(this.term);
       }, error =>  {
         console.log('失败', error);
+        this.checkTerm();
+      });
+  }
+
+  checkTerm(): void {
+    this.termService.getCurrentTerm()
+      .subscribe((success) => {
+        if (!success) {
+          this.commonService.error(() => {
+            this.router.navigate(['./../'], {relativeTo: this.route}).then();
+          }, '当前无激活学期，请通知管理员激活');
+        } else {
+          this.commonService.error(() => {
+            this.router.navigate(['./../'], {relativeTo: this.route}).then();
+          }, '当前页面无法访问');
+        }
+
+      }, err => {
+        console.log(err);
       });
   }
 
