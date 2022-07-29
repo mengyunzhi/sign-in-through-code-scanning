@@ -76,16 +76,21 @@ class UserController extends Controller
             $this->error('注册失败：该用户已注册');
             return '该用户已注册';
         }
+        if ($user->password !== $data->password) {
+            $this->error('注册失败：密码错误');
+            return json_encode(false);
+        } 
+
         $user->number = $data->number;
-        $user->password = $data->password;
         $status = $user->validate(true)->save();
         if ($status) {
             $student->state = 1;
             $status = $student->validate(true)->save();
         } else {
             $this->error('注册失败:'. $user->getError());
-            return $usert->getError();
+            return $user->getError();
         }
+        
         return json_encode($status);
     }
 

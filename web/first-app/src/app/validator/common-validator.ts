@@ -2,14 +2,10 @@ import {AbstractControl, ValidationErrors} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {map} from 'rxjs/operators';
-import {isObject} from 'rxjs/internal-compatibility';
-import {ApiInterceptor} from '../interceptor/api.interceptor';
-import {isNull} from '@angular/compiler/src/output/output_ast';
 
 export class CommonValidator {
   static name_min_length = 2;
   static name_max_length = 25;
-  url = ApiInterceptor.api;
 
   constructor(private httpClient: HttpClient) {
   }
@@ -73,7 +69,7 @@ export class CommonValidator {
       const httpParams = new HttpParams()
         .append('name', name)
         .append('clazz_id', clazz_id.toString());
-      return this.httpClient.get(this.url + '/clazz/clazzNameUnique', {params: httpParams})
+      return this.httpClient.get('/clazz/clazzNameUnique', {params: httpParams})
         .pipe(map(data => {
           console.log('clazNameUnique', data);
           if (data) {
@@ -103,13 +99,13 @@ export class CommonValidator {
     };
   }
 
-  numberUnique(id = 0, url = this.url): (control: AbstractControl) => Observable<ValidationErrors | null> {
+  numberUnique(id = 0): (control: AbstractControl) => Observable<ValidationErrors | null> {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
       const num = control.value;
       const httpParams = new HttpParams()
         .append('number', num)
         .append('id', id.toString());
-      return this.httpClient.get(url + '/user/numberUnique', {params: httpParams})
+      return this.httpClient.get('/user/numberUnique', {params: httpParams})
         .pipe(map(data => {
           console.log('numberUnique', data);
           if (data) {
@@ -122,7 +118,7 @@ export class CommonValidator {
   }
 
   numberUniqueForStudentRegister(): (control: AbstractControl) => Observable<ValidationErrors | null> {
-    return this.numberUnique(0, '');
+    return this.numberUnique(0);
   }
 
   programNameUnique(progarm_id = 0): (control: AbstractControl) => Observable<ValidationErrors | null> {
@@ -149,7 +145,7 @@ export class CommonValidator {
       const httpParams = new HttpParams()
         .append('name', name)
         .append('room_id', room_id.toString());
-      return this.httpClient.get(this.url + '/room/roomNameUnique', {params: httpParams})
+      return this.httpClient.get('/room/roomNameUnique', {params: httpParams})
         .pipe(map(data => {
           console.log('roomNameUnique', data);
           if (data) {
@@ -167,7 +163,7 @@ export class CommonValidator {
       const httpParams = new HttpParams()
         .append('sno', sno)
         .append('user_id', user_id.toString());
-      return this.httpClient.get(this.url + '/student/snoUnique', {params: httpParams})
+      return this.httpClient.get('/student/snoUnique', {params: httpParams})
         .pipe(map(data => {
           console.log('snoUnique', data);
           if (data) {
@@ -203,7 +199,7 @@ export class CommonValidator {
       const httpParams = new HttpParams()
         .append('name', name)
         .append('term_id', term_id.toString());
-      return this.httpClient.get(this.url + '/term/termNameUnique', {params: httpParams})
+      return this.httpClient.get('/term/termNameUnique', {params: httpParams})
         .pipe(map(data => {
           console.log('termNameUnique', data);
           if (data) {
