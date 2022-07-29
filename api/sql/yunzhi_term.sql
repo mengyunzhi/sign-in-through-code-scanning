@@ -11,7 +11,7 @@
  Target Server Version : 100422
  File Encoding         : 65001
 
- Date: 07/04/2022 20:27:13
+ Date: 29/07/2022 16:19:11
 */
 
 SET NAMES utf8mb4;
@@ -26,9 +26,10 @@ CREATE TABLE `yunzhi_term`  (
   `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `state` int NOT NULL DEFAULT 0 COMMENT '是否激活 0 未激活； 1 已激活',
   `start_time` int NOT NULL DEFAULT 0,
+  `end_time` int NOT NULL,
   `create_time` int NOT NULL DEFAULT 0,
   `update_time` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;

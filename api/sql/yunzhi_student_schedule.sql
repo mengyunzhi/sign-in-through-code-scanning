@@ -11,7 +11,7 @@
  Target Server Version : 100422
  File Encoding         : 65001
 
- Date: 05/04/2022 09:40:54
+ Date: 29/07/2022 16:19:05
 */
 
 SET NAMES utf8mb4;
@@ -22,12 +22,14 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_student_schedule`;
 CREATE TABLE `yunzhi_student_schedule`  (
-  `id` int NOT NULL  AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `student_id` int NOT NULL DEFAULT 0,
   `schedule_id` int NOT NULL DEFAULT 0,
   `create_time` int NOT NULL DEFAULT 0,
   `update_time` int NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `student_id`(`student_id`) USING BTREE,
+  INDEX `schedule_id`(`schedule_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 740 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;
