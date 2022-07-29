@@ -260,7 +260,8 @@ class User extends Model {
 
     static public function logout()
     {
-        session_unset();
+        // session_unset();
+        unset($_SESSION[self::$SESSION_KEY_USER]);
     }
 
     /**
