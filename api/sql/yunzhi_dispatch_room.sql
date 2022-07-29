@@ -11,7 +11,7 @@
  Target Server Version : 100422
  File Encoding         : 65001
 
- Date: 07/04/2022 09:07:27
+ Date: 29/07/2022 16:18:28
 */
 
 SET NAMES utf8mb4;
@@ -28,6 +28,6 @@ CREATE TABLE `yunzhi_dispatch_room`  (
   `create_time` int NOT NULL DEFAULT 0,
   `update_time` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 46 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1161 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;

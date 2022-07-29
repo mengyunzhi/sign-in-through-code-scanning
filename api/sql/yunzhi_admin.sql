@@ -11,7 +11,7 @@
  Target Server Version : 100422
  File Encoding         : 65001
 
- Date: 05/04/2022 09:39:43
+ Date: 29/07/2022 16:21:25
 */
 
 SET NAMES utf8mb4;
@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `yunzhi_admin`;
 CREATE TABLE `yunzhi_admin`  (
-  `id` int NOT NULL  AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL DEFAULT 0,
   `create_time` int NOT NULL DEFAULT 0 COMMENT '创建时间',
   `update_time` int NOT NULL DEFAULT 0 COMMENT '更新时间',
