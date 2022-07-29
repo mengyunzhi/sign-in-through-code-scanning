@@ -93,7 +93,7 @@ export class LoginComponent implements OnInit {
         this.commonService.success(() => this.changeRegister());
       }, error => {
         console.log('注册失败', error);
-        this.commonService.error();
+        this.commonService.error(() => {}, '请确认密码正确');
       });
   }
 }

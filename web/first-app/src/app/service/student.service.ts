@@ -30,6 +30,7 @@ export class StudentService {
         for (const student of data.content) {
           content.push({
             id: student.id,
+            state: student.state,
             user: {
               id: student.user_id,
               number: student.number,
@@ -40,7 +41,7 @@ export class StudentService {
             clazz: {
               id: student.clazz_id,
               name: student.clazz_name
-            } as Clazz
+            } as Clazz,
           } as Student);
         }
         return new Page<Student>({
@@ -137,4 +138,5 @@ interface T {
   sno: number;
   clazz_id: number;
   clazz_name: string;
+  state: number;
 }

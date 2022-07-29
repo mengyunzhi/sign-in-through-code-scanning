@@ -11,6 +11,10 @@ const routes: Routes = [
     component: SignInIndexComponent
   },
   {
+    path: 'index',
+    component: SignInIndexComponent
+  },
+  {
     path: 'success',
     component: SignInSuccessComponent
   },
@@ -21,6 +25,10 @@ const routes: Routes = [
   {
     path: 'signal/affirm',
     component: SignInAffirmComponent
+  },
+  {
+    path: 'personal',
+    loadChildren: () => import('./../admin/personal/personal.module').then(m => m.PersonalModule)
   },
 ];
 

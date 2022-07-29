@@ -9,6 +9,8 @@ import {StudentIndexModule} from './student-index/student-index.module';
 import {StudentRoutingModule} from './student-routing.module';
 import {StudentAddModule} from './student-add/student-add.module';
 import {StudentEditModule} from './student-edit/student-edit.module';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {ApiInterceptor} from '../../interceptor/api.interceptor';
 
 /**
  * 管理端-》学生模块
@@ -25,7 +27,13 @@ import {StudentEditModule} from './student-edit/student-edit.module';
     StudentIndexModule,
     StudentAddModule,
     StudentRoutingModule,
-    StudentEditModule
+    StudentEditModule,
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS, multi: true,
+      useClass: ApiInterceptor
+    }
   ]
 })
 export class StudentModule {
