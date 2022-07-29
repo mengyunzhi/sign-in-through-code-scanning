@@ -17,7 +17,7 @@ import {FormControl, FormGroup} from '@angular/forms';
 export class ScheduleIndexComponent implements OnInit {
 
   page = 0;
-  size = 3;
+  size = 2;
 
   queryGroup = new FormGroup({
     course: new FormControl(''),

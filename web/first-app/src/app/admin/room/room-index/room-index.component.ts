@@ -13,7 +13,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class RoomIndexComponent implements OnInit {
   page = 0;
-  size = 3;
+  size = 2;
 
   pageData = new Page<Room>({
     content: [],

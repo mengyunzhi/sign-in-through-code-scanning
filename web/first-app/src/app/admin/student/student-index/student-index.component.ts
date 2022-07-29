@@ -13,7 +13,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class StudentIndexComponent implements OnInit {
   page = 0;
-  size = 3;
+  size = 2;
 
   // 初始化一个有0条数据的分页
   // 此处的any类型为StudentService的T接口, 暂时没有好的处理方法

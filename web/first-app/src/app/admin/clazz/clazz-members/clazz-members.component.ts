@@ -15,7 +15,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class ClazzMembersComponent implements OnInit {
   page = 0;
-  size = 5;
+  size = 2;
 
   pageData = new Page<Student>({
     content: [] as Student[],

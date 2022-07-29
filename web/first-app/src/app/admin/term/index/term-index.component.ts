@@ -12,7 +12,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class TermIndexComponent implements OnInit {
   page = 0;
-  size = 3;
+  size = 2;
   pageData = new Page<Term>({
     content: [],
     number: this.page,

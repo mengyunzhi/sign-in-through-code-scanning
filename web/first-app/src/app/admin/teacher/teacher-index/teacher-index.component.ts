@@ -13,7 +13,7 @@ import {CommonService} from '../../../service/common.service';
 })
 export class TeacherIndexComponent implements OnInit {
   page = 0;
-  size = 3;
+  size = 2;
 
   pageData = new Page<Teacher>({
     content: [] as Teacher[],
