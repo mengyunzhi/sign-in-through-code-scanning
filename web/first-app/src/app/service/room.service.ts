@@ -19,7 +19,7 @@ export class RoomService {
   /*
   * 管理端教室管理index页面
   * */
-  page({page = 0, size = 5}: { size?: number; page?: number }, param: {name?: string, capacity?: string}): Observable<Page<Room>> {
+  page({page = 0, size = 2}: { size?: number; page?: number }, param: {name?: string, capacity?: string}): Observable<Page<Room>> {
     let rooms = [] as Room[];
     return new Observable<Page<Room>>(
       subscriber => {

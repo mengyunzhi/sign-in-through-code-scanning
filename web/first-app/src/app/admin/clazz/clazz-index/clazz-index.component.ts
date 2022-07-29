@@ -12,7 +12,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 })
 export class ClazzIndexComponent implements OnInit {
   page = 0;
-  size = 3;
+  size = 2;
 
   pageData = new Page<Clazz>({
     content: [],

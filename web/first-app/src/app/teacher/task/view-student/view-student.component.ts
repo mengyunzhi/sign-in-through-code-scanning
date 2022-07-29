@@ -15,7 +15,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./view-student.component.css']
 })
 export class ViewStudentComponent implements OnInit {
-  size = 3;
+  size = 2;
   page = 0;
 
   queryForm = new FormGroup({

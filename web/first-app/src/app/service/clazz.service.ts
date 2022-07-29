@@ -70,7 +70,7 @@ export class ClazzService {
     return this.httpClient.get<Array<Clazz>>('/clazz/getAll');
   }
 
-  page({page = 0, size = 3}: {page?: number, size?: number}, param: {name?: string}): Observable<Page<Clazz>> {
+  page({page = 0, size = 2}: {page?: number, size?: number}, param: {name?: string}): Observable<Page<Clazz>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())

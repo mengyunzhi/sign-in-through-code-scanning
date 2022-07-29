@@ -14,7 +14,7 @@ import {TermService} from '../../../service/term.service';
 export class TaskIndexComponent implements OnInit {
 
   page = 0;
-  size = 3;
+  size = 2;
 
   queryGroup = new FormGroup({
     course: new FormControl(''),
