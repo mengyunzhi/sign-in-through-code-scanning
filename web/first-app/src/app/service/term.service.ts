@@ -27,7 +27,7 @@ export class TermService {
   /*
   * 管理端学期管理页面
   * */
-  page({page = 0, size = 3}: {page?: number, size?: number}, param: {name?: string}): Observable<Page<Term>> {
+  page({page = 0, size = 2}: {page?: number, size?: number}, param: {name?: string}): Observable<Page<Term>> {
     const httpParams = new HttpParams()
       .append('size', size.toString())
       .append('page', page.toString())

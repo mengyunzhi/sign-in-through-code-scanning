@@ -15,7 +15,7 @@ export class CourseService {
   /*
   * 教师端课程管理index页面
   */
-  page({page = 0, size = 20}: { size?: number; page?: number }, course: { name?: string; lesson?: string} ): Observable<Page<Course>> {
+  page({page = 0, size = 2}: { size?: number; page?: number }, course: { name?: string; lesson?: string} ): Observable<Page<Course>> {
     let courses = [] as Course[];
 
     if (course.lesson === null) {

@@ -16,7 +16,7 @@ export class StudentService {
   }
 
 
-  page({page = 0, size = 5}: {size?: number; page?: number},
+  page({page = 0, size = 2}: {size?: number; page?: number},
        param: {clazz?: string, name?: string, sno?: string}): Observable<Page<Student>> {
     const httpParams = new HttpParams()
       .append('page', page.toString())
