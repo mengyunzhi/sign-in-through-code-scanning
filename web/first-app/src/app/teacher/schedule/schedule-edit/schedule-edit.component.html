@@ -52,7 +52,7 @@
           {{ '第' + (dispatch.week+1) + '周' + '第' + (dispatch.day+1) + '天' + '第' + (dispatch.lesson+1) + '节,'}}<br>
           地点：
           <ng-container *ngFor="let room of data.rooms[i]; index as index">
-            {{ room.name }}
+            {{ room?.name }}
           </ng-container>
         </td>
         <td><a class="btn btn-danger" (click)="onDeleteDispatch(dispatch.id)"><i class="glyphicon"></i>&nbsp;删除</a></td>
