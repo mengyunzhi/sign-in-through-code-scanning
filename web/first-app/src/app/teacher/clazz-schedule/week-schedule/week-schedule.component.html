@@ -1,3 +1,9 @@
+<ng-template #tip>
+  <h4 class="text-info">
+    当前无激活学期
+  </h4>
+</ng-template>
+<ng-container *ngIf="term; else tip">
 <form>
   <div class="form-group row">
     <div class="col-sm-3">
@@ -49,3 +55,4 @@
     </table>
   </div>
 </div>
+</ng-container>

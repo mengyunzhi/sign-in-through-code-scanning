@@ -17,18 +17,20 @@ class CourseController extends Controller
     */
     public function page() {
         $params = Request()->param();
+        $where['name'] = ['like', '%' . $params['searchName'] . '%'];
+        if (!empty($params['searchLesson'])) {
+            $where['lesson'] = ['eq', $params['searchLesson']];
+        }
 
         $query = Course::order(['id desc'])
-                    ->where('name', 'like', '%' . $params['searchName'] . '%')
-                    ->where('lesson', 'like', '%' . $params['searchLesson'] . '%');
+                    ->where($where);
         $courses = $query->limit(
             $params['page'] * $params['size'],
             $params['size']
         )->select();
         $data['content'] = $courses;
 
-        $query = $query->where('name', 'like', '%' . $params['searchName'] . '%')
-                    ->where('lesson', 'like', '%' . $params['searchLesson'] . '%');
+        $query = $query->where($where);
         $data['length'] = $query->count();
         return json_encode($data);
     }

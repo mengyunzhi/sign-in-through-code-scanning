@@ -215,6 +215,7 @@ class Schedule extends Model {
                         $dispatchId = $dispatch->where('day', $i)
                                                         ->where('lesson', $j)
                                                         ->where('week', $indexCourseTimes[$i][$j]['weeks'][$x])
+                                                        ->where('schedule_id', $scheduleId)
                                                         ->find()->getId();
                         $room_id = DispatchRoom::where('dispatch_id', $dispatchId)->column('room_id');
                         if (!empty($newRoomIds)) {

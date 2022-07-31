@@ -108,7 +108,7 @@ export class WeekScheduleComponent implements OnInit {
     let str = '';
     if (this.dispatch.rooms?.length) {
       for (const room of this.dispatch.rooms) {
-        str += room.name + ' ';
+        str += room?.name + ' ';
       }
     }
     if (str) {
