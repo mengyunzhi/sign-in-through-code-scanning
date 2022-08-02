@@ -25,7 +25,7 @@
 4. notiflix [3.2.5](https://www.npmjs.com/package/notiflix)
 5. sweetalert2 [11.4.19](https://www.npmjs.com/package/sweetalert2)
 
-## 启动环境
+## 启动环境(web/first-app)
 0. `npm install -g @angular/cli@11.0.7`
 1. `npm install`
 2. `start nginx`
