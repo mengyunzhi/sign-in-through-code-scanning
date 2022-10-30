@@ -1,0 +1,46 @@
+<body class="container" >
+<form style="margin-top: 20px" [formGroup]="formGroup">
+  <div class="form-group row">
+    <label class="col-sm-1 col-form-label"><code>*</code>姓名</label>
+    <div class="col-sm-4">
+      <input type="text" formControlName="name" class="form-control" style="width: 200px" value="张三">
+      <small class="text-danger" *ngIf="formGroup.get('name')?.invalid">
+        长度应该在2-25之间
+      </small>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-1 col-form-label"><code>*</code>性别</label>
+    <div class="col-sm-4">
+      <input type="radio" formControlName="sex" name="sex" [value]="0" id="sex0" checked="checked" /><label>男</label>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="radio" formControlName="sex" name="sex" [value]="1" id="sex1" /><label>女</label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-1 col-form-label"><code>*</code>班级</label>
+    <div class="col-sm-4">
+      <app-clazz-select formControlName="clazz_id"></app-clazz-select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-1 col-form-label">学号</label>
+    <div class="col-sm-4">
+      <input type="string" formControlName="sno" class="form-control" style="width: 200px">
+      <small class="text-danger" *ngIf="formGroup.get('sno')?.invalid">
+        <ng-container *ngIf="formGroup.get('sno')?.errors?.required || formGroup.get('sno')?.errors?.minlength || formGroup.get('sno')?.errors?.maxlength || formGroup.get('sno')?.errors?.sno">
+          应为长度在3-20之间的数字串
+        </ng-container>
+        <ng-container *ngIf="formGroup.get('sno')?.errors?.snoUnique">学号已存在</ng-container>
+      </small>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-3">
+      <button type="submit" class="btn btn-primary" [disabled]="formGroup.invalid" (click)="onSubmit()">保存</button>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <a class="btn btn-primary" [routerLink]="'../../'">返回</a>
+    </div>
+  </div>
+</form>
+</body>

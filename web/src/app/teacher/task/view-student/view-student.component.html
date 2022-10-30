@@ -1,0 +1,48 @@
+<div class="row mt-3 ml-1">
+    <a class="btn btn-primary" routerLink="./add"><i class="fas fa-plus"></i>新增</a>
+    <a class="btn btn-primary disabled">生成学生成绩单</a>
+    <a class="btn btn-primary disabled"><i class="fas fa-download"></i>下载Excel模板</a>
+    <a class="btn btn-primary disabled"><i class="fas fa-file-import"></i>导入学生Excel</a>
+    <a class="btn btn-primary" routerLink="../../">返回</a>
+</div>
+<div class="row mt-2">
+  <div class="col-md-10">
+    <form class="form-inline" [formGroup]="queryForm">
+      <input type="text" formControlName="sno" class="form-control mr-2" placeholder="学号">
+      <input type="text" formControlName="name" class="form-control mr-2" placeholder="姓名">
+      <input type="text" formControlName="clazz" class="form-control mr-2" placeholder="班级">
+      <button type="submit" class="btn btn-info ml-2" (click)="loadByPage()">
+        <i class="fas fa-search"></i> 查询
+      </button>
+    </form>
+  </div>
+</div>
+
+
+<table class="table table-striped mt-3">
+  <thead>
+    <tr class="table-primary">
+      <th>序号</th>
+      <th>学号</th>
+      <th>姓名</th>
+      <th>班级</th>
+      <th>性别</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let student of pageData.content; index as index">
+      <td>{{ index + 1 }}</td>
+      <td>{{ student.sno }}</td>
+      <td>{{ student.user.name }}</td>
+      <td>{{ student.clazz.name }}</td>
+      <td>{{ student.user.sex | sex }}</td>
+      <td>
+        <a class="btn btn-sm btn-success" [routerLink]="'./fraction/' + student.id.toString()">登记成绩</a>
+        <a class="btn btn-sm btn-danger" (click)="onDelete(student.id)"><i class="fas fa-trash-alt"></i> 移除</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-page [page]="pageData" (bePageChange)="onPage($event)"></app-page>
