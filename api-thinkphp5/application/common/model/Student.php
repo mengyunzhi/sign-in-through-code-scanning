@@ -139,14 +139,18 @@ class Student extends Model {
      * @param  string $msg     [报错信息]
      * @return [bool]        成功 true ；失败 false
      */
-    static public function saveStudent($userId, $klassId, $sno, &$msg='') {
+    static public function saveStudent($userId, $klassId = null, $sno = null, &$msg='') {
         $Student = Student::where('user_id', 'eq', $userId)->find();
         if (is_null($Student)) {
             $Student = new Student;
             $Student->user_id = $userId;
         }
-        $Student->klass_id = $klassId;
-        $Student->sno = $sno;
+        if (!is_null($klassId)) {
+            $Student->klass_id = $klassId;
+        }
+        if (isset($data['sno'])) {
+            $Student->sno = $sno;
+        }
         $status = $Student->validate(true)->save();
         $msg .= $Student->getError();
         //存学生排课

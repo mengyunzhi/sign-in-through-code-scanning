@@ -408,6 +408,8 @@ class User extends Model {
         }
         //学生=>存student表； ......(之后可能存管理员、教师)
         if ($role === User::$ROLE_STUDENT) {
+            $data['klass_id'] = isset($data['klass_id']) ? $data['klass_id'] : null;
+            $data['sno'] = isset($data['sno']) ? $data['sno'] : null;
             $status = Student::saveStudent($User->id, $data['klass_id'], $data['sno'], $msg);
         } elseif ($role === User::$ROLE_TEACHER) {
             // 存教师表

@@ -1,0 +1,69 @@
+
+<div class="row">
+  <div class="col col-md-6">
+    <a [routerLink]="'../../'" class="btn btn-primary"><i class="glyphicon"></i>&nbsp;返回</a>&nbsp;&nbsp;
+    <table class="table table-bordered mt-2">
+      <thead>
+        <tr>
+          <th>项</th>
+          <th>内容</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>课程名称</td>
+          <td>程序设计</td>
+        </tr>
+        <tr>
+          <td>当前周次</td>
+          <td>第七周</td>
+        </tr>
+        <tr>
+          <td>课次</td>
+          <td>周三5-6节</td>
+        </tr>
+        <tr>
+          <td rowspan="2">上课的班级</td>
+          <td>计2021(30人)</td>
+        </tr>
+        <tr>
+          <td>计2022(29人)</td>
+        </tr>
+        <tr>
+          <td>总人数</td>
+          <td>59</td>
+        </tr>
+        <tr>
+          <td>当前项目</td>
+          <td>链表的使用</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="form-group row">
+  <div class="col-md-12">
+    <a type="submit" class="btn btn-primary" (click)="setRandomCode()"  *ngIf="!coursing">生成随机码(可选)</a>
+    <h6>随机码为：{{ randomCode }}</h6>
+  </div>
+</div>
+<div class="form-group row" *ngIf="!coursing">
+  <div class="col-md-12">
+    <a class="btn btn-success disabled" (click)="courseStart()">开始上课</a>
+  </div>
+</div>
+<div class="form-group row" *ngIf="coursing">
+  <div class="col-md-12">
+    <a class="btn btn-primary" routerLink="./signInState">查看签到情况(PS：座位按权限排序)</a>
+  </div>
+</div>
+<!--<div class="form-group row" *ngIf="coursing">-->
+<!--  <div class="col-md-12">-->
+<!--    <a class="btn btn-success" routerLink="./signInState">查看签到学生</a>-->
+<!--  </div>-->
+<!--</div>-->
+<div class="form-group row" *ngIf="coursing">
+  <div class="col-md-12">
+    <a class="btn btn-danger" (click)="courseEnd()">课程结束(PS：课程结束后生成记录表)</a>
+  </div>
+</div>
