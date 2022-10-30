@@ -1,12 +1,16 @@
 # sign-in-through-code-scanning
 ## 扫码签到系统<br>
-### 一、api-thinkphp文件夹: <br>
-#### <1> 前后端不分离的扫码签到系统<br>
-#### <2> 充当angular前端的api
+### 一、api文件夹: <br>
+1. spring-boot 作为后端<br>
+### 二、api-thinkphp5文件夹: <br>
+1. 前后端不分离的扫码签到系统<br>
+2. 充当angular前端的api
 ### 二、document文件夹:<br>
 1. ER图
-2. nginx 配置文件
-### 三、web文件夹:
+### 三、web文件夹: <br>
+1. angular 前端<br>
+### 三、docker文件夹: <br>
+1. docker-compose.yaml
 
 ## 环境
 1. node: V14.15.4
