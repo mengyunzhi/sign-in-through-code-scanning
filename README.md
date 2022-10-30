@@ -1,6 +1,6 @@
 # sign-in-through-code-scanning
 ## 扫码签到系统<br>
-### 一、api文件夹: <br>
+### 一、api-thinkphp文件夹: <br>
 #### <1> 前后端不分离的扫码签到系统<br>
 #### <2> 充当angular前端的api
 ### 二、document文件夹:<br>
