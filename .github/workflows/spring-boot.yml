@@ -23,5 +23,7 @@ jobs:
           distribution: ${{ env.DISTRIBUTION }}
           cache: 'maven'
       - name: maven install && unit test
-        run: mvn install
+        run: |
+          cd api
+          mvn install
 
