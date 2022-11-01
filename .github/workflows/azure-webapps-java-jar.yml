@@ -23,12 +23,13 @@ jobs:
           distribution: ${{ env.DISTRIBUTION }}
           cache: 'maven'
           
-      - name: mysql install
-        run: |
-          sudo apt-get install mysql-server
-          sudo apt-get install mysql-client
-          sudo apt-get install libmysqlclient-dev
-          sudo systemctl start mysql
+      - name: Setup MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql version: 5.7
+          mysql database: log
+          mysql user: db-username
+          mysql password: db-password
 
           
       - name: maven install && unit test
