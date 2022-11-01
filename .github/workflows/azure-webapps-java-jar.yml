@@ -28,6 +28,7 @@ jobs:
           sudo apt-get install mysql-server
           sudo apt-get install mysql-client
           sudo apt-get install libmysqlclient-dev
+          sudo systemctl start mysql
 
           
       - name: maven install && unit test
