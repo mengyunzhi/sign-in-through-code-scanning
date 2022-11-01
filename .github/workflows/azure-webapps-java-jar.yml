@@ -22,6 +22,14 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: ${{ env.DISTRIBUTION }}
           cache: 'maven'
+          
+      - name: mysql install
+        run: |
+          sudo apt-get install mysql-server
+          sudo apt-get install mysql-client
+          sudo apt-get install libmysqlclient-dev
+
+          
       - name: maven install && unit test
         run: |
           cd api
