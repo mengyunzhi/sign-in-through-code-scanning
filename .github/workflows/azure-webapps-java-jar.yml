@@ -30,6 +30,7 @@ jobs:
           mysql database: tp2
           mysql user: root
           mysql password: root
+          mysql port: 3310
 
           
       - name: maven install && unit test
