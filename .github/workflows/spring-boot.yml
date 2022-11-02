@@ -45,7 +45,7 @@ jobs:
     needs: build
     steps:
       - name: Send dingding notify
-        uses: GavinHome/action-dingding@v1.0
+        uses: zcong1993/actions-ding@master
         with:
           token: a039869c11a2f7f76a6a066ca0e946302ff7cabad6710f18c3b5291f5692eb25
           body: 123123
