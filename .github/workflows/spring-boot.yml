@@ -43,7 +43,7 @@ jobs:
           
       - name: judge is failure
         if: ${{ failure() }}
-        run : isSuccess = 0
+        run : env.ISSUCCESS = 0
           
   dingding-notify: 
     runs-on: ubuntu-latest
