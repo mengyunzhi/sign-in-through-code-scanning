@@ -11,34 +11,34 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-#     services:
-#       mysql:
-#         image: mysql:5.7
-#         ports:
-#           - 3310:3306
-#         env:
-#           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-#           MYSQL_DATABASE: tp2
-#           MYSQL_ROOT_PASSWORD: root
-#         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+    services:
+      mysql:
+        image: mysql:5.7
+        ports:
+          - 3310:3306
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: tp2
+          MYSQL_ROOT_PASSWORD: root
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
-#     steps:
-#       - name: checkout code
-#         uses: actions/checkout@v3
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
         
-#       - name: loading database
-#         run: mysql -h 127.0.0.1 -P 3310 -uroot -proot tp2 --default-character-set=utf8
+      - name: loading database
+        run: mysql -h 127.0.0.1 -P 3310 -uroot -proot tp2 --default-character-set=utf8
         
-#       - name: Set up Java version
-#         uses: actions/setup-java@v3.0.0
-#         with:
-#           java-version: ${{ env.JAVA_VERSION }}
-#           distribution: ${{ env.DISTRIBUTION }}
-#           cache: 'maven'
-#       - name: maven install && unit test
-#         run: |
-#           cd api
-#           mvn install
+      - name: Set up Java version
+        uses: actions/setup-java@v3.0.0
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: ${{ env.DISTRIBUTION }}
+          cache: 'maven'
+      - name: maven install && unit test
+        run: |
+          cd api
+          mvn install
           
   dingding-notify: 
     runs-on: ubuntu-latest
