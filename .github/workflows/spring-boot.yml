@@ -48,10 +48,10 @@ jobs:
   dingding-notify: 
     runs-on: ubuntu-latest
     needs: build
-    if: ${{ !env.isSuccess }}
+    if: ${{ always() }}
     steps:
       - name: Send dingding notify error
-        if: ${{ failure() }}
+        if: ${{ !isSuccess }}
         uses: zcong1993/actions-ding@master
         with:
           dingToken: 28dada9e5c1ef6c8766577813269aa2d60bea1a4ce0479ddc9100efa2f0ba9e8
@@ -67,7 +67,7 @@ jobs:
               }
             }
       - name: Send dingding notify success
-        if: ${{ env.isSuccess }}
+        if: ${{ isSuccess }}
         uses: zcong1993/actions-ding@master
         with:
           dingToken: 28dada9e5c1ef6c8766577813269aa2d60bea1a4ce0479ddc9100efa2f0ba9e8
