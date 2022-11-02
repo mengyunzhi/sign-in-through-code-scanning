@@ -2,7 +2,7 @@ name: unit test spring boot app with jdk1.8
 env:
   JAVA_VERSION: '8.0.282+8'                  # set this to the Java version to use
   DISTRIBUTION: adopt                  # set this to the Java distribution
-  isSuccess: 1
+  ISSUCCESS: 1
 
 on: [push, pull_request]
 
@@ -51,7 +51,7 @@ jobs:
     if: ${{ always() }}
     steps:
       - name: Send dingding notify error
-        if: ${{ !isSuccess }}
+        if: ${{ !env.ISSUCCESS }}
         uses: zcong1993/actions-ding@master
         with:
           dingToken: 28dada9e5c1ef6c8766577813269aa2d60bea1a4ce0479ddc9100efa2f0ba9e8
@@ -67,7 +67,7 @@ jobs:
               }
             }
       - name: Send dingding notify success
-        if: ${{ isSuccess }}
+        if: ${{ env.ISSUCCESS }}
         uses: zcong1993/actions-ding@master
         with:
           dingToken: 28dada9e5c1ef6c8766577813269aa2d60bea1a4ce0479ddc9100efa2f0ba9e8
