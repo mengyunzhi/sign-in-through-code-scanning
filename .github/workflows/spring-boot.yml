@@ -42,6 +42,7 @@ jobs:
           
   dingding-notify: 
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Send dingding notify
         uses: GavinHome/action-dingding@v1.0
