@@ -43,6 +43,7 @@ jobs:
   dingding-notify: 
     runs-on: ubuntu-latest
     needs: build
+    if: ${{ always() }}
     steps:
       - name: Send dingding notify error
         if: ${{ failure() }}
