@@ -41,7 +41,7 @@ jobs:
           mvn install
           
       - name: 环境变量
-        if: ${{ failure() }}
+        if: ${{ always() }}
         run : env
           
   dingding-error: 
@@ -58,7 +58,7 @@ jobs:
             {
               "msgtype": "text",
               "text": {
-                  "content": "执行失败"
+                  "content": "[打叉][打叉][打叉][打叉][打叉]\n执行失败"
               }
             }
       
@@ -76,7 +76,7 @@ jobs:
             {
               "msgtype": "text",
               "text": {
-                  "content": "[微笑]\n执行成功"
+                  "content": "[微笑][微笑][微笑][微笑][微笑]\n执行成功"
               }
             }
 
