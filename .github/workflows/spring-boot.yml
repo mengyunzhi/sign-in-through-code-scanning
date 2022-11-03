@@ -43,6 +43,10 @@ jobs:
       - name: 环境变量
         if: ${{ always() }}
         run : env
+    
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
           
   dingding-error: 
     runs-on: ubuntu-latest
@@ -67,10 +71,6 @@ jobs:
     needs: build
     if: ${{ success() }}
     steps:
-    
-      - name: Dump GitHub context
-        id: github_context_step
-        run: echo '${{ toJSON(github) }}'
         
       - name: Send dingding notify success
         uses: zcong1993/actions-ding@master
