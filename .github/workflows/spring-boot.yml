@@ -76,7 +76,13 @@ jobs:
             {
               "msgtype": "text",
               "text": {
-                  "content": '[微笑][微笑][微笑]\n分支${{ github.ref_name }}执行pr成功\n提交者: ${{ github.triggering_actor }}'
+                  "content": '[微笑][微笑][微笑]\n分支${{ github.ref_name }}执行pr成功\n提交者: ${{ github.triggering_actor }}
+                    action_path : ${{ github.action_path }}\n
+                    action_repository: ${{ github.action_repository }}\n
+                    api_url: ${{ github.api_url }}\n
+                    base_ref: ${{ github.base_ref }}\n
+                    event_path: ${{ github.event_path }}
+                  '
               }
             }
 
