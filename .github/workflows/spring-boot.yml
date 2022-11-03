@@ -58,7 +58,7 @@ jobs:
             {
               "msgtype": "text",
               "text": {
-                  "content": "[打叉][打叉][打叉][打叉][打叉]\n分支${{ GITHUB_RUN_NUMBER }}执行pr失败\n提交者: ${{ GITHUB_TRIGGERING_ACTOR }}"
+                  "content": "[打叉][打叉][打叉]\n分支${{ env.GITHUB_RUN_NUMBER }}执行pr失败\n提交者: ${{ env.GITHUB_TRIGGERING_ACTOR }}"
               }
             }
       
@@ -76,7 +76,7 @@ jobs:
             {
               "msgtype": "text",
               "text": {
-                  "content": "[微笑][微笑][微笑][微笑][微笑]\n分支${{ GITHUB_RUN_NUMBER }}执行pr成功\n提交者: ${{ GITHUB_TRIGGERING_ACTOR }}"
+                  "content": "[微笑][微笑][微笑]\n分支${{ env.GITHUB_RUN_NUMBER }}执行pr成功\n提交者: ${{ env.GITHUB_TRIGGERING_ACTOR }}"
               }
             }
 
