@@ -45,10 +45,10 @@ jobs:
         if: ${{ failure() }}
         run : env
           
-  dingding-notify: 
+  dingding-error: 
     runs-on: ubuntu-latest
     needs: build
-    if: ${{ always() }}
+    if: ${{ failure() }}
     steps:
       - name: print
         run: echo ${{ env.ISSUCCESS }}
@@ -68,6 +68,11 @@ jobs:
                   "messageUrl": "https://www.dingtalk.com/s?__biz=MzA4NjMwMTA2Ng==&mid=2650316842&idx=1&sn=60da3ea2b29f1dcc43a7c8e4a7c97a16&scene=2&srcid=09189AnRJEdIiWVaKltFzNTw&from=timeline&isappinstalled=0&key=&ascene=2&uin=&devicetype=android-23&version=26031933&nettype=WIFI"
               }
             }
+      
+  dingding-success: 
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Send dingding notify success
         if: ${{ env.ISSUCCESS }} == true
         uses: zcong1993/actions-ding@master
@@ -84,6 +89,6 @@ jobs:
                   "messageUrl": "https://www.dingtalk.com/s?__biz=MzA4NjMwMTA2Ng==&mid=2650316842&idx=1&sn=60da3ea2b29f1dcc43a7c8e4a7c97a16&scene=2&srcid=09189AnRJEdIiWVaKltFzNTw&from=timeline&isappinstalled=0&key=&ascene=2&uin=&devicetype=android-23&version=26031933&nettype=WIFI"
               }
             }
-        
+
 
 
