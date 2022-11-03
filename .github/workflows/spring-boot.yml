@@ -2,7 +2,6 @@ name: unit test spring boot app with jdk1.8
 env:
   JAVA_VERSION: '8.0.282+8'                  # set this to the Java version to use
   DISTRIBUTION: adopt                  # set this to the Java distribution
-  ISSUCCESS: true
 
 on: [push, pull_request]
 
@@ -50,22 +49,16 @@ jobs:
     needs: build
     if: ${{ failure() }}
     steps:
-      - name: print
-        run: echo ${{ env.ISSUCCESS }}
       - name: Send dingding notify error
-        if:  ${{ env.ISSUCCESS }} == false
         uses: zcong1993/actions-ding@master
         with:
           dingToken: 28dada9e5c1ef6c8766577813269aa2d60bea1a4ce0479ddc9100efa2f0ba9e8
           secret: SEC5690cf8d223fa96039ad9244d92d1238c303125dbc41c41e3fda2148a874d2c3
           body: |
             {
-              "msgtype": "link",
-              "link": {
-                  "text": "这个即将发布的新版本，创始人陈航（花名“无招”）称它为“红树林”。而在此之前，每当面临重大升级，产品经理们都会取一个应景的代号，这一次，为什么是“红树林”？",
-                  "title": "执行失败",
-                  "picUrl": "",
-                  "messageUrl": "https://www.dingtalk.com/s?__biz=MzA4NjMwMTA2Ng==&mid=2650316842&idx=1&sn=60da3ea2b29f1dcc43a7c8e4a7c97a16&scene=2&srcid=09189AnRJEdIiWVaKltFzNTw&from=timeline&isappinstalled=0&key=&ascene=2&uin=&devicetype=android-23&version=26031933&nettype=WIFI"
+              "msgtype": "text",
+              "text": {
+                  "content": "执行失败"
               }
             }
       
@@ -75,19 +68,15 @@ jobs:
     if: ${{ success() }}
     steps:
       - name: Send dingding notify success
-        if: ${{ env.ISSUCCESS }} == true
         uses: zcong1993/actions-ding@master
         with:
           dingToken: 28dada9e5c1ef6c8766577813269aa2d60bea1a4ce0479ddc9100efa2f0ba9e8
           secret: SEC5690cf8d223fa96039ad9244d92d1238c303125dbc41c41e3fda2148a874d2c3
           body: |
             {
-              "msgtype": "link",
-              "link": {
-                  "text": "这个即将发布的新版本，创始人陈航（花名“无招”）称它为“红树林”。而在此之前，每当面临重大升级，产品经理们都会取一个应景的代号，这一次，为什么是“红树林”？",
-                  "title": "执行成功",
-                  "picUrl": "",
-                  "messageUrl": "https://www.dingtalk.com/s?__biz=MzA4NjMwMTA2Ng==&mid=2650316842&idx=1&sn=60da3ea2b29f1dcc43a7c8e4a7c97a16&scene=2&srcid=09189AnRJEdIiWVaKltFzNTw&from=timeline&isappinstalled=0&key=&ascene=2&uin=&devicetype=android-23&version=26031933&nettype=WIFI"
+              "msgtype": "text",
+              "text": {
+                  "content": "[微笑]\n执行成功"
               }
             }
 
