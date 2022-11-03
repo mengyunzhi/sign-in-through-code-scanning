@@ -3,7 +3,7 @@ env:
   JAVA_VERSION: '8.0.282+8'                  # set this to the Java version to use
   DISTRIBUTION: adopt                  # set this to the Java distribution
 
-on: [push, pull_request]
+on: [pull_request]
 
 permissions:
   contents: read
@@ -76,7 +76,7 @@ jobs:
             {
               "msgtype": "text",
               "text": {
-                  "content": '[微笑][微笑][微笑]\n${{ github.ref_type }}:${{ github.ref_name }}执行成功\n提交者: ${{ github.triggering_actor }}\n${{ github.ref_type }}: ${{ github.server_url }}/${{ github.repository }}/${{ github.ref_name }}'
+                  "content": '[微笑][微笑][微笑]\n提交者: ${{ github.triggering_actor }}\n${{ github.ref_type }}:${{ github.ref_name }}执行成功[${{ github.ref_type }}: ${{ github.server_url }}/${{ github.repository }}/${{ github.ref_name }}]'
               }
             }
 
