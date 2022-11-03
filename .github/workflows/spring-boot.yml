@@ -78,10 +78,8 @@ jobs:
               "text": {
                   "content": '[微笑][微笑][微笑]\n分支${{ github.ref_name }}执行pr成功\n提交者: ${{ github.triggering_actor }}
                     ref : ${{ github.ref }}\n
-                    ref_name: ${{ github.ref_name }}\n
-                    ref_type: ${{ github.ref_type }}\n
-                    repository: ${{ github.repository }}\n
-                    event_path: ${{ github.event_path }}
+                     ${{ github.ref_type }}: ${{ github.server_url }}/${{ github.repository }}/${{ github.ref_name }}\n
+                    
                   '
               }
             }
