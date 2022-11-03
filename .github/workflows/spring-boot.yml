@@ -58,7 +58,7 @@ jobs:
             {
               "msgtype": "text",
               "text": {
-                  "content": '[打叉][打叉][打叉]\n分支${{ github.ref_name }}执行pr失败\n提交者: ${{ github.triggering_actor }}'
+                  "content": '[打叉][打叉][打叉]n${{ github.ref_type }}${{ github.ref_name }}执行失败\n提交者: ${{ github.triggering_actor }}\n${{ github.ref_type }}: ${{ github.server_url }}/${{ github.repository }}/${{ github.ref_name }}'
               }
             }
       
@@ -76,11 +76,7 @@ jobs:
             {
               "msgtype": "text",
               "text": {
-                  "content": '[微笑][微笑][微笑]\n分支${{ github.ref_name }}执行pr成功\n提交者: ${{ github.triggering_actor }}
-                    ref : ${{ github.ref }}\n
-                     ${{ github.ref_type }}: ${{ github.server_url }}/${{ github.repository }}/${{ github.ref_name }}\n
-                    
-                  '
+                  "content": '[微笑][微笑][微笑]\n${{ github.ref_type }}${{ github.ref_name }}执行成功\n提交者: ${{ github.triggering_actor }}\n${{ github.ref_type }}: ${{ github.server_url }}/${{ github.repository }}/${{ github.ref_name }}'
               }
             }
 
