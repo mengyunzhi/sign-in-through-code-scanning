@@ -67,6 +67,11 @@ jobs:
     needs: build
     if: ${{ success() }}
     steps:
+    
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
+        
       - name: Send dingding notify success
         uses: zcong1993/actions-ding@master
         with:
