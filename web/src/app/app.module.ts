@@ -11,6 +11,8 @@ import { LoginComponent } from './login/login.component';
 import { IndexComponent } from './index/index.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import {ApiInterceptor} from './interceptor/api.interceptor';
+import {MockApiTestingModule} from './mock-api/mock-api-testing.module';
+
 
 @NgModule({
   declarations: [
