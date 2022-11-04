@@ -35,7 +35,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     public void run(String... args) {
         if(!userRepository.findByNumber("admin").isPresent()) {
             logger.info("进行初始化管理员");
-            User user = this.getUser((short) 0, "admin", "yunzhi", "管理员");
+            User user = this.getUser((short) 0, "admin", "yunzhi", "admin");
             this.addAdmin(user);
         } else {
             logger.info("已添加初始化管理员");
@@ -43,7 +43,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
 
         if(!userRepository.findByNumber("teacher").isPresent()) {
             logger.info("进行初始化管教师");
-            User user = this.getUser((short) 1, "teacher", "yunzhi", "教师");
+            User user = this.getUser((short) 1, "teacher", "yunzhi", "teacher");
             this.addTeacher(user);
         } else {
             logger.info("已添加初始化教师");
@@ -51,7 +51,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
 
         if(!userRepository.findByNumber("student").isPresent()) {
             logger.info("进行初始化学生");
-            User user = this.getUser((short) 2, "student", "yunzhi", "学生");
+            User user = this.getUser((short) 2, "student", "yunzhi", "student");
             this.addStudent(user, null, "222222", true);
         } else {
             logger.info("已添加初始化学生");
