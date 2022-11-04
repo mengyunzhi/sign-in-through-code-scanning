@@ -25,7 +25,7 @@ jobs:
         
       - name: loading database
         run: |
-          mysql -h 127.0.0.1 -P 3310 -uroot -proot tp2 --default-character-set=utf8
+          mysql -h 127.0.0.1 -P 3310 -uroot -proot tp2 --default-character-set=utf8 
         
       - name: Set up Java version
         uses: actions/setup-java@v3.0.0
