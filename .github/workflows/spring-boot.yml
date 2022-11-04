@@ -5,12 +5,9 @@ env:
 
 on: [pull_request]
 
-permissions:
-  contents: read
-
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     services:
       mysql:
         image: mysql:5.7
@@ -26,8 +23,9 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v3
         
-      - name: loading database
-        run: mysql -h 127.0.0.1 -P 3310 -uroot -proot tp2 --default-character-set=utf8
+#       - name: loading database
+#         run: |
+#           mysql -h 127.0.0.1 -P 3310 -uroot -proot tp2 --default-character-set=utf8 
         
       - name: Set up Java version
         uses: actions/setup-java@v3.0.0
@@ -43,6 +41,10 @@ jobs:
       - name: 环境变量
         if: ${{ always() }}
         run : env
+    
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
           
   dingding-error: 
     runs-on: ubuntu-latest
@@ -52,13 +54,13 @@ jobs:
       - name: Send dingding notify error
         uses: zcong1993/actions-ding@master
         with:
-          dingToken: 28dada9e5c1ef6c8766577813269aa2d60bea1a4ce0479ddc9100efa2f0ba9e8
-          secret: SEC5690cf8d223fa96039ad9244d92d1238c303125dbc41c41e3fda2148a874d2c3
+          dingToken: b67048d462809d36c23a6a87332a9ab59dc8a3ffbd2c63e69caa218d7484f90d
+          secret: SEC7f500c8f3bc47f8cc1330761aceb3c1fa45cde14e90cbb2ddcfaa1e11d499e68
           body: |
             {
               "msgtype": "text",
               "text": {
-                  "content": '[打叉][打叉][打叉]\n提交者: ${{ github.triggering_actor }}\n${{ github.ref_type }}-pr: ${{ github.ref_name }}执行失败\n[${{ github.ref_type }}: ${{ github.server_url }}/${{ github.repository }}/${{ github.ref_name }}]'
+                  "content": '[打叉][打叉][打叉]  执行失败\n提交者: ${{ github.triggering_actor }}\n任务: ${{ github.event.pull_request.title }}\n${{ github.ref_type }}: ${{ github.head_ref }}\n${{ github.event_name }}: ${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.number }}'
               }
             }
       
@@ -67,16 +69,17 @@ jobs:
     needs: build
     if: ${{ success() }}
     steps:
+        
       - name: Send dingding notify success
         uses: zcong1993/actions-ding@master
         with:
-          dingToken: 28dada9e5c1ef6c8766577813269aa2d60bea1a4ce0479ddc9100efa2f0ba9e8
-          secret: SEC5690cf8d223fa96039ad9244d92d1238c303125dbc41c41e3fda2148a874d2c3
+          dingToken: b67048d462809d36c23a6a87332a9ab59dc8a3ffbd2c63e69caa218d7484f90d
+          secret: SEC7f500c8f3bc47f8cc1330761aceb3c1fa45cde14e90cbb2ddcfaa1e11d499e68
           body: |
             {
               "msgtype": "text",
               "text": {
-                  "content": '[微笑][微笑][微笑]\n提交者: ${{ github.triggering_actor }}\n${{ github.ref_type }}-pr: ${{ github.ref_name }}执行成功\n[${{ github.ref_type }}: ${{ github.server_url }}/${{ github.repository }}/${{ github.ref_name }}]'
+                  "content": '[微笑][微笑][微笑]  执行成功\n提交者: ${{ github.triggering_actor }}\n任务: ${{ github.event.pull_request.title }}\n${{ github.ref_type }}: ${{ github.head_ref }}\n${{ github.event_name }}: ${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.number }}'
               }
             }
 
