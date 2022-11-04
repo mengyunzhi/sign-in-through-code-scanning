@@ -7,7 +7,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latestpull_request
     services:
       mysql:
         image: mysql:5.7
@@ -25,9 +25,7 @@ jobs:
         
       - name: loading database
         run: |
-          apt update
-          apt-get install nano
-          nano -w /etc/hosts.allow
+          sleep 5
           mysql -h 127.0.0.1 -P 3310 -uroot -proot tp2 --default-character-set=utf8
         
       - name: Set up Java version
