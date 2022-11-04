@@ -40,7 +40,9 @@ jobs:
           
       - name: 环境变量
         if: ${{ always() }}
-        run : env
+        run : |
+          env
+          docker ps -a
     
       - name: Dump GitHub context
         id: github_context_step
