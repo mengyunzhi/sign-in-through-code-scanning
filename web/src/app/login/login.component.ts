@@ -56,17 +56,22 @@ export class LoginComponent implements OnInit {
 
     this.userService.login(this.user.number, this.user.password)
       .subscribe(user => {
-        console.log('登录成功', user);
-        this.beLogin.emit(user);
+        console.log(user);
+        if (user.name !== 'error') {
+          console.log('登录成功', user);
+          this.beLogin.emit(user);
 
-        if (+user.role === UserService.ROLE_ADMIN) {
-          this.router.navigateByUrl('/admin/term').then();
-        } else if (+user.role === UserService.ROLE_TEACHER) {
-          this.router.navigateByUrl('/teacher/task').then();
-        } else if (+user.role === UserService.ROLE_STUDENT) {
-          this.router.navigateByUrl('/student').then();
+          if (+user.role === UserService.ROLE_ADMIN) {
+            this.router.navigateByUrl('/admin/term').then();
+          } else if (+user.role === UserService.ROLE_TEACHER) {
+            this.router.navigateByUrl('/teacher/task').then();
+          } else if (+user.role === UserService.ROLE_STUDENT) {
+            this.router.navigateByUrl('/student').then();
+          }
+        } else {
+          console.log('登录失败');
+          this.showErrorDelay();
         }
-
       }, error => {
         console.log('登录失败', error);
         this.showErrorDelay();
