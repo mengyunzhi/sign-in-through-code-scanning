@@ -25,7 +25,6 @@ jobs:
         
       - name: loading database
         run: |
-          sleep 5
           mysql -h 127.0.0.1 -P 3310 -uroot -proot tp2 --default-character-set=utf8
         
       - name: Set up Java version
