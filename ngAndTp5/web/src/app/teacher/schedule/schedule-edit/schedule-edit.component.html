@@ -1,0 +1,70 @@
+<div class="row">
+  <div class="col col-md-8" *ngIf="data.schedule">
+    <div class="col-sm-12">
+      <a class="btn btn-primary" routerLink="/teacher/schedule"><i class="glyphicon"></i>&nbsp;返回</a>&nbsp;&nbsp;
+      <a class="btn btn-info" routerLink="programAdd"><i class="glyphicon"></i>&nbsp;添加项目</a>&nbsp;&nbsp;
+      <a class="btn btn-success" routerLink="timeAdd">&nbsp;添加上课时间</a>&nbsp;
+      <a class="btn btn-success" routerLink="clazzAdd">&nbsp;添加上课班级</a>&nbsp;
+    </div>
+    <hr>
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>项</th>
+        <th>内容</th>
+        <th>其它</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>课程名称</td>
+        <td>{{ data.schedule.course.name }}</td>
+        <td>
+          <a class="btn btn-success" routerLink="nameEdit"><i class="glyphicon"></i>&nbsp;编辑</a>
+        </td>
+      </tr>
+      <tr>
+        <td>学时</td>
+        <td>{{ data.schedule.course.lesson }}</td>
+        <td></td>
+      </tr>
+      <tr *ngFor="let program of data.programs; index as i">
+        <td>项目{{ i+1 }}</td>
+        <td>{{ program.name }}（学时：{{ program.lesson }}）</td>
+        <td>
+          <a class="btn btn-danger" (click)="onDeleteProgram(program.id)"><i class="glyphicon"></i>&nbsp;删除</a>
+          <a class="btn btn-success" [routerLink]="'programEdit/' + program.id"><i class="glyphicon"></i>&nbsp;编辑</a>
+          <a class="btn btn-primary disabled"><i class="glyphicon"></i>&nbsp;上移</a>
+          <a class="btn btn-primary disabled"><i class="glyphicon"></i>&nbsp;下移</a>
+        </td>
+      </tr>
+
+      <tr *ngFor="let clazz of data.clazzes">
+        <td>上课班级</td>
+        <td>{{ clazz.name }}</td>
+        <td><a class="btn btn-danger" (click)="onDeleteClazz(clazz.id)"><i class="glyphicon"></i>&nbsp;删除</a></td>
+      </tr>
+
+      <tr *ngFor="let dispatch of data.dispatches; index as i">
+        <td rowspan="{:count($DispatchArr)}">上课时间/地点</td>
+        <td>
+          时间：
+          {{ '第' + (dispatch.week+1) + '周' + '第' + (dispatch.day+1) + '天' + '第' + (dispatch.lesson+1) + '节,'}}<br>
+          地点：
+          <ng-container *ngFor="let room of data.rooms[i]; index as index">
+            {{ room?.name }}
+          </ng-container>
+        </td>
+        <td><a class="btn btn-danger" (click)="onDeleteDispatch(dispatch.id)"><i class="glyphicon"></i>&nbsp;删除</a></td>
+      </tr>
+
+      <tr>
+        <td>教师</td>
+        <td>{{ data.schedule.teacher.user.name }}</td>
+        <td>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

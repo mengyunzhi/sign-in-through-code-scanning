@@ -1,0 +1,33 @@
+<form class="container-sm">
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label text-right" for="course">当前课程</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="course" name="course" value="程序设计" disabled=“disabled”>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label  text-right" for="location">当前位置</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="location" name="location"  value="A301-1" disabled=“disabled”>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label class="col-sm-2 col-form-label  text-right" for="person">签到人</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="person" name="person" value="张三" disabled=“disabled”>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <div class="col-sm-10">
+      <button class="btn btn-primary form-control" disabled type="submit" routerLink="./success">签到</button>
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <div class="col-sm-10">
+      <button class="btn btn-primary form-control" disabled type="submit" routerLink="./signal">暗号签到</button>
+      <small class="text-danger">
+        <span>*若您上的课程与当前显示课程不一致，请选择暗号签到</span>
+      </small>
+    </div>
+  </div>
+</form>
