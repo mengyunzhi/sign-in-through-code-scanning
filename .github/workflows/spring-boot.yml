@@ -52,7 +52,7 @@ jobs:
         run: echo '${{ toJSON(github) }}'
           
   dingding-error: 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: build
     if: ${{ failure() }}
     steps:
@@ -70,7 +70,7 @@ jobs:
             }
       
   dingding-success: 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: build
     if: ${{ success() }}
     steps:
