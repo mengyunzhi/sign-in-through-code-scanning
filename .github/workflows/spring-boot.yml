@@ -59,8 +59,8 @@ jobs:
       - name: Send dingding notify error
         uses: zcong1993/actions-ding@master
         with:
-          dingToken: 28dada9e5c1ef6c8766577813269aa2d60bea1a4ce0479ddc9100efa2f0ba9e8
-          secret: SEC5690cf8d223fa96039ad9244d92d1238c303125dbc41c41e3fda2148a874d2c3
+          dingToken: b67048d462809d36c23a6a87332a9ab59dc8a3ffbd2c63e69caa218d7484f90d
+          secret: SEC7f500c8f3bc47f8cc1330761aceb3c1fa45cde14e90cbb2ddcfaa1e11d499e68
           body: |
             {
               "msgtype": "text",
@@ -77,8 +77,8 @@ jobs:
       - name: Send dingding notify success
         uses: zcong1993/actions-ding@master
         with:
-          dingToken: 28dada9e5c1ef6c8766577813269aa2d60bea1a4ce0479ddc9100efa2f0ba9e8
-          secret: SEC5690cf8d223fa96039ad9244d92d1238c303125dbc41c41e3fda2148a874d2c3
+          dingToken: b67048d462809d36c23a6a87332a9ab59dc8a3ffbd2c63e69caa218d7484f90d
+          secret: SEC7f500c8f3bc47f8cc1330761aceb3c1fa45cde14e90cbb2ddcfaa1e11d499e68
           body: |
             {
               "msgtype": "text",
