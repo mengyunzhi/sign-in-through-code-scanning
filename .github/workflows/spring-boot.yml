@@ -8,16 +8,16 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-20.04
-    services:
-      mysql:
-        image: mysql:5.7
-        ports:
-          - 3310:3306
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: tp2
-          MYSQL_ROOT_PASSWORD: root
-        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3 
+#     services:
+#       mysql:
+#         image: mysql:5.7
+#         ports:
+#           - 3310:3306
+#         env:
+#           MYSQL_ALLOW_EMPTY_PASSWORD: yes
+#           MYSQL_DATABASE: tp2
+#           MYSQL_ROOT_PASSWORD: root
+#         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3 
 
     steps:
       - name: checkout code
@@ -26,7 +26,10 @@ jobs:
 #       - name: loading database
 #         run: |
 #           mysql -h 127.0.0.1 -P 3310 -uroot -proot tp2 --default-character-set=utf8 
-        
+      - name: build mysql
+        run: |
+          docker pull mysql:5.7
+          docker run -p 3310:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=tp2 -d mysql:5.7 --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
       - name: Set up Java version
         uses: actions/setup-java@v3.0.0
         with:
