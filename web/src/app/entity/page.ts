@@ -6,6 +6,7 @@ export class Page<T> {
   last: boolean;
   number: number;
   size: number;
+  // 总项数
   numberOfElements: number;
   first: boolean;
   totalPages: number;

@@ -60,7 +60,6 @@ export class LoginComponent implements OnInit {
         if (user.name !== 'error') {
           console.log('登录成功', user);
           this.beLogin.emit(user);
-
           if (+user.role === UserService.ROLE_ADMIN) {
             this.router.navigateByUrl('/admin/term').then();
           } else if (+user.role === UserService.ROLE_TEACHER) {

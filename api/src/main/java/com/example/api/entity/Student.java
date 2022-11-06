@@ -57,4 +57,12 @@ public class Student {
     public void setState(Boolean state) {
         this.state = state;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

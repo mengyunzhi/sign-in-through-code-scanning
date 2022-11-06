@@ -30,12 +30,14 @@ export class RoomService {
           .append('searchCapacity', param.capacity ? param.capacity : '');
         this.httpClient.get<any>('/room/page', {params: httpParams})
           .subscribe(data => {
+            console.log('/room/page', data);
+
             rooms = data.content;
             subscriber.next(new Page<Room>({
               content: rooms,
               number: page,
               size,
-              numberOfElements: data.length
+              numberOfElements: data.totalElements
             }));
           }, error => {
             console.log('请求失败', error);
@@ -49,7 +51,7 @@ export class RoomService {
   delete(id: number): Observable<Room> {
     console.log('delete');
     return this.httpClient
-      .delete<Room>('/room/delete/id/' + id.toString());
+      .delete<Room>('/room/delete/' + id.toString());
   }
 
   /*
@@ -62,9 +64,7 @@ export class RoomService {
       capacity: data.capacity
     } as Room;
     console.log(room);
-    console.log('11111');
     console.log(this.httpClient.post<Room>('/room/add', room));
-    console.log('22222222222');
     return this.httpClient.post<Room>('/room/add', room);
   }
 
