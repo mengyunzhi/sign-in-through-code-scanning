@@ -23,7 +23,9 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room save(String name, Long capacity) {
+    public Room save(@NotNull String name, @NotNull Long capacity) {
+        Assert.notNull(name, "name不能为null");
+        Assert.notNull(capacity, "capacity不能为null");
         Room room = new Room();
         room.setName(name);
         room.setCapacity(capacity);
@@ -34,5 +36,11 @@ public class RoomServiceImpl implements RoomService {
     public Page findAll(String searchName, String searchCapacity, @NotNull Pageable pageable) {
         Assert.notNull(pageable, "pageable不能为null");
         return this.roomRepository.findAll(searchName, searchCapacity, pageable);
+    }
+
+    @Override
+    public void deleteById(@NotNull Long id) {
+        Assert.notNull(id, "id不能为null");
+        this.roomRepository.deleteById(id);
     }
 }

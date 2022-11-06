@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -108,5 +109,18 @@ class RoomControllerTest {
             Assertions.assertNotNull(roomHashMap.get("name"));
             Assertions.assertNotNull(roomHashMap.get("capacity"));
         }
+    }
+
+    @Test
+    void deleteById() throws Exception {
+        Long id = new Random().nextLong();
+        String url = "/room/delete/" + id.toString();
+
+        this.mockMvc.perform(MockMvcRequestBuilders.delete(url))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(this.roomService).deleteById(longArgumentCaptor.capture());
+        Assertions.assertEquals(id, longArgumentCaptor.getValue());
     }
 }

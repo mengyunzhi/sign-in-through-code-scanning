@@ -49,7 +49,7 @@ export class RoomService {
   delete(id: number): Observable<Room> {
     console.log('delete');
     return this.httpClient
-      .delete<Room>('/room/delete/id/' + id.toString());
+      .delete<Room>('/room/delete/' + id.toString());
   }
 
   /*

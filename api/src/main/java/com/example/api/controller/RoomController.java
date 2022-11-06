@@ -32,6 +32,12 @@ public class RoomController {
         return this.roomService.save(room.getName(), room.getCapacity());
     }
 
+    @DeleteMapping("delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id) {
+        this.roomService.deleteById(id);
+    }
+
     @GetMapping("page")
     private Page page(@RequestParam(required = false) String searchName,
                       @RequestParam(required = false) String searchCapacity,

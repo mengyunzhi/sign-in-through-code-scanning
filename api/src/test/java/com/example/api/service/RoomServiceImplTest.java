@@ -54,4 +54,13 @@ class RoomServiceImplTest {
         Assertions.assertEquals(searchCapacity, stringArgumentCaptor1.getValue());
         Assertions.assertEquals(pageable, pageableArgumentCaptor.getValue());
     }
+
+    @Test
+    void deleteById() throws Exception {
+        Long id = new Random().nextLong();
+        this.roomService.deleteById(id);
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(this.roomRepository).deleteById(longArgumentCaptor.capture());
+        Assertions.assertEquals(id, longArgumentCaptor.getValue());
+    }
 }
