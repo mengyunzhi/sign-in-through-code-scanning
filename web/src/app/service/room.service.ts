@@ -62,9 +62,7 @@ export class RoomService {
       capacity: data.capacity
     } as Room;
     console.log(room);
-    console.log('11111');
     console.log(this.httpClient.post<Room>('/room/add', room));
-    console.log('22222222222');
     return this.httpClient.post<Room>('/room/add', room);
   }
 

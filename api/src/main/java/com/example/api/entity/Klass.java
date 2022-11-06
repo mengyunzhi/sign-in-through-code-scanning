@@ -44,4 +44,12 @@ public class Klass {
     public void setLength(Short length) {
         this.length = length;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

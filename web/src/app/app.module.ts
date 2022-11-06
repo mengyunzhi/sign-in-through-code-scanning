@@ -29,7 +29,7 @@ import {MockApiTestingModule} from './mock-api/mock-api-testing.module';
     FormsModule,
     ReactiveFormsModule,
     // 测试模块
-    MockApiTestingModule
+    // MockApiTestingModule
   ],
   providers: [
     DatePipe,

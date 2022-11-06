@@ -78,4 +78,12 @@ public class User {
     public void setSex(Short sex) {
         this.sex = sex;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
