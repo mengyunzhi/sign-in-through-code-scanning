@@ -2,9 +2,11 @@ package com.example.api.controller;
 
 import com.example.api.entity.Room;
 import com.example.api.service.RoomService;
+import com.jayway.jsonpath.JsonPath;
+import net.minidev.json.JSONArray;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
-import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -12,12 +14,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Random;
 
 
@@ -56,5 +65,48 @@ class RoomControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("id").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("name").exists())
                 .andExpect(MockMvcResultMatchers.jsonPath("capacity").exists());
+    }
+
+    @Test
+    void findAll() throws Exception {
+        // 初始化返回数据
+        List<Room> rooms = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            Room room = new Room();
+            room.setId((long) (- i - 1));
+            room.setName(RandomString.make(6));
+            room.setCapacity(new Random().nextLong());
+            rooms.add(room);
+        }
+        Page<Room> mockOutPage = new PageImpl<Room>(
+                rooms,
+                PageRequest.of(0, 2),
+                4
+        );
+        String url = "/room/page";
+        String searchName = RandomString.make(6);
+        Long searchCapacity = new Random().nextLong();
+        // 规定方法
+        Mockito.doReturn(mockOutPage).when(this.roomService).findAll(Mockito.any(), Mockito.any(), Mockito.any());
+
+        //发起请求以及断言
+        MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get(url))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+
+        LinkedHashMap returnJson = JsonPath.parse(mvcResult.getResponse().getContentAsString()).json();
+        Assertions.assertEquals(2, returnJson.get("totalPages"));
+        Assertions.assertEquals(4, returnJson.get("totalElements"));
+        Assertions.assertEquals(2, returnJson.get("numberOfElements"));
+
+        JSONArray content = (JSONArray) returnJson.get("content");
+        Assertions.assertEquals(2, content.size());
+
+        for (int i = 0; i < 2; i++) {
+            LinkedHashMap roomHashMap = (LinkedHashMap) content.get(i);
+            Assertions.assertEquals(- i - 1, roomHashMap.get("id"));
+            Assertions.assertNotNull(roomHashMap.get("name"));
+            Assertions.assertNotNull(roomHashMap.get("capacity"));
+        }
     }
 }

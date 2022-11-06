@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Random;
 
@@ -34,5 +36,22 @@ class RoomServiceImplTest {
         Mockito.verify(this.roomRepository).save(roomArgumentCaptor.capture());
         Assertions.assertEquals(name, roomArgumentCaptor.getValue().getName());
         Assertions.assertEquals(capacity, roomArgumentCaptor.getValue().getCapacity());
+    }
+
+    @Test
+    void findAll() {
+        // 准备参数
+        String searchName = RandomString.make(6);
+        String searchCapacity = RandomString.make(6);
+        Pageable pageable = PageRequest.of(0, 2);
+        this.roomService.findAll(searchName, searchCapacity, pageable);
+        // 断言
+        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> stringArgumentCaptor1 = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Pageable> pageableArgumentCaptor = ArgumentCaptor.forClass(Pageable.class);
+        Mockito.verify(this.roomRepository).findAll(stringArgumentCaptor.capture(), stringArgumentCaptor1.capture(), pageableArgumentCaptor.capture());
+        Assertions.assertEquals(searchName, stringArgumentCaptor.getValue());
+        Assertions.assertEquals(searchCapacity, stringArgumentCaptor1.getValue());
+        Assertions.assertEquals(pageable, pageableArgumentCaptor.getValue());
     }
 }
