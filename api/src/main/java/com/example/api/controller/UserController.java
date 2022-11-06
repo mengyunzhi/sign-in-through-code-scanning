@@ -1,7 +1,7 @@
 package com.example.api.controller;
 
 import com.example.api.entity.User;
-import com.example.api.respositoty.UserRepository;
+import com.example.api.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
