@@ -30,12 +30,14 @@ export class RoomService {
           .append('searchCapacity', param.capacity ? param.capacity : '');
         this.httpClient.get<any>('/room/page', {params: httpParams})
           .subscribe(data => {
+            console.log('/room/page', data);
+
             rooms = data.content;
             subscriber.next(new Page<Room>({
               content: rooms,
               number: page,
               size,
-              numberOfElements: data.length
+              numberOfElements: data.totalElements
             }));
           }, error => {
             console.log('请求失败', error);

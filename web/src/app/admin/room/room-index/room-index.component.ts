@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Page} from '../../../entity/page';
 import {Room} from '../../../entity/room';
 import {RoomService} from '../../../service/room.service';
-import {Confirm, Notify} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Page} from '../../../entity/page';
 
 @Component({
   selector: 'app-room-index',
