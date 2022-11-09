@@ -20,9 +20,11 @@ public class Term {
     private String name = "";
 
     @ApiModelProperty("学期开始时间")
+    @JsonProperty("start_time")
     private Long start_time;
 
     @ApiModelProperty("学期结束时间")
+    @JsonProperty("end_time")
     private Long end_time;
 
     @ApiModelProperty("学期状态")
@@ -36,7 +38,6 @@ public class Term {
         this.name = name;
     }
 
-    @JsonProperty("start_time")
     public Long getStartTime() {
         return start_time;
     }
@@ -45,7 +46,6 @@ public class Term {
         this.start_time = start_time;
     }
 
-    @JsonProperty("end_time")
     public Long getEndTime() {
         return end_time;
     }
