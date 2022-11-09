@@ -52,7 +52,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         if(!userRepository.findByNumber("student").isPresent()) {
             logger.info("进行初始化学生");
             User user = this.getUser((short) 2, "student", "yunzhi", "学生");
-            this.addStudent(user, null, "222222", true);
+            this.addStudent(user, null, "222222", 1L);
         } else {
             logger.info("已添加初始化学生");
         }
@@ -72,7 +72,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         this.teacherRepository.save(teacher);
     }
 
-    private void addStudent(User user, Klass klass, String sno, Boolean state) {
+    private void addStudent(User user, Klass klass, String sno, Long state) {
         this.userRepository.save(user);
         Student student = new Student();
         student.setUser(user);
