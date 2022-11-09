@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.Date;
 
 public interface TermService {
-    Term save(@NotNull String name, @NotNull Date startTime, @NotNull Date endTime, @NotNull Long state);
+    Term save(@NotNull String name, @NotNull Long startTime, @NotNull Long endTime, @NotNull Long state);
 
     Page findAll(String searchName, @NotNull Pageable pageable);
 }

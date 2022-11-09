@@ -24,7 +24,7 @@ public class Student {
 
     @ApiModelProperty("注册状态")
     @Column(nullable = false)
-    private Boolean state = false;
+    private Long state = 0;
 
     public User getUser() {
         return user;
@@ -50,11 +50,11 @@ public class Student {
         this.sno = sno;
     }
 
-    public Boolean getState() {
+    public Long getState() {
         return state;
     }
 
-    public void setState(Boolean state) {
+    public void setState(Long state) {
         this.state = state;
     }
 

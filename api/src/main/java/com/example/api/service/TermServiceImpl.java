@@ -27,7 +27,7 @@ public class TermServiceImpl implements TermService{
     }
 
     @Override
-    public Term save(@NotNull String name, @NotNull Date start_time, @NotNull Date end_time, @NotNull Long state) {
+    public Term save(@NotNull String name, @NotNull Long start_time, @NotNull Long end_time, @NotNull Long state) {
         Assert.notNull(name, "name不能为null");
         Assert.notNull(start_time, "startTime不能为null");
         Assert.notNull(end_time, "endTime不能为null");
