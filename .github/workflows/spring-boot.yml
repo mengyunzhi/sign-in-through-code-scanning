@@ -2,7 +2,7 @@ name: unit test spring boot app with jdk1.8
 env:
   JAVA_VERSION: '8.0.282+8'                  # set this to the Java version to use
   DISTRIBUTION: adopt                  # set this to the Java distribution
-  NODE_VERSION: ''
+  NODE_VERSION: '14.15.4'
 
 on: [push, pull_request]
 
@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3.5.1
         with: 
-          node-version: 14.15.4
+          node-version: ${{ env.JAVA_VERSION }}
           cache: npm
           
       - name: npm install && angular test
