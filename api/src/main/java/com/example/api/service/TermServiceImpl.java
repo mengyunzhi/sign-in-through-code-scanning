@@ -39,4 +39,10 @@ public class TermServiceImpl implements TermService{
         term.setState(state);
         return this.termRepository.save(term);
     }
+
+    @Override
+    public void deleteById(@NotNull Long id) {
+        Assert.notNull(id, "id不能为null");
+        this.termRepository.deleteById(id);
+    }
 }

@@ -38,4 +38,13 @@ public class TermController {
                                      term.getEndTime(),
                                      term.getState());
     }
+
+    /**
+     * 删除学期
+     */
+    @DeleteMapping("delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id) {
+        this.termService.deleteById(id);
+    }
 }
