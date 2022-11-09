@@ -24,7 +24,7 @@ public class Student {
 
     @ApiModelProperty("注册状态")
     @Column(nullable = false)
-    private Long state = 0;
+    private Long state = 0L;
 
     public User getUser() {
         return user;
