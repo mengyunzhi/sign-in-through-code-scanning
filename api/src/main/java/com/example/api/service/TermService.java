@@ -11,4 +11,6 @@ public interface TermService {
     Term save(@NotNull String name, @NotNull Long startTime, @NotNull Long endTime, @NotNull Long state);
 
     Page findAll(String searchName, @NotNull Pageable pageable);
+
+    void deleteById(@NotNull Long id);
 }
