@@ -4,6 +4,7 @@ import {Page} from '../entity/page';
 import {Term} from '../entity/term';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {map} from 'rxjs/operators';
+import {Room} from '../entity/room';
 
 @Injectable({
   providedIn: 'root'
@@ -21,26 +22,35 @@ export class TermService {
    */
   getById(id: number): Observable<Term> {
     return this.httpClient
-      .get<Term>(`/term/getById/id/` + id.toString());
+      .get<Term>(`/term/getById/` + id.toString());
   }
 
   /*
   * 管理端学期管理页面
   * */
   page({page = 0, size = 2}: {page?: number, size?: number}, param: {name?: string}): Observable<Page<Term>> {
-    const httpParams = new HttpParams()
-      .append('size', size.toString())
-      .append('page', page.toString())
-      .append('searchName', param.name ? param.name : '');
-    return this.httpClient.get<{length: number, content: Term[]}>('/term/page', {params: httpParams})
-      .pipe(map(data =>
-        new Page<Term>({
-            content: data.content,
-            number: page,
-            size,
-            numberOfElements: data.length
-          }
-        )));
+    let terms = [] as Term[];
+    return new Observable<Page<Term>>(
+      subscriber => {
+        const httpParams = new HttpParams()
+          .append('size', size.toString())
+          .append('page', page.toString())
+          .append('searchName', param.name ? param.name : '');
+        this.httpClient.get<any>('/term/page', {params: httpParams})
+          .subscribe(data => {
+            console.log('/term/page', data);
+
+            terms = data.content;
+            subscriber.next(new Page<Term>({
+              content: terms,
+              number: page,
+              size,
+              numberOfElements: data.totalElements
+            }));
+          }, error => {
+            console.log('请求失败', error);
+          });
+      });
   }
 
 
@@ -69,7 +79,7 @@ export class TermService {
   * */
   delete(id: number): Observable<Term> {
     return this.httpClient
-      .delete<Term>('/term/delete/id/' + id.toString());
+      .delete<Term>('/term/delete/' + id.toString());
   }
 
   getCurrentTerm(): Observable<Term> {
@@ -90,7 +100,7 @@ export class TermService {
   * */
   update(id: number, term: {name: string, start_time: string, end_time: string, state: number}): Observable<any> {
     return this.httpClient
-      .post<any>('/term/update/id/' + id.toString(), term);
+      .post<any>('/term/update/' + id.toString(), term);
   }
 
 }
