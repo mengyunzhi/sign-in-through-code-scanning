@@ -45,4 +45,35 @@ public class TermServiceImpl implements TermService{
         Assert.notNull(id, "id不能为null");
         this.termRepository.deleteById(id);
     }
+
+    @Override
+    public Term findById(@NotNull Long id) {
+        Assert.notNull(id, "id不能为null");
+        return this.termRepository.findById(id).get();
+    }
+
+    @Override
+    public Term update(Long id, Term term) {
+        Term oldTerm = this.termRepository.findById(id).get();
+        return this.updateFields(term, oldTerm);
+    }
+
+    @Override
+    public void activate(Long id) {
+        Term term = this.termRepository.findById(id).get();
+        if (term.getState() == 1) {
+            term.setState(0L);
+        } else {
+            term.setState(1L);
+        }
+        this.termRepository.save(term);
+    }
+
+    private Term updateFields(Term newTerm, Term oldTerm) {
+        oldTerm.setName(newTerm.getName());
+        oldTerm.setStartTime(newTerm.getStartTime());
+        oldTerm.setEndTime(newTerm.getEndTime());
+        oldTerm.setState(newTerm.getState());
+        return this.termRepository.save(oldTerm);
+    }
 }
