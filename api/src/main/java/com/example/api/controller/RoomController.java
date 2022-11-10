@@ -39,9 +39,20 @@ public class RoomController {
     }
 
     @GetMapping("page")
-    private Page page(@RequestParam(required = false) String searchName,
+    public Page page(@RequestParam(required = false) String searchName,
                       @RequestParam(required = false) String searchCapacity,
                       @SortDefault.SortDefaults(@SortDefault(sort = "id", direction = Sort.Direction.DESC)) Pageable pageable) {
         return  this.roomService.findAll(searchName, searchCapacity, pageable);
+    }
+
+    @PostMapping("update/{id}")
+    public Room update(@PathVariable Long id, @RequestBody Room newRoom) {
+        Room oldRoom = this.roomService.getById(id);
+        return this.roomService.updateFields(newRoom, oldRoom);
+    }
+
+    @GetMapping("getById/{id}")
+    public Room getById(@PathVariable Long id) {
+        return this.roomService.getById(id);
     }
 }
