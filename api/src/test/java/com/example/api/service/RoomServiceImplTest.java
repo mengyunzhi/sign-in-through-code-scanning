@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
 import java.util.Random;
 
 
@@ -61,5 +62,64 @@ class RoomServiceImplTest {
         ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
         Mockito.verify(this.roomRepository).deleteById(longArgumentCaptor.capture());
         Assertions.assertEquals(id, longArgumentCaptor.getValue());
+    }
+
+    @Test
+    void getById() {
+        // 参数
+        Long id = new Random().nextLong();
+        Room room = new Room();
+        room.setId(id);
+        room.setName("123456");
+        room.setCapacity(123456L);
+        // 规定返回值
+        Mockito.doReturn(Optional.of(room)).when(this.roomRepository).findById(Mockito.any());
+        // 调用
+        Room returnRoom = this.roomService.getById(id);
+        // 断言
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(this.roomRepository).findById(longArgumentCaptor.capture());
+        Assertions.assertEquals(id, longArgumentCaptor.getValue());
+        Assertions.assertEquals(room.getId(), returnRoom.getId());
+        Assertions.assertEquals(room.getCapacity(), returnRoom.getCapacity());
+        Assertions.assertEquals(room.getName(), returnRoom.getName());
+    }
+
+    @Test
+    void update() {
+        // 参数
+        Long id = new Random().nextLong();
+        Room newRoom = new Room();
+        Room oldRoom = new Room();
+        newRoom.setId(id); oldRoom.setId(id);
+        oldRoom.setName("oldName");
+        oldRoom.setCapacity(123L);
+
+        newRoom.setName("newRoom");
+        newRoom.setCapacity(456L);
+
+        Room mockRoom = new Room();
+        // 规定返回值
+        RoomServiceImpl roomServiceImplSpy = (RoomServiceImpl) Mockito.spy(this.roomService);
+        Mockito.doReturn(oldRoom).when(roomServiceImplSpy).getById(Mockito.anyLong());
+
+        Mockito.doReturn(mockRoom).when(this.roomRepository).save(Mockito.any());
+        Room returnRoom = roomServiceImplSpy.updateFields(newRoom, oldRoom);
+        // 断言
+        Assertions.assertEquals(oldRoom.getName(), newRoom.getName());
+        Assertions.assertEquals(oldRoom.getCapacity(), newRoom.getCapacity());
+        // 断言参数
+        // service的updateFields方法的参数
+        // repository save方法的参数
+        ArgumentCaptor<Room> roomArgumentCaptor1 = ArgumentCaptor.forClass(Room.class);
+        ArgumentCaptor<Room> roomArgumentCaptor2 = ArgumentCaptor.forClass(Room.class);
+        ArgumentCaptor<Room> roomArgumentCaptor3 = ArgumentCaptor.forClass(Room.class);
+        Mockito.verify(roomServiceImplSpy).updateFields(roomArgumentCaptor1.capture(), roomArgumentCaptor2.capture());
+        Mockito.verify(this.roomRepository).save(roomArgumentCaptor3.capture());
+        Assertions.assertEquals(newRoom.getId(), roomArgumentCaptor1.getValue().getId());
+        Assertions.assertEquals(oldRoom.getId(), roomArgumentCaptor2.getValue().getId());
+        Assertions.assertEquals(oldRoom.getId(), roomArgumentCaptor3.getValue().getId());
+        // repository save方法的返回值
+        Assertions.assertEquals(returnRoom, mockRoom);
     }
 }

@@ -17,7 +17,7 @@ public class Term {
 
     @ApiModelProperty("学期名称")
     @Column(nullable = false)
-    private static String name = "";
+    private String name = "";
 
     @ApiModelProperty("学期开始时间")
     @JsonProperty("start_time")
@@ -30,7 +30,7 @@ public class Term {
     @ApiModelProperty("学期状态")
     private Long state;
 
-    public static String getName() {
+    public String getName() {
         return name;
     }
 

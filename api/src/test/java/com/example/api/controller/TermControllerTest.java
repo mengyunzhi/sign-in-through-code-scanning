@@ -138,12 +138,12 @@ public class TermControllerTest {
 
         Term term = new Term();
         term.setId(id);
-        term.setName(new RandomString(4).nextString());
+        term.setName(RandomString.make(4));
         term.setStartTime(new Random().nextLong());
         term.setEndTime(new Random().nextLong());
         term.setState(new Random().nextLong());
 
-        Mockito.when(this.termService.findById(Mockito.anyLong())).thenReturn(term);
+        Mockito.doReturn(term).when(this.termService).findById(Mockito.anyLong());
 
         String url = "/term/getById/" + id.toString();
         this.mockMvc.perform(MockMvcRequestBuilders.get(url))

@@ -16,5 +16,7 @@ public interface RoomService {
 
     void deleteById(@NotNull Long id);
 
+    Room getById(@NotNull Long id);
 
+    Room updateFields(@NotNull Room newRoom, @NotNull Room oldRoom);
 }

@@ -13,7 +13,7 @@ export class RoomService {
 
   getById(id: number): Observable<Room> {
     return this.httpClient
-      .get<Room>(`/room/getById/id/` + id.toString());
+      .get<Room>(`/room/getById/` + id.toString());
   }
 
   /*
@@ -73,6 +73,6 @@ export class RoomService {
   * */
   update(id: number, room: { name: any; capacity: any }): Observable<any> {
     return this.httpClient
-      .post<any>('/room/update/id/' + id.toString(), room);
+      .post<any>('/room/update/' + id.toString(), room);
   }
 }

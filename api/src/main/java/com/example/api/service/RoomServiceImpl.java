@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -43,4 +44,22 @@ public class RoomServiceImpl implements RoomService {
         Assert.notNull(id, "id不能为null");
         this.roomRepository.deleteById(id);
     }
+
+    @Override
+    public Room getById(Long id) {
+        Assert.notNull(id, "id不能为null");
+        return this.roomRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("找不到相关教室"));
+    }
+
+    @Override
+    public Room updateFields(Room newRoom, Room oldRoom) {
+        Assert.notNull(newRoom, "新教室不能null");
+        Assert.notNull(oldRoom, "旧教室不能null");
+        oldRoom.setCapacity(newRoom.getCapacity());
+        oldRoom.setName(newRoom.getName());
+        return this.roomRepository.save(oldRoom);
+    }
+
+
 }
