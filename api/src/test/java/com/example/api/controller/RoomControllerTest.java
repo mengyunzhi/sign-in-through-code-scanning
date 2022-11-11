@@ -123,4 +123,52 @@ class RoomControllerTest {
         Mockito.verify(this.roomService).deleteById(longArgumentCaptor.capture());
         Assertions.assertEquals(id, longArgumentCaptor.getValue());
     }
+
+    @Test
+    void getById() throws Exception {
+        // 参数
+        Long id = new Random().nextLong();
+        String url = "/room/getById/" + id.toString();
+        // mock返回值
+        Room mockRoom = new Room();
+        mockRoom.setId(id);
+        mockRoom.setName("mockRoom");
+        mockRoom.setCapacity(123L);
+        // 规定返回值
+        Mockito.doReturn(mockRoom).when(this.roomService).getById(Mockito.any());
+        // 发起请求并断言
+        this.mockMvc.perform(MockMvcRequestBuilders.get(url))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(id))
+                .andExpect(MockMvcResultMatchers.jsonPath("name").value("mockRoom"))
+                .andExpect(MockMvcResultMatchers.jsonPath("capacity").value(123L));
+    }
+
+    @Test
+    void update() throws Exception {
+        // 请求参数
+        Long id = new Random().nextLong();
+        String url = "/room/update/" + id.toString();
+        JSONObject jsonObject = new JSONObject();
+        String name = RandomString.make(6); jsonObject.put("name", name);
+        Long capacity = new Random().nextLong(); jsonObject.put("capacity", capacity);
+
+        // mock返回值
+        Room mockRoom = new Room();
+        mockRoom.setId(id);
+        mockRoom.setName("mockName");
+        mockRoom.setCapacity(11L);
+        // 规定返回值
+        Mockito.doReturn(mockRoom).when(this.roomService).updateFields(Mockito.any(), Mockito.any());
+        // 请求并断言
+        this.mockMvc.perform(MockMvcRequestBuilders.post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonObject.toString()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("id").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("name").value("mockName"))
+                .andExpect(MockMvcResultMatchers.jsonPath("capacity").value(11L));
+    }
+
+
 }

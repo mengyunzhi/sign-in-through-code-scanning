@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+
 import com.example.api.entity.Room;
 import com.example.api.entity.Term;
 import com.example.api.repository.TermRepository;
