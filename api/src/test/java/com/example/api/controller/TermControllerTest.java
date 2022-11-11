@@ -128,4 +128,82 @@ public class TermControllerTest {
         Mockito.verify(this.termService).deleteById(longArgumentCaptor.capture());
         Assertions.assertEquals(id, longArgumentCaptor.getValue());
     }
+
+    /**
+     * 通过学期ID查询学期测试
+     */
+    @Test
+    public void getById() throws Exception {
+        Long id = new Random().nextLong();
+
+        Term term = new Term();
+        term.setId(id);
+        term.setName(new RandomString(4).nextString());
+        term.setStartTime(new Random().nextLong());
+        term.setEndTime(new Random().nextLong());
+        term.setState(new Random().nextLong());
+
+        Mockito.when(this.termService.findById(Mockito.anyLong())).thenReturn(term);
+
+        String url = "/term/getById/" + id.toString();
+        this.mockMvc.perform(MockMvcRequestBuilders.get(url))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(id))
+                .andExpect(MockMvcResultMatchers.jsonPath("name").value(term.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("start_time").value(term.getStartTime()))
+                .andExpect(MockMvcResultMatchers.jsonPath("end_time").value(term.getEndTime()))
+                .andExpect(MockMvcResultMatchers.jsonPath("state").value(term.getState()))
+                .andReturn();
+
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(this.termService).findById(longArgumentCaptor.capture());
+        Assertions.assertEquals(id, longArgumentCaptor.getValue());
+    }
+
+    @Test
+    public void update() throws Exception {
+        Long id = new Random().nextLong();
+
+        // 准备服务层替身被调用后的返回数据
+        Term mockResult = new Term();
+        mockResult.setId(id);
+        mockResult.setName(new RandomString(4).nextString());
+        mockResult.setStartTime(new Random().nextLong());
+        mockResult.setEndTime(new Random().nextLong());
+        mockResult.setState(new Random().nextLong());
+
+        Mockito.when(this.termService.update(Mockito.anyLong(), Mockito.any(Term.class))).thenReturn(mockResult);
+
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put("name", RandomString.make(4));
+        jsonObject.put("start_time", new Random().nextLong());
+        jsonObject.put("end_time", new Random().nextLong());
+        jsonObject.put("state", (short) 2);
+
+        // 按接口规范发起请求，断言状态码正常，接受的数据符合预期
+        String url = "/term/update/" + id.toString();
+        this.mockMvc.perform(MockMvcRequestBuilders.post(url)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(id))
+                .andExpect(MockMvcResultMatchers.jsonPath("name").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("start_time").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("end_time").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("state").exists());
+
+        // 断言C层进行了数据转发（替身接收的参数值符合预期）
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Term> termArgumentCaptor = ArgumentCaptor.forClass(Term.class);
+
+        Mockito.verify(this.termService).update(longArgumentCaptor.capture(), termArgumentCaptor.capture());
+        Assertions.assertEquals(id, longArgumentCaptor.getValue());
+        Term resultTerm = termArgumentCaptor.getValue();
+        Assertions.assertEquals(resultTerm.getName(), jsonObject.get("name"));
+        Assertions.assertEquals(resultTerm.getStartTime(), jsonObject.get("start_time"));
+        Assertions.assertEquals(resultTerm.getEndTime(), jsonObject.get("end_time"));
+        Assertions.assertEquals(resultTerm.getState().toString(), jsonObject.get("state").toString());
+
+    }
 }

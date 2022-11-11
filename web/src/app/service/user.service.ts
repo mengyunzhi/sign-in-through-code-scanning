@@ -25,8 +25,6 @@ export class UserService {
     const httpParams = new HttpParams()
       .append('number', phone)
       .append('password', password);
-    console.log('phone:', phone);
-    console.log('password:', password);
     return this.httpClient.get<User>('/user/login', {params: httpParams});
   }
 
