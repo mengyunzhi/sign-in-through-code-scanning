@@ -47,4 +47,29 @@ public class TermController {
     public void deleteById(@PathVariable Long id) {
         this.termService.deleteById(id);
     }
+
+
+    /**
+     * 通过id获取学期
+     */
+    @GetMapping("getById/{id}")
+    public Term getById(@PathVariable Long id) {
+        return this.termService.findById(id);
+    }
+
+    /**
+     * 更新学期
+     */
+    @PostMapping("update/{id}")
+    public Term update(@PathVariable Long id, @RequestBody Term term) {
+        return this.termService.update(id, term);
+    }
+
+    /**
+     * 激活学期
+     */
+    @PostMapping("activate")
+    public void activate(@RequestBody Long id) {
+        this.termService.activate(id);
+    }
 }
