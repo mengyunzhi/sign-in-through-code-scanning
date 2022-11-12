@@ -17,4 +17,6 @@ public interface TermService {
     Term update(@NotNull Long id, Term term);
 
     void activate(@NotNull Long id);
+
+    String termNameUnique(Long term_id, String name);
 }
