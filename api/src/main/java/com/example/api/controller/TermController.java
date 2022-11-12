@@ -11,6 +11,8 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("term")
 public class TermController {
@@ -71,5 +73,13 @@ public class TermController {
     @PostMapping("activate")
     public void activate(@RequestBody Long id) {
         this.termService.activate(id);
+    }
+
+    /**
+     * 名称唯一验证学期
+     */
+    @GetMapping("termNameUnique")
+    public String termNameUnique(@RequestParam Long id, @RequestParam String name) {
+        return this.termService.termNameUnique(id, name);
     }
 }

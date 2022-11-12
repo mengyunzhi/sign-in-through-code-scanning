@@ -9,9 +9,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public interface TermRepository  extends PagingAndSortingRepository<Term, Long>, JpaSpecificationExecutor {
     default Page findAll(String searchName,Pageable pageable) {
         Specification<Term> specification = TermSpecs.containName(searchName);
         return this.findAll(specification, pageable);
     };
+
+    Term findByName(String name);
 }

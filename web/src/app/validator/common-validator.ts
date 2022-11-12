@@ -198,8 +198,8 @@ export class CommonValidator {
       const name = control.value;
       const httpParams = new HttpParams()
         .append('name', name)
-        .append('term_id', term_id.toString());
-      return this.httpClient.get('/term/termNameUnique', {params: httpParams})
+        .append('id', term_id.toString());
+      return this.httpClient.get('/term/termNameUnique', {params: httpParams, responseType: 'text'})
         .pipe(map(data => {
           console.log('termNameUnique', data);
           if (data) {

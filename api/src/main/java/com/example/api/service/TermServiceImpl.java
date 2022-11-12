@@ -9,7 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TermServiceImpl implements TermService{
@@ -37,6 +40,11 @@ public class TermServiceImpl implements TermService{
         term.setStartTime(start_time);
         term.setEndTime(end_time);
         term.setState(state);
+        this.termRepository.save(term);
+        Term thisTerm = this.termRepository.findByName(name);
+        if (thisTerm.getState() == 1) {
+            this.activate(thisTerm.getId());
+        }
         return this.termRepository.save(term);
     }
 
@@ -55,16 +63,24 @@ public class TermServiceImpl implements TermService{
     @Override
     public Term update(Long id, Term term) {
         Term oldTerm = this.termRepository.findById(id).get();
+        if (term.getState() == 1) {
+            this.activate(id);
+        }
         return this.updateFields(term, oldTerm);
     }
 
     @Override
     public void activate(Long id) {
         Term term = this.termRepository.findById(id).get();
-        if (term.getState() == 1) {
-            term.setState(0L);
-        } else {
+        if (term.getState() != 1) {
             term.setState(1L);
+        }
+        List<Term> terms = (List<Term>) this.termRepository.findAll();
+        for (int i = 0; i < terms.size(); i++) {
+            if (terms.get(i).getId() != id) {
+                terms.get(i).setState(0L);
+                this.termRepository.save(terms.get(i));
+            }
         }
         this.termRepository.save(term);
     }
@@ -75,5 +91,13 @@ public class TermServiceImpl implements TermService{
         oldTerm.setEndTime(newTerm.getEndTime());
         oldTerm.setState(newTerm.getState());
         return this.termRepository.save(oldTerm);
+    }
+
+    public String termNameUnique(Long term_id, String name) {
+        Term term = this.termRepository.findByName(name);
+        if (term != null && !Objects.equals(term.getId(), term_id)) {
+            return "名称已存在";
+        }
+        return "名称合理";
     }
 }
