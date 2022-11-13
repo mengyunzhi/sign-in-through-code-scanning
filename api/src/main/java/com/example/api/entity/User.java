@@ -1,5 +1,6 @@
 package com.example.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -17,34 +18,50 @@ public class User {
     @Id
     @ApiModelProperty("用户ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @JsonView(IdJsonView.class)
+    public Long id;
 
     @ApiModelProperty("手机号")
     @Column(nullable = false)
-    private String number = "";
+    @JsonView(NumberJsonView.class)
+    public String number = "";
 
     @ApiModelProperty("密码")
     @Column(nullable = false)
-    private String password = "";
+    public String password = "";
 
     @ApiModelProperty("用户姓名")
     @Column(nullable = false)
-    private String name = "";
+    @JsonView(NameJsonView.class)
+    public String name = "";
 
     @ApiModelProperty("角色")
     @Column(nullable = false)
-    private Short role = User.ROLE_STUDENT;
+    @JsonView(RoleJsonView.class)
+    public Short role = User.ROLE_STUDENT;
 
     @ApiModelProperty("性别")
     @Column(nullable = false)
-    private Short sex = User.MALE;
+    @JsonView(SexJsonView.class)
+    public Short sex = User.MALE;
+
+    @OneToOne(mappedBy = "user")
+    @JsonView(TeacherJsonView.class)
+    public Teacher teacher;
+
 
     public String getNumber() {
         return number;
     }
+    public Teacher getTeacher() {
+        return this.teacher;
+    }
 
     public void setNumber(String number) {
         this.number = number;
+    }
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 
     public String getPassword() {
@@ -85,5 +102,13 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public interface NumberJsonView { }
+    public interface TeacherJsonView { }
+    public interface SexJsonView { }
+    public interface NameJsonView { }
+    public interface RoleJsonView { }
+    public interface IdJsonView {
     }
 }

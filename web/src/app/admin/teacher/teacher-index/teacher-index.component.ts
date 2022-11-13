@@ -44,6 +44,7 @@ export class TeacherIndexComponent implements OnInit {
         this.page = page;
         console.log('教师index请求成功', pageData);
         this.pageData = pageData;
+        console.log('loadByPage => content', this.pageData.content);
       });
   }
 

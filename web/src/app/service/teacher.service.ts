@@ -19,7 +19,7 @@ export class TeacherService {
   }
 
   delete(id: number): Observable<any> {
-    return this.httpClient.delete<any>('/teacher/delete/id/' + id.toString());
+    return this.httpClient.delete<any>('/teacher/delete/' + id.toString());
   }
 
   getById(id: number): Observable<Teacher> {
@@ -31,10 +31,10 @@ export class TeacherService {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())
-      .append('searchName', param.name ? param.name : '')
-      .append('searchPhone', param.phone ? param.phone : '');
+      .append('name', param.name ? param.name : '')
+      .append('number', param.phone ? param.phone : '');
     return this.httpClient
-      .get<{length: number, content: {user_id: number, name: string, sex: number, number: string}[]}>
+      .get<{length: number, content: {user_id: number, name: string, sex: number, number: string}[], totalElements: number}>
       ('/teacher/page', {params: httpParams})
       .pipe(map(data => {
         console.log('teacherService', data);
@@ -53,7 +53,7 @@ export class TeacherService {
           content,
           number: page,
           size,
-          numberOfElements: data.length
+          numberOfElements: data.totalElements
         });
       }));
   }
