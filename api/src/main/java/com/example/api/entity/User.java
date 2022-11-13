@@ -18,12 +18,10 @@ public class User {
     @Id
     @ApiModelProperty("用户ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(IdJsonView.class)
     public Long id;
 
     @ApiModelProperty("手机号")
     @Column(nullable = false)
-    @JsonView(NumberJsonView.class)
     public String number = "";
 
     @ApiModelProperty("密码")
@@ -32,17 +30,14 @@ public class User {
 
     @ApiModelProperty("用户姓名")
     @Column(nullable = false)
-    @JsonView(NameJsonView.class)
     public String name = "";
 
     @ApiModelProperty("角色")
     @Column(nullable = false)
-    @JsonView(RoleJsonView.class)
     public Short role = User.ROLE_STUDENT;
 
     @ApiModelProperty("性别")
     @Column(nullable = false)
-    @JsonView(SexJsonView.class)
     public Short sex = User.MALE;
 
     @OneToOne(mappedBy = "user")
@@ -104,11 +99,5 @@ public class User {
         this.id = id;
     }
 
-    public interface NumberJsonView { }
     public interface TeacherJsonView { }
-    public interface SexJsonView { }
-    public interface NameJsonView { }
-    public interface RoleJsonView { }
-    public interface IdJsonView {
-    }
 }

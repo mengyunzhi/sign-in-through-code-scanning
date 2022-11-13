@@ -10,12 +10,10 @@ public class Teacher {
     @Id
     @ApiModelProperty("教师ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(IdJsonView.class)
     private Long id;
 
     @ApiModelProperty("用户")
     @OneToOne
-    @JoinColumn(name = "user_id")
     @JsonView(UserJsonView.class)
     private User user = new User();
 
@@ -37,5 +35,4 @@ public class Teacher {
 
     public interface UserJsonView {}
 
-    public interface IdJsonView {}
 }

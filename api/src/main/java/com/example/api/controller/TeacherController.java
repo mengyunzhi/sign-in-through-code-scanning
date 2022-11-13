@@ -46,11 +46,8 @@ public class TeacherController {
     }
 
     public class PageJsonView implements
-            User.IdJsonView,
-            User.NameJsonView,
             User.TeacherJsonView,
-            User.NumberJsonView,
-            User.SexJsonView,
-            User.RoleJsonView,
-            Teacher.IdJsonView {}
+            Teacher.UserJsonView {
+
+    }
 }
