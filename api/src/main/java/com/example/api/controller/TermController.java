@@ -1,6 +1,5 @@
 package com.example.api.controller;
 
-import com.example.api.entity.Room;
 import com.example.api.entity.Term;
 import com.example.api.service.TermService;
 import org.springframework.beans.factory.annotation.Autowired;
