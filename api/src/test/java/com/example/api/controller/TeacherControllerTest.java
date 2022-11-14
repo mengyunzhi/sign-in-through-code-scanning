@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.junit.runner.Runner;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,10 +29,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -114,5 +112,62 @@ class TeacherControllerTest {
                 .content(jsonObject.toString()))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("id").value(-1L));
+    }
+
+    @Test
+    void update() throws Exception {
+        // 准备参数
+        Long userId = new Random().nextLong();
+        String url = "/teacher/update/" + userId;
+        String name = RandomString.make(6);
+        Short sex = (short) (new Random().nextLong() % 2);
+        String number = RandomString.make(6);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("name", name);
+        jsonObject.put("sex", sex);
+        jsonObject.put("number", number);
+        Teacher teacher = new Teacher();
+        teacher.setId(123L);
+        // mock 方法
+        Mockito.doReturn(teacher).when(this.teacherService).update(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
+        // 发起请求及断言
+        this.mockMvc.perform(MockMvcRequestBuilders.post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonObject.toString()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(123L));
+
+        ArgumentCaptor<Long> userIdArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<String> nameArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<Short> sexArgumentCaptor = ArgumentCaptor.forClass(Short.class);
+        ArgumentCaptor<String> numberArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(this.teacherService).update(
+                userIdArgumentCaptor.capture(),
+                nameArgumentCaptor.capture(),
+                sexArgumentCaptor.capture(),
+                numberArgumentCaptor.capture()
+        );
+        Assertions.assertEquals(userId, userIdArgumentCaptor.getValue());
+        Assertions.assertEquals(name, nameArgumentCaptor.getValue());
+        Assertions.assertEquals(sex, sexArgumentCaptor.getValue());
+        Assertions.assertEquals(number, numberArgumentCaptor.getValue());
+    }
+
+    @Test
+    void updatePassword() throws Exception {
+        // 准备参数
+        Long userId = new Random().nextLong();
+        String url = "/teacher/updatePasswordByAdmin/" + userId.toString();
+        String password = RandomString.make(6);
+        // 方法返回值为void， 无需mock，直接发起请求
+        this.mockMvc.perform(MockMvcRequestBuilders.post(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(password))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        Mockito.verify(this.teacherService).updatePassword(longArgumentCaptor.capture(), stringArgumentCaptor.capture());
+        Assertions.assertEquals(userId, longArgumentCaptor.getValue());
+        Assertions.assertEquals(password, stringArgumentCaptor.getValue());
     }
 }

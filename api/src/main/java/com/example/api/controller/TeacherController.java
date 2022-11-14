@@ -3,8 +3,6 @@ package com.example.api.controller;
 import com.example.api.entity.Teacher;
 import com.example.api.entity.User;
 import com.example.api.service.TeacherService;
-import com.example.api.service.UserService;
-import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
