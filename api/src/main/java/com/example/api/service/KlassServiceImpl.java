@@ -54,4 +54,23 @@ public class KlassServiceImpl implements KlassService {
         }
         return "名称合理";
     }
+
+    @Override
+    public Klass findById(Long id) {
+        Assert.notNull(id, "id不能为null");
+        return this.klassRepository.findById(id).get();
+    }
+
+    @Override
+    public Klass update(Long id, Klass klass) {
+        Klass oldKlass = this.klassRepository.findById(id).get();
+        return this.updateFields(klass, oldKlass);
+    }
+
+    Klass updateFields(Klass newKlass, Klass oldKlass) {
+        oldKlass.setName(newKlass.getName());
+        oldKlass.setEntrance_date(newKlass.getEntrance_date());
+        oldKlass.setLength(newKlass.getLength());
+        return this.klassRepository.save(oldKlass);
+    }
 }

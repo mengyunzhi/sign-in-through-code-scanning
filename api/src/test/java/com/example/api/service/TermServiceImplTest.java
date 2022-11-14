@@ -1,6 +1,7 @@
 package com.example.api.service;
 
 
+import com.example.api.entity.Room;
 import com.example.api.entity.Term;
 import com.example.api.repository.TermRepository;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
@@ -88,32 +89,40 @@ public class TermServiceImplTest {
 
     @Test
     public void update() {
+        // 参数
+        Long id = new Random().nextLong();
+        Term newTerm = new Term();
+        Term oldTerm = new Term();
+        newTerm.setId(id);
+        oldTerm.setId(id);
+        oldTerm.setName("oldName");
+        oldTerm.setState(123L);
 
-//        Long id = new Random().nextLong();
-//        Term mockResultsTerm = new Term();
-//        Mockito.when(this.termRepository.findById(id)).thenReturn(Optional.of(mockResultsTerm));
-//
-//        TermService termServiceSpy = Mockito.spy(this.termService);
-//
-//        TermServiceImpl termServiceImplSpy = (TermServiceImpl) termServiceSpy;
-//        Term mockResultTerm1 = new Term();
-//        Mockito.doReturn(mockResultTerm1).when(termServiceImplSpy).update(Mockito.anyLong(), Mockito.any(Term.class));
-//
-//        Term term = new Term();
-//        Term resultTerm = termServiceImplSpy.update(id, term);
-//
-//        // 断言传入第一个替身参数符合预期
-//        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
-//        Mockito.verify(this.termRepository).findById(longArgumentCaptor.capture());
-//        Assertions.assertEquals(longArgumentCaptor.getValue(), id);
-//
-//        // 断言第二个替身参数符合预期：参数1为传入update方法的用户，参数2为替身1的返回值
-//        ArgumentCaptor<Term> termArgumentCaptor = ArgumentCaptor.forClass(Term.class);
-//        ArgumentCaptor<Long> termArgumentCaptor1 = ArgumentCaptor.forClass(Long.class);
-//        Mockito.verify(termServiceImplSpy).update(termArgumentCaptor1.capture(), termArgumentCaptor.capture());
-//        Assertions.assertEquals(termArgumentCaptor.getValue(), mockResultsTerm);
-//
-//        // 断言返回值就是第二个替身的返回值
-//        org.assertj.core.api.Assertions.assertThat(resultTerm).isEqualTo(mockResultsTerm);
+        newTerm.setName("newRoom");
+        newTerm.setState(456L);
+
+        Term mockTerm = new Term();
+        // 规定返回值
+        TermServiceImpl termServiceImplSpy = (TermServiceImpl) Mockito.spy(this.termService);
+        Mockito.doReturn(oldTerm).when(termServiceImplSpy).findById(Mockito.anyLong());
+
+        Mockito.doReturn(mockTerm).when(this.termRepository).save(Mockito.any());
+        Term returnTerm = termServiceImplSpy.updateFields(newTerm, oldTerm);
+        // 断言
+        Assertions.assertEquals(oldTerm.getName(), newTerm.getName());
+        Assertions.assertEquals(oldTerm.getState(), newTerm.getState());
+        // 断言参数
+        // service的updateFields方法的参数
+        // repository save方法的参数
+        ArgumentCaptor<Term> termArgumentCaptor1 = ArgumentCaptor.forClass(Term.class);
+        ArgumentCaptor<Term> termArgumentCaptor2 = ArgumentCaptor.forClass(Term.class);
+        ArgumentCaptor<Term> termArgumentCaptor3 = ArgumentCaptor.forClass(Term.class);
+        Mockito.verify(termServiceImplSpy).updateFields(termArgumentCaptor1.capture(), termArgumentCaptor2.capture());
+        Mockito.verify(this.termRepository).save(termArgumentCaptor3.capture());
+        Assertions.assertEquals(newTerm.getId(), termArgumentCaptor1.getValue().getId());
+        Assertions.assertEquals(oldTerm.getId(), termArgumentCaptor2.getValue().getId());
+        Assertions.assertEquals(oldTerm.getId(), termArgumentCaptor3.getValue().getId());
+        // repository save方法的返回值
+        Assertions.assertEquals(returnTerm, mockTerm);
     }
 }

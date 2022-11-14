@@ -85,7 +85,7 @@ public class TermServiceImpl implements TermService{
         this.termRepository.save(term);
     }
 
-    private Term updateFields(Term newTerm, Term oldTerm) {
+    Term updateFields(Term newTerm, Term oldTerm) {
         oldTerm.setName(newTerm.getName());
         oldTerm.setStartTime(newTerm.getStartTime());
         oldTerm.setEndTime(newTerm.getEndTime());

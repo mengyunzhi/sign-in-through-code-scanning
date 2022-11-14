@@ -52,8 +52,24 @@ public class KlassController {
      * 名称唯一验证班级
      */
     @GetMapping("clazzNameUnique")
-    public String clazzNameUnique(@RequestParam Long id, @RequestParam String name) {
-        return this.klassService.clazzNameUnique(id, name);
+    public String clazzNameUnique(@RequestParam Long clazz_id, @RequestParam String name) {
+        return this.klassService.clazzNameUnique(clazz_id, name);
 
+    }
+
+    /**
+     * 通过id获取班级
+     */
+    @GetMapping("getById/{id}")
+    public Klass getById(@PathVariable Long id) {
+        return this.klassService.findById(id);
+    }
+
+    /**
+     * 更新班级
+     */
+    @PostMapping("update/{id}")
+    public Klass update(@PathVariable Long id, @RequestBody Klass klass) {
+        return this.klassService.update(id, klass);
     }
 }
