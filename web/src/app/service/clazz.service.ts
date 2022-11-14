@@ -62,7 +62,7 @@ export class ClazzService {
   }
 
   getById(id: number): Observable<any> {
-    return this.httpClient.get('/clazz/getById/id/' + id.toString());
+    return this.httpClient.get('/clazz/getById/' + id.toString());
   }
 
   /**
@@ -96,7 +96,7 @@ export class ClazzService {
   }
 
   update(id: number, data: {name: string, entrance_date: string, length: number}): Observable<any> {
-    return this.httpClient.post('/clazz/update/id/' + id.toString(), data);
+    return this.httpClient.post('/clazz/update/' + id.toString(), data);
   }
 
   getClazzesByScheduleId(scheduleIdOfDispatchConflictClazzes: any[]): Observable<Array<Clazz>> {

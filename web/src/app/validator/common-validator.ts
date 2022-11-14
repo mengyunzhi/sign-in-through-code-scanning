@@ -69,9 +69,9 @@ export class CommonValidator {
       const httpParams = new HttpParams()
         .append('name', name)
         .append('clazz_id', clazz_id.toString());
-      return this.httpClient.get('/clazz/clazzNameUnique', {params: httpParams})
+      return this.httpClient.get('/clazz/clazzNameUnique', {params: httpParams, responseType: 'text'})
         .pipe(map(data => {
-          console.log('clazNameUnique', data);
+          console.log('clazzNameUnique', data);
           if (data) {
             return {clazzNameUnique: data};
           } else {
