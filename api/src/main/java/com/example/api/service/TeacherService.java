@@ -10,4 +10,8 @@ public interface TeacherService {
     Teacher save(@NotNull User user);
 
     Page findAll(String name, String number, @NotNull Pageable pageable);
+
+    void deleteByUserId(@NotNull Long id);
+
+    User getByUserId(Long userId);
 }

@@ -49,7 +49,19 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public Page findAll(String name, String number, Pageable pageable) {
         Assert.notNull(pageable, "pageable不能为null");
-        Page page = this.userRepository.findAllTeacher(name, number, pageable);
+        Page page = this.teacherRepository.findAll(name, number, pageable);
         return page;
+    }
+
+    @Override
+    public void deleteByUserId(Long userId) {
+        Assert.notNull(userId, "userId不能为null");
+        this.teacherRepository.deleteByUserId(userId);
+        this.userRepository.deleteById(userId);
+    }
+
+    @Override
+    public User getByUserId(Long userId) {
+        return this.teacherRepository.findByUserId(userId);
     }
 }

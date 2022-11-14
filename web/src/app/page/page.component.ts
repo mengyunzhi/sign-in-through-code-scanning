@@ -19,7 +19,7 @@ export class PageComponent implements OnInit {
 
   @Input()
   set page(page: Page<any>) {
-    console.log('set page被调用', '当前页', this.inputPage.number, '总页数', this.inputPage.totalPages);
+    // console.log('set page被调用', '当前页', this.inputPage.number, '总页数', this.inputPage.totalPages);
     this.inputPage = page;
     let maxCount;
     let begin;

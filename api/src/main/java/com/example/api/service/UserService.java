@@ -6,4 +6,5 @@ import com.sun.istack.NotNull;
 public interface UserService {
     User save(@NotNull User user);
 
+    User getById(@NotNull Long id);
 }

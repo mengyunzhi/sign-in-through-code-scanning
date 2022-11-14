@@ -22,4 +22,10 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.save(user);
     }
 
+    @Override
+    public User getById(Long id) {
+        return this.userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("未找到相关用户"));
+    }
+
 }

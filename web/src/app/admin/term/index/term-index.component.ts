@@ -73,10 +73,10 @@ export class TermIndexComponent implements OnInit {
   * 获取页面数据
   * */
   loadByPage(page: number = 0, param: {name: string}): void {
-    console.log('loadByPage', page);
+    // console.log('loadByPage', page);
     this.termService.page({page, size: this.size}, param)
       .subscribe(pageData => {
-        console.log('请求成功---', pageData);
+        // console.log('请求成功---', pageData);
         this.page = page;
         this.pageData = pageData;
       });

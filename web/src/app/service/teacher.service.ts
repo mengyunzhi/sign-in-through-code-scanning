@@ -34,23 +34,11 @@ export class TeacherService {
       .append('name', param.name ? param.name : '')
       .append('number', param.phone ? param.phone : '');
     return this.httpClient
-      .get<{length: number, content: {user_id: number, name: string, sex: number, number: string}[], totalElements: number}>
+      .get<{length: number, content: Teacher[], totalElements: number}>
       ('/teacher/page', {params: httpParams})
       .pipe(map(data => {
-        console.log('teacherService', data);
-        const content = [] as Teacher[];
-        for (const teacher of data.content) {
-          content.push({
-            user: {
-              id: teacher.user_id,
-              name: teacher.name,
-              sex: teacher.sex,
-              number: teacher.number,
-            } as User
-          } as Teacher);
-        }
         return new Page<Teacher>({
-          content,
+          content: data.content,
           number: page,
           size,
           numberOfElements: data.totalElements

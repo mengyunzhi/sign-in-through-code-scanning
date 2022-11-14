@@ -20,7 +20,6 @@ export class NavComponent implements OnInit {
 
   ngOnInit(): void {
     this.menus = this.menuService.getAllowMenus();
-    console.log('nav组件菜单项', this.menus);
   }
 
   onSubmit(): void {

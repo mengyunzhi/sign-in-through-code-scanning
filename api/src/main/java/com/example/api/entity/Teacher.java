@@ -1,6 +1,8 @@
 package com.example.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -14,7 +16,6 @@ public class Teacher {
 
     @ApiModelProperty("用户")
     @OneToOne
-    @JsonView(UserJsonView.class)
     private User user = new User();
 
     public User getUser() {
@@ -32,7 +33,5 @@ public class Teacher {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public interface UserJsonView {}
 
 }

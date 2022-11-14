@@ -1,6 +1,8 @@
 package com.example.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -40,23 +42,12 @@ public class User {
     @Column(nullable = false)
     public Short sex = User.MALE;
 
-    @OneToOne(mappedBy = "user")
-    @JsonView(TeacherJsonView.class)
-    public Teacher teacher;
-
-
     public String getNumber() {
         return number;
-    }
-    public Teacher getTeacher() {
-        return this.teacher;
     }
 
     public void setNumber(String number) {
         this.number = number;
-    }
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
     }
 
     public String getPassword() {
@@ -99,5 +90,4 @@ public class User {
         this.id = id;
     }
 
-    public interface TeacherJsonView { }
 }

@@ -34,20 +34,16 @@ public class TeacherController {
     }
 
     @GetMapping("page")
-    @JsonView(PageJsonView.class)
     public Page page(@RequestParam(required = false) String name,
                      @RequestParam(required = false) String number,
                      @SortDefault.SortDefaults(@SortDefault(sort = "id", direction = Sort.Direction.DESC)) Pageable pageable) {
         return  this.teacherService.findAll(name, number, pageable);
     }
 
-    @DeleteMapping("delete")
-    public void deleteById() {
+    @DeleteMapping("delete/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteByUserId(@PathVariable Long userId) {
+        this.teacherService.deleteByUserId(userId);
     }
 
-    public class PageJsonView implements
-            User.TeacherJsonView,
-            Teacher.UserJsonView {
-
-    }
 }

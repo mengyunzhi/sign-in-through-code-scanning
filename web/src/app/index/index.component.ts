@@ -29,12 +29,11 @@ export class IndexComponent implements OnInit {
       const a = window.sessionStorage.getItem('role') as string;
       this.role = +a;
     }
-    console.log('role', this.role);
     this.userService.isLogin(this.getModuleRole())
       .subscribe(success => {
-        console.log('已登录', success);
+        // console.log('已登录', success);
       }, error => {
-        console.log('未登录', error);
+        // console.log('未登录', error);
         this.login = false;
         this.router.navigateByUrl('/');
       });
@@ -55,7 +54,7 @@ export class IndexComponent implements OnInit {
   }
 
   onLogin(user: User): void {
-    console.log(new Date().toTimeString(), '子组件进行了数据弹射', user);
+    // console.log(new Date().toTimeString(), '子组件进行了数据弹射', user);
     this.menuService.getAllowMenus();
     this.login = true;
     this.role = user.role;
