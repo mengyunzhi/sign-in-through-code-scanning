@@ -1,5 +1,8 @@
 package com.example.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -17,27 +20,27 @@ public class User {
     @Id
     @ApiModelProperty("用户ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @ApiModelProperty("手机号")
     @Column(nullable = false)
-    private String number = "";
+    public String number = "";
 
     @ApiModelProperty("密码")
     @Column(nullable = false)
-    private String password = "";
+    public String password = "";
 
     @ApiModelProperty("用户姓名")
     @Column(nullable = false)
-    private String name = "";
+    public String name = "";
 
     @ApiModelProperty("角色")
     @Column(nullable = false)
-    private Short role = User.ROLE_STUDENT;
+    public Short role = User.ROLE_STUDENT;
 
     @ApiModelProperty("性别")
     @Column(nullable = false)
-    private Short sex = User.MALE;
+    public Short sex = User.MALE;
 
     public String getNumber() {
         return number;
@@ -86,4 +89,5 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
+
 }

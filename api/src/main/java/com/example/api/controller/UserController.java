@@ -17,6 +17,10 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    static String ADMIN_PASSWORD = "admin";
+    static String TEACHER_PASSWORD = "teacher";
+    static String STUDENT_PASSWORD = "student";
+
     @CrossOrigin("*")
     @GetMapping("login")
     public User login(@RequestParam String number,

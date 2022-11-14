@@ -52,13 +52,13 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('点击了登录按钮');
+    // console.log('点击了登录按钮');
 
     this.userService.login(this.user.number, this.user.password)
       .subscribe(user => {
-        console.log(user);
+        // console.log(user);
         if (user.name !== 'error') {
-          console.log('登录成功', user);
+          // console.log('登录成功', user);
           this.beLogin.emit(user);
           if (+user.role === UserService.ROLE_ADMIN) {
             this.router.navigateByUrl('/admin/term').then();
@@ -68,11 +68,11 @@ export class LoginComponent implements OnInit {
             this.router.navigateByUrl('/student').then();
           }
         } else {
-          console.log('登录失败');
+          // console.log('登录失败');
           this.showErrorDelay();
         }
       }, error => {
-        console.log('登录失败', error);
+        // console.log('登录失败', error);
         this.showErrorDelay();
       });
   }

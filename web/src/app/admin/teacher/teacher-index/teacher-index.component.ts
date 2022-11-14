@@ -38,12 +38,13 @@ export class TeacherIndexComponent implements OnInit {
   }
 
   loadByPage(page: number = 0, param: {name: string, phone: string}): void {
-    console.log('loadByPage', page);
+    // console.log('loadByPage', page);
     this.teacherService.page({page, size: this.size}, param)
       .subscribe(pageData => {
         this.page = page;
-        console.log('教师index请求成功', pageData);
+        // console.log('教师index请求成功', pageData);
         this.pageData = pageData;
+        // console.log('loadByPage => content', this.pageData.content);
       });
   }
 
@@ -52,6 +53,7 @@ export class TeacherIndexComponent implements OnInit {
   * @params id 教师对应的user_id
   * */
   onDelete(id: number): void {
+    // console.log('delete_User_id:', id);
     this.commonService.confirm(confirm => {
       if (confirm) {
         this.teacherService.delete(id)

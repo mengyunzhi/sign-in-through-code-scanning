@@ -5,6 +5,7 @@ import com.example.api.repository.AdminRepository;
 import com.example.api.repository.StudentRepository;
 import com.example.api.repository.TeacherRepository;
 import com.example.api.repository.UserRepository;
+import com.example.api.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +17,18 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    private final UserService userService;
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
     private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
     @Autowired
     public CommandLineRunnerImpl(UserRepository userRepository,
+                                 UserService userService,
                                  AdminRepository adminRepository,
                                  TeacherRepository teacherRepository,
                                  StudentRepository studentRepository) {
+        this.userService = userService;
         this.userRepository = userRepository;
         this.adminRepository = adminRepository;
         this.teacherRepository = teacherRepository;
@@ -59,21 +63,21 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     }
 
     private void addAdmin(User user) {
-        this.userRepository.save(user);
+        this.userService.save(user);
         Admin admin = new Admin();
         admin.setUser(user);
         this.adminRepository.save(admin);
     }
 
     private void addTeacher(User user) {
-        this.userRepository.save(user);
+        this.userService.save(user);
         Teacher teacher = new Teacher();
         teacher.setUser(user);
         this.teacherRepository.save(teacher);
     }
 
     private void addStudent(User user, Klass klass, String sno, Long state) {
-        this.userRepository.save(user);
+        this.userService.save(user);
         Student student = new Student();
         student.setUser(user);
         student.setSno(sno);

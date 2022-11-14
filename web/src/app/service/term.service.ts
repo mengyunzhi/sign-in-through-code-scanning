@@ -38,7 +38,7 @@ export class TermService {
           .append('searchName', param.name ? param.name : '');
         this.httpClient.get<any>('/term/page', {params: httpParams})
           .subscribe(data => {
-            console.log('/term/page', data);
+            // console.log('/term/page', data);
 
             terms = data.content;
             subscriber.next(new Page<Term>({
