@@ -58,7 +58,7 @@ export class ClazzService {
   }
 
   delete(id: number): Observable<any> {
-    return this.httpClient.delete('/clazz/delete/id/' + id.toString());
+    return this.httpClient.delete('/clazz/delete/' + id.toString());
   }
 
   getById(id: number): Observable<any> {
@@ -73,21 +73,26 @@ export class ClazzService {
   }
 
   page({page = 0, size = 2}: {page?: number, size?: number}, param: {name?: string}): Observable<Page<Clazz>> {
-    const httpParams = new HttpParams()
-      .append('page', page.toString())
-      .append('size', size.toString())
-      .append('searchName', param.name ? param.name : '');
-    return this.httpClient
-      .get<{length: number, content: Clazz[]}>
-      ('/clazz/page', {params: httpParams})
-      .pipe(map(data => {
-        return new Page<Clazz>({
-          content: data.content,
-          number: page,
-          size,
-          numberOfElements: data.length
-        });
-      }));
+    let clazzes = [] as Clazz[];
+    return new Observable<Page<Clazz>>(
+      subscriber => {
+        const httpParams = new HttpParams()
+          .append('page', page.toString())
+          .append('size', size.toString())
+          .append('searchName', param.name ? param.name : '');
+        this.httpClient.get<any>('/clazz/page', {params: httpParams})
+          .subscribe(data => {
+            clazzes = data.content;
+            subscriber.next(new Page<Clazz>({
+              content: clazzes,
+              number: page,
+              size,
+              numberOfElements: data.totalElements
+            }));
+          }, error => {
+            console.log('请求失败', error);
+          });
+      });
   }
 
   update(id: number, data: {name: string, entrance_date: string, length: number}): Observable<any> {
