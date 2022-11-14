@@ -28,7 +28,7 @@ export class TeacherUpdatePasswordComponent implements OnInit {
     this.teacherService.getById(this.id)
       .subscribe(teacher => {
         console.log('api教师获取成功', teacher);
-        this.name = teacher.name;
+        this.name = teacher?.user?.name;
       }, error => {
         console.log('api教师获取失败', error);
       });
