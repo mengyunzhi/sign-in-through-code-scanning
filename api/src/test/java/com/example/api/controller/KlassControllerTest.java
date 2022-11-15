@@ -131,4 +131,73 @@ public class KlassControllerTest {
             Assertions.assertNotNull(roomHashMap.get("length"));
         }
     }
+
+    @Test
+    public void getById() throws Exception {
+        Long id = new Random().nextLong();
+
+        Klass klass = new Klass();
+        klass.setId(id);
+        klass.setName(RandomString.make(4));
+        klass.setEntrance_date(new Random().nextLong());
+        klass.setLength((short) new Random().nextLong());
+
+        Mockito.doReturn(klass).when(this.klassService).findById(Mockito.anyLong());
+
+        String url = "/clazz/getById/" + id.toString();
+        this.mockMvc.perform(MockMvcRequestBuilders.get(url))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(id))
+                .andExpect(MockMvcResultMatchers.jsonPath("name").value(klass.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("entrance_date").value(klass.getEntrance_date()))
+                .andExpect(MockMvcResultMatchers.jsonPath("length").value(klass.getLength().toString()))
+                .andReturn();
+
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(this.klassService).findById(longArgumentCaptor.capture());
+        Assertions.assertEquals(id, longArgumentCaptor.getValue());
+    }
+
+    @Test
+    public void update() throws Exception {
+        Long id = new Random().nextLong();
+
+        // 准备服务层替身被调用后的返回数据
+        Klass mockResult = new Klass();
+        mockResult.setId(id);
+        mockResult.setName(new RandomString(4).nextString());
+        mockResult.setEntrance_date(new Random().nextLong());
+        mockResult.setLength((short) new Random().nextLong());
+
+        Mockito.when(this.klassService.update(Mockito.anyLong(), Mockito.any(Klass.class))).thenReturn(mockResult);
+
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put("name", RandomString.make(4));
+        jsonObject.put("entrance_date", new Random().nextLong());
+        jsonObject.put("length", (short) new Random().nextLong());
+
+        // 按接口规范发起请求，断言状态码正常，接受的数据符合预期
+        String url = "/clazz/update/" + id.toString();
+        this.mockMvc.perform(MockMvcRequestBuilders.post(url)
+                        .content(jsonObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("id").value(id))
+                .andExpect(MockMvcResultMatchers.jsonPath("name").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("entrance_date").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("length").exists());
+
+        // 断言C层进行了数据转发（替身接收的参数值符合预期）
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        ArgumentCaptor<Klass> klassArgumentCaptor = ArgumentCaptor.forClass(Klass.class);
+
+        Mockito.verify(this.klassService).update(longArgumentCaptor.capture(), klassArgumentCaptor.capture());
+        Assertions.assertEquals(id, longArgumentCaptor.getValue());
+        Klass resultKlass = klassArgumentCaptor.getValue();
+        Assertions.assertEquals(resultKlass.getName(), jsonObject.get("name"));
+        Assertions.assertEquals(resultKlass.getEntrance_date(), jsonObject.get("entrance_date"));
+        Assertions.assertEquals(resultKlass.getLength().toString(), jsonObject.get("length").toString());
+
+    }
 }
