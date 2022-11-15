@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.persistence.EntityNotFoundException;
+
 
 @Service
 public class TeacherServiceImpl implements TeacherService {
@@ -61,7 +63,28 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public User getByUserId(Long userId) {
+    public Teacher getByUserId(Long userId) {
+        Assert.notNull(userId, "userId不能为null");
         return this.teacherRepository.findByUserId(userId);
+    }
+
+    @Override
+    public void updatePassword(Long userId, String password) {
+        Assert.notNull(password, "password不能为null");
+        Teacher teacher = this.getByUserId(userId);
+        teacher.getUser().setPassword(password);
+        this.teacherRepository.save(teacher);
+    }
+
+    @Override
+    public Teacher update(Long userId, String name, Short sex, String number) {
+        Assert.notNull(name, "name不能为null");
+        Assert.notNull(sex, "sex不能为null");
+        Assert.notNull(number, "number不能为null");
+        Teacher teacher = this.getByUserId(userId);
+        teacher.getUser().setName(name);
+        teacher.getUser().setSex(sex);
+        teacher.getUser().setNumber(number);
+        return this.teacherRepository.save(teacher);
     }
 }

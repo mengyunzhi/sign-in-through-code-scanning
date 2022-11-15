@@ -18,7 +18,7 @@ public interface TeacherRepository extends PagingAndSortingRepository<Teacher, L
         return this.findAll(specification, pageable);
     }
 
-    User findByUserId(Long user_id);
+    Teacher findByUserId(Long user_id);
 
     @Transactional
     void deleteByUserId(Long userId);

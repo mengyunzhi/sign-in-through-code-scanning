@@ -69,4 +69,63 @@ class TeacherServiceImplTest {
         Assertions.assertEquals(number, numberArgumentCaptor.getValue());
         Assertions.assertEquals(pageable, pageableArgumentCaptor.getValue());
     }
+
+    @Test
+    void getByUserId() {
+        // 准备参数
+        Long userId = new Random().nextLong();
+        Teacher teacher = new Teacher();
+        // 规定返回值
+        Mockito.doReturn(teacher).when(this.teacherRepository).findByUserId(Mockito.any());
+        // 调用
+        Teacher returnTeacher = this.teacherService.getByUserId(userId);
+        // 断言
+        Assertions.assertEquals(teacher, returnTeacher);
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
+        Mockito.verify(this.teacherRepository).findByUserId(longArgumentCaptor.capture());
+        Assertions.assertEquals(userId, longArgumentCaptor.getValue());
+    }
+
+    @Test
+    void updatePassword() {
+        // 准备参数
+        Long userId = new Random().nextLong();
+        String password = RandomString.make(6);
+        Teacher teacher = new Teacher();
+        teacher.getUser().setId(userId);
+        TeacherServiceImpl teacherServiceImpl = (TeacherServiceImpl) Mockito.spy(this.teacherService);
+        Mockito.doReturn(teacher).when(teacherServiceImpl).getByUserId(Mockito.any());
+        // 调用
+        teacherServiceImpl.updatePassword(userId, password);
+        // 断言
+        ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.TYPE);
+        ArgumentCaptor<Teacher> teacherArgumentCaptor = ArgumentCaptor.forClass(Teacher.class);
+        Mockito.verify(teacherServiceImpl).getByUserId(longArgumentCaptor.capture());
+        Mockito.verify(this.teacherRepository).save(teacherArgumentCaptor.capture());
+        Assertions.assertEquals(userId, longArgumentCaptor.getValue());
+        Assertions.assertEquals(password, teacherArgumentCaptor.getValue().getUser().getPassword());
+    }
+
+    @Test
+    void update() {
+        // 准备参数
+        Long userId = new Random().nextLong();
+        String name = RandomString.make(6);
+        Short sex = (short) (new Random().nextLong() % 2);
+        String number = RandomString.make(6);
+        Teacher teacher = new Teacher();
+        teacher.getUser().setId(userId);
+        // mock 方法
+        TeacherServiceImpl teacherServiceImpl = (TeacherServiceImpl) Mockito.spy(this.teacherService);
+        Mockito.doReturn(teacher).when(teacherServiceImpl).getByUserId(Mockito.any());
+        // 请求
+        teacherServiceImpl.update(userId, name, sex, number);
+        // 断言
+        ArgumentCaptor<Teacher> teacherArgumentCaptor = ArgumentCaptor.forClass(Teacher.class);
+        Mockito.verify(this.teacherRepository).save(teacherArgumentCaptor.capture());
+        Assertions.assertEquals(userId, teacherArgumentCaptor.getValue().getUser().getId());
+        Assertions.assertEquals(name, teacherArgumentCaptor.getValue().getUser().getName());
+        Assertions.assertEquals(sex, teacherArgumentCaptor.getValue().getUser().getSex());
+        Assertions.assertEquals(number, teacherArgumentCaptor.getValue().getUser().getNumber());
+    }
 }

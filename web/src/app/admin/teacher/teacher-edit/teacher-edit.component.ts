@@ -37,9 +37,9 @@ export class TeacherEditComponent implements OnInit {
     this.teacherService.getById(this.id as number)
       .subscribe(teacher => {
         console.log('api教师获取成功', teacher);
-        this.formGroup.get('name')?.setValue(teacher.name);
-        this.formGroup.get('sex')?.setValue(teacher.sex);
-        this.formGroup.get('number')?.setValue(teacher.number);
+        this.formGroup.get('name')?.setValue(teacher.user.name);
+        this.formGroup.get('sex')?.setValue(teacher.user.sex);
+        this.formGroup.get('number')?.setValue(teacher.user.number);
       }, error => {
         console.log('api教师获取失败', error);
       });

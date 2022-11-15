@@ -23,7 +23,7 @@ export class TeacherService {
   }
 
   getById(id: number): Observable<Teacher> {
-    return this.httpClient.get<Teacher>('/teacher/getById/id/' + id.toString());
+    return this.httpClient.get<Teacher>('/teacher/getById/' + id.toString());
   }
 
   page({page = 0, size = 2}: { size?: number; page?: number }, param: {name?: string, phone?: string}): Observable<Page<Teacher>> {
@@ -47,12 +47,12 @@ export class TeacherService {
   }
 
   update(id: number, data: {name: string, sex: number, number: string}): Observable<any> {
-    return this.httpClient.post<any>('/teacher/update/id/' + id.toString(), data);
+    console.log('update', data);
+    return this.httpClient.post<any>('/teacher/update/' + id.toString(), data);
   }
 
   updatePasswordByAdmin(id: number, password: string): Observable<any> {
     console.log('service');
-    return this.httpClient.post<any>('/teacher/updatePasswordByAdmin/id/' + id.toString(), password);
+    return this.httpClient.post<any>('/teacher/updatePasswordByAdmin/' + id.toString(), password);
   }
-
 }
