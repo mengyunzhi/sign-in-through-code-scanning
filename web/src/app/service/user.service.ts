@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {User} from '../entity/user';
@@ -7,7 +7,6 @@ import {User} from '../entity/user';
   providedIn: 'root'
 })
 export class UserService {
-
   static ROLE_ADMIN = 0;
   static ROLE_TEACHER = 1;
   static ROLE_STUDENT = 2;
@@ -60,5 +59,4 @@ export class UserService {
   getStudentDefaultPassword(): Observable<string> {
     return this.httpClient.get<string>('/user/getStudentDefaultPassword');
   }
-
 }
