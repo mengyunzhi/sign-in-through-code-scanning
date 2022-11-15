@@ -13,5 +13,9 @@ public interface TeacherService {
 
     void deleteByUserId(@NotNull Long id);
 
-    User getByUserId(Long userId);
+    Teacher getByUserId(@NotNull Long userId);
+
+    void updatePassword(@NotNull Long userId, @NotNull String password);
+
+    Teacher update(@NotNull Long userId, @NotNull String name, @NotNull Short sex, @NotNull String number);
 }
