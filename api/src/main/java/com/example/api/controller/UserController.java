@@ -2,6 +2,8 @@ package com.example.api.controller;
 
 import com.example.api.entity.User;
 import com.example.api.repository.UserRepository;
+import com.example.api.service.TermService;
+import com.example.api.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +16,12 @@ import javax.persistence.EntityNotFoundException;
 @RestController
 @RequestMapping("user")
 public class UserController {
+    private final UserService userService;
+
     @Autowired
-    UserRepository userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     static String ADMIN_PASSWORD = "admin";
     static String TEACHER_PASSWORD = "teacher";
@@ -24,16 +30,7 @@ public class UserController {
     @CrossOrigin("*")
     @GetMapping("login")
     public User login(@RequestParam String number,
-                      @RequestParam  String password) throws JsonProcessingException {
-        User loginUser = this.userRepository.findByNumber(number)
-                .orElseThrow(() ->
-                        new EntityNotFoundException("未在数据库中找到用户，这可能是当前用户被删除导致的"));
-        if (loginUser.getPassword().equals(password)) {
-            return loginUser;
-        } else {
-            User errorUser = new User();
-            errorUser.setName("error");
-            return errorUser;
-        }
+                      @RequestParam  String password) {
+        return this.userService.login(number, password);
     }
 }
