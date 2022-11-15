@@ -28,4 +28,25 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("未找到相关用户"));
     }
 
+    @Override
+    public User login(String number, String password) {
+        User user = this.userRepository.findByNumber(number).get();
+        if (this.validatePassword(user, password)) {
+            return user;
+        } else {
+            User errorUser = new User();
+            errorUser.setName("error");
+            return errorUser;
+        }
+    }
+
+    @Override
+    public boolean validatePassword(User user, String password) {
+        if (user == null || user.getPassword() == null || password == null) {
+            return false;
+        }
+
+        return user.getPassword().equals(password);
+    }
+
 }

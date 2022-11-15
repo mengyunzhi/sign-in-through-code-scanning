@@ -7,4 +7,8 @@ public interface UserService {
     User save(@NotNull User user);
 
     User getById(@NotNull Long id);
+
+    User login(String number, String password);
+
+    boolean validatePassword(User user, String password);
 }
