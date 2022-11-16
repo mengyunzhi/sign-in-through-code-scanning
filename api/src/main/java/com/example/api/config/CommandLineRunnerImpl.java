@@ -76,13 +76,13 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         this.teacherRepository.save(teacher);
     }
 
-    private void addStudent(User user, Klass klass, String sno, Long state) {
+    private void addStudent(User user, Clazz clazz, String sno, Long state) {
         this.userService.save(user);
         Student student = new Student();
         student.setUser(user);
         student.setSno(sno);
         student.setState(state);
-        student.setKlass(klass);
+        student.setClazz(clazz);
         this.studentRepository.save(student);
     }
 

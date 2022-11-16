@@ -17,7 +17,7 @@ public class Student {
 
     @ApiModelProperty("对应班级")
     @ManyToOne
-    private Klass klass;
+    private Clazz clazz;
 
     @ApiModelProperty("学号")
     private String sno;
@@ -32,14 +32,6 @@ public class Student {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Klass getKlass() {
-        return klass;
-    }
-
-    public void setKlass(Klass klass) {
-        this.klass = klass;
     }
 
     public String getSno() {
@@ -64,5 +56,13 @@ public class Student {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Clazz getClazz() {
+        return clazz;
+    }
+
+    public void setClazz(Clazz clazz) {
+        this.clazz = clazz;
     }
 }
