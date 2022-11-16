@@ -21,6 +21,9 @@ jobs:
           
       - name: npm install && angular test
         run: npm install
+        
+      - name: ng s
+        run: ng s
 
 
   spring-boot-test:
