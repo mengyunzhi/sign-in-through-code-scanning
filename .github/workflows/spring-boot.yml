@@ -24,9 +24,9 @@ jobs:
         
       - name: ng s
         run: |
-          ls
-          npm install -g @angular/cli@11.0.7
+          pwd
           cd web
+          npm install -g @angular/cli@11.0.7
           ng s
 
 
