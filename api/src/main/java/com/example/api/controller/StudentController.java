@@ -4,10 +4,8 @@ package com.example.api.controller;
 import com.example.api.entity.Student;
 import com.example.api.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("student")
@@ -26,6 +24,7 @@ public class StudentController {
     * 刚添加的学生的number使用学号
     * */
     @PostMapping("add")
+    @ResponseStatus(HttpStatus.CREATED)
     public Student save(@RequestBody Student student) {
         return this.studentService.save(
             student.getUser().getName(),
