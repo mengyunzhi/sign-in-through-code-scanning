@@ -93,8 +93,9 @@ export class StudentService {
   /**
    * 新增
    */
-  save(student: {sno: any; sex: any; name: any; clazz_id: number}): Observable<{name: string; sex: number; sno: number; clazz_id: number}> {
-    return this.httpClient.post<{name: string, sex: number, sno: number, clazz_id: number}>('/student/add', student);
+  save(student: Student): Observable<Student> {
+    console.log('发送的数据：' + student);
+    return this.httpClient.post<Student>('/student/add', student);
   }
 
   /**
