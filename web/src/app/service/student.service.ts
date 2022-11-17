@@ -21,34 +21,18 @@ export class StudentService {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())
-      .append('searchClazz', param.clazz ? param.clazz : '')
-      .append('searchName', param.name ? param.name : '')
-      .append('searchSno', param.sno ? param.sno : '');
-    return this.httpClient.get<{length: number, content: T[]}>('/student/page', {params: httpParams})
+      .append('clazzName', param.clazz ? param.clazz : '')
+      .append('studentName', param.name ? param.name : '')
+      .append('sno', param.sno ? param.sno : '');
+    return this.httpClient.get<{numberOfElements: number, content: Student[]}>('/student/page', {params: httpParams})
       .pipe(map(data => {
-        const content = [] as Student[];
-        for (const student of data.content) {
-          content.push({
-            id: student.id,
-            state: student.state,
-            user: {
-              id: student.user_id,
-              number: student.number,
-              sex: student.sex,
-              name: student.name,
-            } as User,
-            sno: student.sno.toString(),
-            clazz: {
-              id: student.clazz_id,
-              name: student.clazz_name
-            } as Clazz,
-          } as Student);
-        }
+        console.log('student/page 后台数据：', data);
+        const content = data.content;
         return new Page<Student>({
           content,
           number: page,
           size,
-          numberOfElements: data.length
+          numberOfElements: data.numberOfElements
         });
       }));
   }
@@ -101,8 +85,8 @@ export class StudentService {
   /**
    * 根据ID获取学生
    */
-  getById(id: number): Observable<{name: string, sex: number, klass_id: number, sno: number}> {
-    return this.httpClient.get<{name: string, sex: number, klass_id: number, sno: number}>('student/getById/id/' + id.toString());
+  getById(id: number): Observable<Student> {
+    return this.httpClient.get<Student>('student/getById/' + id.toString());
   }
 
   /**
@@ -117,7 +101,7 @@ export class StudentService {
    */
   updatePasswordByAdmin(id: number, password: string): Observable<any> {
     console.log('service');
-    return this.httpClient.post<any>('/student/updatePasswordByAdmin/id/' + id.toString(), password);
+    return this.httpClient.post<any>('/student/updatePasswordByAdmin/' + id.toString(), password);
   }
 
   /**
@@ -125,7 +109,7 @@ export class StudentService {
    */
   delete(id: number): Observable<Student> {
     return this.httpClient
-      .delete<Student>(`/student/delete/id/${id}`);
+      .delete<Student>(`/student/delete/${id}`);
   }
 
 }

@@ -30,8 +30,8 @@ export class StudentUpdatePasswordComponent implements OnInit {
     this.id = +id;
     this.studentService.getById(this.id)
       .subscribe(student => {
-        console.log('api学生获取成功', student);
-        this.name = student.name;
+        console.log('api学生获取成功:', student);
+        this.name = student?.user?.name;
       }, error => {
         console.log('api学生获取失败', error);
       });

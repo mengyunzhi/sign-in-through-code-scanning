@@ -49,4 +49,19 @@ public class UserServiceImpl implements UserService {
         return user.getPassword().equals(password);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        Assert.notNull(id, "id不能为null");
+        this.userRepository.deleteById(id);
+    }
+
+    @Override
+    public void updatePassword(Long userId, String password) {
+        Assert.notNull(userId, "userId不能为null");
+        Assert.notNull(password, "password不能为null");
+        User user = this.getById(userId);
+        user.setPassword(password);
+        this.userRepository.save(user);
+    }
+
 }

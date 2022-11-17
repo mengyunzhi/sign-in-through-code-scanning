@@ -80,10 +80,10 @@ export class StudentAddComponent implements OnInit {
     this.studentService.save(student)
       .subscribe(() => {
         console.log('保存成功');
-        // this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
+        this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
       }, error => {
         console.log('保存失败');
-        // this.commonService.error();
+        this.commonService.error();
       });
   }
 }

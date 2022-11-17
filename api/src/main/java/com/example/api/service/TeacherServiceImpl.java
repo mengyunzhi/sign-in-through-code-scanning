@@ -59,7 +59,7 @@ public class TeacherServiceImpl implements TeacherService {
     public void deleteByUserId(Long userId) {
         Assert.notNull(userId, "userId不能为null");
         this.teacherRepository.deleteByUserId(userId);
-        this.userRepository.deleteById(userId);
+        this.userService.deleteById(userId);
     }
 
     @Override

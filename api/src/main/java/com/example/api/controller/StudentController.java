@@ -1,9 +1,14 @@
 package com.example.api.controller;
 
 
+import com.example.api.entity.Room;
 import com.example.api.entity.Student;
 import com.example.api.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,4 +39,29 @@ public class StudentController {
         );
     }
 
+    @GetMapping("page")
+    public Page page(@RequestParam(required = false) String clazzName,
+                     @RequestParam(required = false) String studentName,
+                     @RequestParam(required = false) String sno,
+                     @SortDefault.SortDefaults(@SortDefault(sort = "id", direction = Sort.Direction.DESC)) Pageable pageable) {
+        return  this.studentService.findAll(clazzName, studentName, sno, pageable);
+    }
+
+
+    @DeleteMapping("delete/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteByUserId(@PathVariable Long userId) {
+        this.studentService.deleteByUserId(userId);
+    }
+
+    @PostMapping("updatePasswordByAdmin/{userId}")
+    public void updatePasswordByAdmin(@PathVariable Long userId,
+                                      @RequestBody String password) {
+        this.studentService.updatePassword(userId, password);
+    }
+
+    @GetMapping("getById/{userId}")
+    public Student getById(@PathVariable Long userId) {
+        return this.studentService.getByUserId(userId);
+    }
 }

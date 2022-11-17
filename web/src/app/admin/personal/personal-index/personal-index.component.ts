@@ -11,7 +11,7 @@ import {StudentService} from '../../../service/student.service';
 })
 export class PersonalIndexComponent implements OnInit {
   user = {}　as User;
-  sno: number | undefined;
+  sno: string | undefined;
   constructor(private userService: UserService,
               private studentService: StudentService) { }
 
