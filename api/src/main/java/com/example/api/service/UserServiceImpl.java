@@ -49,4 +49,9 @@ public class UserServiceImpl implements UserService {
         return user.getPassword().equals(password);
     }
 
+    @Override
+    public User getCurrentLoginUser(String userNumber) {
+        return this.userRepository.findByNumber(userNumber).get();
+    }
+
 }

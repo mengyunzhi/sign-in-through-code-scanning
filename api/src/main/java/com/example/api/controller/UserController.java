@@ -27,10 +27,14 @@ public class UserController {
     static String TEACHER_PASSWORD = "teacher";
     static String STUDENT_PASSWORD = "student";
 
-    @CrossOrigin("*")
     @GetMapping("login")
     public User login(@RequestParam String number,
                       @RequestParam  String password) {
         return this.userService.login(number, password);
+    }
+
+    @GetMapping("getCurrentLoginUser")
+    public User getCurrentLoginUser(@RequestParam String userNumber) {
+        return this.userService.getCurrentLoginUser(userNumber);
     }
 }
