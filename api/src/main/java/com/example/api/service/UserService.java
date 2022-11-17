@@ -11,4 +11,6 @@ public interface UserService {
     User login(String number, String password);
 
     boolean validatePassword(User user, String password);
+
+    User getCurrentLoginUser(String userNumber);
 }

@@ -53,9 +53,9 @@ export class IndexComponent implements OnInit {
     this.menuService.getAllowMenus();
     this.login = true;
     this.role = user.role;
-    console.log('user.role', user.role);
     // 将登录状态写入缓存
     window.sessionStorage.setItem('login', 'true');
+    window.sessionStorage.setItem('userNumber', user.number.toString());
     window.sessionStorage.setItem('role', user.role.toString());
   }
 

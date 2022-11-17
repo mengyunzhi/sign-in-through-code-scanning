@@ -25,6 +25,7 @@ export class PersonalEditComponent implements OnInit {
     newPasswordAgain: new FormControl('', Validators.compose([Validators.minLength(4), Validators.maxLength(40)]))
   });
 
+  userNumber: string | undefined;
   password: string | undefined;
   id: number | undefined;
   constructor(private userService: UserService,
@@ -35,7 +36,11 @@ export class PersonalEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getCurrentLoginUser()
+    // @ts-ignore
+    this.userNumber = window.sessionStorage.getItem('userNumber');
+    console.log('getCurrentLoginUserNumber', this.userNumber);
+    // @ts-ignore
+    this.userService.getCurrentLoginUser(this.userNumber)
       .subscribe(user => {
         console.log('当前用户请求成功', user);
         this.id = +user.id;

@@ -31,8 +31,10 @@ export class UserService {
     return this.httpClient.get<void>('/user/logout');
   }
 
-  getCurrentLoginUser(): Observable<User> {
-    return this.httpClient.get<User>('/user/getCurrentLoginUser');
+  getCurrentLoginUser(userNumber: string): Observable<User> {
+    const httpParams = new HttpParams()
+      .append('userNumber', userNumber);
+    return this.httpClient.get<User>('/user/getCurrentLoginUser', {params: httpParams});
   }
 
   studentRegister(data: {sno: string, password: string, number: string}): Observable<boolean> {
