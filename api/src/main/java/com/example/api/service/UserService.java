@@ -15,4 +15,6 @@ public interface UserService {
     void deleteById(@NotNull Long id);
 
     void updatePassword(@NotNull Long userId, @NotNull String password);
+    
+    User getCurrentLoginUser(String userNumber);
 }

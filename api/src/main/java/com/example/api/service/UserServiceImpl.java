@@ -63,5 +63,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(password);
         this.userRepository.save(user);
     }
+    
+    public User getCurrentLoginUser(String userNumber) {
+        return this.userRepository.findByNumber(userNumber).get();
+    }
 
 }

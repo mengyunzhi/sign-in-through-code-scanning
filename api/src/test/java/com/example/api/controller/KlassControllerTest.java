@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Random;
 
 @SpringBootTest
-@RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 public class KlassControllerTest {
     @Autowired
