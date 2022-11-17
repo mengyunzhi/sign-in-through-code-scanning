@@ -47,7 +47,7 @@ export class StudentEditComponent implements OnInit {
         console.log('api学生获取成功', student);
         this.formGroup.get('name')?.setValue(student.name);
         this.formGroup.get('sex')?.setValue(student.sex);
-        this.formGroup.get('clazz_id')?.setValue(student.klass_id);
+        this.formGroup.get('clazz_id')?.setValue(student.clazz?.id);
         this.formGroup.get('sno')?.setValue(student.sno);
       });
   }

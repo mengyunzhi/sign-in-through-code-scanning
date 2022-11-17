@@ -7,6 +7,9 @@ import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
 import {HttpClient} from '@angular/common/http';
 import {UserService} from "../../../service/user.service";
+import {Student} from "../../../entity/student";
+import {User} from "../../../entity/user";
+import {Clazz} from "../../../entity/clazz";
 
 @Component({
   selector: 'app-student-add',
@@ -64,13 +67,15 @@ export class StudentAddComponent implements OnInit {
   onSubmit(formGroup: FormGroup): void {
     console.log('onsubmit is called', this.formGroup.value);
     const student = {
-      name: this.formGroup.get('name')?.value,
-      sex: this.formGroup.get('sex')?.value,
-      clazz_id: this.formGroup.get('clazz_id')?.value,
+      user: {
+        name: this.formGroup.get('name')?.value,
+        sex: this.formGroup.get('sex')?.value,
+      } as User,
+      clazz: {
+        id: this.formGroup.get('clazz_id')?.value,
+      } as Clazz,
       sno: this.formGroup.get('sno')?.value
-    };
-
-    console.log('获取的内容：' + student);
+    } as Student;
 
     this.studentService.save(student)
       .subscribe(() => {

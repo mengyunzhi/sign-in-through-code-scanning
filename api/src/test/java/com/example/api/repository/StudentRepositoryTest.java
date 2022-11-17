@@ -6,14 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
-class TermRepositoryTest {
+class StudentRepositoryTest {
+
     @Autowired
-    TermRepository termRepository;
+    private StudentRepository studentRepository;
 
     @Test
-    void conn() {
-        this.termRepository.count();
+    void  conn() {
+        this.studentRepository.count();
     }
 }

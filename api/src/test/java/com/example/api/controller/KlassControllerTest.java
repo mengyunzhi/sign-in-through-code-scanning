@@ -1,13 +1,10 @@
 package com.example.api.controller;
 
-import com.example.api.entity.Klass;
-import com.example.api.entity.Term;
-import com.example.api.service.KlassService;
-import com.example.api.service.TermService;
+import com.example.api.entity.Clazz;
+import com.example.api.service.ClazzService;
 import com.jayway.jsonpath.JsonPath;
 import net.minidev.json.JSONArray;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -33,15 +30,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
-
 @SpringBootTest
 @AutoConfigureMockMvc
 public class KlassControllerTest {
     @Autowired
     MockMvc mockMvc;
     @MockBean
-    KlassService klassService;
+    ClazzService clazzService;
 
     @Test
     public void save() throws Exception {
@@ -56,13 +51,13 @@ public class KlassControllerTest {
         jsonObject.put("entrance_date", entrance_date);
         jsonObject.put("length", length);
         // 准备返回值
-        Klass returnKlass = new Klass();
-        returnKlass.setId(0L);
-        returnKlass.setName("returnRoom");
-        returnKlass.setEntrance_date(123456L);
-        returnKlass.setLength((short) 123456);
+        Clazz returnClazz = new Clazz();
+        returnClazz.setId(0L);
+        returnClazz.setName("returnRoom");
+        returnClazz.setEntrance_date(123456L);
+        returnClazz.setLength((short) 123456);
         // 规定调用方法返回
-        Mockito.doReturn(returnKlass).when(this.klassService).save(Mockito.any(), Mockito.any(), Mockito.any());
+        Mockito.doReturn(returnClazz).when(this.clazzService).save(Mockito.any(), Mockito.any(), Mockito.any());
         // 发起请求以及断言
         this.mockMvc.perform(MockMvcRequestBuilders.post(url)
                         .content(jsonObject.toString())
@@ -83,31 +78,31 @@ public class KlassControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
-        Mockito.verify(this.klassService).deleteById(longArgumentCaptor.capture());
+        Mockito.verify(this.clazzService).deleteById(longArgumentCaptor.capture());
         Assertions.assertEquals(id, longArgumentCaptor.getValue());
     }
 
     @Test
     public void findAll() throws Exception {
         // 初始化返回数据
-        List<Klass> klasses = new ArrayList<>();
+        List<Clazz> clazzes = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            Klass klass = new Klass();
-            klass.setId((long) (- i - 1));
-            klass.setName(RandomString.make(6));
-            klass.setEntrance_date(new Random().nextLong());
-            klass.setLength((short) new Random().nextLong());
-            klasses.add(klass);
+            Clazz clazz = new Clazz();
+            clazz.setId((long) (- i - 1));
+            clazz.setName(RandomString.make(6));
+            clazz.setEntrance_date(new Random().nextLong());
+            clazz.setLength((short) new Random().nextLong());
+            clazzes.add(clazz);
         }
-        Page<Klass> mockOutPage = new PageImpl<Klass>(
-                klasses,
+        Page<Clazz> mockOutPage = new PageImpl<Clazz>(
+                clazzes,
                 PageRequest.of(0, 2),
                 4
         );
         String url = "/clazz/page";
         String searchName = RandomString.make(6);
         // 规定方法
-        Mockito.doReturn(mockOutPage).when(this.klassService).findAll(Mockito.any(), Mockito.any());
+        Mockito.doReturn(mockOutPage).when(this.clazzService).findAll(Mockito.any(), Mockito.any());
 
         //发起请求以及断言
         MvcResult mvcResult = this.mockMvc.perform(MockMvcRequestBuilders.get(url))
@@ -135,25 +130,25 @@ public class KlassControllerTest {
     public void getById() throws Exception {
         Long id = new Random().nextLong();
 
-        Klass klass = new Klass();
-        klass.setId(id);
-        klass.setName(RandomString.make(4));
-        klass.setEntrance_date(new Random().nextLong());
-        klass.setLength((short) new Random().nextLong());
+        Clazz clazz = new Clazz();
+        clazz.setId(id);
+        clazz.setName(RandomString.make(4));
+        clazz.setEntrance_date(new Random().nextLong());
+        clazz.setLength((short) new Random().nextLong());
 
-        Mockito.doReturn(klass).when(this.klassService).findById(Mockito.anyLong());
+        Mockito.doReturn(clazz).when(this.clazzService).findById(Mockito.anyLong());
 
         String url = "/clazz/getById/" + id.toString();
         this.mockMvc.perform(MockMvcRequestBuilders.get(url))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("id").value(id))
-                .andExpect(MockMvcResultMatchers.jsonPath("name").value(klass.getName()))
-                .andExpect(MockMvcResultMatchers.jsonPath("entrance_date").value(klass.getEntrance_date()))
-                .andExpect(MockMvcResultMatchers.jsonPath("length").value(klass.getLength().toString()))
+                .andExpect(MockMvcResultMatchers.jsonPath("name").value(clazz.getName()))
+                .andExpect(MockMvcResultMatchers.jsonPath("entrance_date").value(clazz.getEntrance_date()))
+                .andExpect(MockMvcResultMatchers.jsonPath("length").value(clazz.getLength().toString()))
                 .andReturn();
 
         ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
-        Mockito.verify(this.klassService).findById(longArgumentCaptor.capture());
+        Mockito.verify(this.clazzService).findById(longArgumentCaptor.capture());
         Assertions.assertEquals(id, longArgumentCaptor.getValue());
     }
 
@@ -162,13 +157,13 @@ public class KlassControllerTest {
         Long id = new Random().nextLong();
 
         // 准备服务层替身被调用后的返回数据
-        Klass mockResult = new Klass();
+        Clazz mockResult = new Clazz();
         mockResult.setId(id);
         mockResult.setName(new RandomString(4).nextString());
         mockResult.setEntrance_date(new Random().nextLong());
         mockResult.setLength((short) new Random().nextLong());
 
-        Mockito.when(this.klassService.update(Mockito.anyLong(), Mockito.any(Klass.class))).thenReturn(mockResult);
+        Mockito.when(this.clazzService.update(Mockito.anyLong(), Mockito.any(Clazz.class))).thenReturn(mockResult);
 
         JSONObject jsonObject = new JSONObject();
 
@@ -189,14 +184,14 @@ public class KlassControllerTest {
 
         // 断言C层进行了数据转发（替身接收的参数值符合预期）
         ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
-        ArgumentCaptor<Klass> klassArgumentCaptor = ArgumentCaptor.forClass(Klass.class);
+        ArgumentCaptor<Clazz> klassArgumentCaptor = ArgumentCaptor.forClass(Clazz.class);
 
-        Mockito.verify(this.klassService).update(longArgumentCaptor.capture(), klassArgumentCaptor.capture());
+        Mockito.verify(this.clazzService).update(longArgumentCaptor.capture(), klassArgumentCaptor.capture());
         Assertions.assertEquals(id, longArgumentCaptor.getValue());
-        Klass resultKlass = klassArgumentCaptor.getValue();
-        Assertions.assertEquals(resultKlass.getName(), jsonObject.get("name"));
-        Assertions.assertEquals(resultKlass.getEntrance_date(), jsonObject.get("entrance_date"));
-        Assertions.assertEquals(resultKlass.getLength().toString(), jsonObject.get("length").toString());
+        Clazz resultClazz = klassArgumentCaptor.getValue();
+        Assertions.assertEquals(resultClazz.getName(), jsonObject.get("name"));
+        Assertions.assertEquals(resultClazz.getEntrance_date(), jsonObject.get("entrance_date"));
+        Assertions.assertEquals(resultClazz.getLength().toString(), jsonObject.get("length").toString());
 
     }
 }

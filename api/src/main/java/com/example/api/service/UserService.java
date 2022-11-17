@@ -12,5 +12,9 @@ public interface UserService {
 
     boolean validatePassword(User user, String password);
 
+    void deleteById(@NotNull Long id);
+
+    void updatePassword(@NotNull Long userId, @NotNull String password);
+    
     User getCurrentLoginUser(String userNumber);
 }

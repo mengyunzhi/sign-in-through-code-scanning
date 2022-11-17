@@ -1,8 +1,16 @@
 package com.example.api.repository;
 
 import com.example.api.entity.Student;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface StudentRepository extends CrudRepository<Student, Long> {
+import javax.transaction.Transactional;
 
+public interface StudentRepository extends PagingAndSortingRepository<Student, Long>, JpaSpecificationExecutor {
+
+    @Transactional
+    void deleteByUserId(Long userId);
+
+    Student findByUserId(Long userId);
 }

@@ -59,7 +59,7 @@ export class StudentIndexComponent implements OnInit {
     this.studentService.page({page, size: this.size}, param)
       .subscribe(pageDate => {
         // 请求数据之后设置当前页
-        console.log('请求成功', pageDate);
+        // console.log('请求成功', pageDate);
         this.page = page;
         this.pageDate = pageDate;
       });
