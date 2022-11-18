@@ -81,4 +81,19 @@ public class StudentServiceImpl implements StudentService {
     public Student getByUserId(Long userId) {
         return this.studentRepository.findByUserId(userId);
     }
+
+    @Override
+    public Student updateByUserId(Long userId, String name, Short sex, Long clazzId, String sno) {
+        Student student = this.getByUserId(userId);
+        student.setSno(sno);
+        User user = this.userService.getById(userId);
+        user.setName(name);
+        user.setSex(sex);
+        Clazz clazz = new Clazz();
+        clazz.setId(clazzId);
+
+        student.setUser(user);
+        student.setClazz(clazz);
+        return this.studentRepository.save(student);
+    }
 }

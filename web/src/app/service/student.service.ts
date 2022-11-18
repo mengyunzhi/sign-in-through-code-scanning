@@ -92,8 +92,8 @@ export class StudentService {
   /**
    * 更新学生
    */
-  update(id: number, student: {name: string, sex: number, sno: number, clazz_id: number}): Observable<Student> {
-    return this.httpClient.put<Student>('/student/update/id/' + id.toString(), student);
+  update(id: number, student: Student): Observable<Student> {
+    return this.httpClient.put<Student>('/student/update/' + id.toString(), student);
   }
 
   /**

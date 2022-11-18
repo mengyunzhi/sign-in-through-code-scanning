@@ -64,4 +64,20 @@ public class StudentController {
     public Student getById(@PathVariable Long userId) {
         return this.studentService.getByUserId(userId);
     }
+
+    /**
+     * 接受的student中的属性
+     * user.name, user.sex, clazz.id, sno
+     */
+    @PutMapping("update/{userId}")
+    public Student update(@PathVariable Long userId,
+                          @RequestBody Student student) {
+        return this.studentService.updateByUserId(
+                userId,
+                student.getUser().getName(),
+                student.getUser().getSex(),
+                student.getClazz().getId(),
+                student.getSno()
+        );
+    }
 }
