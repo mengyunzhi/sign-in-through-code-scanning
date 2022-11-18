@@ -6,6 +6,8 @@ import {Assert} from '@yunzhi/ng-mock-api';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
 import {HttpClient} from '@angular/common/http';
+import {User} from "../../../entity/user";
+import {Student} from "../../../entity/student";
 
 @Component({
   selector: 'app-clazz-mebers-edit',
@@ -52,11 +54,15 @@ export class ClazzMembersEditComponent implements OnInit {
   onSubmit(): void {
     Assert.isNumber(this.clazz_id, this.id, 'clazz_id 或者 id类型不是number');
     this.studentService.update(this.id as number, {
-      name: this.formGroup.get('name')?.value,
-      sex: this.formGroup.get('sex')?.value,
+      user: {
+        name: this.formGroup.get('name')?.value,
+        sex: this.formGroup.get('sex')?.value,
+      },
       sno: this.formGroup.get('sno')?.value,
-      clazz_id: this.clazz_id as number
-    })
+      clazz: {
+        id: this.clazz_id as number
+      }
+    } as Student)
       .subscribe(success => {
         console.log('班级更新成功', success);
         this.commonService.success(() => {
