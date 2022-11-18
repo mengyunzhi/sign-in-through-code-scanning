@@ -75,7 +75,7 @@ public class TermController {
     }
 
     /**
-     * 名称唯一验证学期
+     * 学期名称唯一验证
      */
     @GetMapping("termNameUnique")
     public String termNameUnique(@RequestParam Long id, @RequestParam String name) {

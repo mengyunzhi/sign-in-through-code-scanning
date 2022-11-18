@@ -105,7 +105,7 @@ export class CommonValidator {
       const httpParams = new HttpParams()
         .append('number', num)
         .append('id', id.toString());
-      return this.httpClient.get('/user/numberUnique', {params: httpParams})
+      return this.httpClient.get('/user/numberUnique', {params: httpParams, responseType: 'text'})
         .pipe(map(data => {
           console.log('numberUnique', data);
           if (data) {
