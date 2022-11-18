@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+import com.example.api.config.StaticVariable;
 import com.example.api.entity.Clazz;
 import com.example.api.entity.Student;
 import com.example.api.entity.User;
@@ -37,7 +38,7 @@ public class StudentServiceImpl implements StudentService {
         Assert.notNull(sno, "sno不能为null");
         User user = new User();
         user.setNumber(sno);
-        user.setRole((short)2);
+        user.setRole(StaticVariable.ROLE_STUDENT);
         user.setName(name);
         user.setSex(sex);
         this.userService.save(user);

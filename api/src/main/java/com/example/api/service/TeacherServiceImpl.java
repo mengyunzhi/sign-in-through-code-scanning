@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+import com.example.api.config.StaticVariable;
 import com.example.api.entity.Teacher;
 import com.example.api.entity.User;
 import com.example.api.repository.TeacherRepository;
@@ -37,10 +38,9 @@ public class TeacherServiceImpl implements TeacherService {
         Assert.notNull(user.getSex(), "性别不能为空");
         Assert.notNull(user.getNumber(), "手机号不能为空");
         // 设置角色  默认密码
-        user.setRole((short) 1);
+        user.setRole(StaticVariable.ROLE_TEACHER);
         if (user.getPassword() == "") {
-            // todo: 修改为静态
-            user.setPassword("teacher");
+            user.setPassword(StaticVariable.DEFAULTPASSWORD);
         }
         User savedUser = this.userService.save(user);
         Teacher teacher = new Teacher();

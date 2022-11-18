@@ -1,21 +1,12 @@
 package com.example.api.entity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.example.api.config.StaticVariable;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 
 @Entity
 public class User {
-    static Short ROLE_ADMIN = 0;
-    static Short ROLE_TEACHER = 1;
-    static Short ROLE_STUDENT = 2;
-
-    static Short MALE = 0;
-    static Short FEMALE = 1;
-
 
     @Id
     @ApiModelProperty("用户ID")
@@ -36,11 +27,11 @@ public class User {
 
     @ApiModelProperty("角色")
     @Column(nullable = false)
-    public Short role = User.ROLE_STUDENT;
+    public Short role = StaticVariable.ROLE_STUDENT;
 
     @ApiModelProperty("性别")
     @Column(nullable = false)
-    public Short sex = User.MALE;
+    public Short sex = StaticVariable.MALE;
 
     public String getNumber() {
         return number;

@@ -1,7 +1,6 @@
 package com.example.api.controller;
 
 
-import com.example.api.entity.Room;
 import com.example.api.entity.Student;
 import com.example.api.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
