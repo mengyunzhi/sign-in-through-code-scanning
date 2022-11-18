@@ -47,7 +47,6 @@ export class CommonValidator {
   }
 
   static sno(control: AbstractControl): ValidationErrors | null {
-    console.log(control.value);
     const sno = control.value.toString();
     let stu = false;
     for (const s of sno) {
@@ -144,8 +143,8 @@ export class CommonValidator {
       const name = control.value;
       const httpParams = new HttpParams()
         .append('name', name)
-        .append('room_id', room_id.toString());
-      return this.httpClient.get('/room/roomNameUnique', {params: httpParams})
+        .append('roomId', room_id.toString());
+      return this.httpClient.get('/room/roomNameUnique', {params: httpParams, responseType: 'text'})
         .pipe(map(data => {
           console.log('roomNameUnique', data);
           if (data) {
@@ -162,8 +161,8 @@ export class CommonValidator {
       const sno = control.value;
       const httpParams = new HttpParams()
         .append('sno', sno)
-        .append('user_id', user_id.toString());
-      return this.httpClient.get('/student/snoUnique', {params: httpParams})
+        .append('userId', user_id.toString());
+      return this.httpClient.get('/student/snoUnique', {params: httpParams, responseType: 'text'})
         .pipe(map(data => {
           console.log('snoUnique', data);
           if (data) {
@@ -175,6 +174,7 @@ export class CommonValidator {
     };
   }
 
+  // todo: todo
   snoExist(user_id = 0): (control: AbstractControl) => Observable<ValidationErrors | null> {
     return (control) => {
       const sno = control.value;

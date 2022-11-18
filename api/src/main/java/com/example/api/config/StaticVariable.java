@@ -11,5 +11,8 @@ public class StaticVariable {
 
     public static String DEFAULT_PASSWORD = "yunzhi";
 
+    public static Long STATE_TRUE = 1L;
+    public static Long STATE_FALSE = 0L;
+
 
 }

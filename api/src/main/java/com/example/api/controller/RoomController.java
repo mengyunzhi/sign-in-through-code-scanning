@@ -55,4 +55,10 @@ public class RoomController {
     public Room getById(@PathVariable Long id) {
         return this.roomService.getById(id);
     }
+
+    @GetMapping("roomNameUnique")
+    public String roomNameUnique(@RequestParam(required = false) Long roomId,
+                                 @RequestParam String name) {
+        return this.roomService.roomNameUnique(roomId, name);
+    }
 }
