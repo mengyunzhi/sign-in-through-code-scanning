@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+import com.example.api.config.StaticVariable;
 import com.example.api.entity.Teacher;
 import com.example.api.entity.User;
 import com.example.api.repository.TeacherRepository;
@@ -44,8 +45,8 @@ class TeacherServiceImplTest {
         Mockito.doReturn(returnTeacher).when(this.teacherRepository).save(Mockito.any());
         Teacher resultTeacher = this.teacherService.save(user);
 
-        Assertions.assertEquals("teacher", user.getPassword());
-        Assertions.assertEquals("1", user.getRole().toString());
+        Assertions.assertEquals(StaticVariable.DEFAULT_PASSWORD, user.getPassword());
+        Assertions.assertEquals(StaticVariable.ROLE_TEACHER.toString(), user.getRole().toString());
         Assertions.assertEquals(resultTeacher.getId(), resultTeacher.getId());
     }
 

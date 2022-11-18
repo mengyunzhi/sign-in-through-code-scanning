@@ -6,6 +6,9 @@ import {Assert} from '@yunzhi/ng-mock-api';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
 import {HttpClient} from '@angular/common/http';
+import {Student} from "../../../entity/student";
+import {User} from "../../../entity/user";
+import {Clazz} from "../../../entity/clazz";
 
 @Component({
   selector: 'app-student-edit',
@@ -45,9 +48,9 @@ export class StudentEditComponent implements OnInit {
     this.studentService.getById(this.id as number)
       .subscribe(student => {
         console.log('api学生获取成功', student);
-        this.formGroup.get('name')?.setValue(student.name);
-        this.formGroup.get('sex')?.setValue(student.sex);
-        this.formGroup.get('clazz_id')?.setValue(student.clazz?.id);
+        this.formGroup.get('name')?.setValue(student?.user?.name);
+        this.formGroup.get('sex')?.setValue(student?.user?.sex);
+        this.formGroup.get('clazz_id')?.setValue(student?.clazz?.id);
         this.formGroup.get('sno')?.setValue(student.sno);
       });
   }
@@ -55,11 +58,15 @@ export class StudentEditComponent implements OnInit {
   onSubmit(): void {
     Assert.isNumber(this.id, 'id类型不是number');
     this.studentService.update(this.id as number, {
-      name: this.formGroup.get('name')?.value,
-      sex: this.formGroup.get('sex')?.value,
-      clazz_id: this.formGroup.get('clazz_id')?.value,
+      user: {
+        name: this.formGroup.get('name')?.value,
+        sex: this.formGroup.get('sex')?.value,
+      } as User,
+      clazz: {
+        id: this.formGroup.get('clazz_id')?.value
+      } as Clazz,
       sno: this.formGroup.get('sno')?.value
-    })
+    } as Student)
       .subscribe(success => {
         console.log('学生更新成功', success);
         this.commonService.success(() => this.router.navigate(['./../../'], {relativeTo: this.route}));

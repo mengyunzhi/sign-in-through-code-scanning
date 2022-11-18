@@ -1,7 +1,6 @@
 package com.example.api.controller;
 
 
-import com.example.api.entity.Room;
 import com.example.api.entity.Student;
 import com.example.api.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +62,21 @@ public class StudentController {
     @GetMapping("getById/{userId}")
     public Student getById(@PathVariable Long userId) {
         return this.studentService.getByUserId(userId);
+    }
+
+    /**
+     * 接受的student中的属性
+     * user.name, user.sex, clazz.id, sno
+     */
+    @PutMapping("update/{userId}")
+    public Student update(@PathVariable Long userId,
+                          @RequestBody Student student) {
+        return this.studentService.updateByUserId(
+                userId,
+                student.getUser().getName(),
+                student.getUser().getSex(),
+                student.getClazz().getId(),
+                student.getSno()
+        );
     }
 }

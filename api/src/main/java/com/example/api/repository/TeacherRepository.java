@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface TeacherRepository extends PagingAndSortingRepository<Teacher, Long>, JpaSpecificationExecutor {
     default Page findAll(String name, String number, Pageable pageable) {
-        // todo: 修改为静态变量
         Specification specification = TeacherSpecs.relateUserByName(name)
                 .and(TeacherSpecs.relateUserByNumber(number));
         return this.findAll(specification, pageable);

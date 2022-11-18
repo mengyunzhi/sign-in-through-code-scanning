@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+import com.example.api.config.StaticVariable;
 import com.example.api.entity.Clazz;
 import com.example.api.entity.Student;
 import com.example.api.entity.User;
@@ -37,7 +38,7 @@ public class StudentServiceImpl implements StudentService {
         Assert.notNull(sno, "sno不能为null");
         User user = new User();
         user.setNumber(sno);
-        user.setRole((short)2);
+        user.setRole(StaticVariable.ROLE_STUDENT);
         user.setName(name);
         user.setSex(sex);
         this.userService.save(user);
@@ -80,5 +81,20 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student getByUserId(Long userId) {
         return this.studentRepository.findByUserId(userId);
+    }
+
+    @Override
+    public Student updateByUserId(Long userId, String name, Short sex, Long clazzId, String sno) {
+        Student student = this.getByUserId(userId);
+        student.setSno(sno);
+        User user = this.userService.getById(userId);
+        user.setName(name);
+        user.setSex(sex);
+        Clazz clazz = new Clazz();
+        clazz.setId(clazzId);
+
+        student.setUser(user);
+        student.setClazz(clazz);
+        return this.studentRepository.save(student);
     }
 }
