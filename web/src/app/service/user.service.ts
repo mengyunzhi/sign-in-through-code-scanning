@@ -41,8 +41,8 @@ export class UserService {
     return this.httpClient.post<boolean>('/user/studentRegister', data);
   }
 
-  userUpdate(id: number, data: {name: string, sex: number, number: string, role: number, password: string}): Observable<boolean> {
-    return this.httpClient.post<boolean>('/user/userUpdate/id/' + id.toString(), data);
+  userUpdate(data: { number: any; password: any; role: any; sex: any; name: any; id: number | undefined }): Observable<User> {
+    return this.httpClient.post<User>('/user/userUpdate', data);
   }
 
   updateTeacherIndexPassword(newIndexPassWord: any): Observable<boolean> {
