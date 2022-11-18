@@ -87,6 +87,7 @@ export class PersonalEditComponent implements OnInit {
   onSubmit(): void {
     console.log('onSubmit is called');
     const data = {
+      id: this.id,
       name: this.formGroup.get('name')?.value,
       sex: this.formGroup.get('sex')?.value,
       number: this.formGroup.get('number')?.value,
@@ -103,9 +104,11 @@ export class PersonalEditComponent implements OnInit {
       }
     }
     Assert.isNumber(this.id, 'id的类型错误');
-    this.userService.userUpdate(this.id as number, data)
-      .subscribe(success => {
-        console.log('用户更新成功', success);
+    this.userService.userUpdate(data)
+      .subscribe(user => {
+        console.log('用户更新成功', user);
+        window.sessionStorage.removeItem('userNumber');
+        window.sessionStorage.setItem('userNumber', user.number.toString());
         this.commonService.success(() => this.router.navigate(['./../'], {relativeTo: this.route}));
       }, error => {
         console.log('用户更新失败', error);
