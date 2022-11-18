@@ -54,7 +54,7 @@ export class StudentAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getStudentDefaultPassword()
+    this.userService.getDefaultPassword()
       .subscribe(success => {
         this.indexStudentPassword = success;
         console.log(this.indexStudentPassword);

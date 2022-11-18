@@ -27,7 +27,7 @@ export class PersonalIndexComponent implements OnInit {
           if (+user.role === UserService.ROLE_STUDENT) {
             this.studentService.getById(user.id)
               .subscribe(student => {
-                this.sno = +student.sno;
+                this.sno = student.sno;
               });
           }
         }, error => {
