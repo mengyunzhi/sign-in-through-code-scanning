@@ -17,4 +17,8 @@ public interface UserService {
     void updatePassword(@NotNull Long userId, @NotNull String password);
     
     User getCurrentLoginUser(String userNumber);
+
+    User userUpdate(User user);
+
+    String numberUnique(@NotNull Long id, String number);
 }

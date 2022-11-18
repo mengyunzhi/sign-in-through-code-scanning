@@ -1,11 +1,15 @@
 package com.example.api.service;
 
+import com.example.api.entity.Term;
 import com.example.api.entity.User;
 import com.example.api.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -66,6 +70,32 @@ public class UserServiceImpl implements UserService {
     
     public User getCurrentLoginUser(String userNumber) {
         return this.userRepository.findByNumber(userNumber).get();
+    }
+
+    @Override
+    public User userUpdate(User user) {
+        User oldUser = this.userRepository.findById(user.getId()).get();
+        return this.updateFields(user, oldUser);
+    }
+
+    @Override
+    public String numberUnique(Long id, String number) {
+        List<User> users = new ArrayList<>();
+        users = (List<User>) this.userRepository.findAll();
+        for (User user : users) {
+            if (Objects.equals(user.number, number) && !Objects.equals(user.id, id)) {
+                return "名称已存在";
+            }
+        }
+        return "名称合理";
+    }
+
+    private User updateFields(User user, User oldUser) {
+        oldUser.setName(user.getName());
+        oldUser.setNumber(user.getNumber());
+        oldUser.setSex(user.getSex());
+        oldUser.setPassword(user.getPassword());
+        return this.userRepository.save(oldUser);
     }
 
 }
