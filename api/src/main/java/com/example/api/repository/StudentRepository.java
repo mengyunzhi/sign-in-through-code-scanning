@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 public interface StudentRepository extends PagingAndSortingRepository<Student, Long>, JpaSpecificationExecutor {
 
@@ -13,4 +14,6 @@ public interface StudentRepository extends PagingAndSortingRepository<Student, L
     void deleteByUserId(Long userId);
 
     Student findByUserId(Long userId);
+
+    List<Student> findStudentsBySno(String sno);
 }

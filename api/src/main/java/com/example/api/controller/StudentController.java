@@ -79,4 +79,10 @@ public class StudentController {
                 student.getSno()
         );
     }
+
+    @GetMapping("snoUnique")
+    public String snoUnique(@RequestParam(required = false) Long userId,
+                            @RequestParam String sno) {
+        return this.studentService.snoUniqueByUserId(userId, sno);
+    }
 }

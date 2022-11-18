@@ -17,4 +17,6 @@ public interface StudentService {
     Student getByUserId(@NotNull Long userId);
 
     Student updateByUserId(@NotNull Long userId, @NotNull String name, @NotNull Short sex, @NotNull Long clazzId, @NotNull String sno);
+
+    String snoUniqueByUserId(@NotNull Long userId, @NotNull String sno);
 }
