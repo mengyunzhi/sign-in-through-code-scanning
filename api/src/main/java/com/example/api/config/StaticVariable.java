@@ -9,7 +9,7 @@ public class StaticVariable {
     public static Short MALE = 0;
     public static Short FEMALE = 1;
 
-    public static String DEFAULTPASSWORD = "yunzhi";
+    public static String DEFAULT_PASSWORD = "yunzhi";
 
 
 }

@@ -40,7 +40,7 @@ public class TeacherServiceImpl implements TeacherService {
         // 设置角色  默认密码
         user.setRole(StaticVariable.ROLE_TEACHER);
         if (user.getPassword() == "") {
-            user.setPassword(StaticVariable.DEFAULTPASSWORD);
+            user.setPassword(StaticVariable.DEFAULT_PASSWORD);
         }
         User savedUser = this.userService.save(user);
         Teacher teacher = new Teacher();
