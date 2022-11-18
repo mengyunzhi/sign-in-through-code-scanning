@@ -14,7 +14,7 @@ export class TeacherService {
   constructor(private httpClient: HttpClient) {
   }
 
-  add(data: {name: string, sex: number, number: string}): Observable<any> {
+  add(data: {name: string, sex: number, number: string, password: string}): Observable<any> {
     return this.httpClient.post<any>('/teacher/add', data);
   }
 

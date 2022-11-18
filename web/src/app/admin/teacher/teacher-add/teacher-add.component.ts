@@ -39,24 +39,34 @@ export class TeacherAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.formGroup.addControl(this.formKeys.name, new FormControl('', Validators.required));
-    // this.formGroup.addControl(this.formKeys.sex, new FormControl('', Validators.required));
-    // this.formGroup.addControl(this.formKeys.number, new FormControl('', [Validators.required, Validator.isPhoneNumber]));
-    this.userService.getDefaultPassword()
-      .subscribe(success => {
-        this.indexTeacherPassword = success;
-        console.log(this.indexTeacherPassword);
-      }, error => {
-        console.log(error);
-      });
+    const cacheDefaultPassword = window.sessionStorage.getItem('cacheDefaultPassword');
+    if (cacheDefaultPassword === null) {
+      // this.formGroup.addControl(this.formKeys.name, new FormControl('', Validators.required));
+      // this.formGroup.addControl(this.formKeys.sex, new FormControl('', Validators.required));
+      // this.formGroup.addControl(this.formKeys.number, new FormControl('', [Validators.required, Validator.isPhoneNumber]));
+      this.userService.getDefaultPassword()
+        .subscribe(success => {
+          window.sessionStorage.setItem('cacheDefaultPassword', success);
+          // console.log(this.indexTeacherPassword);
+        }, error => {
+          console.log(error);
+        });
+    }
+    // @ts-ignore
+    this.indexTeacherPassword = window.sessionStorage.getItem('cacheDefaultPassword');
   }
 
   onSubmit(): void {
+    let cacheDefaultPassword = window.sessionStorage.getItem('cacheDefaultPassword');
+    if (cacheDefaultPassword === null) {
+      cacheDefaultPassword = 'NoCache';
+    }
     console.log('onsubmit is called', this.formGroup.value);
     this.teacherService.add({
       name: this.formGroup.get('name')?.value,
       sex: this.formGroup.get('sex')?.value,
       number: this.formGroup.get('number')?.value,
+      password: cacheDefaultPassword,
     })
       .subscribe(success => {
         console.log('教师添加成功', success);

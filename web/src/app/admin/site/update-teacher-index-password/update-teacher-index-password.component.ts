@@ -23,13 +23,19 @@ export class UpdateTeacherIndexPasswordComponent implements OnInit {
               private route: ActivatedRoute, ) { }
 
   ngOnInit(): void {
-    this.userService.getDefaultPassword()
-      .subscribe(success => {
-        this.indexTeacherPassword = success;
-        console.log(this.indexTeacherPassword);
-      }, error => {
-        console.log(error);
-      });
+    const cacheDefaultPassword = window.sessionStorage.getItem('cacheDefaultPassword');
+    if (cacheDefaultPassword === null) {
+      this.userService.getDefaultPassword()
+        .subscribe(success => {
+          // this.indexTeacherPassword = success;
+          // console.log(this.indexTeacherPassword);
+          window.sessionStorage.setItem('cacheDefaultPassword', success);
+        }, error => {
+          console.log(error);
+        });
+    }
+    // @ts-ignore
+    this.indexTeacherPassword = window.sessionStorage.getItem('cacheDefaultPassword');
   }
 
   onSubmit(): void {
@@ -40,14 +46,26 @@ export class UpdateTeacherIndexPasswordComponent implements OnInit {
     } else if (this.formGroup.get('firstNewPassword')?.value === '' && this.formGroup.get('secondNewPassword')?.value === '') {
       this.commonService.error(() => '', '', '新默认密码不可为空');
     } else {
-      console.log('像后台传firstNewPassword');
-      this.userService.updateDefaultPassword(this.formGroup.get('firstNewPassword')?.value)
-        .subscribe(success => {
-          console.log(success);
-          this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
-        }, error => {
-          console.log(error);
-        });
+      const cacheDefaultPassword = window.sessionStorage.getItem('cacheDefaultPassword');
+      if (cacheDefaultPassword === null) {
+        window.sessionStorage.setItem('cacheDefaultPassword', this.formGroup.get('firstNewPassword')?.value);
+      } else {
+        window.sessionStorage.removeItem('cacheDefaultPassword');
+        window.sessionStorage.setItem('cacheDefaultPassword', this.formGroup.get('firstNewPassword')?.value);
+      }
+      if (window.sessionStorage.getItem('cacheDefaultPassword') === this.formGroup.get('firstNewPassword')?.value) {
+        this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
+      } else {
+        console.log('error');
+      }
+      // console.log('像后台传firstNewPassword');
+      // this.userService.updateDefaultPassword(this.formGroup.get('firstNewPassword')?.value)
+      //   .subscribe(success => {
+      //     console.log(success);
+      //     this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
+      //   }, error => {
+      //     console.log(error);
+      //   });
     }
   }
 }
