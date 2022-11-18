@@ -20,24 +20,26 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
     private final ClazzRepository clazzRepository;
+    private final RoomRepository roomRepository;
     @Autowired
     public CommandLineRunnerImpl(UserRepository userRepository,
                                  UserService userService,
                                  AdminRepository adminRepository,
                                  TeacherRepository teacherRepository,
                                  StudentRepository studentRepository,
-                                 ClazzRepository clazzRepository) {
+                                 ClazzRepository clazzRepository,
+                                 RoomRepository roomRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.adminRepository = adminRepository;
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
         this.clazzRepository = clazzRepository;
+        this.roomRepository = roomRepository;
     }
 
     @Override
     public void run(String... args) {
-        Clazz clazz = this.addClazz();
         if(!userRepository.findByNumber("admin").isPresent()) {
             logger.info("进行初始化管理员");
             User user = this.getUser((short) 0, "admin", "yunzhi", "管理员");
@@ -57,10 +59,31 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         if(!userRepository.findByNumber("student").isPresent()) {
             logger.info("进行初始化学生");
             User user = this.getUser((short) 2, "student", "yunzhi", "学生");
-            this.addStudent(user, clazz, "222222", 1L);
+            this.addStudent(user, null, "222222", 1L);
         } else {
             logger.info("已添加初始化学生");
         }
+
+        this.forTest();
+    }
+
+    private void forTest() {
+        User user2 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000000", "yunzhi", "教师");
+        this.addTeacher(user2);
+
+        Clazz clazz = this.addClazz();
+        User user = this.getUser(StaticVariable.ROLE_STUDENT, "111111", "yunzhi", "学生");
+
+        this.addStudent(user, clazz, "111111", StaticVariable.STATE_TRUE);
+
+        this.addRoom("testRoom", 40L);
+    }
+
+    private void addRoom(String roomName, Long capacity) {
+        Room room = new Room();
+        room.setName(roomName);
+        room.setCapacity(capacity);
+        this.roomRepository.save(room);
     }
 
     private void addAdmin(User user) {

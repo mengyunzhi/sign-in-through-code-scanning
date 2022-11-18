@@ -23,7 +23,7 @@ export class UpdateTeacherIndexPasswordComponent implements OnInit {
               private route: ActivatedRoute, ) { }
 
   ngOnInit(): void {
-    this.userService.getTeacherDefaultPassword()
+    this.userService.getDefaultPassword()
       .subscribe(success => {
         this.indexTeacherPassword = success;
         console.log(this.indexTeacherPassword);
@@ -41,7 +41,7 @@ export class UpdateTeacherIndexPasswordComponent implements OnInit {
       this.commonService.error(() => '', '', '新默认密码不可为空');
     } else {
       console.log('像后台传firstNewPassword');
-      this.userService.updateTeacherIndexPassword(this.formGroup.get('firstNewPassword')?.value)
+      this.userService.updateDefaultPassword(this.formGroup.get('firstNewPassword')?.value)
         .subscribe(success => {
           console.log(success);
           this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));

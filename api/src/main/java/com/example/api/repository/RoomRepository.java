@@ -18,4 +18,6 @@ public interface RoomRepository extends PagingAndSortingRepository<Room, Long>, 
         return this.findAll(specification, pageable);
     };
 
+    List<Room> findRoomsByName(String name);
+
 }

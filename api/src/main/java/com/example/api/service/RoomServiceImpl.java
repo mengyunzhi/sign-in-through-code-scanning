@@ -61,5 +61,18 @@ public class RoomServiceImpl implements RoomService {
         return this.roomRepository.save(oldRoom);
     }
 
+    @Override
+    public String roomNameUnique(Long roomId, String name) {
+        List<Room> rooms = this.roomRepository.findRoomsByName(name);
+        for (Room room:
+             rooms) {
+            // 如果name已存在并且与roomId不相等
+            if (room.getName().equals(name) && !room.getId().equals(roomId)) {
+                return "教室名称已存在";
+            }
+        }
+        return null;
+    }
+
 
 }

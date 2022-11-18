@@ -19,4 +19,6 @@ public interface RoomService {
     Room getById(@NotNull Long id);
 
     Room updateFields(@NotNull Room newRoom, @NotNull Room oldRoom);
+
+    String roomNameUnique(Long roomId, String name);
 }
