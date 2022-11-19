@@ -65,6 +65,7 @@ export class TermService {
   * 新增学期
   * */
   add(data: {name: string, start_time: string, end_time: string, state: number}): Observable<Term> {
+    // console.log('webstorm => data', data);
     const term = {
       name: data.name,
       start_time: data.start_time,

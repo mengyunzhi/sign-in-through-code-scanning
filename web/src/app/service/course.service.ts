@@ -56,6 +56,7 @@ export class CourseService {
       name: data.name,
       lesson: data.lesson
     } as Course;
+    console.log('courseService/add', course);
     return this.httpClient.post<Course>('/course/add', course);
   }
 

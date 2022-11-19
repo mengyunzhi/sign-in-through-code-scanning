@@ -21,6 +21,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     private final StudentRepository studentRepository;
     private final ClazzRepository clazzRepository;
     private final RoomRepository roomRepository;
+    private final TermRepository termRepository;
     @Autowired
     public CommandLineRunnerImpl(UserRepository userRepository,
                                  UserService userService,
@@ -28,7 +29,8 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
                                  TeacherRepository teacherRepository,
                                  StudentRepository studentRepository,
                                  ClazzRepository clazzRepository,
-                                 RoomRepository roomRepository) {
+                                 RoomRepository roomRepository,
+                                 TermRepository termRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.adminRepository = adminRepository;
@@ -36,6 +38,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         this.studentRepository = studentRepository;
         this.clazzRepository = clazzRepository;
         this.roomRepository = roomRepository;
+        this.termRepository = termRepository;
     }
 
     @Override
@@ -68,15 +71,27 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     }
 
     private void forTest() {
+        // 添加教师
         User user2 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000000", "yunzhi", "教师");
         this.addTeacher(user2);
-
+        // 添加班级
         Clazz clazz = this.addClazz();
         User user = this.getUser(StaticVariable.ROLE_STUDENT, "111111", "yunzhi", "学生");
-
+        // 添加学生，该学生属于上面的班级
         this.addStudent(user, clazz, "111111", StaticVariable.STATE_TRUE);
-
+        // 添加教室
         this.addRoom("testRoom", 40L);
+        //添加学期
+        this.addTerm("testTerm", 1661961600L, 1670601600L, StaticVariable.STATE_TRUE);
+    }
+
+    private void addTerm(String termName, Long startTime, Long endTime, Long state) {
+        Term term = new Term();
+        term.setName(termName);
+        term.setStartTime(startTime);
+        term.setEndTime(endTime);
+        term.setState(state);
+        this.termRepository.save(term);
     }
 
     private void addRoom(String roomName, Long capacity) {
