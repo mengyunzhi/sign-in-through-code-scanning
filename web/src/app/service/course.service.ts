@@ -21,10 +21,6 @@ export class CourseService {
     if (course.lesson === null) {
       course.lesson = '';
     }
-
-    console.log('444');
-    console.log(course);
-    console.log('555');
     return new Observable<Page<Course>>(
       subscriber => {
         const httpParams = new HttpParams()
@@ -34,12 +30,13 @@ export class CourseService {
           .append('size', size.toString());
         this.httpClient.get<any>('course/page', {params: httpParams})
           .subscribe(data => {
+            console.log(data);
             courses = data.content;
             subscriber.next(new Page<Course>({
               content: courses,
               number: page,
               size,
-              numberOfElements: data.length
+              numberOfElements: data.totalElements
             }));
           }, error => {
             console.log('请求失败', error);
@@ -62,16 +59,16 @@ export class CourseService {
 
   getById(id: number): Observable<Course> {
     return this.httpClient
-      .get<Course>(`/course/getById/id/` + id.toString());
+      .get<Course>(`/course/getById/` + id.toString());
   }
 
   update(id: number, course: { name: any; lesson: any }): Observable<any> {
     console.log('更新课程');
-    return this.httpClient.post('/course/update/id/' + id.toString(), course);
+    return this.httpClient.post('/course/update/' + id.toString(), course);
   }
 
   delete(id: number): Observable<Course> {
     console.log(id);
-    return this.httpClient.delete<Course>('/course/delete/id/' + id.toString());
+    return this.httpClient.delete<Course>('/course/delete/' + id.toString());
   }
 }
