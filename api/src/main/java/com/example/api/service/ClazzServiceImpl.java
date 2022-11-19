@@ -1,14 +1,18 @@
 package com.example.api.service;
 
+import com.example.api.controller.ClazzInPage;
 import com.example.api.entity.Clazz;
 import com.example.api.repository.ClazzRepository;
+import com.example.api.repository.specs.ClazzSpecs;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,7 +41,13 @@ public class ClazzServiceImpl implements ClazzService {
     @Override
     public Page findAll(String searchName, @NotNull Pageable pageable) {
         Assert.notNull(pageable, "pageable不能为null");
-        return this.clazzRepository.findAll(searchName, pageable);
+        List<Clazz> clazzes = (List<Clazz>) this.clazzRepository.findAll(searchName, pageable);
+        List<ClazzInPage> clazzInPages = new ArrayList<>();
+        for (Clazz clazz:
+             clazzes) {
+            ClazzInPage clazzInPage = (ClazzInPage) clazz;
+        }
+        return null;
     }
 
     @Override
@@ -74,6 +84,7 @@ public class ClazzServiceImpl implements ClazzService {
     public List<Clazz> getAll() {
         return (List<Clazz>) this.clazzRepository.findAll();
     }
+
 
     Clazz updateFields(Clazz newClazz, Clazz oldClazz) {
         oldClazz.setName(newClazz.getName());
