@@ -76,10 +76,10 @@ public class TermServiceImpl implements TermService{
             term.setState(1L);
         }
         List<Term> terms = (List<Term>) this.termRepository.findAll();
-        for (int i = 0; i < terms.size(); i++) {
-            if (terms.get(i).getId() != id) {
-                terms.get(i).setState(0L);
-                this.termRepository.save(terms.get(i));
+        for (Term value : terms) {
+            if (!Objects.equals(value.getId(), id)) {
+                value.setState(0L);
+                this.termRepository.save(value);
             }
         }
         this.termRepository.save(term);
