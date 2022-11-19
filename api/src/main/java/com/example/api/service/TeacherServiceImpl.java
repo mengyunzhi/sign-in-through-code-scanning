@@ -39,7 +39,7 @@ public class TeacherServiceImpl implements TeacherService {
         Assert.notNull(user.getNumber(), "手机号不能为空");
         // 设置角色  默认密码
         user.setRole(StaticVariable.ROLE_TEACHER);
-        if (user.getPassword() == "") {
+        if (user.getPassword() == "" || user.getPassword() == "NoCache") {
             user.setPassword(StaticVariable.DEFAULT_PASSWORD);
         }
         User savedUser = this.userService.save(user);
