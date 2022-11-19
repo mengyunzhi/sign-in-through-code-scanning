@@ -1,7 +1,9 @@
 package com.example.api.controller;
 
 import com.example.api.entity.Clazz;
+import com.example.api.entity.Student;
 import com.example.api.service.ClazzService;
+import com.example.api.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,14 +18,17 @@ import java.util.List;
 @RequestMapping("clazz")
 public class ClazzController {
     private final ClazzService clazzService;
+    private final StudentService studentService;
 
     @Autowired
-    public ClazzController(ClazzService clazzService) {
+    public ClazzController(ClazzService clazzService,
+                           StudentService studentService) {
         this.clazzService = clazzService;
+        this.studentService = studentService;
     }
 
     @GetMapping("page")
-    private Page page(@RequestParam(required = false) String searchName,
+    private Page<Clazz> page(@RequestParam(required = false) String searchName,
                       @SortDefault.SortDefaults(@SortDefault(sort = "id", direction = Sort.Direction.DESC)) Pageable pageable) {
         return  this.clazzService.findAll(searchName, pageable);
     }
@@ -55,7 +60,6 @@ public class ClazzController {
     @GetMapping("clazzNameUnique")
     public String clazzNameUnique(@RequestParam Long clazz_id, @RequestParam String name) {
         return this.clazzService.clazzNameUnique(clazz_id, name);
-
     }
 
     /**
@@ -81,4 +85,16 @@ public class ClazzController {
     public List<Clazz> getAll() {
         return this.clazzService.getAll();
     }
+
+    /**
+     * 管理端 => 班级管理 => 查看学生
+     */
+    @GetMapping("clazzMembers/{clazzId}")
+    public Page<Student> clazzMembers(@PathVariable Long clazzId,
+                                      @RequestParam(required = false) String searchName,
+                                      @RequestParam(required = false) String searchSno,
+                                      @SortDefault.SortDefaults(@SortDefault(sort = "id", direction = Sort.Direction.DESC)) Pageable pageable) {
+        return this.studentService.findAllBelongToClazz(clazzId, searchName, searchSno, pageable);
+    }
 }
+

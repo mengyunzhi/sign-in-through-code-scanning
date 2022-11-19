@@ -3,6 +3,7 @@ package com.example.api.service;
 import com.example.api.entity.Clazz;
 import com.example.api.entity.Term;
 import com.example.api.repository.ClazzRepository;
+import com.example.api.repository.StudentRepository;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -21,10 +22,12 @@ import java.util.Random;
 public class KlassServiceImplTest {
     private ClazzService clazzService;
     private ClazzRepository clazzRepository;
+    private StudentRepository studentRepository;
 
     public KlassServiceImplTest() {
         this.clazzRepository = Mockito.mock(ClazzRepository.class);
-        this.clazzService = new ClazzServiceImpl(this.clazzRepository);
+        this.studentRepository = Mockito.mock(StudentRepository.class);
+        this.clazzService = new ClazzServiceImpl(this.clazzRepository, studentRepository);
     }
 
     @Test

@@ -4,9 +4,7 @@ import com.example.api.config.StaticVariable;
 import com.example.api.entity.Clazz;
 import com.example.api.entity.Student;
 import com.example.api.entity.User;
-import com.example.api.repository.ClazzRepository;
 import com.example.api.repository.StudentRepository;
-import com.example.api.repository.UserRepository;
 import com.example.api.repository.specs.StudentSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -113,5 +111,15 @@ public class StudentServiceImpl implements StudentService {
             }
         }
         return null;
+    }
+
+    @Override
+    public Page findAllBelongToClazz(Long clazzId, String searchName, String searchSno, Pageable pageable) {
+        Assert.notNull(clazzId, "clazzId不能为null");
+        Assert.notNull(pageable, "pageable不能为null");
+        Specification<Student> specification = StudentSpecs.belongToClazz(clazzId)
+                .and(StudentSpecs.relateUserByStudentName(searchName))
+                .and(StudentSpecs.containSno(searchSno));
+        return this.studentRepository.findAll(specification, pageable);
     }
 }

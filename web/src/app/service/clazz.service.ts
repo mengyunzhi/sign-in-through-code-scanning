@@ -31,28 +31,16 @@ export class ClazzService {
       .append('searchName', param.name ? param.name : '')
       .append('searchSno', param.sno ? param.sno : '');
     return this.httpClient
-      .get<{length: number, content: {user_id: number, number: string, name: string, sex: number, sno: string, state: number}[]}>
-      ('/clazz/clazzMembers/clazz_id/' + clazz_id.toString(), {params: httpParams})
+      .get<{totalElements: number, content: Student[]}>
+      ('/clazz/clazzMembers/' + clazz_id.toString(), {params: httpParams})
       .pipe(map(data => {
         console.log('clazzservice', data);
-        const content = [] as Student[];
-        for (const student of data.content) {
-          content.push({
-            state: student.state,
-            user: {
-              id: student.user_id,
-              name: student.name,
-              sex: student.sex,
-              number: student.number
-            } as User,
-            sno: student.sno
-          } as Student);
-        }
+        const content = data.content;
         return new Page<Student>({
           content,
           number: page,
           size,
-          numberOfElements: data.length
+          numberOfElements: data.totalElements
         });
       }));
   }

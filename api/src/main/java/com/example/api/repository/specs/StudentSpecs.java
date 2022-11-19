@@ -31,4 +31,12 @@ public class StudentSpecs {
                 -> criteriaBuilder.like(root.get("sno").as(String.class), String.format("%%%s%%", sno));
     }
 
+
+    public static Specification<Student> belongToClazz(Long clazzId) {
+        if (clazzId == null) {
+            return Specification.where(null);
+        }
+        return (root, criteriaQuery, criteriaBuilder)
+                -> criteriaBuilder.equal(root.join("clazz").get("id").as(Long.class), clazzId);
+    }
 }

@@ -2,6 +2,8 @@ package com.example.api.service;
 
 import com.example.api.entity.Clazz;
 import com.example.api.repository.ClazzRepository;
+import com.example.api.repository.StudentRepository;
+import com.example.api.repository.specs.StudentSpecs;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,10 +18,13 @@ import java.util.Objects;
 public class ClazzServiceImpl implements ClazzService {
 
     private final ClazzRepository clazzRepository;
+    private final StudentRepository studentRepository;
 
     @Autowired
-    public ClazzServiceImpl(ClazzRepository clazzRepository) {
+    public ClazzServiceImpl(ClazzRepository clazzRepository,
+                            StudentRepository studentRepository) {
         this.clazzRepository = clazzRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -37,7 +42,13 @@ public class ClazzServiceImpl implements ClazzService {
     @Override
     public Page findAll(String searchName, @NotNull Pageable pageable) {
         Assert.notNull(pageable, "pageable不能为null");
-        return this.clazzRepository.findAll(searchName, pageable);
+        Page<Clazz> page = this.clazzRepository.findAll(searchName, pageable);
+        for (Clazz clazz:
+                page.getContent()) {
+            Long number_of_students = (long) this.studentRepository.findAll(StudentSpecs.belongToClazz(clazz.getId())).size();
+            clazz.setNumber_of_students(number_of_students);
+        }
+        return page;
     }
 
     @Override
@@ -74,6 +85,7 @@ public class ClazzServiceImpl implements ClazzService {
     public List<Clazz> getAll() {
         return (List<Clazz>) this.clazzRepository.findAll();
     }
+
 
     Clazz updateFields(Clazz newClazz, Clazz oldClazz) {
         oldClazz.setName(newClazz.getName());

@@ -1,7 +1,6 @@
 package com.example.api.controller;
 
 import com.example.api.entity.Room;
-import com.example.api.repository.RoomRepository;
 import com.example.api.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,7 +10,6 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("room")

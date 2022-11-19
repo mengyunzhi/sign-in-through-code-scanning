@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+import com.example.api.entity.Clazz;
 import com.example.api.entity.Student;
 import com.sun.istack.NotNull;
 import org.springframework.data.domain.Page;
@@ -19,4 +20,6 @@ public interface StudentService {
     Student updateByUserId(@NotNull Long userId, @NotNull String name, @NotNull Short sex, @NotNull Long clazzId, @NotNull String sno);
 
     String snoUniqueByUserId(@NotNull Long userId, @NotNull String sno);
+
+    Page<Student> findAllBelongToClazz(@NotNull Long clazzId, String searchName, String searchSno, @NotNull Pageable pageable);
 }
