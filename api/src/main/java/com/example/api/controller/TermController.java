@@ -23,7 +23,8 @@ public class TermController {
     }
     @GetMapping("page")
     private Page page(@RequestParam(required = false) String searchName,
-                      @SortDefault.SortDefaults(@SortDefault(sort = "id", direction = Sort.Direction.DESC)) Pageable pageable) {
+                      @SortDefault.SortDefaults({@SortDefault(sort = "state", direction = Sort.Direction.DESC),
+                              @SortDefault(sort = "id", direction = Sort.Direction.DESC),}) Pageable pageable) {
         return  this.termService.findAll(searchName, pageable);
     }
 

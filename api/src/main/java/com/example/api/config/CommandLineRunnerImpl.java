@@ -81,15 +81,22 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         this.addStudent(user, clazz, "111111", StaticVariable.STATE_TRUE);
         // 添加教室
         this.addRoom("testRoom", 40L);
-        //添加学期
-        this.addTerm("testTerm", 1661961600L, 1670601600L, StaticVariable.STATE_TRUE);
+        // 添加学期
+        for (int i = 0; i  < 3; i++) {
+            if (i == 0 ) {
+                this.addTerm("testTerm" + (i + 1), 1L);
+            } else {
+                this.addTerm("testTerm" + (i + 1), 0L);
+            }
+
+        }
     }
 
-    private void addTerm(String termName, Long startTime, Long endTime, Long state) {
+    private void addTerm(String termName, Long state) {
         Term term = new Term();
         term.setName(termName);
-        term.setStartTime(startTime);
-        term.setEndTime(endTime);
+        term.setStartTime(1667260800L);
+        term.setEndTime(1669852800L);
         term.setState(state);
         this.termRepository.save(term);
     }
