@@ -21,6 +21,8 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     private final StudentRepository studentRepository;
     private final ClazzRepository clazzRepository;
     private final RoomRepository roomRepository;
+    private final TermRepository termRepository;
+
     @Autowired
     public CommandLineRunnerImpl(UserRepository userRepository,
                                  UserService userService,
@@ -28,7 +30,8 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
                                  TeacherRepository teacherRepository,
                                  StudentRepository studentRepository,
                                  ClazzRepository clazzRepository,
-                                 RoomRepository roomRepository) {
+                                 RoomRepository roomRepository,
+                                 TermRepository termRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.adminRepository = adminRepository;
@@ -36,6 +39,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         this.studentRepository = studentRepository;
         this.clazzRepository = clazzRepository;
         this.roomRepository = roomRepository;
+        this.termRepository = termRepository;
     }
 
     @Override
@@ -77,6 +81,24 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         this.addStudent(user, clazz, "111111", StaticVariable.STATE_TRUE);
 
         this.addRoom("testRoom", 40L);
+
+        for (int i = 0; i  < 3; i++) {
+            if (i == 0 ) {
+                this.addTerm("testTerm" + (i + 1), 1L);
+            } else {
+                this.addTerm("testTerm" + (i + 1), 0L);
+            }
+
+        }
+    }
+
+    private void addTerm(String termName, Long state) {
+        Term term = new Term();
+        term.setName(termName);
+        term.setStartTime(1667260800L);
+        term.setEndTime(1669852800L);
+        term.setState(state);
+        this.termRepository.save(term);
     }
 
     private void addRoom(String roomName, Long capacity) {
