@@ -3,12 +3,13 @@ package com.example.api.service;
 import com.example.api.controller.ClazzInPage;
 import com.example.api.entity.Clazz;
 import com.example.api.repository.ClazzRepository;
-import com.example.api.repository.specs.ClazzSpecs;
+import com.example.api.repository.StudentRepository;
+import com.example.api.repository.specs.StudentSpecs;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -20,10 +21,13 @@ import java.util.Objects;
 public class ClazzServiceImpl implements ClazzService {
 
     private final ClazzRepository clazzRepository;
+    private final StudentRepository studentRepository;
 
     @Autowired
-    public ClazzServiceImpl(ClazzRepository clazzRepository) {
+    public ClazzServiceImpl(ClazzRepository clazzRepository,
+                            StudentRepository studentRepository) {
         this.clazzRepository = clazzRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -45,9 +49,11 @@ public class ClazzServiceImpl implements ClazzService {
         List<ClazzInPage> clazzInPages = new ArrayList<>();
         for (Clazz clazz:
              clazzes) {
-            ClazzInPage clazzInPage = (ClazzInPage) clazz;
+            Long number_of_students = (long) this.studentRepository.findAll(StudentSpecs.belongToClazz(clazz.getId())).size();
+            ClazzInPage clazzInPage = new ClazzInPage(clazz, number_of_students);
+            clazzInPages.add(clazzInPage);
         }
-        return null;
+        return new PageImpl<>(clazzInPages, pageable, clazzInPages.size());
     }
 
     @Override
