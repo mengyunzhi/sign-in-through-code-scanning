@@ -28,7 +28,7 @@ public class ClazzController {
     }
 
     @GetMapping("page")
-    private Page<ClazzInPage> page(@RequestParam(required = false) String searchName,
+    private Page<Clazz> page(@RequestParam(required = false) String searchName,
                       @SortDefault.SortDefaults(@SortDefault(sort = "id", direction = Sort.Direction.DESC)) Pageable pageable) {
         return  this.clazzService.findAll(searchName, pageable);
     }

@@ -21,6 +21,10 @@ public class Clazz {
     @ApiModelProperty("学制")
     private Short length;
 
+    // 班级人数，非数据库属性
+    @Transient
+    private Long number_of_students = 0L;
+
     public String getName() {
         return name;
     }
@@ -51,5 +55,13 @@ public class Clazz {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getNumber_of_students() {
+        return number_of_students;
+    }
+
+    public void setNumber_of_students(Long number_of_students) {
+        this.number_of_students = number_of_students;
     }
 }

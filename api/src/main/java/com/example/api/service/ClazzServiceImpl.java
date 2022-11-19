@@ -1,6 +1,5 @@
 package com.example.api.service;
 
-import com.example.api.controller.ClazzInPage;
 import com.example.api.entity.Clazz;
 import com.example.api.repository.ClazzRepository;
 import com.example.api.repository.StudentRepository;
@@ -8,12 +7,10 @@ import com.example.api.repository.specs.StudentSpecs;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,15 +42,13 @@ public class ClazzServiceImpl implements ClazzService {
     @Override
     public Page findAll(String searchName, @NotNull Pageable pageable) {
         Assert.notNull(pageable, "pageable不能为null");
-        List<Clazz> clazzes = (List<Clazz>) this.clazzRepository.findAll(searchName, pageable);
-        List<ClazzInPage> clazzInPages = new ArrayList<>();
+        Page<Clazz> page = this.clazzRepository.findAll(searchName, pageable);
         for (Clazz clazz:
-             clazzes) {
+                page.getContent()) {
             Long number_of_students = (long) this.studentRepository.findAll(StudentSpecs.belongToClazz(clazz.getId())).size();
-            ClazzInPage clazzInPage = new ClazzInPage(clazz, number_of_students);
-            clazzInPages.add(clazzInPage);
+            clazz.setNumber_of_students(number_of_students);
         }
-        return new PageImpl<>(clazzInPages, pageable, clazzInPages.size());
+        return page;
     }
 
     @Override
