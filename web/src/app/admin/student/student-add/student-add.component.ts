@@ -54,22 +54,33 @@ export class StudentAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getDefaultPassword()
-      .subscribe(success => {
-        this.indexStudentPassword = success;
-        console.log(this.indexStudentPassword);
-      }, error => {
-        console.log(error);
-      });
+    const cacheDefaultPassword = window.sessionStorage.getItem('cacheDefaultPassword');
+    if (cacheDefaultPassword === null) {
+      this.userService.getDefaultPassword()
+        .subscribe(success => {
+          window.sessionStorage.setItem('cacheDefaultPassword', success);
+          // this.indexStudentPassword = success;
+          console.log(this.indexStudentPassword);
+        }, error => {
+          console.log(error);
+        });
+    }
+    // @ts-ignore
+    this.indexStudentPassword = window.sessionStorage.getItem('cacheDefaultPassword');
   }
 
 
   onSubmit(formGroup: FormGroup): void {
+    let cacheDefaultPassword = window.sessionStorage.getItem('cacheDefaultPassword');
+    if (cacheDefaultPassword === null) {
+      cacheDefaultPassword = 'NoCache';
+    }
     console.log('onsubmit is called', this.formGroup.value);
     const student = {
       user: {
         name: this.formGroup.get('name')?.value,
         sex: this.formGroup.get('sex')?.value,
+        password: cacheDefaultPassword,
       } as User,
       clazz: {
         id: this.formGroup.get('clazz_id')?.value,
