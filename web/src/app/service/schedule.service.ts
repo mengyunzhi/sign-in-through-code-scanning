@@ -67,7 +67,7 @@ export class ScheduleService {
     return this.httpClient.get<Schedule>('/schedule/getById/id/' + id.toString());
   }
 
-  getDataForScheduleAdd(): Observable<{
+  getDataForScheduleAdd(userName: string): Observable<{
     courses: Course[],
     clazzes: Clazz[],
     term: Term,
@@ -83,6 +83,8 @@ export class ScheduleService {
       clazzIds: number[]
     }[]
   }> {
+    const httpParams = new HttpParams()
+      .append('userName', userName);
     return this.httpClient.get<{
       courses: Course[],
       clazzes: Clazz[],
@@ -98,7 +100,7 @@ export class ScheduleService {
         roomIds: number[],
         clazzIds: number[]
       }[]
-    }>('/schedule/getDataForScheduleAdd');
+    }>('/schedule/getDataForScheduleAdd', {params: httpParams});
   }
 
   getDataForScheduleEdit(schedule_id: number): Observable<{

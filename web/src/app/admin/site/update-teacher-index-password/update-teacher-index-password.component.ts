@@ -58,14 +58,6 @@ export class UpdateTeacherIndexPasswordComponent implements OnInit {
       } else {
         console.log('error');
       }
-      // console.log('像后台传firstNewPassword');
-      // this.userService.updateDefaultPassword(this.formGroup.get('firstNewPassword')?.value)
-      //   .subscribe(success => {
-      //     console.log(success);
-      //     this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
-      //   }, error => {
-      //     console.log(error);
-      //   });
     }
   }
 }

@@ -19,4 +19,9 @@ public interface TermService {
     void activate(@NotNull Long id);
 
     String termNameUnique(Long term_id, String name);
+
+    /**
+     * 获取当前学期，即已激活学期
+     */
+    Term getCurrentTerm();
 }

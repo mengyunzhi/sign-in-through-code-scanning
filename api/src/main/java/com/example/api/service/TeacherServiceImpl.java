@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 
 @Service
@@ -86,5 +87,13 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.getUser().setSex(sex);
         teacher.getUser().setNumber(number);
         return this.teacherRepository.save(teacher);
+    }
+
+    @Override
+    public Teacher getTeacherByUserName(String userName) {
+        Assert.notNull(userName, "userName不能为null");
+        List<Teacher> teachers = (List<Teacher>) this.teacherRepository.findAll();
+        Teacher teacher = this.teacherRepository.findTeacherByUserNumber(userName);
+        return teacher;
     }
 }
