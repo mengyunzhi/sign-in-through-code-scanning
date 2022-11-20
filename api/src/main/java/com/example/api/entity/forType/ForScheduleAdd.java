@@ -17,7 +17,7 @@ public class ForScheduleAdd {
     // 全部教室
     private List<Room> rooms = new ArrayList<>();
 
-    private List<DispatchForSchedule> dispatches;
+    private List<DispatchForSchedule> dispatches = new ArrayList<>();
 
 
     public List<Course> getCourses() {

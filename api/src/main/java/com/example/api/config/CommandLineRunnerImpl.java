@@ -101,7 +101,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         Room room2 = this.addRoom("testRoom2", 80L);
         List<Room> rooms = new ArrayList<>();
         rooms.add(room1);
-        rooms.add(room1);
+        rooms.add(room2);
         // 添加学期
         Term term1 = this.addTerm("testTerm1" , 1L);
         Term term2 = this.addTerm("testTerm2", 0L);

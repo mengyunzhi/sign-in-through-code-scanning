@@ -84,7 +84,7 @@ export class ScheduleService {
     }[]
   }> {
     const httpParams = new HttpParams()
-      .append('userName', userName);
+      .append('userNumber', userName);
     return this.httpClient.get<{
       courses: Course[],
       clazzes: Clazz[],

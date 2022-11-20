@@ -1,5 +1,6 @@
 package com.example.api.entity.forType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DispatchForSchedule {
@@ -8,8 +9,8 @@ public class DispatchForSchedule {
     private Long lesson;
     private Long schedule_id;
     private Long teacher_id;
-    private List<Long> roomIds;
-    private List<Long> clazzIds;
+    private List<Long> roomIds = new ArrayList<>();
+    private List<Long> clazzIds = new ArrayList<>();
 
 
     public Long getWeek() {
