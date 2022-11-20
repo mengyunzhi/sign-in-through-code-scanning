@@ -86,6 +86,12 @@ public class ClazzServiceImpl implements ClazzService {
         return (List<Clazz>) this.clazzRepository.findAll();
     }
 
+    @Override
+    public List<Long> clazzesHaveSelectCourse(Long course_id) {
+        Assert.notNull(course_id, "course_id不能为null");
+        return null;
+    }
+
 
     Clazz updateFields(Clazz newClazz, Clazz oldClazz) {
         oldClazz.setName(newClazz.getName());

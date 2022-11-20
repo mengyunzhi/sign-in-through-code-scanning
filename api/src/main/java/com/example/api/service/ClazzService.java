@@ -24,4 +24,6 @@ public interface ClazzService {
      * 班级选择组件请求数据
      */
     List<Clazz> getAll();
+
+    List<Long> clazzesHaveSelectCourse(@NotNull Long course_id);
 }

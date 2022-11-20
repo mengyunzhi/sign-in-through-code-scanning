@@ -96,5 +96,11 @@ public class ClazzController {
                                       @SortDefault.SortDefaults(@SortDefault(sort = "id", direction = Sort.Direction.DESC)) Pageable pageable) {
         return this.studentService.findAllBelongToClazz(clazzId, searchName, searchSno, pageable);
     }
+
+    @GetMapping("clazzesHaveSelectCourse/{course_id}")
+    public List<Long> clazzesHaveSelectCourse(@PathVariable Long course_id) {
+        return this.clazzService.clazzesHaveSelectCourse(course_id);
+    }
+
 }
 
