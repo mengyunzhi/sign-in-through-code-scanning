@@ -5,6 +5,7 @@ import com.example.api.entity.forType.ForScheduleAdd;
 import com.example.api.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class ScheduleController {
     }
 
     @GetMapping("page")
-    public List<Schedule> page(@RequestParam String course, @RequestParam String term, @RequestParam String currentUserNumber) {
-        return this.scheduleService.findAll(course, term, currentUserNumber);
+    public List<Schedule> page(@RequestParam String course, @RequestParam String term, @RequestParam String currentUserNumber, Pageable pageable) {
+        return this.scheduleService.findAll(course, term, currentUserNumber, pageable);
     }
 }
