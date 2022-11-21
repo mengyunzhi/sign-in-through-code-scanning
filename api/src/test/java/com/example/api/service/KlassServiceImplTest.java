@@ -23,11 +23,13 @@ public class KlassServiceImplTest {
     private ClazzService clazzService;
     private ClazzRepository clazzRepository;
     private StudentRepository studentRepository;
+    private ScheduleService scheduleService;
 
     public KlassServiceImplTest() {
         this.clazzRepository = Mockito.mock(ClazzRepository.class);
         this.studentRepository = Mockito.mock(StudentRepository.class);
-        this.clazzService = new ClazzServiceImpl(this.clazzRepository, studentRepository);
+        this.scheduleService = Mockito.mock(ScheduleService.class);
+        this.clazzService = new ClazzServiceImpl(this.clazzRepository, studentRepository, scheduleService);
     }
 
     @Test
