@@ -3,6 +3,7 @@ package com.example.api.entity;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Clazz {
@@ -20,6 +21,11 @@ public class Clazz {
 
     @ApiModelProperty("学制")
     private Short length;
+
+    @ManyToMany
+    @ApiModelProperty("对应排课")
+    private List<Schedule> schedules;
+
 
     // 班级人数，非数据库属性
     @Transient
@@ -63,5 +69,13 @@ public class Clazz {
 
     public void setNumber_of_students(Long number_of_students) {
         this.number_of_students = number_of_students;
+    }
+
+    public List<Schedule> getSchedules() {
+        return schedules;
+    }
+
+    public void setSchedules(List<Schedule> schedules) {
+        this.schedules = schedules;
     }
 }

@@ -18,4 +18,6 @@ public interface TeacherService {
     void updatePassword(@NotNull Long userId, @NotNull String password);
 
     Teacher update(@NotNull Long userId, @NotNull String name, @NotNull Short sex, @NotNull String number);
+
+    Teacher getTeacherByUserName(@NotNull String userName);
 }

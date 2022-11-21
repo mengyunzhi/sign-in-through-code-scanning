@@ -86,10 +86,10 @@ export class ScheduleAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.initCourseTimes();
+    const userNumber = window.sessionStorage.getItem('userNumber') as string;
     // 向后台请求数据
-    this.scheduleService.getDataForScheduleAdd()
+    this.scheduleService.getDataForScheduleAdd(userNumber)
       .subscribe(data => {
         console.log('data:', data);
         this.courses = data.courses;

@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class CommandLineRunnerImpl implements CommandLineRunner {
 
@@ -22,6 +25,10 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     private final ClazzRepository clazzRepository;
     private final RoomRepository roomRepository;
     private final TermRepository termRepository;
+    private final CourseRepository courseRepository;
+    private final ScheduleRepository scheduleRepository;
+    private final DispatchRepository dispatchRepository;
+
     @Autowired
     public CommandLineRunnerImpl(UserRepository userRepository,
                                  UserService userService,
@@ -30,7 +37,10 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
                                  StudentRepository studentRepository,
                                  ClazzRepository clazzRepository,
                                  RoomRepository roomRepository,
-                                 TermRepository termRepository) {
+                                 TermRepository termRepository,
+                                 CourseRepository courseRepository,
+                                 ScheduleRepository scheduleRepository,
+                                 DispatchRepository dispatchRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.adminRepository = adminRepository;
@@ -39,6 +49,9 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         this.clazzRepository = clazzRepository;
         this.roomRepository = roomRepository;
         this.termRepository = termRepository;
+        this.courseRepository = courseRepository;
+        this.scheduleRepository = scheduleRepository;
+        this.dispatchRepository = dispatchRepository;
     }
 
     @Override
@@ -72,64 +85,99 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
 
     private void forTest() {
         // 添加教师
-        User user2 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000000", "yunzhi", "教师");
-        this.addTeacher(user2);
+        User uTeacher1 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000000", "yunzhi", "教师");
+        Teacher teacher1 = this.addTeacher(uTeacher1);
         // 添加班级
-        Clazz clazz = this.addClazz();
-        User user = this.getUser(StaticVariable.ROLE_STUDENT, "111111", "yunzhi", "学生");
+        Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L);
+        Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L);
+        List<Clazz> clazzes = new ArrayList<>();
+        clazzes.add(clazz1);
+        clazzes.add(clazz2);
         // 添加学生，该学生属于上面的班级
-        this.addStudent(user, clazz, "111111", StaticVariable.STATE_TRUE);
+        User uStudent1 = this.getUser(StaticVariable.ROLE_STUDENT, "111111", "yunzhi", "学生");
+        Student student1 = this.addStudent(uStudent1, clazz1, "111111", StaticVariable.STATE_TRUE);
         // 添加教室
-        this.addRoom("testRoom", 40L);
+        Room room1 = this.addRoom("testRoom1", 40L);
+        Room room2 = this.addRoom("testRoom2", 80L);
+        List<Room> rooms = new ArrayList<>();
+        rooms.add(room1);
+        rooms.add(room2);
         // 添加学期
-        for (int i = 0; i  < 3; i++) {
-            if (i == 0 ) {
-                this.addTerm("testTerm" + (i + 1), 1L);
-            } else {
-                this.addTerm("testTerm" + (i + 1), 0L);
-            }
-
-        }
+        Term term1 = this.addTerm("testTerm1" , 1L);
+        Term term2 = this.addTerm("testTerm2", 0L);
+        Term term3 = this.addTerm("testTerm3", 0L);
+        // 添加课程
+        Course course1 = this.addCourse("testCourse", 40L);
+        // 添加排课(schedule)
+        Schedule schedule1 = this.addSchedule(teacher1, term1, course1, clazzes);
+        // 添加调度(dispatch)
+        Dispatch dispatch = this.addDispatch(schedule1, 0L, 0L, 0L, rooms);
     }
 
-    private void addTerm(String termName, Long state) {
+    private Dispatch addDispatch(Schedule schedule, Long week, Long day, Long lesson, List<Room> rooms) {
+        Dispatch dispatch = new Dispatch();
+        dispatch.setSchedule(schedule);
+        dispatch.setWeek(week);
+        dispatch.setDay(day);
+        dispatch.setLesson(lesson);
+        dispatch.setRooms(rooms);
+        return this.dispatchRepository.save(dispatch);
+    }
+
+    private Schedule addSchedule(Teacher teacher, Term term, Course course, List<Clazz> clazzes) {
+        Schedule schedule = new Schedule();
+        schedule.setTeacher(teacher);
+        schedule.setTerm(term);
+        schedule.setCourse(course);
+        schedule.setClazzes(clazzes);
+        return this.scheduleRepository.save(schedule);
+    }
+
+    private Course addCourse(String courseName, Long lesson) {
+        Course course = new Course();
+        course.setLesson(lesson);
+        course.setName(courseName);
+        return this.courseRepository.save(course);
+    }
+
+    private Term addTerm(String termName, Long state) {
         Term term = new Term();
         term.setName(termName);
         term.setStartTime(1667260800L);
         term.setEndTime(1669852800L);
         term.setState(state);
-        this.termRepository.save(term);
+        return this.termRepository.save(term);
     }
 
-    private void addRoom(String roomName, Long capacity) {
+    private Room addRoom(String roomName, Long capacity) {
         Room room = new Room();
         room.setName(roomName);
         room.setCapacity(capacity);
-        this.roomRepository.save(room);
+        return this.roomRepository.save(room);
     }
 
-    private void addAdmin(User user) {
+    private Admin addAdmin(User user) {
         this.userService.save(user);
         Admin admin = new Admin();
         admin.setUser(user);
-        this.adminRepository.save(admin);
+        return this.adminRepository.save(admin);
     }
 
-    private void addTeacher(User user) {
+    private Teacher addTeacher(User user) {
         this.userService.save(user);
         Teacher teacher = new Teacher();
         teacher.setUser(user);
-        this.teacherRepository.save(teacher);
+        return this.teacherRepository.save(teacher);
     }
 
-    private void addStudent(User user, Clazz clazz, String sno, Long state) {
+    private Student addStudent(User user, Clazz clazz, String sno, Long state) {
         this.userService.save(user);
         Student student = new Student();
         student.setUser(user);
         student.setSno(sno);
         student.setState(state);
         student.setClazz(clazz);
-        this.studentRepository.save(student);
+        return this.studentRepository.save(student);
     }
 
     private User getUser(Short role, String number, String password, String name) {
@@ -141,12 +189,11 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         return user;
     }
 
-    private Clazz addClazz() {
+    private Clazz addClazz(String name, Short length, Long entranceDate) {
         Clazz clazz = new Clazz();
-        clazz.setName("testClazz");
-        clazz.setLength((short)4);
-        clazz.setEntrance_date(0L);
-        logger.info("已添加初始化班级");
+        clazz.setName(name);
+        clazz.setLength(length);
+        clazz.setEntrance_date(entranceDate);
         return this.clazzRepository.save(clazz);
     }
 

@@ -1,10 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Page} from '../../../entity/page';
 import {Schedule} from '../../../entity/schedule';
-import {HttpClient, HttpParams} from '@angular/common/http';
 import {ScheduleService} from '../../../service/schedule.service';
-import {Confirm, Notify} from 'notiflix';
-import {ScheduleKlass} from '../../../entity/schedule_klass';
 import {Clazz} from '../../../entity/clazz';
 import {CommonService} from '../../../service/common.service';
 import {FormControl, FormGroup} from '@angular/forms';

@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+import com.example.api.config.StaticVariable;
 import com.example.api.entity.Term;
 import com.example.api.repository.TermRepository;
 import com.sun.istack.NotNull;
@@ -99,5 +100,10 @@ public class TermServiceImpl implements TermService{
             return "名称已存在";
         }
         return "名称合理";
+    }
+
+    @Override
+    public Term getCurrentTerm() {
+        return this.termRepository.findTermByState(StaticVariable.STATE_TRUE);
     }
 }

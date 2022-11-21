@@ -21,4 +21,7 @@ public interface TeacherRepository extends PagingAndSortingRepository<Teacher, L
 
     @Transactional
     void deleteByUserId(Long userId);
+
+    @Transactional
+    Teacher findTeacherByUserNumber(String userNumber);
 }

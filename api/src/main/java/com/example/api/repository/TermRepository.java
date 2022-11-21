@@ -19,4 +19,6 @@ public interface TermRepository  extends PagingAndSortingRepository<Term, Long>,
     };
 
     Term findByName(String name);
+
+    Term findTermByState(Long state);
 }
