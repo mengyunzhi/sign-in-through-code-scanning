@@ -137,6 +137,7 @@ export class ScheduleService {
           const content: {schedule: Schedule, clazzes: Clazz[]}[] = [];
           const schedules = data;
           console.log('service schedule', schedules);
+          // tslint:disable-next-line:prefer-for-of
           for (let i = 0; i < schedules.length; i++) {
             content.push({
               schedule: {
@@ -152,7 +153,7 @@ export class ScheduleService {
                   name: schedules[i].teacher.name
                 }
               } as Schedule,
-              clazzes: schedules[i].clazzes[i].clazzes as Clazz[]
+              clazzes: schedules[i].clazzes as Clazz[]
             });
           }
           return new Page<{schedule: Schedule, clazzes: Clazz[]}>({
