@@ -5,6 +5,7 @@ import com.example.api.entity.forType.DispatchForSchedule;
 import com.example.api.entity.forType.ForScheduleAdd;
 import com.example.api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,6 +14,9 @@ import java.util.List;
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
+    private TeacherRepository teacherRepository;
+    private UserRepository userRepository;
+    private  TermRepository termRepository;
     private ScheduleRepository scheduleRepository;
     private CourseRepository courseRepository;
     private ClazzRepository clazzRepository;
@@ -28,6 +32,9 @@ public class ScheduleServiceImpl implements ScheduleService {
                         TermService termService,
                         TeacherService teacherService,
                         RoomRepository roomRepository,
+                        TermRepository termRepository,
+                        UserRepository userRepository,
+                        TeacherRepository teacherRepository,
                         DispatchRepository dispatchRepository) {
         this.scheduleRepository = scheduleRepository;
         this.courseRepository = courseRepository;
@@ -35,6 +42,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         this.termService = termService;
         this.teacherService = teacherService;
         this.roomRepository = roomRepository;
+        this.termRepository = termRepository;
+        this.userRepository = userRepository;
+        this.teacherRepository = teacherRepository;
         this.dispatchRepository = dispatchRepository;
     }
 
@@ -63,6 +73,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     public List<Schedule> clazzesHaveSelectCourse(Long course_id) {
         Term term = this.termService.getCurrentTerm();
         return this.scheduleRepository.findSchedulesByCourse_IdAndTermId(course_id, term.getId());
+    }
+
+    @Override
+    public List<Schedule> findAll(String searchCourseName, String termName, String currentUserNumber) {
+        Term term = this.termRepository.findByName(termName);
+        User user = this.userRepository.findByNumber(currentUserNumber).get();
+        Teacher teacher = this.teacherRepository.findByUserId(user.getId());
+        return this.scheduleRepository.findSchedulesByTeacherIdAndTermId(teacher.getId(), term.getId());
     }
 
     private List<DispatchForSchedule> getDispatchesForScheduleAdd(Term term) {
