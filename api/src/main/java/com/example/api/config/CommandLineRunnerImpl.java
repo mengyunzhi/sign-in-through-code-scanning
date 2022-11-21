@@ -90,6 +90,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         // 添加班级
         Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L);
         Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L);
+        Clazz clazz3 = this.addClazz("testclazz3", (short) 8, 1000000000L);
         List<Clazz> clazzes = new ArrayList<>();
         clazzes.add(clazz1);
         clazzes.add(clazz2);

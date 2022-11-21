@@ -21,7 +21,7 @@ export class ClazzService {
   }
 
   clazzesHaveSelectCourse(course_id: number): Observable<number[]> {
-    return this.httpClient.get<number[]>('/clazz/clazzesHaveSelectCourse/course_id/' + course_id.toString());
+    return this.httpClient.get<number[]>('/clazz/clazzesHaveSelectCourse/' + course_id.toString());
   }
 
   clazzMembers(clazz_id: number, page: number, size: number, param: {name?: string, sno?: string}): Observable<Page<Student>> {

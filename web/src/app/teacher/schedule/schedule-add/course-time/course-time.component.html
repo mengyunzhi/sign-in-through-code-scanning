@@ -27,12 +27,12 @@
           <div class="col-sm-6">
             <div class="row" *ngFor="let week of weeks; index as index">
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <input type="checkBox" (click)="onWeekChange(week)"  [disabled]="isWeekDisabled(index)" [id]="day.toString() + lesson.toString() + week.toString()">&nbsp;<label [for]="day.toString() + lesson.toString() + week.toString()">第{{ week + 1 }}周</label>
+              <input type="checkBox" (click)="onWeekChange(week)"  [disabled]="isWeekDisabled(index)" [id]="'week' + day.toString() + lesson.toString() + week.toString()">&nbsp;<label [for]="'week' + day.toString() + lesson.toString() + week.toString()">第{{ week + 1 }}周</label>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="row" *ngFor="let room of rooms; index as index">
-              <input type="checkBox" (click)="onRoomChange(room.id)"  [disabled]="isRoomDisabled(room.id)" [id]="day.toString() + lesson.toString() + room.id.toString()">&nbsp;<label [for]="day.toString() + lesson.toString() + room.id.toString()">{{room.name}}</label>
+              <input type="checkBox" (click)="onRoomChange(room.id)"  [disabled]="isRoomDisabled(room.id)" [id]="'room' + day.toString() + lesson.toString() + room.id.toString()">&nbsp;<label [for]="'room' + day.toString() + lesson.toString() + room.id.toString()">{{room.name}}</label>
             </div>
           </div>
         </div>
