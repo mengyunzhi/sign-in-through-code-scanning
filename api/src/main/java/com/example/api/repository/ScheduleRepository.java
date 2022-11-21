@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ScheduleRepository extends PagingAndSortingRepository<Schedule, Long>, JpaSpecificationExecutor {
     List<Schedule> findSchedulesByTerm_Id(Long id);
+
+    List<Schedule> findSchedulesByCourse_IdAndTermId(Long courseId, Long termId);
 }

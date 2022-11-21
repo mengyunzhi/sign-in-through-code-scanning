@@ -59,6 +59,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         return forScheduleAdd;
     }
 
+    @Override
+    public List<Schedule> clazzesHaveSelectCourse(Long course_id) {
+        Term term = this.termService.getCurrentTerm();
+        return this.scheduleRepository.findSchedulesByCourse_IdAndTermId(course_id, term.getId());
+    }
+
     private List<DispatchForSchedule> getDispatchesForScheduleAdd(Term term) {
         List<Schedule> schedules = this.scheduleRepository.findSchedulesByTerm_Id(term.getId());
         List<Dispatch> dispatches = new ArrayList<>();

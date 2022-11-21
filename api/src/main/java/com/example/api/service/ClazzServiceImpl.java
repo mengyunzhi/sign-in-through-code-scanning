@@ -1,6 +1,7 @@
 package com.example.api.service;
 
 import com.example.api.entity.Clazz;
+import com.example.api.entity.Schedule;
 import com.example.api.repository.ClazzRepository;
 import com.example.api.repository.StudentRepository;
 import com.example.api.repository.specs.StudentSpecs;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,12 +21,15 @@ public class ClazzServiceImpl implements ClazzService {
 
     private final ClazzRepository clazzRepository;
     private final StudentRepository studentRepository;
+    private final ScheduleService scheduleService;
 
     @Autowired
     public ClazzServiceImpl(ClazzRepository clazzRepository,
-                            StudentRepository studentRepository) {
+                            StudentRepository studentRepository,
+                            ScheduleService scheduleService) {
         this.clazzRepository = clazzRepository;
         this.studentRepository = studentRepository;
+        this.scheduleService = scheduleService;
     }
 
     @Override
@@ -89,7 +94,22 @@ public class ClazzServiceImpl implements ClazzService {
     @Override
     public List<Long> clazzesHaveSelectCourse(Long course_id) {
         Assert.notNull(course_id, "course_id不能为null");
-        return null;
+        List<Schedule> schedules = this.scheduleService.clazzesHaveSelectCourse(course_id);
+        List<Long> clazzIds = this.getClazzIdsBySchedules(schedules);
+        return clazzIds;
+    }
+
+    private List<Long> getClazzIdsBySchedules(List<Schedule> schedules) {
+        List<Long> results = new ArrayList<>();
+        for (Schedule schedule:
+             schedules) {
+            schedule.getClazzes().forEach(clazz -> {
+                if (!results.contains(clazz.getId())) {
+                    results.add(clazz.getId());
+                }
+            });
+        }
+        return results;
     }
 
 
