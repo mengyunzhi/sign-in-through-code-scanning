@@ -19,6 +19,9 @@ public class Term {
     @Column(nullable = false)
     private String name = "";
 
+    /**
+     * 一般接受到前台的就是时间戳
+     * */
     @ApiModelProperty("学期开始时间")
     @JsonProperty("start_time")
     private Long start_time;

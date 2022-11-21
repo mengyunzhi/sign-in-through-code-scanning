@@ -41,9 +41,6 @@ export class CourseIndexComponent implements OnInit {
   }
 
   loadByPage(page: number = 0, course: {name: string; lesson: string}): void {
-    console.log('loadByPage', page);
-    console.log('333');
-    console.log('loadByPage', course);
     this.courseService.page({page, size: this.size}, course)
       .subscribe(pageData => {
         console.log('请求成功---', pageData);

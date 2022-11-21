@@ -22,7 +22,6 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     private final ClazzRepository clazzRepository;
     private final RoomRepository roomRepository;
     private final TermRepository termRepository;
-
     @Autowired
     public CommandLineRunnerImpl(UserRepository userRepository,
                                  UserService userService,
@@ -72,16 +71,17 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     }
 
     private void forTest() {
+        // 添加教师
         User user2 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000000", "yunzhi", "教师");
         this.addTeacher(user2);
-
+        // 添加班级
         Clazz clazz = this.addClazz();
         User user = this.getUser(StaticVariable.ROLE_STUDENT, "111111", "yunzhi", "学生");
-
+        // 添加学生，该学生属于上面的班级
         this.addStudent(user, clazz, "111111", StaticVariable.STATE_TRUE);
-
+        // 添加教室
         this.addRoom("testRoom", 40L);
-
+        // 添加学期
         for (int i = 0; i  < 3; i++) {
             if (i == 0 ) {
                 this.addTerm("testTerm" + (i + 1), 1L);

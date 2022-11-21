@@ -39,9 +39,6 @@ export class CourseAddComponent implements OnInit {
       name: string,
       lesson: number
     };
-    console.log('111');
-    console.log(course);
-    console.log('222');
     this.courseService.add(course)
       .subscribe(success => {
           console.log('添加成功', success);

@@ -24,7 +24,7 @@ export class StudentService {
       .append('clazzName', param.clazz ? param.clazz : '')
       .append('studentName', param.name ? param.name : '')
       .append('sno', param.sno ? param.sno : '');
-    return this.httpClient.get<{numberOfElements: number, content: Student[]}>('/student/page', {params: httpParams})
+    return this.httpClient.get<{totalElements: number, content: Student[]}>('/student/page', {params: httpParams})
       .pipe(map(data => {
         console.log('student/page 后台数据：', data);
         const content = data.content;
@@ -32,7 +32,7 @@ export class StudentService {
           content,
           number: page,
           size,
-          numberOfElements: data.numberOfElements
+          numberOfElements: data.totalElements
         });
       }));
   }
