@@ -3,6 +3,7 @@ package com.example.api.entity;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,7 @@ public class Dispatch {
 
     @ManyToOne
     @ApiModelProperty("对应排课")
-    private Schedule schedule;
+    private Schedule schedule = new Schedule();
 
     @ApiModelProperty("对应周")
     private Long week;
@@ -24,7 +25,7 @@ public class Dispatch {
     private Long lesson;
     @ManyToMany
     @ApiModelProperty("对应教室")
-    private List<Room> rooms;
+    private List<Room> rooms = new ArrayList<>();
 
     public Long getId() {
         return id;

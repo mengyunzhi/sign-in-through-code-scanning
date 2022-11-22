@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface DispatchRepository extends PagingAndSortingRepository<Dispatch, Long>, JpaSpecificationExecutor {
 
-    Dispatch findDispatchByScheduleId(Long scheduleId);
+    List<Dispatch> findDispatchesByScheduleId(Long scheduleId);
 }

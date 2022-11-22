@@ -91,6 +91,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L);
         Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L);
         Clazz clazz3 = this.addClazz("testclazz3", (short) 8, 1000000000L);
+        Clazz clazz4 = this.addClazz("testclazz4", (short) 8, 100000000000L);
         List<Clazz> clazzes = new ArrayList<>();
         clazzes.add(clazz1);
         clazzes.add(clazz2);

@@ -126,45 +126,22 @@ export class ScheduleService {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())
-      .append('course', query.course)
-      .append('term', query.term);
+      .append('courseName', query.course)
+      .append('termName', query.term);
     return this.httpClient.get<{
-      length: number,
-      content: {
-        schedules: {id: number}[],
-        clazzes: {clazzes: Clazz[]}[],
-        teachers: {id: number, name: string}[],
-        terms: {id: number, name: string}[],
-        courses: {id: number, name: string}[],
-      }}>('/schedule/page', {params: httpParams})
+      totalElements: number,
+      content: Schedule[]}>('/schedule/page', {params: httpParams})
       .pipe(map(data => {
           console.warn('page service', data);
-          const content: {schedule: Schedule, clazzes: Clazz[]}[] = [];
-          const arrayGroup = data.content;
-          console.log('service schedule', data);
-          for (let i = 0; i < arrayGroup.schedules.length; i++) {
-            content.push({
-              schedule: {
-                id: arrayGroup.schedules[i].id,
-                course: {
-                  id: arrayGroup.courses[i].id,
-                  name: arrayGroup.courses[i].name
-                } as Course,
-                term: {
-                  name: arrayGroup.terms[i].name
-                } as Term,
-                teacher: {
-                  name: arrayGroup.teachers[i].name
-                }
-              } as Schedule,
-              clazzes: arrayGroup.clazzes[i].clazzes as Clazz[]
-            });
-          }
+          const content = [] as {schedule: Schedule, clazzes: Clazz[]}[];
+          data.content.forEach((schedule: Schedule) => {
+            content.push({schedule: schedule as Schedule, clazzes: schedule.clazzes});
+          });
           return new Page<{schedule: Schedule, clazzes: Clazz[]}>({
             content,
             number: page,
             size,
-            numberOfElements: data.length
+            numberOfElements: data.totalElements
           });
         }));
   }

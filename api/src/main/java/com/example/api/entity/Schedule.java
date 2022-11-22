@@ -3,6 +3,7 @@ package com.example.api.entity;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,19 +15,19 @@ public class Schedule {
 
     @ManyToOne
     @ApiModelProperty("该排课对应教师")
-    private Teacher teacher;
+    private Teacher teacher = new Teacher();
 
     @ManyToOne
     @ApiModelProperty("该排课对应学期")
-    private Term term;
+    private Term term = new Term();
 
     @ManyToOne
     @ApiModelProperty("该排课对应课程")
-    private Course course;
+    private Course course = new Course();
 
     @ManyToMany
     @ApiModelProperty("该排课对应班级")
-    private List<Clazz> clazzes;
+    private List<Clazz> clazzes = new ArrayList<>();
 
     public Long getId() {
         return id;
