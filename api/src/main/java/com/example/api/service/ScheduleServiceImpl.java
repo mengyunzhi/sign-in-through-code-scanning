@@ -4,9 +4,13 @@ import com.example.api.entity.*;
 import com.example.api.entity.forType.DispatchForSchedule;
 import com.example.api.entity.forType.ForScheduleAdd;
 import com.example.api.repository.*;
+import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +84,18 @@ public class ScheduleServiceImpl implements ScheduleService {
         Term term = this.termRepository.findByName(termName);
         User user = this.userRepository.findByNumber(currentUserNumber).get();
         Teacher teacher = this.teacherRepository.findByUserId(user.getId());
-        return this.scheduleRepository.findSchedulesByTeacherIdAndTermId(teacher.getId(), term.getId());
+        List<Schedule> schedules = this.scheduleRepository.findSchedulesByTeacherIdAndTermId(teacher.getId(), term.getId());
+        List<Schedule> newSchedules = new ArrayList<>();
+        if (searchCourseName != null && !searchCourseName.equals("")) {
+            for (int i = 0; i < schedules.size(); i++) {
+                if (schedules.get(i).getCourse().getName().contains(searchCourseName)) {
+                    newSchedules.add(schedules.get(i));
+                }
+            }
+        } else {
+            newSchedules = schedules;
+        }
+        return newSchedules;
     }
 
     private List<DispatchForSchedule> getDispatchesForScheduleAdd(Term term) {
