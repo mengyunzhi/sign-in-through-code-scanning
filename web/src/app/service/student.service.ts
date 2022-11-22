@@ -6,13 +6,16 @@ import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {User} from '../entity/user';
 import {Clazz} from '../entity/clazz';
+import {ClazzService} from './clazz.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
+  content = [] as Student[];
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private clazzService: ClazzService) {
   }
 
 
@@ -42,29 +45,50 @@ export class StudentService {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())
+      .append('ScheduleId', schedule_id.toString())
       .append('clazz', query.clazz)
       .append('name', query.name)
       .append('sno', query.sno);
-    return this.httpClient.get<{length: number, content: T[]}>('/student/pageByScheduleId/schedule_id/' + schedule_id, {params: httpParams})
+    return this.httpClient.get<any>('/student/pageByScheduleId', {params: httpParams})
       .pipe(map(data => {
         console.log('studentService pageByScheduleId', data);
-        const content = [] as Student[];
-        for (const student of data.content) {
-          content.push({
-            id: student.id,
-            sno: student.sno.toString(),
-            user: {
-              id: student.user_id,
-              name: student.name,
-              number: student.number,
-              sex: student.sex
-            } as User,
-            clazz: {
-              id: student.clazz_id,
-              name: student.clazz_name
-            }
-          } as Student);
+        console.log('studentService pageByScheduleId', data.clazzes[0].id);
+        this.content.splice(0, this.content.length);
+
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < data.clazzes.length; i++) {
+          let students: Student[] = [];
+          const param = {name: query.name, sno: query.sno};
+          this.clazzService.clazzMembers(data.clazzes[i].id, page, size, param)
+            .subscribe(studentPageData => {
+              console.log('studentPageDataContent', studentPageData.content);
+              students = studentPageData.content;
+              for (const student of students) {
+                this.content.push({
+                  id: student.id,
+                  sno: student.sno.toString(),
+                  user: {
+                    id: student.user.id,
+                    name: student.user.name,
+                    number: student.number,
+                    sex: student.user.sex
+                  } as User,
+                  clazz: {
+                    id: student.clazz.id,
+                    name: student.clazz.name
+                  }
+                } as Student);
+              }
+            });
         }
+
+
+        let content = [] as Student[];
+        content = this.content;
+
+
+        console.log('returnContent', content);
+
         return new Page<Student>({
           content,
           number: page,

@@ -51,7 +51,7 @@ export class TaskIndexComponent implements OnInit {
         console.log('task', pagedata);
         this.page = page;
         this.pageData = pagedata;
-        console.log('page', this.page);
+        // console.log('page', this.page);
 
         const pageDataContent: { schedule: Schedule; clazzes: Clazz[]; }[] = [];
 
