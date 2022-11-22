@@ -45,7 +45,8 @@ export class TaskIndexComponent implements OnInit {
   }
 
   loadByPage(page: number = 0): void {
-    this.scheduleService.page(page, this.size, this.queryGroup.value)
+    // @ts-ignore
+    this.scheduleService.page(page, this.size, this.queryGroup.value, window.sessionStorage.getItem('userNumber'))
       .subscribe(pagedata => {
         console.log('task', pagedata);
         this.page = page;

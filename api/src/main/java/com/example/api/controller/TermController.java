@@ -82,4 +82,12 @@ public class TermController {
     public String termNameUnique(@RequestParam Long id, @RequestParam String name) {
         return this.termService.termNameUnique(id, name);
     }
+
+    /**
+     * 获取当前已激活学期
+     */
+    @GetMapping("getCurrentTerm")
+    public Term getCurrentTerm() {
+        return this.termService.getCurrentTerm();
+    }
 }

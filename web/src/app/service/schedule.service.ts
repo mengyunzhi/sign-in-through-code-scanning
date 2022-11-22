@@ -122,42 +122,37 @@ export class ScheduleService {
     return this.httpClient.get<any>('/schedule/getDataForScheduleEdit/schedule_id/' + schedule_id.toString());
   }
 
-  page(page: number, size: number, query: {course: string, term: string}): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
+  // tslint:disable-next-line:max-line-length
+  page(page: number, size: number, query: {course: string, term: string}, currentUserNumber: string): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
+    console.log('service');
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())
+      .append('currentUserNumber', currentUserNumber)
       .append('course', query.course)
       .append('term', query.term);
-    return this.httpClient.get<{
-      length: number,
-      content: {
-        schedules: {id: number}[],
-        clazzes: {clazzes: Clazz[]}[],
-        teachers: {id: number, name: string}[],
-        terms: {id: number, name: string}[],
-        courses: {id: number, name: string}[],
-      }}>('/schedule/page', {params: httpParams})
+    return this.httpClient.get<any>('/schedule/page', {params: httpParams})
       .pipe(map(data => {
           console.warn('page service', data);
           const content: {schedule: Schedule, clazzes: Clazz[]}[] = [];
-          const arrayGroup = data.content;
-          console.log('service schedule', data);
-          for (let i = 0; i < arrayGroup.schedules.length; i++) {
+          const schedules = data;
+          console.log('service schedule', schedules);
+          for (let i = 0; i < schedules.length; i++) {
             content.push({
               schedule: {
-                id: arrayGroup.schedules[i].id,
+                id: schedules[i].id,
                 course: {
-                  id: arrayGroup.courses[i].id,
-                  name: arrayGroup.courses[i].name
+                  id: schedules[i].course.id,
+                  name: schedules[i].course.name
                 } as Course,
                 term: {
-                  name: arrayGroup.terms[i].name
+                  name: schedules[i].term.name
                 } as Term,
                 teacher: {
-                  name: arrayGroup.teachers[i].name
+                  name: schedules[i].teacher.name
                 }
               } as Schedule,
-              clazzes: arrayGroup.clazzes[i].clazzes as Clazz[]
+              clazzes: schedules[i].clazzes[i].clazzes as Clazz[]
             });
           }
           return new Page<{schedule: Schedule, clazzes: Clazz[]}>({
