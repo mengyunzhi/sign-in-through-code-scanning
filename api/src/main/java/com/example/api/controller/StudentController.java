@@ -1,6 +1,7 @@
 package com.example.api.controller;
 
 
+import com.example.api.entity.Schedule;
 import com.example.api.entity.Student;
 import com.example.api.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("student")
@@ -84,5 +88,10 @@ public class StudentController {
     public String snoUnique(@RequestParam(required = false) Long userId,
                             @RequestParam String sno) {
         return this.studentService.snoUniqueByUserId(userId, sno);
+    }
+
+    @GetMapping("pageByScheduleId")
+    public Optional<Schedule> pageByScheduleId(@RequestParam String ScheduleId) {
+        return  this.studentService.pageByScheduleId(ScheduleId);
     }
 }

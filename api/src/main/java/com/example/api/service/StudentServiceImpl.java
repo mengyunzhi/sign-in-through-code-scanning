@@ -2,8 +2,10 @@ package com.example.api.service;
 
 import com.example.api.config.StaticVariable;
 import com.example.api.entity.Clazz;
+import com.example.api.entity.Schedule;
 import com.example.api.entity.Student;
 import com.example.api.entity.User;
+import com.example.api.repository.ScheduleRepository;
 import com.example.api.repository.StudentRepository;
 import com.example.api.repository.specs.StudentSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,21 +16,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 
     private StudentRepository studentRepository;
+    private ScheduleRepository scheduleRepository;
     private UserService userService;
     private ClazzService clazzService;
 
     @Autowired
     StudentServiceImpl(StudentRepository studentRepository,
                        UserService userService,
-                       ClazzService clazzService) {
+                       ClazzService clazzService,
+                       ScheduleRepository scheduleRepository) {
         this.studentRepository = studentRepository;
         this.userService = userService;
         this.clazzService = clazzService;
+        this.scheduleRepository = scheduleRepository;
     }
 
     @Override
@@ -121,5 +127,11 @@ public class StudentServiceImpl implements StudentService {
                 .and(StudentSpecs.relateUserByStudentName(searchName))
                 .and(StudentSpecs.containSno(searchSno));
         return this.studentRepository.findAll(specification, pageable);
+    }
+
+    @Override
+    public Optional<Schedule> pageByScheduleId(String scheduleId) {
+        Optional<Schedule> schedule = this.scheduleRepository.findById(Long.valueOf(scheduleId));
+        return schedule;
     }
 }
