@@ -27,7 +27,7 @@ public class ScheduleController {
     }
 
     @GetMapping("page")
-    public List<Schedule> page(@RequestParam String course, @RequestParam String term, @RequestParam String currentUserNumber, Pageable pageable) {
-        return this.scheduleService.findAll(course, term, currentUserNumber, pageable);
+    public List<Schedule> page(@RequestParam String course, @RequestParam String term, @RequestParam String currentUserNumber) {
+        return this.scheduleService.findAll(course, term, currentUserNumber);
     }
 }

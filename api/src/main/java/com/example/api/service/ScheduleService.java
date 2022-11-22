@@ -14,5 +14,5 @@ public interface ScheduleService {
 
     List<Schedule> clazzesHaveSelectCourse(Long course_id);
 
-    List<Schedule> findAll(String course, String term, String currentUserNumber, @NotNull Pageable pageable);
+    List<Schedule> findAll(String course, String term, String currentUserNumber);
 }

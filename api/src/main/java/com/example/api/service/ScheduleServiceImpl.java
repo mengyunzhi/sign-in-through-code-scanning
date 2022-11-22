@@ -80,7 +80,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<Schedule> findAll(String searchCourseName, String termName, String currentUserNumber, @NotNull Pageable pageable) {
+    public List<Schedule> findAll(String searchCourseName, String termName, String currentUserNumber) {
         Term term = this.termRepository.findByName(termName);
         User user = this.userRepository.findByNumber(currentUserNumber).get();
         Teacher teacher = this.teacherRepository.findByUserId(user.getId());
@@ -96,9 +96,6 @@ public class ScheduleServiceImpl implements ScheduleService {
             newSchedules = schedules;
         }
         return newSchedules;
-//        return this.scheduleRepository.findAll((Specification) schedules, pageable);
-//        Assert.notNull(pageable, "pageable不能为null");
-//        return this.scheduleRepository.findAll(searchCourseName, pageable);
     }
 
     private List<DispatchForSchedule> getDispatchesForScheduleAdd(Term term) {
