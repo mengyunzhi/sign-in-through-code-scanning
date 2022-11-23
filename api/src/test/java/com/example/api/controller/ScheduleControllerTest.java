@@ -27,7 +27,7 @@ class ScheduleControllerTest {
 
     @Test
     void scheduleController() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/schedule/getDataForScheduleAdd")
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/schedule/page")
                 .param("userNumber", "teacher"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

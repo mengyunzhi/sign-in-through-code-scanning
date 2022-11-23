@@ -1,4 +1,4 @@
-package com.example.api.entity.forType;
+package com.example.api.entity.forType.forScheduleAdd;
 
 import java.util.ArrayList;
 import java.util.List;

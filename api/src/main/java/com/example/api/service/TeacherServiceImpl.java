@@ -96,4 +96,10 @@ public class TeacherServiceImpl implements TeacherService {
         Teacher teacher = this.teacherRepository.findTeacherByUserNumber(userName);
         return teacher;
     }
+
+    @Override
+    public Teacher getByTeacherId(Long teacherId) {
+        return this.teacherRepository.findById(teacherId)
+                .orElseThrow(() -> new EntityNotFoundException("未找到相关教师"));
+    }
 }

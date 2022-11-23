@@ -128,39 +128,23 @@ export class ScheduleService {
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())
-      .append('currentUserNumber', currentUserNumber)
-      .append('course', query.course)
-      .append('term', query.term);
-    return this.httpClient.get<any>('/schedule/page', {params: httpParams})
+      .append('courseName', query.course)
+      .append('userNumber', currentUserNumber)
+      .append('termName', query.term);
+    return this.httpClient.get<{
+      totalElements: number,
+      content: Schedule[]}>('/schedule/page', {params: httpParams})
       .pipe(map(data => {
           console.warn('page service', data);
-          const content: {schedule: Schedule, clazzes: Clazz[]}[] = [];
-          const schedules = data;
-          console.log('service schedule', schedules);
-          // tslint:disable-next-line:prefer-for-of
-          for (let i = 0; i < schedules.length; i++) {
-            content.push({
-              schedule: {
-                id: schedules[i].id,
-                course: {
-                  id: schedules[i].course.id,
-                  name: schedules[i].course.name
-                } as Course,
-                term: {
-                  name: schedules[i].term.name
-                } as Term,
-                teacher: {
-                  name: schedules[i].teacher.name
-                }
-              } as Schedule,
-              clazzes: schedules[i].clazzes as Clazz[]
-            });
-          }
+          const content = [] as {schedule: Schedule, clazzes: Clazz[]}[];
+          data.content.forEach((schedule: Schedule) => {
+            content.push({schedule: schedule as Schedule, clazzes: schedule.clazzes});
+          });
           return new Page<{schedule: Schedule, clazzes: Clazz[]}>({
             content,
             number: page,
             size,
-            numberOfElements: data.length
+            numberOfElements: data.totalElements
           });
         }));
   }

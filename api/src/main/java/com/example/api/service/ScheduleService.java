@@ -1,8 +1,8 @@
 package com.example.api.service;
 
 import com.example.api.entity.Schedule;
-import com.example.api.entity.forType.ForScheduleAdd;
-import com.sun.istack.NotNull;
+import com.example.api.entity.forType.forScheduleAdd.ForScheduleAdd;
+import com.example.api.entity.forType.forScheduleAdd.SaveForScheduleAdd;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,5 +14,7 @@ public interface ScheduleService {
 
     List<Schedule> clazzesHaveSelectCourse(Long course_id);
 
-    List<Schedule> findAll(String course, String term, String currentUserNumber);
+    void scheduleSave(SaveForScheduleAdd data);
+
+    Page findAll(String courseName, String termName, String currentUserNumber, Pageable pageable);
 }
