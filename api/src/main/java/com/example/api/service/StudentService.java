@@ -1,10 +1,12 @@
 package com.example.api.service;
 
-import com.example.api.entity.Clazz;
+import com.example.api.entity.Schedule;
 import com.example.api.entity.Student;
 import com.sun.istack.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.Optional;
 
 public interface StudentService {
     Student save(@NotNull String name, @NotNull Short sex, Long clazzId, @NotNull String sno);
@@ -22,4 +24,6 @@ public interface StudentService {
     String snoUniqueByUserId(@NotNull Long userId, @NotNull String sno);
 
     Page<Student> findAllBelongToClazz(@NotNull Long clazzId, String searchName, String searchSno, @NotNull Pageable pageable);
+
+    Optional<Schedule> pageByScheduleId(@NotNull String scheduleId);
 }

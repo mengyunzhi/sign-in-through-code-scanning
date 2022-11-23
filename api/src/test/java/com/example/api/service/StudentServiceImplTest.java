@@ -2,6 +2,7 @@ package com.example.api.service;
 
 import com.example.api.entity.Student;
 import com.example.api.entity.User;
+import com.example.api.repository.ScheduleRepository;
 import com.example.api.repository.StudentRepository;
 import org.assertj.core.internal.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.Assertions;
@@ -20,12 +21,14 @@ class StudentServiceImplTest {
     private UserService userService;
     private ClazzService clazzService;
     private StudentRepository studentRepository;
+    private ScheduleRepository scheduleRepository;
 
     StudentServiceImplTest() {
         this.userService = Mockito.mock(UserService.class);
         this.clazzService = Mockito.mock(ClazzService.class);
         this.studentRepository = Mockito.mock(StudentRepository.class);
-        this.studentService = new StudentServiceImpl(studentRepository, userService, clazzService);
+        this.scheduleRepository = Mockito.mock(ScheduleRepository.class);
+        this.studentService = new StudentServiceImpl(studentRepository, userService, clazzService, scheduleRepository);
     }
 
     @Test

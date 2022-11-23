@@ -34,7 +34,7 @@ export class ClazzService {
       .get<{totalElements: number, content: Student[]}>
       ('/clazz/clazzMembers/' + clazz_id.toString(), {params: httpParams})
       .pipe(map(data => {
-        console.log('clazzservice', data);
+        // console.log('clazzservice', data);
         const content = data.content;
         return new Page<Student>({
           content,
