@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("schedule")
 public class ScheduleController {
@@ -34,8 +36,9 @@ public class ScheduleController {
     @GetMapping("page")
     public Page page(@RequestParam(required = false) String courseName,
                      @RequestParam(required = false) String termName,
+                     @RequestParam String userNumber,
                      @SortDefault.SortDefaults(@SortDefault(sort = "id", direction = Sort.Direction.DESC)) Pageable pageable) {
-        return  this.scheduleService.findAll(courseName, termName, pageable);
+        return  this.scheduleService.findAll(courseName, termName, userNumber, pageable);
     }
 
 }

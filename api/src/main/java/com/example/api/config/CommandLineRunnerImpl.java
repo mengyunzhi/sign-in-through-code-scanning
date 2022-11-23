@@ -85,8 +85,10 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
 
     private void forTest() {
         // 添加教师
-        User uTeacher1 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000000", "yunzhi", "教师");
+        User uTeacher1 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000000", "yunzhi", "教师1");
         Teacher teacher1 = this.addTeacher(uTeacher1);
+        User uTeacher2 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000001", "yunzhi", "教师2");
+        Teacher teacher2 = this.addTeacher(uTeacher2);
         // 添加班级
         Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L);
         Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L);
@@ -109,11 +111,18 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         Term term2 = this.addTerm("testTerm2", 0L);
         Term term3 = this.addTerm("testTerm3", 0L);
         // 添加课程
-        Course course1 = this.addCourse("testCourse", 40L);
+        Course course1 = this.addCourse("testCourse1", 40L);
+        Course course2 = this.addCourse("testCourse2", 40L);
+        Course course3 = this.addCourse("testCourse3", 40L);
         // 添加排课(schedule)
         Schedule schedule1 = this.addSchedule(teacher1, term1, course1, clazzes);
+        Schedule schedule2 = this.addSchedule(teacher1, term1, course2, clazzes);
+        Schedule schedule3 = this.addSchedule(teacher1, term1, course3, clazzes);
+        Schedule schedule4 = this.addSchedule(teacher2, term1, course3, clazzes);
         // 添加调度(dispatch)
-        Dispatch dispatch = this.addDispatch(schedule1, 0L, 0L, 0L, rooms);
+        Dispatch dispatch1 = this.addDispatch(schedule1, 0L, 0L, 0L, rooms);
+        Dispatch dispatch2 = this.addDispatch(schedule2, 0L, 0L, 0L, rooms);
+        Dispatch dispatch3 = this.addDispatch(schedule3, 0L, 0L, 0L, rooms);
     }
 
     private Dispatch addDispatch(Schedule schedule, Long week, Long day, Long lesson, List<Room> rooms) {

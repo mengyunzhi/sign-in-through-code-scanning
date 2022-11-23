@@ -16,5 +16,5 @@ public interface ScheduleService {
 
     void scheduleSave(SaveForScheduleAdd data);
 
-    Page findAll(String courseName, String termName, Pageable pageable);
+    Page findAll(String courseName, String termName, String currentUserNumber, Pageable pageable);
 }

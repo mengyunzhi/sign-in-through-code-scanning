@@ -43,8 +43,8 @@ export class ClazzMembersEditComponent implements OnInit {
     this.id = +this.route.snapshot.params.id;
     this.studentService.getById(this.id)
       .subscribe(student => {
-        this.formGroup.get('name')?.setValue(student.name);
-        this.formGroup.get('sex')?.setValue(student.sex);
+        this.formGroup.get('name')?.setValue(student.user.name);
+        this.formGroup.get('sex')?.setValue(student.user.sex);
         this.formGroup.get('sno')?.setValue(student.sno);
       }, error => {
         console.log('学生请求失败', error);

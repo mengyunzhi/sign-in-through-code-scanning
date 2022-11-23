@@ -15,10 +15,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
+    private TeacherRepository teacherRepository;
+    private UserRepository userRepository;
+    private  TermRepository termRepository;
     private ScheduleRepository scheduleRepository;
     private CourseRepository courseRepository;
     private ClazzRepository clazzRepository;
@@ -34,6 +38,9 @@ public class ScheduleServiceImpl implements ScheduleService {
                         TermService termService,
                         TeacherService teacherService,
                         RoomRepository roomRepository,
+                        TermRepository termRepository,
+                        UserRepository userRepository,
+                        TeacherRepository teacherRepository,
                         DispatchRepository dispatchRepository) {
         this.scheduleRepository = scheduleRepository;
         this.courseRepository = courseRepository;
@@ -41,6 +48,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         this.termService = termService;
         this.teacherService = teacherService;
         this.roomRepository = roomRepository;
+        this.termRepository = termRepository;
+        this.userRepository = userRepository;
+        this.teacherRepository = teacherRepository;
         this.dispatchRepository = dispatchRepository;
     }
 
@@ -88,10 +98,15 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public Page findAll(String courseName, String termName, Pageable pageable) {
+    public Page findAll(String courseName, String termName, String currentUserNumber, Pageable pageable) {
+        Term term = this.termService.getCurrentTerm();
+        Teacher teacher = this.teacherService.getTeacherByUserName(currentUserNumber);
         Specification<Schedule> specification = ScheduleSpecs.containTermName(termName)
-                .and(ScheduleSpecs.containCourseName(courseName));
-        return this.scheduleRepository.findAll(specification, pageable);
+                .and(ScheduleSpecs.containCourseName(courseName))
+                .and(ScheduleSpecs.relateTeacher(teacher))
+                .and(ScheduleSpecs.relateTerm(term));
+        Page<Schedule> page = this.scheduleRepository.findAll(specification, pageable);
+        return page;
     }
 
     private void saveDispatches(List<List<CourseTime>> courseTimes, Long scheduleId) {

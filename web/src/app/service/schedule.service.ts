@@ -122,11 +122,14 @@ export class ScheduleService {
     return this.httpClient.get<any>('/schedule/getDataForScheduleEdit/schedule_id/' + schedule_id.toString());
   }
 
-  page(page: number, size: number, query: {course: string, term: string}): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
+  // tslint:disable-next-line:max-line-length
+  page(page: number, size: number, query: {course: string, term: string}, currentUserNumber: string): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
+    console.log('service');
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())
       .append('courseName', query.course)
+      .append('userNumber', currentUserNumber)
       .append('termName', query.term);
     return this.httpClient.get<{
       totalElements: number,

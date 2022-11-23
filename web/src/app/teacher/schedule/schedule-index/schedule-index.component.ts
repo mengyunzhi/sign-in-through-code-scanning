@@ -38,7 +38,8 @@ export class ScheduleIndexComponent implements OnInit {
 
   loadByPage(page: number = 0): void {
     console.log('loadByPage', page);
-    this.scheduleService.page(page, this.size, this.queryGroup.value as {course: string, term: string})
+    // @ts-ignore
+    this.scheduleService.page(page, this.size, this.queryGroup.value as {course: string, term: string}, window.sessionStorage.getItem('userNumber'))
       .subscribe(pageData => {
         this.page = page;
         console.log('排课请求数据', pageData);
