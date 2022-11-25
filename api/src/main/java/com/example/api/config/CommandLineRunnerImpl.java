@@ -100,6 +100,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         // 添加学生，该学生属于上面的班级
         User uStudent1 = this.getUser(StaticVariable.ROLE_STUDENT, "111111", "yunzhi", "学生");
         Student student1 = this.addStudent(uStudent1, clazz1, "111111", StaticVariable.STATE_TRUE);
+
         // 添加教室
         Room room1 = this.addRoom("testRoom1", 40L);
         Room room2 = this.addRoom("testRoom2", 80L);

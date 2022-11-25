@@ -1,11 +1,13 @@
 package com.example.api.service;
 
+import com.example.api.entity.Clazz;
 import com.example.api.entity.Schedule;
 import com.example.api.entity.Student;
 import com.sun.istack.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface StudentService {
@@ -25,5 +27,7 @@ public interface StudentService {
 
     Page<Student> findAllBelongToClazz(@NotNull Long clazzId, String searchName, String searchSno, @NotNull Pageable pageable);
 
-    Optional<Schedule> pageByScheduleId(@NotNull String scheduleId);
+    List<Student> pageByScheduleId(@NotNull String scheduleId, String searchName, String searchSno, String searchClazz, String page, String size);
+
+    List<Student> getAllStudentByClazzId(Long clazzId);
 }

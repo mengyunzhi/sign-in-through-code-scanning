@@ -15,8 +15,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -130,8 +131,53 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Optional<Schedule> pageByScheduleId(String scheduleId) {
-        Optional<Schedule> schedule = this.scheduleRepository.findById(Long.valueOf(scheduleId));
-        return schedule;
+    public List<Student> pageByScheduleId(String scheduleId, String searchName, String searchSno, String searchClazz, String page, String size) {
+        ArrayList<Student> allStudents = new ArrayList<>();
+        ArrayList<Student> studentsBySearchName = new ArrayList<>();
+        ArrayList<Student> resultStudents = new ArrayList<>();
+        ArrayList<Clazz> clazzes = new ArrayList<>();
+        Schedule schedule = this.scheduleRepository.findById(Long.valueOf(scheduleId)).get();
+
+        if (searchClazz != null && !searchClazz.equals("")) {
+            for (int i = 0; i < schedule.getClazzes().size(); i++) {
+                if (schedule.getClazzes().get(i).getName().contains(searchClazz)){
+                    clazzes.add(schedule.getClazzes().get(i));
+                }
+            }
+        } else {
+            clazzes.addAll(schedule.getClazzes());
+        }
+
+        for (Clazz clazz: clazzes) {
+            allStudents.addAll(this.getAllStudentByClazzId(clazz.getId()));
+        }
+
+        if (searchName != null && !searchName.equals("")) {
+            for (Student student : allStudents) {
+                if (student.getUser().getName().contains(searchName)) {
+                    studentsBySearchName.add(student);
+                }
+            }
+        } else {
+            studentsBySearchName.addAll(allStudents);
+        }
+
+        if (searchSno != null && !searchSno.equals("")) {
+            for (Student student : studentsBySearchName) {
+                if (student.getSno().contains(searchSno)) {
+                    resultStudents.add(student);
+                }
+            }
+        } else {
+            resultStudents.addAll(studentsBySearchName);
+        }
+
+        return resultStudents;
     }
+
+    @Override
+    public List<Student> getAllStudentByClazzId(Long clazzId) {
+        return this.studentRepository.findByClazzId(clazzId);
+    }
+
 }
