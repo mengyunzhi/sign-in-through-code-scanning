@@ -122,7 +122,6 @@ export class ScheduleService {
     return this.httpClient.get<any>('/schedule/getDataForScheduleEdit/schedule_id/' + schedule_id.toString());
   }
 
-  // tslint:disable-next-line:max-line-length
   page(page: number, size: number, query: {course: string, term: string}, currentUserNumber: string): Observable<Page<{schedule: Schedule, clazzes: Clazz[]}>> {
     console.log('service');
     const httpParams = new HttpParams()

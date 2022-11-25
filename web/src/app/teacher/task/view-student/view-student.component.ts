@@ -45,9 +45,12 @@ export class ViewStudentComponent implements OnInit {
     Assert.isNumber(this.schedule_id, 'schedule_id不是number类型');
     this.studentService.pageByScheduleId(page, this.size, this.schedule_id as number, this.queryForm.value)
       .subscribe(pagedata => {
-        console.log('学生数据请求成功', pagedata);
         this.pageData = pagedata;
         this.page = page;
+        console.log('c', pagedata.content);
+        console.log('c[0]', pagedata.content[0]);
+        console.log('c length', pagedata.content.length);
+
       }, error => {
         console.log('学生数据请求失败', error);
       });

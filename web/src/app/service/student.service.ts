@@ -3,9 +3,8 @@ import {Student} from '../entity/student';
 import {Page} from '../entity/page';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
+import {map, timeout} from 'rxjs/operators';
 import {User} from '../entity/user';
-import {Clazz} from '../entity/clazz';
 import {ClazzService} from './clazz.service';
 
 @Injectable({
@@ -13,6 +12,7 @@ import {ClazzService} from './clazz.service';
 })
 export class StudentService {
   content = [] as Student[];
+  public length = 0;
 
   constructor(private httpClient: HttpClient,
               private clazzService: ClazzService) {
@@ -42,6 +42,7 @@ export class StudentService {
 
   pageByScheduleId(page: number, size: number, schedule_id: number, query: {clazz: string, name: string, sno: string}):
     Observable<Page<Student>> {
+    this.length = 0;
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())
@@ -51,51 +52,69 @@ export class StudentService {
       .append('sno', query.sno);
     return this.httpClient.get<any>('/student/pageByScheduleId', {params: httpParams})
       .pipe(map(data => {
-        console.log('studentService pageByScheduleId', data);
-        console.log('studentService pageByScheduleId', data.clazzes[0].id);
         this.content.splice(0, this.content.length);
+        const pageSpy = 0;
 
         // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < data.clazzes.length; i++) {
-          let students: Student[] = [];
           const param = {name: query.name, sno: query.sno};
-          this.clazzService.clazzMembers(data.clazzes[i].id, page, size, param)
-            .subscribe(studentPageData => {
-              console.log('studentPageDataContent', studentPageData.content);
-              students = studentPageData.content;
-              for (const student of students) {
-                this.content.push({
-                  id: student.id,
-                  sno: student.sno.toString(),
-                  user: {
-                    id: student.user.id,
-                    name: student.user.name,
-                    number: student.number,
-                    sex: student.user.sex
-                  } as User,
-                  clazz: {
-                    id: student.clazz.id,
-                    name: student.clazz.name
-                  }
-                } as Student);
-              }
-            });
+          this.getStudentsByClazzId(data.clazzes[i].id, pageSpy, size, param);
         }
 
-
-        let content = [] as Student[];
-        content = this.content;
-
+        const content = this.content;
 
         console.log('returnContent', content);
+        console.log('returnContentLength', content.length);
+        console.log('this.length', this.length);
+
+        // console.log('returnContentLength', this.length);
 
         return new Page<Student>({
           content,
           number: page,
           size,
-          numberOfElements: data.length
+          numberOfElements: 6
         });
       }));
+  }
+
+
+  /**
+   * 通过班级id获取学生, 存入this.content
+   */
+  getStudentsByClazzId(id: number, page: number, size: number, param: {name: string, sno: string}): void {
+    this.clazzService.clazzMembers(id, page, size, param)
+      .subscribe(studentPageData => {
+        let students: Student[] = [];
+        // console.log('getStudentsByClazzId', studentPageData.content);
+        students = studentPageData.content;
+        // this.length = this.length + students.length;
+
+        for (const student of students) {
+          this.content.push({
+            id: student.id,
+            sno: student.sno.toString(),
+            user: {
+              id: student.user.id,
+              name: student.user.name,
+              number: student.number,
+              sex: student.user.sex
+            } as User,
+            clazz: {
+              id: student.clazz.id,
+              name: student.clazz.name
+            }
+          } as Student);
+        }
+        if (students.length === size) {
+          this.length = this.length + size;
+          page++;
+          this.getStudentsByClazzId(id, page, size, param);
+        } else {
+          this.length = this.length + students.length;
+        }
+        console.log('returnContentLength', this.length);
+      });
   }
 
   /**
