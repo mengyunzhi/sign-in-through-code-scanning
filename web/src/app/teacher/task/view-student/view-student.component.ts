@@ -8,6 +8,8 @@ import {StudentScheduleService} from '../../../service/studentSchedule.service';
 import {Confirm} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {User} from '../../../entity/user';
+import {isNull} from 'util';
 
 @Component({
   selector: 'app-view-student',
@@ -47,10 +49,7 @@ export class ViewStudentComponent implements OnInit {
       .subscribe(pagedata => {
         this.pageData = pagedata;
         this.page = page;
-        console.log('c', pagedata.content);
-        console.log('c[0]', pagedata.content[0]);
-        console.log('c length', pagedata.content.length);
-
+        console.log('c', pagedata);
       }, error => {
         console.log('学生数据请求失败', error);
       });

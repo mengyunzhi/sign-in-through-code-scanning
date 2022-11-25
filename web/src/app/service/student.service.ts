@@ -11,8 +11,6 @@ import {ClazzService} from './clazz.service';
   providedIn: 'root'
 })
 export class StudentService {
-  content = [] as Student[];
-  public length = 0;
 
   constructor(private httpClient: HttpClient,
               private clazzService: ClazzService) {
@@ -42,7 +40,6 @@ export class StudentService {
 
   pageByScheduleId(page: number, size: number, schedule_id: number, query: {clazz: string, name: string, sno: string}):
     Observable<Page<Student>> {
-    this.length = 0;
     const httpParams = new HttpParams()
       .append('page', page.toString())
       .append('size', size.toString())
@@ -52,46 +49,13 @@ export class StudentService {
       .append('sno', query.sno);
     return this.httpClient.get<any>('/student/pageByScheduleId', {params: httpParams})
       .pipe(map(data => {
-        this.content.splice(0, this.content.length);
-        const pageSpy = 0;
+        console.log('pageByScheduleId', data);
 
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < data.clazzes.length; i++) {
-          const param = {name: query.name, sno: query.sno};
-          this.getStudentsByClazzId(data.clazzes[i].id, pageSpy, size, param);
-        }
-
-        const content = this.content;
-
-        console.log('returnContent', content);
-        console.log('returnContentLength', content.length);
-        console.log('this.length', this.length);
-
-        // console.log('returnContentLength', this.length);
-
-        return new Page<Student>({
-          content,
-          number: page,
-          size,
-          numberOfElements: 6
-        });
-      }));
-  }
-
-
-  /**
-   * 通过班级id获取学生, 存入this.content
-   */
-  getStudentsByClazzId(id: number, page: number, size: number, param: {name: string, sno: string}): void {
-    this.clazzService.clazzMembers(id, page, size, param)
-      .subscribe(studentPageData => {
         let students: Student[] = [];
-        // console.log('getStudentsByClazzId', studentPageData.content);
-        students = studentPageData.content;
-        // this.length = this.length + students.length;
-
+        students = data;
+        const resultContent = [] as Student[];
         for (const student of students) {
-          this.content.push({
+          resultContent.push({
             id: student.id,
             sno: student.sno.toString(),
             user: {
@@ -106,15 +70,22 @@ export class StudentService {
             }
           } as Student);
         }
-        if (students.length === size) {
-          this.length = this.length + size;
-          page++;
-          this.getStudentsByClazzId(id, page, size, param);
-        } else {
-          this.length = this.length + students.length;
+
+        const content = [] as Student[];
+
+        for (let i = page * size; i < page * size + size; i++) {
+          if (resultContent[i] !== undefined) {
+            content.push(resultContent[i]);
+          }
         }
-        console.log('returnContentLength', this.length);
-      });
+
+        return new Page<Student>({
+          content,
+          number: page,
+          size,
+          numberOfElements: data.length
+        });
+      }));
   }
 
   /**
