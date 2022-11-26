@@ -31,7 +31,10 @@ export class StudentScheduleService {
     return this.httpClient.get<any>('/schedule/getForAddByScheduleId/' + schedule_id.toString());
   }
 
-  add(data: {student_id: number, schedule_id: number}): Observable<boolean> {
-    return this.httpClient.post<boolean>('/schedule/addStudentInCourse', data);
+  add(data: { studentId: any; scheduleId: number }): Observable<boolean> {
+    const httpParams = new HttpParams()
+      .append('studentId', data.studentId.toString())
+      .append('scheduleId', data.scheduleId.toString());
+    return this.httpClient.post<boolean>('/schedule/addStudentInCourse', httpParams);
   }
 }

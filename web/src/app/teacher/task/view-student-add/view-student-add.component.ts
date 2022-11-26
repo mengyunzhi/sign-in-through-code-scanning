@@ -15,6 +15,7 @@ import {CommonService} from '../../../service/common.service';
 })
 export class ViewStudentAddComponent implements OnInit {
 
+  selectClazzId: number | undefined;
   schedule_id: number | undefined;
   formGroup = new FormGroup({
     class_id: new FormControl(null, Validators.required),
@@ -38,16 +39,15 @@ export class ViewStudentAddComponent implements OnInit {
         this.flag = 1;
         this.clazzes = data.clazzes;
         this.studentIds = data.studentIds;
+
+
         for (const student of data.students) {
           // @ts-ignore
-          // console.log(student.clazz.id);
-          // console.log(this.formGroup.get('class_id')?.value);
-          // if (student.clazz.id.toString() === this.formGroup.get('class_id')?.value.toString()) {
+          if (data.studentIds.indexOf(student.id) === -1) {
             // @ts-ignore
             this.students.push(student);
-          // }
+          }
         }
-        console.log('this.students', this.students);
       }, error => {
         console.log('请求失败', error);
       });
@@ -56,8 +56,8 @@ export class ViewStudentAddComponent implements OnInit {
   onSubmit(): void {
     Assert.isNumber(this.schedule_id, 'schedule_id类型不是number');
     this.studentScheduleService.add({
-      student_id: this.formGroup.get('student_id')?.value,
-      schedule_id: this.schedule_id as number
+      studentId: this.formGroup.get('student_id')?.value,
+      scheduleId: this.schedule_id as number
     })
       .subscribe(success => {
         console.log('添加成功', success);
@@ -69,6 +69,7 @@ export class ViewStudentAddComponent implements OnInit {
   }
 
   onChange(id: number): void {
-    console.log(id);
+    this.selectClazzId = + id;
+    console.log(typeof this.selectClazzId);
   }
 }
