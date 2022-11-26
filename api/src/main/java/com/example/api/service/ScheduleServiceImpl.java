@@ -127,6 +127,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         return this.scheduleRepository.save(schedule);
     }
 
+    /*
+    * 教师端 =》 课程任务 =》 查看学生 =》 新增 =》初始化数据获取
+    * */
     @Override
     public ForTaskStudentAdd getForAddByScheduleId(Long scheduleId) {
         // clazzes: all; students: all； studentIds: 本schedule已关联的学生ids
@@ -144,6 +147,14 @@ public class ScheduleServiceImpl implements ScheduleService {
         return forTaskStudentAdd;
 
 
+    }
+
+    @Override
+    public Schedule addStudentInCourse(Long studentId, Long scheduleId) {
+        Schedule schedule = this.scheduleRepository.findById(scheduleId).get();
+        Student student = this.studentRepository.findByUserId(studentId);
+        schedule.getStudents().add(student);
+        return this.scheduleRepository.save(schedule);
     }
 
     private void saveDispatches(List<List<CourseTime>> courseTimes, Long scheduleId) {

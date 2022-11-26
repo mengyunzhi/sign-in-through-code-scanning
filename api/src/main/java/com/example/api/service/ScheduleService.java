@@ -25,4 +25,6 @@ public interface ScheduleService {
     Schedule deleteByStudentId(String studentId, String scheduleId);
 
     ForTaskStudentAdd getForAddByScheduleId(Long scheduleId);
+
+    Schedule addStudentInCourse(Long studentId, Long scheduleId);
 }

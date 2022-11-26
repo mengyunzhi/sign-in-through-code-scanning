@@ -57,4 +57,9 @@ public class ScheduleController {
         return this.scheduleService.getForAddByScheduleId(scheduleId);
     }
 
+    @PostMapping("addStudentInCourse")
+    public Schedule addStudentInCourse(@RequestParam Long studentId, @RequestParam Long scheduleId) {
+        return this.scheduleService.addStudentInCourse(studentId, scheduleId);
+    }
+
 }
