@@ -17,11 +17,11 @@ export class ViewStudentAddComponent implements OnInit {
 
   schedule_id: number | undefined;
   formGroup = new FormGroup({
-    index: new FormControl(null, Validators.required),
+    class_id: new FormControl(null, Validators.required),
     student_id: new FormControl(null, Validators.required),
   });
   clazzes = [] as Clazz[];
-  students = [] as Student[][];
+  students = [] as Student[];
   studentIds = [] as number[];
   // 标志数据是否返回，另外三个数据不足以作为判断标准
   flag = 0;
@@ -38,9 +38,16 @@ export class ViewStudentAddComponent implements OnInit {
         this.flag = 1;
         this.clazzes = data.clazzes;
         this.studentIds = data.studentIds;
-        for (const students of data.students) {
-          this.students.push(students.filter(stu => !this.studentIds.includes(stu.id)));
+        for (const student of data.students) {
+          // @ts-ignore
+          // console.log(student.clazz.id);
+          // console.log(this.formGroup.get('class_id')?.value);
+          // if (student.clazz.id.toString() === this.formGroup.get('class_id')?.value.toString()) {
+            // @ts-ignore
+            this.students.push(student);
+          // }
         }
+        console.log('this.students', this.students);
       }, error => {
         console.log('请求失败', error);
       });
@@ -61,4 +68,7 @@ export class ViewStudentAddComponent implements OnInit {
       });
   }
 
+  onChange(id: number): void {
+    console.log(id);
+  }
 }

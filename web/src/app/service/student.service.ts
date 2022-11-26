@@ -6,6 +6,7 @@ import {Injectable} from '@angular/core';
 import {map, timeout} from 'rxjs/operators';
 import {User} from '../entity/user';
 import {ClazzService} from './clazz.service';
+import {Clazz} from '../entity/clazz';
 
 @Injectable({
   providedIn: 'root'
@@ -126,6 +127,12 @@ export class StudentService {
       .delete<Student>(`/student/delete/${id}`);
   }
 
+  /**
+   * 获取所有的学生
+   */
+  getAll(): Observable<Student[]> {
+    return this.httpClient.get<Array<Student>>('/student/getAll');
+  }
 }
 
 interface T {

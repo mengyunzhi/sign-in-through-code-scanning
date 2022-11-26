@@ -9,7 +9,6 @@ import {Confirm} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../../entity/user';
-import {isNull} from 'util';
 
 @Component({
   selector: 'app-view-student',
