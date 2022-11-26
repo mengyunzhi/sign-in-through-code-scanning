@@ -132,34 +132,31 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public List<Student> pageByScheduleId(String scheduleId, String searchName, String searchSno, String searchClazz, String page, String size) {
-        ArrayList<Student> allStudents = new ArrayList<>();
         ArrayList<Student> studentsBySearchName = new ArrayList<>();
+        ArrayList<Student> studentsBySearchClazz = new ArrayList<>();
         ArrayList<Student> resultStudents = new ArrayList<>();
-        ArrayList<Clazz> clazzes = new ArrayList<>();
         Schedule schedule = this.scheduleRepository.findById(Long.valueOf(scheduleId)).get();
 
+        ArrayList<Student> allStudents = new ArrayList<>(schedule.getStudents());
+
         if (searchClazz != null && !searchClazz.equals("")) {
-            for (int i = 0; i < schedule.getClazzes().size(); i++) {
-                if (schedule.getClazzes().get(i).getName().contains(searchClazz)){
-                    clazzes.add(schedule.getClazzes().get(i));
+            for (Student student : allStudents) {
+                if (student.getClazz().getName().contains(searchClazz)) {
+                    studentsBySearchClazz.add(student);
                 }
             }
         } else {
-            clazzes.addAll(schedule.getClazzes());
-        }
-
-        for (Clazz clazz: clazzes) {
-            allStudents.addAll(this.getAllStudentByClazzId(clazz.getId()));
+            studentsBySearchClazz.addAll(allStudents);
         }
 
         if (searchName != null && !searchName.equals("")) {
-            for (Student student : allStudents) {
+            for (Student student : studentsBySearchClazz) {
                 if (student.getUser().getName().contains(searchName)) {
                     studentsBySearchName.add(student);
                 }
             }
         } else {
-            studentsBySearchName.addAll(allStudents);
+            studentsBySearchName.addAll(studentsBySearchClazz);
         }
 
         if (searchSno != null && !searchSno.equals("")) {
@@ -178,6 +175,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> getAllStudentByClazzId(Long clazzId) {
         return this.studentRepository.findByClazzId(clazzId);
+    }
+
+    @Override
+    public List<Student> getAll() {
+        return (List<Student>) this.studentRepository.findAll();
     }
 
 }

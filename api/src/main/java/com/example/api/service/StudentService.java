@@ -30,4 +30,6 @@ public interface StudentService {
     List<Student> pageByScheduleId(@NotNull String scheduleId, String searchName, String searchSno, String searchClazz, String page, String size);
 
     List<Student> getAllStudentByClazzId(Long clazzId);
+
+    List<Student> getAll();
 }

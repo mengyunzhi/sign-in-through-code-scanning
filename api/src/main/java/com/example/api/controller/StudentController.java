@@ -94,4 +94,10 @@ public class StudentController {
                                           @RequestParam String page, @RequestParam String size) {
         return  this.studentService.pageByScheduleId(ScheduleId, name, sno, clazz, page, size);
     }
+
+    @GetMapping("getAll")
+    public List<Student> getAll() {
+        return this.studentService.getAll();
+    }
+
 }

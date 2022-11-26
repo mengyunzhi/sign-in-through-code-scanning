@@ -18,4 +18,5 @@ public interface StudentRepository extends PagingAndSortingRepository<Student, L
     List<Student> findStudentsBySno(String sno);
 
     List<Student> findByClazzId(Long clazzId);
+    List<Student> findAll();
 }
