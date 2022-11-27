@@ -72,14 +72,6 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
             logger.info("已添加初始化教师");
         }
 
-        if(!userRepository.findByNumber("student").isPresent()) {
-            logger.info("进行初始化学生");
-            User user = this.getUser((short) 2, "student", "yunzhi", "学生");
-            this.addStudent(user, null, "222222", 1L);
-        } else {
-            logger.info("已添加初始化学生");
-        }
-
         this.forTest();
     }
 
@@ -100,6 +92,38 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         // 添加学生，该学生属于上面的班级
         User uStudent1 = this.getUser(StaticVariable.ROLE_STUDENT, "111111", "yunzhi", "学生");
         Student student1 = this.addStudent(uStudent1, clazz1, "111111", StaticVariable.STATE_TRUE);
+
+        User uStudent7 = this.getUser(StaticVariable.ROLE_STUDENT, "222222", "yunzhi", "222222");
+        Student student7= this.addStudent(uStudent7, clazz2, "222222", StaticVariable.STATE_TRUE);
+
+        User uStudent2 = this.getUser(StaticVariable.ROLE_STUDENT, "333333", "yunzhi", "333333");
+        Student student2 = this.addStudent(uStudent2, clazz1, "333333", StaticVariable.STATE_TRUE);
+
+        User uStudent3 = this.getUser(StaticVariable.ROLE_STUDENT, "444444", "yunzhi", "444444");
+        Student student3= this.addStudent(uStudent3, clazz1, "444444", StaticVariable.STATE_TRUE);
+
+        User uStudent4 = this.getUser(StaticVariable.ROLE_STUDENT, "555555", "yunzhi", "555555");
+        Student student4 = this.addStudent(uStudent4, clazz2, "555555", StaticVariable.STATE_TRUE);
+
+        User uStudent5 = this.getUser(StaticVariable.ROLE_STUDENT, "666666", "yunzhi", "666666");
+        Student student5 = this.addStudent(uStudent5, clazz2, "666666", StaticVariable.STATE_TRUE);
+
+        User uStudent6 = this.getUser(StaticVariable.ROLE_STUDENT, "777777", "yunzhi", "777777");
+        Student student6= this.addStudent(uStudent6, clazz2, "777777", StaticVariable.STATE_TRUE);
+
+
+        List<Student> students = new ArrayList<>();
+        students.add(student1);
+        students.add(student7);
+        students.add(student2);
+        students.add(student3);
+        students.add(student4);
+        students.add(student5);
+        students.add(student6);
+
+
+
+
         // 添加教室
         Room room1 = this.addRoom("testRoom1", 40L);
         Room room2 = this.addRoom("testRoom2", 80L);
@@ -115,10 +139,10 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         Course course2 = this.addCourse("testCourse2", 40L);
         Course course3 = this.addCourse("testCourse3", 40L);
         // 添加排课(schedule)
-        Schedule schedule1 = this.addSchedule(teacher1, term1, course1, clazzes);
-        Schedule schedule2 = this.addSchedule(teacher1, term1, course2, clazzes);
-        Schedule schedule3 = this.addSchedule(teacher1, term1, course3, clazzes);
-        Schedule schedule4 = this.addSchedule(teacher2, term1, course3, clazzes);
+        Schedule schedule1 = this.addSchedule(teacher1, term1, course1, clazzes, students);
+        Schedule schedule2 = this.addSchedule(teacher1, term1, course2, clazzes, students);
+        Schedule schedule3 = this.addSchedule(teacher1, term1, course3, clazzes, students);
+        Schedule schedule4 = this.addSchedule(teacher2, term1, course3, clazzes, students);
         // 添加调度(dispatch)
         Dispatch dispatch1 = this.addDispatch(schedule1, 0L, 0L, 0L, rooms);
         Dispatch dispatch2 = this.addDispatch(schedule2, 0L, 0L, 0L, rooms);
@@ -135,12 +159,13 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         return this.dispatchRepository.save(dispatch);
     }
 
-    private Schedule addSchedule(Teacher teacher, Term term, Course course, List<Clazz> clazzes) {
+    private Schedule addSchedule(Teacher teacher, Term term, Course course, List<Clazz> clazzes, List<Student> students) {
         Schedule schedule = new Schedule();
         schedule.setTeacher(teacher);
         schedule.setTerm(term);
         schedule.setCourse(course);
         schedule.setClazzes(clazzes);
+        schedule.setStudents(students);
         return this.scheduleRepository.save(schedule);
     }
 

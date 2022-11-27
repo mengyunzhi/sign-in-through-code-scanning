@@ -3,16 +3,15 @@ import {Student} from '../entity/student';
 import {Page} from '../entity/page';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
+import {map, timeout} from 'rxjs/operators';
 import {User} from '../entity/user';
-import {Clazz} from '../entity/clazz';
 import {ClazzService} from './clazz.service';
+import {Clazz} from '../entity/clazz';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
-  content = [] as Student[];
 
   constructor(private httpClient: HttpClient,
               private clazzService: ClazzService) {
@@ -51,43 +50,35 @@ export class StudentService {
       .append('sno', query.sno);
     return this.httpClient.get<any>('/student/pageByScheduleId', {params: httpParams})
       .pipe(map(data => {
-        console.log('studentService pageByScheduleId', data);
-        console.log('studentService pageByScheduleId', data.clazzes[0].id);
-        this.content.splice(0, this.content.length);
+        console.log('pageByScheduleId', data);
 
-        // tslint:disable-next-line:prefer-for-of
-        for (let i = 0; i < data.clazzes.length; i++) {
-          let students: Student[] = [];
-          const param = {name: query.name, sno: query.sno};
-          this.clazzService.clazzMembers(data.clazzes[i].id, page, size, param)
-            .subscribe(studentPageData => {
-              console.log('studentPageDataContent', studentPageData.content);
-              students = studentPageData.content;
-              for (const student of students) {
-                this.content.push({
-                  id: student.id,
-                  sno: student.sno.toString(),
-                  user: {
-                    id: student.user.id,
-                    name: student.user.name,
-                    number: student.number,
-                    sex: student.user.sex
-                  } as User,
-                  clazz: {
-                    id: student.clazz.id,
-                    name: student.clazz.name
-                  }
-                } as Student);
-              }
-            });
+        let students: Student[] = [];
+        students = data;
+        const resultContent = [] as Student[];
+        for (const student of students) {
+          resultContent.push({
+            id: student.id,
+            sno: student.sno.toString(),
+            user: {
+              id: student.user.id,
+              name: student.user.name,
+              number: student.number,
+              sex: student.user.sex
+            } as User,
+            clazz: {
+              id: student.clazz.id,
+              name: student.clazz.name
+            }
+          } as Student);
         }
 
+        const content = [] as Student[];
 
-        let content = [] as Student[];
-        content = this.content;
-
-
-        console.log('returnContent', content);
+        for (let i = page * size; i < page * size + size; i++) {
+          if (resultContent[i] !== undefined) {
+            content.push(resultContent[i]);
+          }
+        }
 
         return new Page<Student>({
           content,
@@ -136,6 +127,12 @@ export class StudentService {
       .delete<Student>(`/student/delete/${id}`);
   }
 
+  /**
+   * 获取所有的学生
+   */
+  getAll(): Observable<Student[]> {
+    return this.httpClient.get<Array<Student>>('/student/getAll');
+  }
 }
 
 interface T {

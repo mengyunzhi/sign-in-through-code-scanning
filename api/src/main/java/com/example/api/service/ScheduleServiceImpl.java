@@ -5,6 +5,7 @@ import com.example.api.entity.forType.forScheduleAdd.CourseTime;
 import com.example.api.entity.forType.forScheduleAdd.DispatchForSchedule;
 import com.example.api.entity.forType.forScheduleAdd.ForScheduleAdd;
 import com.example.api.entity.forType.forScheduleAdd.SaveForScheduleAdd;
+import com.example.api.entity.forType.forTaskStudentAdd.ForTaskStudentAdd;
 import com.example.api.repository.*;
 import com.example.api.repository.specs.ScheduleSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
+    private StudentRepository studentRepository;
     private TeacherRepository teacherRepository;
     private UserRepository userRepository;
     private  TermRepository termRepository;
@@ -41,6 +43,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                         TermRepository termRepository,
                         UserRepository userRepository,
                         TeacherRepository teacherRepository,
+                        StudentRepository studentRepository,
                         DispatchRepository dispatchRepository) {
         this.scheduleRepository = scheduleRepository;
         this.courseRepository = courseRepository;
@@ -51,6 +54,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         this.termRepository = termRepository;
         this.userRepository = userRepository;
         this.teacherRepository = teacherRepository;
+        this.studentRepository = studentRepository;
         this.dispatchRepository = dispatchRepository;
     }
 
@@ -89,6 +93,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         Schedule schedule = new Schedule();
         data.getClazzIds().forEach(clazzId -> {
             schedule.getClazzes().add(this.clazzRepository.findById(clazzId).get());
+            List<Student> students = this.studentRepository.findByClazzId(clazzId);
+            students.forEach(student -> {
+                schedule.getStudents().add(student);
+            });
         });
         schedule.setTeacher(this.teacherService.getByTeacherId(data.getTeacherId()));
         schedule.setCourse(this.courseRepository.findById(data.getCourseId()).get());
@@ -107,6 +115,46 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .and(ScheduleSpecs.relateTerm(term));
         Page<Schedule> page = this.scheduleRepository.findAll(specification, pageable);
         return page;
+    }
+
+    /*
+     * 教师端 =》 课程任务 =》 查看学生 =》 移除
+     * */
+    @Override
+    public Schedule deleteByStudentId(String studentId, String scheduleId) {
+        Schedule schedule = this.scheduleRepository.findById(Long.valueOf(scheduleId)).get();
+        schedule.getStudents().removeIf(student -> student.getId().equals(Long.valueOf(studentId)));
+        return this.scheduleRepository.save(schedule);
+    }
+
+    /*
+    * 教师端 =》 课程任务 =》 查看学生 =》 新增 =》初始化数据获取
+    * */
+    @Override
+    public ForTaskStudentAdd getForAddByScheduleId(Long scheduleId) {
+        // clazzes: all; students: all； studentIds: 本schedule已关联的学生ids
+        ForTaskStudentAdd forTaskStudentAdd = new ForTaskStudentAdd();
+        List<Student> students = this.scheduleRepository.findById(scheduleId).get().getStudents();
+        for (Student student: students) {
+            forTaskStudentAdd.getStudentIds().add(student.getId());
+        }
+        List<Student> allStudents = this.studentRepository.findAll();
+        forTaskStudentAdd.setStudents(allStudents);
+
+        List<Clazz> allClazzes = this.clazzRepository.findAll();
+        forTaskStudentAdd.setClazzes(allClazzes);
+
+        return forTaskStudentAdd;
+
+
+    }
+
+    @Override
+    public Schedule addStudentInCourse(Long studentId, Long scheduleId) {
+        Schedule schedule = this.scheduleRepository.findById(scheduleId).get();
+        Student student = this.studentRepository.findByUserId(studentId);
+        schedule.getStudents().add(student);
+        return this.scheduleRepository.save(schedule);
     }
 
     private void saveDispatches(List<List<CourseTime>> courseTimes, Long scheduleId) {

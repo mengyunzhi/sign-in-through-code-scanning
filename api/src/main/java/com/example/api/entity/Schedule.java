@@ -29,6 +29,10 @@ public class Schedule {
     @ApiModelProperty("该排课对应班级")
     private List<Clazz> clazzes = new ArrayList<>();
 
+    @ManyToMany
+    @ApiModelProperty("该排课对应学生")
+    private List<Student> students = new ArrayList<>();
+
     public Long getId() {
         return id;
     }
@@ -67,5 +71,13 @@ public class Schedule {
 
     public void setClazzes(List<Clazz> clazzes) {
         this.clazzes = clazzes;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 }

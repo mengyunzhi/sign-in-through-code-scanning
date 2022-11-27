@@ -8,6 +8,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
+
 public interface ClazzRepository extends PagingAndSortingRepository<Clazz, Long>, JpaSpecificationExecutor {
     default Page findAll(String searchName,Pageable pageable) {
         Specification<Clazz> specification = ClazzSpecs.containName(searchName);
@@ -15,4 +17,6 @@ public interface ClazzRepository extends PagingAndSortingRepository<Clazz, Long>
     };
 
     Clazz findByName(String name);
+
+    List<Clazz> findAll();
 }

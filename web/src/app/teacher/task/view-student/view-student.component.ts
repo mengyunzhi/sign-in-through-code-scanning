@@ -8,6 +8,7 @@ import {StudentScheduleService} from '../../../service/studentSchedule.service';
 import {Confirm} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {User} from '../../../entity/user';
 
 @Component({
   selector: 'app-view-student',
@@ -45,9 +46,9 @@ export class ViewStudentComponent implements OnInit {
     Assert.isNumber(this.schedule_id, 'schedule_id不是number类型');
     this.studentService.pageByScheduleId(page, this.size, this.schedule_id as number, this.queryForm.value)
       .subscribe(pagedata => {
-        console.log('学生数据请求成功', pagedata);
         this.pageData = pagedata;
         this.page = page;
+        console.log('c', pagedata);
       }, error => {
         console.log('学生数据请求失败', error);
       });

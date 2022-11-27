@@ -1,7 +1,6 @@
 package com.example.api.controller;
 
 
-import com.example.api.entity.Schedule;
 import com.example.api.entity.Student;
 import com.example.api.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("student")
@@ -91,7 +89,15 @@ public class StudentController {
     }
 
     @GetMapping("pageByScheduleId")
-    public Optional<Schedule> pageByScheduleId(@RequestParam String ScheduleId) {
-        return  this.studentService.pageByScheduleId(ScheduleId);
+    public List<Student> pageByScheduleId(@RequestParam String ScheduleId, @RequestParam String name,
+                                          @RequestParam String sno, @RequestParam String clazz,
+                                          @RequestParam String page, @RequestParam String size) {
+        return  this.studentService.pageByScheduleId(ScheduleId, name, sno, clazz, page, size);
     }
+
+    @GetMapping("getAll")
+    public List<Student> getAll() {
+        return this.studentService.getAll();
+    }
+
 }
