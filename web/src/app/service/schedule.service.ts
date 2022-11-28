@@ -64,7 +64,7 @@ export class ScheduleService {
   }
 
   getById(id: number): Observable<Schedule> {
-    return this.httpClient.get<Schedule>('/schedule/getById/id/' + id.toString());
+    return this.httpClient.get<Schedule>('/schedule/getById/' + id.toString());
   }
 
   getDataForScheduleAdd(userName: string): Observable<{

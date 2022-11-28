@@ -1,11 +1,14 @@
 package com.example.api.controller;
 
+import com.example.api.entity.Course;
 import com.example.api.entity.Schedule;
 import com.example.api.entity.forType.forScheduleAdd.ForScheduleAdd;
 import com.example.api.entity.forType.forScheduleAdd.SaveForScheduleAdd;
+import com.example.api.entity.forType.forScheduleEdit.EditIndex;
 import com.example.api.entity.forType.forTaskStudentAdd.ForTaskStudentAdd;
 import com.example.api.repository.ScheduleRepository;
 import com.example.api.service.ScheduleService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,5 +64,26 @@ public class ScheduleController {
     public Schedule addStudentInCourse(@RequestParam Long studentId, @RequestParam Long scheduleId) {
         return this.scheduleService.addStudentInCourse(studentId, scheduleId);
     }
+
+    @GetMapping("editIndex")
+    public EditIndex getEditIndexByScheduleId(@RequestParam Long id) {
+        return this.scheduleService.getEditIndexByScheduleId(id);
+    }
+
+    /**
+     * 获取schedule：
+     * 1.项目添加调用
+     * 2.
+     */
+    @GetMapping("getById/{id}")
+    @JsonView(getByIdJsonView.class)
+    public Schedule getById(@PathVariable Long id) {
+        return this.scheduleService.getById(id);
+    }
+
+    public interface getByIdJsonView extends
+            Schedule.IdJsonView,
+            Schedule.CourseJsonView,
+            Course.IdJsonView {}
 
 }

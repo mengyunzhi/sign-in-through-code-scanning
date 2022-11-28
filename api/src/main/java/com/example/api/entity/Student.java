@@ -1,5 +1,6 @@
 package com.example.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ public class Student {
     private User user;
 
     @ApiModelProperty("对应班级")
+    @JsonIgnoreProperties({"students"})
     @ManyToOne
     private Clazz clazz;
 

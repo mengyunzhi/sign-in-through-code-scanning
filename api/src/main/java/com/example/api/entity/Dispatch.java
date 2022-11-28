@@ -1,5 +1,6 @@
 package com.example.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class Dispatch {
 
     @ManyToOne
     @ApiModelProperty("对应排课")
+    @JsonIgnoreProperties({"dispatches"})
     private Schedule schedule = new Schedule();
 
     @ApiModelProperty("对应周")

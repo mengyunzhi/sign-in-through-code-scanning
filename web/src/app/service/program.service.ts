@@ -10,20 +10,20 @@ export class ProgramService {
 
   constructor(private httpClient: HttpClient) { }
 
-  add(data: {name: string, course_id: number, lesson: number}): Observable<boolean> {
-    return this.httpClient.post<boolean>('/program/add', data);
+  add(data: {name: string, courseId: number, lesson: number}): Observable<boolean> {
+    return this.httpClient.post<any>('/program/add', data);
   }
 
   delete(id: number): Observable<boolean> {
-    return this.httpClient.delete<boolean>('/program/delete/id/' + id.toString());
+    return this.httpClient.delete<boolean>('/program/delete/' + id.toString());
   }
 
   getById(id: number): Observable<Program> {
-    return this.httpClient.get<Program>('/program/getById/id/' + id.toString());
+    return this.httpClient.get<Program>('/program/getById/' + id.toString());
   }
 
   update(id: number, data: {name: string, lesson: number}): Observable<boolean> {
-    return this.httpClient.post<boolean>('/program/update/id/' + id.toString(), data);
+    return this.httpClient.post<boolean>('/program/update/' + id.toString(), data);
   }
 
 }
