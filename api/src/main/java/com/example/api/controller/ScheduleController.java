@@ -1,7 +1,9 @@
 package com.example.api.controller;
 
+import com.example.api.entity.Clazz;
 import com.example.api.entity.Course;
 import com.example.api.entity.Schedule;
+import com.example.api.entity.forType.ForRelateClazzToShedule;
 import com.example.api.entity.forType.forScheduleAdd.ForScheduleAdd;
 import com.example.api.entity.forType.forScheduleAdd.SaveForScheduleAdd;
 import com.example.api.entity.forType.forScheduleEdit.EditIndex;
@@ -71,6 +73,30 @@ public class ScheduleController {
     }
 
     /**
+     * 排课添加班级时跟当前排课时间有冲突的dispatch对应的scheduleId
+     */
+    @PostMapping("getClazzesByScheduleIds")
+    @JsonView(getClazzesByScheduleIds.class)
+    public List<Clazz> getClazzesByScheduleIds(@RequestBody List<Long> sheduleIds) {
+        return this.scheduleService.getClazzesByScheduleIds(sheduleIds);
+    }
+
+    /**
+     * 为排课添加班级关联
+     */
+    @PostMapping("relateClazzToSchedule")
+    public void relateClazzToSchedule(@RequestBody ForRelateClazzToShedule scheduleIdAndClazzIds) {
+        this.scheduleService
+                .relateClazzToSchedule(scheduleIdAndClazzIds.scheduleId, scheduleIdAndClazzIds.clazzIds);
+    }
+
+    @PostMapping("removeClazzFromSchedule")
+    public void removeClazzFromSchedule(@RequestBody List<Long> scheduleIdAndClazzId) {
+        this.scheduleService
+                .removeClazzFromSchedule(scheduleIdAndClazzId.get(0), scheduleIdAndClazzId.get(1));
+    }
+
+    /**
      * 获取schedule：
      * 1.项目添加调用
      * 2.
@@ -85,5 +111,8 @@ public class ScheduleController {
             Schedule.IdJsonView,
             Schedule.CourseJsonView,
             Course.IdJsonView {}
+    public interface getClazzesByScheduleIds extends
+            Clazz.IdJsonView,
+            Clazz.NameJsonView {}
 
 }

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private TeacherService teacherService;
     private RoomRepository roomRepository;
     private DispatchRepository dispatchRepository;
+    private ClazzService clazzService;
 
     @Autowired
     ScheduleServiceImpl(ScheduleRepository scheduleRepository,
@@ -46,7 +48,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                         UserRepository userRepository,
                         TeacherRepository teacherRepository,
                         StudentRepository studentRepository,
-                        DispatchRepository dispatchRepository) {
+                        DispatchRepository dispatchRepository,
+                        ClazzService clazzService) {
         this.scheduleRepository = scheduleRepository;
         this.courseRepository = courseRepository;
         this.clazzRepository = clazzRepository;
@@ -58,6 +61,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
         this.dispatchRepository = dispatchRepository;
+        this.clazzService = clazzService;
     }
 
 
@@ -186,6 +190,53 @@ public class ScheduleServiceImpl implements ScheduleService {
     public Schedule getById(Long id) {
         return this.scheduleRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("schedule未找到"));
+    }
+
+    @Override
+    public List<Clazz> getClazzesByScheduleIds(List<Long> sheduleIds) {
+        List<Clazz> clazzes = new ArrayList<>();
+        sheduleIds.forEach(schedulId -> {
+            Schedule schedule = this.getScheduleById(schedulId);
+            schedule.getClazzes().forEach(clazz -> {
+                if (!clazzes.contains(clazz)) {
+                    clazzes.add(clazz);
+                }
+            });
+        });
+        return clazzes;
+    }
+
+    @Override
+    public void relateClazzToSchedule(Long scheduleId, List<Long> clazzIds) {
+        Assert.notNull(scheduleId, "scheduleId不能为null");
+        Assert.notEmpty(clazzIds, "clazzIds不能为空");
+        Schedule schedule = this.getScheduleById(scheduleId);
+
+        clazzIds.forEach(clazzId -> {
+            Clazz clazz = this.clazzService.findById(clazzId);
+            schedule.getClazzes().add(clazz);
+
+            clazz.getStudents().forEach(student -> {
+                schedule.getStudents().add(student);
+            });
+        });
+        this.scheduleRepository.save(schedule);
+    }
+
+    @Override
+    public void removeClazzFromSchedule(Long scheduleId, Long clazzId) {
+        Assert.notNull(scheduleId, "scheduleId不能为null");
+        Assert.notNull(clazzId, "clazzId不能为空");
+        Schedule schedule = this.getScheduleById(scheduleId);
+
+        Clazz clazz = this.clazzService.findById(clazzId);
+        schedule.getClazzes().remove(clazz);
+
+        clazz.getStudents().forEach(student -> {
+            schedule.getStudents().remove(student);
+        });
+
+        this.scheduleRepository.save(schedule);
     }
 
     private void saveDispatches(List<List<CourseTime>> courseTimes, Long scheduleId) {

@@ -178,12 +178,9 @@ export class ScheduleService {
     return this.httpClient.post<boolean>('/schedule/scheduleUpdate', data);
   }
 
-  courseKlassSave(id: number, clazz_id: { clazz_id: string }): Observable<boolean> {
-    const data = [];
-    data[0] = clazz_id;
-    data[1] = id;
-    console.log('service', data);
-    return this.httpClient.post<boolean>('/schedule/courseKlassSave', data);
+  relateClazzToSchedule(scheduleId: number, clazzIds: number[]): Observable<boolean> {
+    const data = {scheduleId, clazzIds};
+    return this.httpClient.post<boolean>('/schedule/relateClazzToSchedule', data);
   }
 
 }

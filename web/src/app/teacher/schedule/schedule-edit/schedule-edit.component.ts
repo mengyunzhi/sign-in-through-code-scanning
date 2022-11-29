@@ -47,7 +47,7 @@ export class ScheduleEditComponent implements OnInit {
     const scheduleId = this.id;
     this.commonService.confirm((confirm) => {
         if (confirm) {
-          this.clazzService.courseClazzDelete(clazzId, scheduleId)
+          this.clazzService.removeClazzFromSchedule(clazzId, scheduleId)
             .subscribe(success => {
               console.log('班级删除成功', success);
               this.ngOnInit();

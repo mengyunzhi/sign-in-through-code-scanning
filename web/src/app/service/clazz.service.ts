@@ -88,14 +88,17 @@ export class ClazzService {
   }
 
   getClazzesByScheduleId(scheduleIdOfDispatchConflictClazzes: any[]): Observable<Array<Clazz>> {
-    return this.httpClient.post<Array<Clazz>>('/schedule/getClazzesByScheduleId', scheduleIdOfDispatchConflictClazzes);
+    return this.httpClient.post<Array<Clazz>>('/schedule/getClazzesByScheduleIds', scheduleIdOfDispatchConflictClazzes);
+  }
+  getClazzesByCourseId(courseId: number): Observable<Array<Clazz>> {
+    return this.httpClient.get<Array<Clazz>>('/clazz/getClazzesByCourseId/' + courseId);
   }
 
-  courseClazzDelete(clazzId: number, scheduleId: number | undefined): Observable<boolean> {
+  removeClazzFromSchedule(clazzId: number, scheduleId: number | undefined): Observable<void> {
     const data = [];
-    data[0] = clazzId;
-    data[1] = scheduleId;
-    return this.httpClient.post<boolean>('/schedule/courseKlassDelete', data);
+    data[0] = scheduleId;
+    data[1] = clazzId;
+    return this.httpClient.post<void>('/schedule/removeClazzFromSchedule', data);
   }
 
 }
