@@ -97,10 +97,20 @@ public class ClazzController {
         return this.studentService.findAllBelongToClazz(clazzId, searchName, searchSno, pageable);
     }
 
-    @GetMapping("clazzesHaveSelectCourse/{course_id}")
-    public List<Long> clazzesHaveSelectCourse(@PathVariable Long course_id) {
-        return this.clazzService.clazzesHaveSelectCourse(course_id);
+    /**
+     * 选择某个课程的班级ID
+     */
+    @GetMapping("clazzesHaveSelectCourse/{courseId}")
+    public List<Long> clazzesHaveSelectCourse(@PathVariable Long courseId) {
+        return this.clazzService.clazzIdsHaveSelectCourse(courseId);
     }
 
+    /**
+     * 选择某个课程的班级
+     */
+    @GetMapping("getClazzesByCourseId/{courseId}")
+    public List<Clazz> getClazzesByCourseId(@PathVariable Long courseId) {
+        return this.clazzService.getClazzesByCourseId(courseId);
+    }
 }
 

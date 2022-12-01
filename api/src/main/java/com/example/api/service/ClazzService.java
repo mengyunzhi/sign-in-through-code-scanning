@@ -25,5 +25,7 @@ public interface ClazzService {
      */
     List<Clazz> getAll();
 
-    List<Long> clazzesHaveSelectCourse(@NotNull Long course_id);
+    List<Long> clazzIdsHaveSelectCourse(@NotNull Long courseId);
+
+    List<Clazz> getClazzesByCourseId(Long courseId);
 }

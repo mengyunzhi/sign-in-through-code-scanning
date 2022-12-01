@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+import com.example.api.entity.Clazz;
 import com.example.api.entity.Schedule;
 import com.example.api.entity.forType.forScheduleAdd.ForScheduleAdd;
 import com.example.api.entity.forType.forScheduleAdd.SaveForScheduleAdd;
@@ -32,4 +33,10 @@ public interface ScheduleService {
     EditIndex getEditIndexByScheduleId(Long id);
 
     Schedule getById(Long id);
+
+    List<Clazz> getClazzesByScheduleIds(List<Long> sheduleIds);
+
+    void relateClazzToSchedule(Long scheduleId, List<Long> clazzIds);
+
+    void removeClazzFromSchedule(Long scheduleId, Long clazzId);
 }

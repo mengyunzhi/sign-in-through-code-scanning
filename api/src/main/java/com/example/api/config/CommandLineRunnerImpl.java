@@ -205,9 +205,12 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         Program program3 = this.addProgram("testProgram3", course3, 6L);
         // 添加排课(schedule)
         Schedule schedule1 = this.addSchedule(teacher1, term1, course1, clazzes, null);
+        List<Clazz> clazzes2 = new ArrayList<>(); clazzes2.add(clazz3);
+        Schedule schedule2 = this.addSchedule(teacher2, term1, course2, clazzes2, null);
         // 添加调度(dispatch)
         Dispatch dispatch1 = this.addDispatch(schedule1, 0L, 0L, 0L, rooms);rooms.remove(1);
         Dispatch dispatch2 = this.addDispatch(schedule1, 1L, 1L, 1L, rooms);
+        Dispatch dispatch3 = this.addDispatch(schedule2, 1L, 2L, 1L, rooms);
     }
 
     private Program addProgram(String name, Course course, Long lesson) {

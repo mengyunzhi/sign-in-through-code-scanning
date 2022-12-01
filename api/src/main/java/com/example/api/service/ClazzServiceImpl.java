@@ -7,6 +7,7 @@ import com.example.api.repository.StudentRepository;
 import com.example.api.repository.specs.StudentSpecs;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class ClazzServiceImpl implements ClazzService {
     @Autowired
     public ClazzServiceImpl(ClazzRepository clazzRepository,
                             StudentRepository studentRepository,
-                            ScheduleService scheduleService) {
+                            @Lazy ScheduleService scheduleService) {
         this.clazzRepository = clazzRepository;
         this.studentRepository = studentRepository;
         this.scheduleService = scheduleService;
@@ -92,11 +93,31 @@ public class ClazzServiceImpl implements ClazzService {
     }
 
     @Override
-    public List<Long> clazzesHaveSelectCourse(Long course_id) {
-        Assert.notNull(course_id, "course_id不能为null");
-        List<Schedule> schedules = this.scheduleService.clazzesHaveSelectCourse(course_id);
+    public List<Long> clazzIdsHaveSelectCourse(Long courseId) {
+        Assert.notNull(courseId, "courseId不能为null");
+        List<Schedule> schedules = this.scheduleService.clazzesHaveSelectCourse(courseId);
         List<Long> clazzIds = this.getClazzIdsBySchedules(schedules);
         return clazzIds;
+    }
+
+    @Override
+    public List<Clazz> getClazzesByCourseId(Long courseId) {
+        Assert.notNull(courseId, "courseId不能为null");
+        List<Schedule> schedules = this.scheduleService.clazzesHaveSelectCourse(courseId);
+        List<Clazz> clazzes = this.getClazzesBySchedules(schedules);
+        return clazzes;
+    }
+
+    private List<Clazz> getClazzesBySchedules(List<Schedule> schedules) {
+        List<Clazz> clazzes = new ArrayList<>();
+        schedules.forEach(schedule -> {
+            schedule.getClazzes().forEach(clazz -> {
+                if (!clazzes.contains(clazz)) {
+                    clazzes.add(clazz);
+                }
+            });
+        });
+        return clazzes;
     }
 
     private List<Long> getClazzIdsBySchedules(List<Schedule> schedules) {
