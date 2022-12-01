@@ -22,24 +22,23 @@ export class ProgramEditComponent implements OnInit {
               private router: Router,
               private commService: CommonService,
               private httpClient: HttpClient) {
-    this.program_id = +this.route.snapshot.params.program_id;
+    this.prograId = +this.route.snapshot.params.program_id;
     const commonValidator = new CommonValidator(httpClient);
     this.formGroup = new FormGroup({
       name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength]),
-        commonValidator.programNameUnique(this.program_id)),
+        commonValidator.programNameUnique(this.prograId)),
       lesson: new FormControl(null, Validators.compose([Validators.required, Validators.min(1), CommonValidator.integer])),
     });
   }
 
-  program_id: number | undefined;
+  prograId: number | undefined;
 
 
   ngOnInit(): void {
-    Assert.isNumber(this.program_id, 'program_id类型错误');
-    this.programService.getById(this.program_id as number)
+    Assert.isNumber(this.prograId, 'program_id类型错误');
+    this.programService.getById(this.prograId as number)
       .subscribe(program => {
         console.log('program', program);
-        this.program_id = program.id;
         this.formGroup.get('name')?.setValue(program.name);
         this.formGroup.get('lesson')?.setValue(program.lesson);
       }, error => {
@@ -48,8 +47,8 @@ export class ProgramEditComponent implements OnInit {
   }
 
   onSubmit(): void {
-    Assert.isNumber(this.program_id, 'program_id的类型不是number');
-    this.programService.update(this.program_id as number, this.formGroup.value)
+    Assert.isNumber(this.prograId, 'program_id的类型不是number');
+    this.programService.update(this.prograId as number, this.formGroup.value)
       .subscribe(success => {
         console.log('项目更新成功', success);
         this.commService.success(() => this.router.navigate(['./../../'], {relativeTo: this.route}));

@@ -3,6 +3,7 @@ package com.example.api.entity;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,8 +25,11 @@ public class Clazz {
 
     @ManyToMany
     @ApiModelProperty("对应排课")
-    private List<Schedule> schedules;
+    private List<Schedule> schedules = new ArrayList<>();
 
+    @OneToMany(mappedBy = "clazz")
+    @ApiModelProperty("对应学生")
+    private List<Student> students = new ArrayList<>();
 
     // 班级人数，非数据库属性
     @Transient
@@ -77,5 +81,13 @@ public class Clazz {
 
     public void setSchedules(List<Schedule> schedules) {
         this.schedules = schedules;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 }

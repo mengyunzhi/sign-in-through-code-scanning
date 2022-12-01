@@ -3,6 +3,7 @@ package com.example.api.service;
 import com.example.api.entity.Schedule;
 import com.example.api.entity.forType.forScheduleAdd.ForScheduleAdd;
 import com.example.api.entity.forType.forScheduleAdd.SaveForScheduleAdd;
+import com.example.api.entity.forType.forScheduleEdit.EditIndex;
 import com.example.api.entity.forType.forTaskStudentAdd.ForTaskStudentAdd;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,4 +28,8 @@ public interface ScheduleService {
     ForTaskStudentAdd getForAddByScheduleId(Long scheduleId);
 
     Schedule addStudentInCourse(Long studentId, Long scheduleId);
+
+    EditIndex getEditIndexByScheduleId(Long id);
+
+    Schedule getById(Long id);
 }

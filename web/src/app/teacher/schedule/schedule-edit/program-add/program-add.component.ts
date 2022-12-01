@@ -49,7 +49,7 @@ export class ProgramAddComponent implements OnInit {
       this.programService.add({
         name: this.formGroup.get('name')?.value,
         lesson: this.formGroup.get('lesson')?.value,
-        course_id: this.course.id,
+        courseId: this.course.id,
       }).subscribe(success => {
         console.log('项目添加成功', success);
         this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));

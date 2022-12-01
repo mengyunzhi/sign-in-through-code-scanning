@@ -1,5 +1,7 @@
 package com.example.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ public class Schedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ApiModelProperty("排课Id")
+    @JsonView(IdJsonView.class)
     private Long id;
 
     @ManyToOne
@@ -23,6 +26,7 @@ public class Schedule {
 
     @ManyToOne
     @ApiModelProperty("该排课对应课程")
+    @JsonView(CourseJsonView.class)
     private Course course = new Course();
 
     @ManyToMany
@@ -32,6 +36,10 @@ public class Schedule {
     @ManyToMany
     @ApiModelProperty("该排课对应学生")
     private List<Student> students = new ArrayList<>();
+
+    @OneToMany(mappedBy = "schedule")
+    @ApiModelProperty("排课所含调度")
+    private List<Dispatch> dispatches = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -80,4 +88,15 @@ public class Schedule {
     public void setStudents(List<Student> students) {
         this.students = students;
     }
+
+    public List<Dispatch> getDispatches() {
+        return dispatches;
+    }
+
+    public void setDispatches(List<Dispatch> dispatches) {
+        this.dispatches = dispatches;
+    }
+
+    public interface IdJsonView {}
+    public interface CourseJsonView {}
 }

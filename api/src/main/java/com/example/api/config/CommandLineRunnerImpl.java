@@ -28,6 +28,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
     private final CourseRepository courseRepository;
     private final ScheduleRepository scheduleRepository;
     private final DispatchRepository dispatchRepository;
+    private final ProgramRepository programRepository;
 
     @Autowired
     public CommandLineRunnerImpl(UserRepository userRepository,
@@ -40,7 +41,8 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
                                  TermRepository termRepository,
                                  CourseRepository courseRepository,
                                  ScheduleRepository scheduleRepository,
-                                 DispatchRepository dispatchRepository) {
+                                 DispatchRepository dispatchRepository,
+                                 ProgramRepository programRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.adminRepository = adminRepository;
@@ -52,6 +54,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         this.courseRepository = courseRepository;
         this.scheduleRepository = scheduleRepository;
         this.dispatchRepository = dispatchRepository;
+        this.programRepository = programRepository;
     }
 
     @Override
@@ -72,10 +75,13 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
             logger.info("已添加初始化教师");
         }
 
-        this.forTest();
+//        this.forHPTest();
+        this.forCSHTest();
     }
 
-    private void forTest() {
+
+
+    private void forHepanTest() {
         // 添加教师
         User uTeacher1 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000000", "yunzhi", "教师1");
         Teacher teacher1 = this.addTeacher(uTeacher1);
@@ -121,9 +127,6 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         students.add(student5);
         students.add(student6);
 
-
-
-
         // 添加教室
         Room room1 = this.addRoom("testRoom1", 40L);
         Room room2 = this.addRoom("testRoom2", 80L);
@@ -148,6 +151,73 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         Dispatch dispatch2 = this.addDispatch(schedule2, 0L, 0L, 0L, rooms);
         Dispatch dispatch3 = this.addDispatch(schedule3, 0L, 0L, 0L, rooms);
     }
+
+    private void forCSHTest() {
+        // 添加教师
+        User uTeacher1 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000000", "yunzhi", "教师1");
+        Teacher teacher1 = this.addTeacher(uTeacher1);
+        User uTeacher2 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000001", "yunzhi", "教师2");
+        Teacher teacher2 = this.addTeacher(uTeacher2);
+        // 添加班级
+        Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L);
+        Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L);
+        Clazz clazz3 = this.addClazz("testclazz3", (short) 8, 1000000000L);
+        Clazz clazz4 = this.addClazz("testclazz4", (short) 8, 100000000000L);
+        List<Clazz> clazzes = new ArrayList<>();
+        clazzes.add(clazz1);
+        clazzes.add(clazz2);
+        // 添加学生，该学生属于上面的班级
+        User uStudent1 = this.getUser(StaticVariable.ROLE_STUDENT, "111111", "yunzhi", "学生1");
+        Student student1 = this.addStudent(uStudent1, clazz1, "111111", StaticVariable.STATE_TRUE);
+
+        User uStudent2 = this.getUser(StaticVariable.ROLE_STUDENT, "222222", "yunzhi", "学生2");
+        Student student2= this.addStudent(uStudent2, clazz2, "222222", StaticVariable.STATE_TRUE);
+
+        User uStudent3 = this.getUser(StaticVariable.ROLE_STUDENT, "333333", "yunzhi", "学生3");
+        Student student3= this.addStudent(uStudent3, clazz3, "333333", StaticVariable.STATE_TRUE);
+
+        User uStudent4 = this.getUser(StaticVariable.ROLE_STUDENT, "444444", "yunzhi", "学生4");
+        Student student4= this.addStudent(uStudent4, clazz4, "444444", StaticVariable.STATE_TRUE);
+        User uStudent5 = this.getUser(StaticVariable.ROLE_STUDENT, "555555", "yunzhi", "学生5");
+        Student student5 = this.addStudent(uStudent5, clazz4, "555555", StaticVariable.STATE_TRUE);
+
+        List<Student> students = new ArrayList<>();
+        students.add(student1);
+        students.add(student2);
+
+        // 添加教室
+        Room room1 = this.addRoom("testRoom1", 40L);
+        Room room2 = this.addRoom("testRoom2", 80L);
+        List<Room> rooms = new ArrayList<>();
+        rooms.add(room1);
+        rooms.add(room2);
+        // 添加学期
+        Term term1 = this.addTerm("testTerm1" , 1L);
+        Term term2 = this.addTerm("testTerm2", 0L);
+        Term term3 = this.addTerm("testTerm3", 0L);
+        // 添加课程
+        Course course1 = this.addCourse("testCourse1", 40L);
+        Course course2 = this.addCourse("testCourse2", 40L);
+        Course course3 = this.addCourse("testCourse3", 40L);
+        // 添加课程项目
+        Program program1 = this.addProgram("testProgram1", course1, 2L);
+        Program program2 = this.addProgram("testProgram2", course2, 4L);
+        Program program3 = this.addProgram("testProgram3", course3, 6L);
+        // 添加排课(schedule)
+        Schedule schedule1 = this.addSchedule(teacher1, term1, course1, clazzes, null);
+        // 添加调度(dispatch)
+        Dispatch dispatch1 = this.addDispatch(schedule1, 0L, 0L, 0L, rooms);rooms.remove(1);
+        Dispatch dispatch2 = this.addDispatch(schedule1, 1L, 1L, 1L, rooms);
+    }
+
+    private Program addProgram(String name, Course course, Long lesson) {
+        Program program = new Program();
+        program.setName(name);
+        program.setCourse(course);
+        program.setLesson(lesson);
+        return this.programRepository.save(program);
+    }
+
 
     private Dispatch addDispatch(Schedule schedule, Long week, Long day, Long lesson, List<Room> rooms) {
         Dispatch dispatch = new Dispatch();

@@ -5,30 +5,27 @@ import com.fasterxml.jackson.annotation.JsonView;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-public class Course {
-
+public class Program {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty("课程ID")
+    @ApiModelProperty("项目id")
     @JsonView(IdJsonView.class)
     private Long id;
-    @ApiModelProperty("课程名称")
-    @Column(nullable = false)
+
+    @ApiModelProperty("项目名称")
     @JsonView(NameJsonView.class)
     private String name = "";
 
-    @ApiModelProperty("课时")
-    @Column(nullable = false)
+    @ApiModelProperty("项目课时")
     @JsonView(LessonJsonView.class)
-    private Long lesson = 0L;
+    private Long lesson;
 
-    @ApiModelProperty("课程所含项目")
-    @OneToMany(mappedBy = "course")
-    private List<Program> programs = new ArrayList<>();
+    @ApiModelProperty("项目所属课程")
+    @ManyToOne
+    @JsonIgnoreProperties({"programs"})
+    private Course course = new Course();
 
     public Long getId() {
         return id;
@@ -54,15 +51,14 @@ public class Course {
         this.lesson = lesson;
     }
 
-    public List<Program> getPrograms() {
-        return programs;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setPrograms(List<Program> programs) {
-        this.programs = programs;
+    public void setCourse(Course course) {
+        this.course = course;
     }
     public interface IdJsonView {}
     public interface NameJsonView {}
     public interface LessonJsonView {}
-
 }

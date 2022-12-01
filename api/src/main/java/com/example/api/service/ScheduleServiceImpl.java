@@ -5,6 +5,7 @@ import com.example.api.entity.forType.forScheduleAdd.CourseTime;
 import com.example.api.entity.forType.forScheduleAdd.DispatchForSchedule;
 import com.example.api.entity.forType.forScheduleAdd.ForScheduleAdd;
 import com.example.api.entity.forType.forScheduleAdd.SaveForScheduleAdd;
+import com.example.api.entity.forType.forScheduleEdit.EditIndex;
 import com.example.api.entity.forType.forTaskStudentAdd.ForTaskStudentAdd;
 import com.example.api.repository.*;
 import com.example.api.repository.specs.ScheduleSpecs;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -92,8 +94,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     public void scheduleSave(SaveForScheduleAdd data) {
         Schedule schedule = new Schedule();
         data.getClazzIds().forEach(clazzId -> {
-            schedule.getClazzes().add(this.clazzRepository.findById(clazzId).get());
-            List<Student> students = this.studentRepository.findByClazzId(clazzId);
+            Clazz clazz = this.clazzRepository.findById(clazzId).get();
+            schedule.getClazzes().add(clazz);
+            List<Student> students = clazz.getStudents();
             students.forEach(student -> {
                 schedule.getStudents().add(student);
             });
@@ -155,6 +158,34 @@ public class ScheduleServiceImpl implements ScheduleService {
         Student student = this.studentRepository.findByUserId(studentId);
         schedule.getStudents().add(student);
         return this.scheduleRepository.save(schedule);
+    }
+
+    public Schedule getScheduleById(Long id) {
+        return this.scheduleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("相关Schedule实体未找到"));
+    }
+
+    @Override
+    public EditIndex getEditIndexByScheduleId(Long id) {
+        EditIndex editIndex = new EditIndex();
+        Schedule schedule = this.getScheduleById(id);
+        editIndex.setSchedule(schedule);
+        editIndex.setTeacher(schedule.getTeacher());
+        editIndex.setUser(schedule.getTeacher().getUser());
+        editIndex.setClazzes(schedule.getClazzes());
+        editIndex.setCourse(schedule.getCourse());
+        editIndex.setPrograms(schedule.getCourse().getPrograms());
+        editIndex.setDispatches(schedule.getDispatches());
+        schedule.getDispatches().forEach(dispatch -> {
+            editIndex.getRooms().add(dispatch.getRooms());
+        });
+        return editIndex;
+    }
+
+    @Override
+    public Schedule getById(Long id) {
+        return this.scheduleRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("schedule未找到"));
     }
 
     private void saveDispatches(List<List<CourseTime>> courseTimes, Long scheduleId) {

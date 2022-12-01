@@ -113,7 +113,7 @@ export class ScheduleAddComponent implements OnInit {
             this.router.navigate(['./../'], {relativeTo: this.route}).then();
           }, '当前无激活学期，请通知管理员激活');
         } else {
-          this.commonService.error(() => {
+          this.commonService.success(() => {
             this.router.navigate(['./../'], {relativeTo: this.route}).then();
           }, '当前页面无法访问');
         }
