@@ -8,12 +8,11 @@
       </select>
     </div>
   </div>
-  {{formGroup.get('class_id')?.value}}
   <div class="form-group row" *ngIf="formGroup.get('class_id')?.value">
     <label class="col-sm-1 col-form-label"><code>*</code>学生</label>
     <div class="col-sm-4">
       <select class="form-control" formControlName="student_id" style="width: 200px">
-        <option *ngFor="let student of students;" [value]="student.user.id"> {{ student.user.name + '[' + student.sno + ']' }} {{student.clazz.id}}</option>
+        <option *ngFor="let student of students;" [value]="student.user.id"> {{ student.user.name + '[' + student.sno + ']' }}</option>
       </select>
     </div>
   </div>
