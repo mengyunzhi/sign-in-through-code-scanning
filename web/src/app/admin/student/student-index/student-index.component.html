@@ -38,7 +38,9 @@
     <td>{{student.user.sex | sex}}</td>
     <td>{{student.clazz.name }}</td>
     <td>{{student.sno}}</td>
-    <td>{{student.state ? student.user.number : '-'}}</td>
+    <td *ngIf="student.state === 1">{{student.user.number}}</td>
+    <td *ngIf="student.state === 0" style="color: crimson">未注册</td>
+<!--    <td style="color: crimson">{{student.state ? student.user.number : '未注册'}}</td>-->
     <td>
       <a class="btn btn-sm btn-primary" [routerLink]="'edit/' + student.user.id"><i class="fas fa-pen"></i>编辑</a>
       <a class="btn btn-sm btn-danger" (click)="onDelete(student.user.id)"><i class="far fa-trash-alt"></i>删除</a>

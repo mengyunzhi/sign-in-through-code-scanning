@@ -2,6 +2,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {User} from '../entity/user';
+import {Student} from '../entity/student';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,12 @@ export class UserService {
     return this.httpClient.get<User>('/user/getCurrentLoginUser', {params: httpParams});
   }
 
-  studentRegister(data: {sno: string, password: string, number: string}): Observable<boolean> {
-    return this.httpClient.post<boolean>('/user/studentRegister', data);
+  studentRegister(data: {sno: string, password: string, number: string}): Observable<Student> {
+    const httpParams = new HttpParams()
+      .append('sno', data.sno)
+      .append('password', data.password)
+      .append('number', data.number);
+    return this.httpClient.get<Student>('/user/studentRegister', {params: httpParams});
   }
 
   userUpdate(data: { number: any; password: any; role: any; sex: any; name: any; id: number | undefined }): Observable<User> {

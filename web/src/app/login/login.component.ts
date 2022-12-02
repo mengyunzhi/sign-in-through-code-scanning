@@ -90,10 +90,16 @@ export class LoginComponent implements OnInit {
   }
 
   studentRegister(): void {
+    console.log(this.registerGroup.value);
     this.userService.studentRegister(this.registerGroup.value)
-      .subscribe(success => {
-        console.log('注册成功', success);
-        this.commonService.success(() => this.changeRegister());
+      .subscribe(student => {
+        if (student.state === 1) {
+          console.log('注册成功', student);
+          this.commonService.success(() => this.changeRegister());
+        } else {
+          console.log('注册失败');
+          this.commonService.error(() => {}, '请确认密码正确');
+        }
       }, error => {
         console.log('注册失败', error);
         this.commonService.error(() => {}, '请确认密码正确');
