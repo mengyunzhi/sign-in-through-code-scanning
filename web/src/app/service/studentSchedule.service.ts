@@ -27,7 +27,7 @@ export class StudentScheduleService {
     return this.httpClient.get<boolean>('/schedule/deleteByStudentId', {params: httpParams});
   }
 
-  getForAddByScheduleId(schedule_id: number): Observable<{clazzes: Clazz[], students: Student[][], studentIds: number[]}> {
+  getForAddByScheduleId(schedule_id: number): Observable<{clazzes: Clazz[], students: Student[], studentIds: number[]}> {
     return this.httpClient.get<any>('/schedule/getForAddByScheduleId/' + schedule_id.toString());
   }
 

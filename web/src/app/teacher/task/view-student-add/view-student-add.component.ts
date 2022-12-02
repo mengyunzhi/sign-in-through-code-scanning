@@ -23,6 +23,7 @@ export class ViewStudentAddComponent implements OnInit {
   });
   clazzes = [] as Clazz[];
   students = [] as Student[];
+  allStudents = [] as Student[];
   studentIds = [] as number[];
   // 标志数据是否返回，另外三个数据不足以作为判断标准
   flag = 0;
@@ -39,15 +40,7 @@ export class ViewStudentAddComponent implements OnInit {
         this.flag = 1;
         this.clazzes = data.clazzes;
         this.studentIds = data.studentIds;
-
-
-        for (const student of data.students) {
-          // @ts-ignore
-          if (data.studentIds.indexOf(student.id) === -1) {
-            // @ts-ignore
-            this.students.push(student);
-          }
-        }
+        this.allStudents = data.students;
       }, error => {
         console.log('请求失败', error);
       });
@@ -70,6 +63,15 @@ export class ViewStudentAddComponent implements OnInit {
 
   onChange(id: number): void {
     this.selectClazzId = + id;
-    console.log(typeof this.selectClazzId);
+    console.log('selectClazzId', this.selectClazzId);
+    console.log('selectClazzId type', typeof this.selectClazzId);
+    this.students.splice(0, this.students.length);
+    for (const student of this.allStudents) {
+      console.log('studentClazzId', student.clazz.id);
+      console.log('studentClazzId type', typeof student.clazz.id);
+      if (this.studentIds.indexOf(student.id) === -1 && student.clazz.id === this.selectClazzId) {
+        this.students.push(student);
+      }
+    }
   }
 }
