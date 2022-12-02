@@ -109,7 +109,7 @@ export class ScheduleService {
     term: Term,
     teacher: Teacher,
     rooms: Room[],
-    dispatches: {
+    dispatchForSchedules: {
       week: number,
       day: number,
       lesson: number,
@@ -119,7 +119,7 @@ export class ScheduleService {
       clazzIds: number[]
     }[]
   }> {
-    return this.httpClient.get<any>('/schedule/getDataForScheduleEdit/schedule_id/' + schedule_id.toString());
+    return this.httpClient.get<any>('/schedule/getDataForScheduleEdit/' + schedule_id.toString());
   }
 
   // tslint:disable-next-line:max-line-length
@@ -150,7 +150,7 @@ export class ScheduleService {
   }
 
   delete(id: number): Observable<any> {
-    return this.httpClient.delete<any>('/schedule/delete/id/' + id.toString());
+    return this.httpClient.delete<any>('/schedule/delete/' + id.toString());
   }
 
   scheduleSave(data: {

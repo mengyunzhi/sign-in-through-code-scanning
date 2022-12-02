@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ScheduleRepository extends PagingAndSortingRepository<Schedule, Long>, JpaSpecificationExecutor {
-    List<Schedule> findSchedulesByTerm_Id(Long id);
-
     List<Schedule> findSchedulesByCourse_IdAndTermId(Long courseId, Long termId);
 
     List<Schedule> findSchedulesByTeacherIdAndTermId(Long TeacherId, Long termId);
+
+    List<Schedule> findSchedulesByTerm_Id(Long termId);
 }

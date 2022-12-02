@@ -6,6 +6,8 @@ import com.example.api.entity.Schedule;
 import com.example.api.entity.forType.forCourseScheduleGetData.ForCourseScheduleGetData;
 import com.example.api.service.DispatchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +30,11 @@ public class DispatchController {
         return this.dispatchService.getAll();
     }
 
+    @DeleteMapping("delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id) {
+        this.dispatchService.deleteById(id);
+    }
     /*
     * 教师端 => 课程表 => 获取课程表所需数据
     * */

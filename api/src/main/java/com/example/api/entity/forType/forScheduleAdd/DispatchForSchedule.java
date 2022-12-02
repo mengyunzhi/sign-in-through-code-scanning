@@ -1,9 +1,29 @@
 package com.example.api.entity.forType.forScheduleAdd;
 
+import com.example.api.entity.Clazz;
+import com.example.api.entity.Dispatch;
+import com.example.api.entity.Room;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class DispatchForSchedule {
+
+    public DispatchForSchedule(Dispatch dispatch) {
+        this.setWeek(dispatch.getWeek());
+        this.setDay(dispatch.getDay());
+        this.setLesson(dispatch.getLesson());
+        this.setTeacher_id(dispatch.getSchedule().getTeacher().getId());
+        this.setSchedule_id(dispatch.getSchedule().getId());
+        for (Clazz clazz:
+                dispatch.getSchedule().getClazzes()) {
+            this.getClazzIds().add(clazz.getId());
+        }
+        for (Room room:
+                dispatch.getRooms()) {
+            this.getRoomIds().add(room.getId());
+        }
+    }
     private Long week;
     private Long day;
     private Long lesson;
@@ -68,4 +88,5 @@ public class DispatchForSchedule {
     public void setClazzIds(List<Long> clazzIds) {
         this.clazzIds = clazzIds;
     }
+
 }
