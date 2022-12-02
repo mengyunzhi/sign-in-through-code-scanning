@@ -1,15 +1,13 @@
 package com.example.api.controller;
 
-import com.example.api.entity.Clazz;
-import com.example.api.entity.Course;
-import com.example.api.entity.Schedule;
+import com.example.api.entity.*;
+import com.example.api.entity.forType.forScheduleEdit.ForScheduleEdit;
 import com.example.api.entity.forType.ForRelateClazzToShedule;
 import com.example.api.entity.forType.forScheduleAdd.ForScheduleAdd;
 import com.example.api.entity.forType.forScheduleAdd.SaveForScheduleAdd;
 import com.example.api.entity.forType.forScheduleEdit.EditIndex;
 import com.example.api.entity.forType.forTaskStudentAdd.ForTaskStudentAdd;
-import com.example.api.repository.ScheduleRepository;
-import com.example.api.service.ScheduleService;
+import com.example.api.service.*;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,10 +23,21 @@ import java.util.List;
 public class ScheduleController {
 
     ScheduleService scheduleService;
-
+    ClazzService clazzService;
+    RoomService roomService;
+    TermService termService;
+    DispatchService dispatchService;
     @Autowired
-    ScheduleController(ScheduleService scheduleService) {
+    ScheduleController(ScheduleService scheduleService,
+                       ClazzService clazzService,
+                       RoomService roomService,
+                       TermService termService,
+                       DispatchService dispatchService) {
         this.scheduleService = scheduleService;
+        this.clazzService = clazzService;
+        this.roomService = roomService;
+        this.termService = termService;
+        this.dispatchService = dispatchService;
     }
 
     @GetMapping("getDataForScheduleAdd")
@@ -107,10 +116,25 @@ public class ScheduleController {
         return this.scheduleService.getById(id);
     }
 
+    @GetMapping("getDataForScheduleEdit/{scheduleId}")
+    public ForScheduleEdit getDataForScheduleEdits(@PathVariable Long scheduleId) {
+        Schedule schedule = this.scheduleService.getById(scheduleId);
+        List<Dispatch> dispatches = this.dispatchService.getDispatchesInTerm(schedule.getTerm().getId());
+        List<Room> rooms = this.roomService.getAll();
+
+        return new ForScheduleEdit(schedule, dispatches, rooms);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public void deleteById(@PathVariable Long id) {
+        this.scheduleService.deleteById(id);
+    }
+
     public interface getByIdJsonView extends
             Schedule.IdJsonView,
             Schedule.CourseJsonView,
             Course.IdJsonView {}
+
     public interface getClazzesByScheduleIds extends
             Clazz.IdJsonView,
             Clazz.NameJsonView {}

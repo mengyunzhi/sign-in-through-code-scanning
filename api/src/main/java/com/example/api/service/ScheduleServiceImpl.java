@@ -36,6 +36,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private RoomRepository roomRepository;
     private DispatchRepository dispatchRepository;
     private ClazzService clazzService;
+    private DispatchService dispatchService;
 
     @Autowired
     ScheduleServiceImpl(ScheduleRepository scheduleRepository,
@@ -49,7 +50,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                         TeacherRepository teacherRepository,
                         StudentRepository studentRepository,
                         DispatchRepository dispatchRepository,
-                        ClazzService clazzService) {
+                        ClazzService clazzService,
+                        DispatchService dispatchService) {
         this.scheduleRepository = scheduleRepository;
         this.courseRepository = courseRepository;
         this.clazzRepository = clazzRepository;
@@ -62,6 +64,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         this.studentRepository = studentRepository;
         this.dispatchRepository = dispatchRepository;
         this.clazzService = clazzService;
+        this.dispatchService = dispatchService;
     }
 
 
@@ -239,6 +242,20 @@ public class ScheduleServiceImpl implements ScheduleService {
         this.scheduleRepository.save(schedule);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        Schedule schedule = this.getById(id);
+        schedule.getDispatches().forEach(dispatch -> {
+            this.dispatchService.deleteById(dispatch.getId());
+        });
+        this.scheduleRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Schedule> getAllByTermId(Long termId) {
+        return this.scheduleRepository.findSchedulesByTerm_Id(termId);
+    }
+
     private void saveDispatches(List<List<CourseTime>> courseTimes, Long scheduleId) {
         for (int day = 0; day < 7; day++) {
             for (int lesson = 0; lesson < 5; lesson++) {
@@ -276,35 +293,17 @@ public class ScheduleServiceImpl implements ScheduleService {
             });
         });
         // 将获取到的 Dispatch类型 转换成 DispatchForSchedule类型
-        List<DispatchForSchedule> dispatchForSchedules = this.convertDispatchesToDispatchForScheduleAdd(dispatches);
+        List<DispatchForSchedule> dispatchForSchedules = this.convertDispatchesToDispatchForSchedule(dispatches);
         return dispatchForSchedules;
     }
 
-    private List<DispatchForSchedule> convertDispatchesToDispatchForScheduleAdd(List<Dispatch> dispatches) {
+    private List<DispatchForSchedule> convertDispatchesToDispatchForSchedule(List<Dispatch> dispatches) {
         List<DispatchForSchedule> dispatchForSchedules = new ArrayList<>();
         dispatches.forEach(dispatch -> {
             // 对单项转换，转换完成后放到数组 dispatchForSchedules 中
-            DispatchForSchedule dispatchForSchedule = this.getDispatchesForScheduleByDispatch(dispatch);
+            DispatchForSchedule dispatchForSchedule = new DispatchForSchedule(dispatch);
             dispatchForSchedules.add(dispatchForSchedule);
         });
-        return  dispatchForSchedules;
-    }
-
-    private DispatchForSchedule getDispatchesForScheduleByDispatch(Dispatch dispatch) {
-        DispatchForSchedule dispatchForSchedule = new DispatchForSchedule();
-        dispatchForSchedule.setWeek(dispatch.getWeek());
-        dispatchForSchedule.setDay(dispatch.getDay());
-        dispatchForSchedule.setLesson(dispatch.getLesson());
-        dispatchForSchedule.setTeacher_id(dispatch.getSchedule().getTeacher().getId());
-        dispatchForSchedule.setTeacher_id(dispatch.getSchedule().getId());
-        for (Clazz clazz:
-             dispatch.getSchedule().getClazzes()) {
-            dispatchForSchedule.getClazzIds().add(clazz.getId());
-        }
-        for (Room room:
-                dispatch.getRooms()) {
-            dispatchForSchedule.getRoomIds().add(room.getId());
-        }
-        return dispatchForSchedule;
+        return dispatchForSchedules;
     }
 }

@@ -74,7 +74,8 @@ export class CourseTime2Component implements OnInit {
   ngOnInit(): void {
     this.loadData();
     this.sendParent();
-    console.log('coursetime-conflictData', this.day, this.lesson, this.conflictData);
+    this.conflictData.length ? console.log(this.day, this.lesson, this.conflictData) : this.conflictData = [];
+    // console.log('coursetime-conflictData', this.day, this.lesson, this.conflictData);
     // console.log(this.day, this.lesson, this.conflictData, this.disableWeeks, this.conflictWeeks);
     // console.log('-------------------\n unit day', this.day);
     // console.log('unit lesson', this.lesson);
@@ -109,10 +110,11 @@ export class CourseTime2Component implements OnInit {
           }
         }
       } else if (this.defaultWeeks.includes(week)) {
+        // 当前周如果是默认周中的，那么只将schedule_id不为当前schedule的教室列为冲突教教室
         const dataEqualWeek = this.conflictData.filter(data => data.week === week);
         if (dataEqualWeek.length > 0) {
           for (const data of dataEqualWeek) {
-            console.warn('test', data, this.day, this.lesson, data.roomIds.filter(room => this.defaultRooms.includes(room)));
+            // console.warn('test', data, this.day, this.lesson, data.roomIds.filter(room => this.defaultRooms.includes(room)));
             if (data.schedule_id !== this.schedule_id) {
               for (const roomId of data.roomIds) {
                 this.conflictRooms.push(roomId);
@@ -171,7 +173,7 @@ export class CourseTime2Component implements OnInit {
           }
         }
       } else if (this.defaultRooms.includes(room_id)) {
-        // 通过room_id加入冲突的week
+        // 通过room_id加入冲突的week,因为是默认的，所以只schedule与当前schedule不符的
         const dataHasRoomId = this.conflictData.filter(data => data.roomIds.includes(room_id));
         for (const data of dataHasRoomId) {
           if (data.schedule_id !== this.schedule_id) {
@@ -223,10 +225,8 @@ export class CourseTime2Component implements OnInit {
 
   // 筛选出disableWeeks
   loadData(): void {
-    if (this.day === 0 && this.lesson === 0) {
-    }
     if (this.conflictData.length > 0) {
-      console.log('unit conflictData', this.day, this.lesson, this.conflictData);
+      // console.log('unit conflictData', this.day, this.lesson, this.conflictData);
     }
     for (const data of this.conflictData) {
       if (data.schedule_id === this.schedule_id) {
@@ -249,7 +249,7 @@ export class CourseTime2Component implements OnInit {
           continue;
         }
         // data中clazzIds和selectedClazzes有交集
-        if (data.clazzIds.filter(clazzId => this.selectedClazzes?.includes(clazzId))?.length > 0) {
+        if (data.clazzIds.filter(clazzId => this.selectedClazzes?.includes(clazzId))) {
           this.disableWeeks.push(data.week);
         }
       }
@@ -258,7 +258,7 @@ export class CourseTime2Component implements OnInit {
 
 
   sendParent(): void {
-    console.log('unit sendParent conflic', this.day, this.lesson, this.conflictData, this.defaultWeeks, this.defaultRooms);
+    // console.log('unit sendParent conflic', this.day, this.lesson, this.conflictData, this.defaultWeeks, this.defaultRooms);
     this.outer.emit({day: this.day, lesson: this.lesson, weeks: this.selectedWeeks, roomIds: this.selectedRooms});
   }
 

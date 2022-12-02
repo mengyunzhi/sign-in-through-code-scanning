@@ -42,7 +42,7 @@ export class TimeAddComponent implements OnInit {
 
   /* 课程 */
   course =  {name: '正在加载...'} as Course;
-  /* 班级 */
+  /* 排课对应班级 */
   clazzes = [] as Clazz[];
 
 
@@ -74,8 +74,8 @@ export class TimeAddComponent implements OnInit {
 
   ngOnInit(): void {
     this.schedule_id = +this.route.snapshot.params.schedule_id;
-    console.log('schedule_id', this.schedule_id);
     this.initCourseTimes();
+    console.log('schedule_id', this.schedule_id, this.courseTimes);
 
     // 向后台请求数据
     this.scheduleService.getDataForScheduleEdit(this.schedule_id)
@@ -85,7 +85,7 @@ export class TimeAddComponent implements OnInit {
         this.clazzes = data.clazzes;
         this.term = data.term;
         this.rooms = data.rooms;
-        this.dispatches = data.dispatches;
+        this.dispatches = data.dispatchForSchedules;
         this.teacher = data.teacher;
         this.weeks = this.termService.getWeeksByTerm(this.term);
       }, error =>  {
@@ -140,9 +140,9 @@ export class TimeAddComponent implements OnInit {
 
   /* 接收子组件传回的数据 */
   getFooterRun(data: {day: number, lesson: number, weeks: number[], roomIds: number[]}): void {
-    console.log('data', data);
+    // console.log('data', data);
     this.courseTimes[data.day][data.lesson] = {weeks: data.weeks, roomIds: data.roomIds};
-    console.log('courseTimes', this.courseTimes);
+    // console.log('courseTimes', this.courseTimes);
   }
 
   onSubmit(): void {

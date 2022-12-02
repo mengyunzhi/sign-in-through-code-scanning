@@ -65,8 +65,7 @@ export class ScheduleEditComponent implements OnInit {
     this.commonService.confirm(confirm => {
       if (confirm) {
         this.dispatchService.delete(id)
-          .subscribe(success => {
-            console.log('调度删除成功', success);
+          .subscribe(() => {
             this.ngOnInit();
             this.commonService.success();
           }, error => {

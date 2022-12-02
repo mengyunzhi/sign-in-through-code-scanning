@@ -39,4 +39,8 @@ public interface ScheduleService {
     void relateClazzToSchedule(Long scheduleId, List<Long> clazzIds);
 
     void removeClazzFromSchedule(Long scheduleId, Long clazzId);
+
+    void deleteById(Long id);
+
+    List<Schedule> getAllByTermId(Long termId);
 }

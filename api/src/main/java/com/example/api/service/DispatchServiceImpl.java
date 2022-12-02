@@ -1,16 +1,23 @@
 package com.example.api.service;
 
+import com.example.api.entity.Dispatch;
+import com.example.api.entity.Schedule;
+import com.example.api.repository.DispatchRepository;
 import com.example.api.entity.*;
 import com.example.api.entity.forType.forCourseScheduleGetData.ForCourseScheduleGetData;
 import com.example.api.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DispatchServiceImpl implements DispatchService {
+
+    ScheduleService scheduleService;
 
     private DispatchRepository dispatchRepository;
 
@@ -29,12 +36,14 @@ public class DispatchServiceImpl implements DispatchService {
                         UserRepository userRepository,
                         TeacherRepository teacherRepository,
                         TermRepository termRepository,
-                        ScheduleRepository scheduleRepository) {
+                        ScheduleRepository scheduleRepository,
+                        @Lazy ScheduleService scheduleService) {
         this.dispatchRepository = dispatchRepository;
         this.userRepository = userRepository;
         this.teacherRepository = teacherRepository;
         this.termRepository = termRepository;
         this.scheduleRepository = scheduleRepository;
+        this.scheduleService = scheduleService;
     }
 
     @Override
@@ -42,6 +51,23 @@ public class DispatchServiceImpl implements DispatchService {
         return (List<Dispatch>) this.dispatchRepository.findAll();
     }
 
+    @Override
+    public void deleteById(Long id) {
+        Assert.notNull(id, "id不能为null");
+        this.dispatchRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Dispatch> getDispatchesInTerm(Long termId) {
+        List<Schedule> schedules = this.scheduleService.getAllByTermId(termId);
+        List<Dispatch> dispatches = new ArrayList<>();
+        schedules.forEach(schedule -> {
+            schedule.getDispatches().forEach(dispatch -> {
+                dispatches.add(dispatch);
+            });
+        });
+        return dispatches;
+    }
     @Override
     public ForCourseScheduleGetData getData(String userNumber) {
         // ForCourseScheduleGetData
