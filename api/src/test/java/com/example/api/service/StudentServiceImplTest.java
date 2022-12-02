@@ -34,11 +34,12 @@ class StudentServiceImplTest {
     @Test
     void save() throws Exception {
         String name = RandomString.make(6);
+        String password = RandomString.make(6);
         Short sex = (short) (new Random().nextLong() % 2);
         Long clazzId = new Random().nextLong();
         String sno = RandomString.make(6);
 
-        this.studentService.save(name, sex, clazzId, sno);
+        this.studentService.save(name, sex, password, clazzId, sno);
         ArgumentCaptor<Student> studentArgumentCaptor = ArgumentCaptor.forClass(Student.class);
         Mockito.verify(this.studentRepository).save(studentArgumentCaptor.capture());
         Student student = studentArgumentCaptor.getValue();
