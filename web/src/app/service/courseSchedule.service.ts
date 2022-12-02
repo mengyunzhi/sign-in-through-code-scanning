@@ -15,7 +15,11 @@ export class CourseScheduleService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getData(): Observable<{week: number, day: number, lesson: number, course: Course, rooms: Room[], clazzes: Clazz[]}[]> {
+  // tslint:disable-next-line:max-line-length
+  getData(userNumber: string): Observable<{ week: number; day: number; lesson: number; course: Course; rooms: Room[]; clazzes: Clazz[] }[]> {
+    const httpParams = new HttpParams()
+      .append('userNumber', userNumber);
+    console.log(userNumber);
     return this.httpClient.get<{
       clazzes: Clazz[][],
       courses: Course[],
@@ -26,7 +30,7 @@ export class CourseScheduleService {
         schedule_id: number
       }[][],
       rooms: Room[][][]
-    }>('/course_schedule/getData')
+    }>('/dispatch/getData', {params: httpParams})
       .pipe(map(data => {
         console.log(data);
         const content = [] as {week: number, day: number, lesson: number, course: Course, rooms: Room[], clazzes: Clazz[]}[];
@@ -34,14 +38,16 @@ export class CourseScheduleService {
         // let schedule_id = data.dispatches[0]?.schedule_id;
         for (let i = 0; i < data.dispatches.length; i++) {
           for (let j = 0; j < data.dispatches[i].length; j++) {
-            content.push({
-              week: data.dispatches[i][j].week,
-              day: data.dispatches[i][j].day,
-              lesson: data.dispatches[i][j].lesson,
-              course: data.courses[i],
-              rooms: data.rooms[i][j],
-              clazzes: data.clazzes[i]
-            });
+            if (data.dispatches[i][j] !== null) {
+              content.push({
+                week: data.dispatches[i][j].week,
+                day: data.dispatches[i][j].day,
+                lesson: data.dispatches[i][j].lesson,
+                course: data.courses[i],
+                rooms: data.rooms[i][j],
+                clazzes: data.clazzes[i]
+              });
+            }
           }
         }
         return content;

@@ -41,11 +41,15 @@ export class TermScheduleComponent implements OnInit {
     rooms: Room[],
     clazzes: Clazz[]
   };
+  userNumber: string | undefined;
   constructor(private courseScheduleService: CourseScheduleService,
               private termService: TermService) { }
 
   ngOnInit(): void {
-    this.courseScheduleService.getData()
+    // @ts-ignore
+    this.userNumber = window.sessionStorage.getItem('userNumber');
+    // @ts-ignore
+    this.courseScheduleService.getData(this.userNumber)
       .subscribe(dispatches => {
         console.log('getDataForWeek 请求成功', dispatches);
         this.dispatches = dispatches;
