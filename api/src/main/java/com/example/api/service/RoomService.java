@@ -21,4 +21,6 @@ public interface RoomService {
     Room updateFields(@NotNull Room newRoom, @NotNull Room oldRoom);
 
     String roomNameUnique(Long roomId, String name);
+
+    List<Room> getAll();
 }

@@ -139,6 +139,7 @@ class ScheduleController extends Controller {
         $schedule = Schedule::get($schedule_id);
         $data['course'] = $schedule->getCourse();
         $data['clazzes'] = $schedule->Klasses;
+        
         $data['rooms'] = Room::All();
         $data['term'] = Term::getCurrentTerm();
         $data['dispatches'] = $this->getDispatches();

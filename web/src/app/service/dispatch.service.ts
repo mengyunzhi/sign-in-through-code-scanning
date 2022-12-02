@@ -10,8 +10,8 @@ export class DispatchService {
 
   constructor(private httpClient: HttpClient) { }
 
-  delete(id: number): Observable<boolean> {
-    return this.httpClient.delete<boolean>('/dispatch/delete/id/' + id.toString());
+  delete(id: number): Observable<void> {
+    return this.httpClient.delete<void>('/dispatch/delete/' + id.toString());
   }
 
   getAllDispatches(): Observable<Array<Dispatch>> {

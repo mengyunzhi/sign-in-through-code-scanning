@@ -74,5 +74,10 @@ public class RoomServiceImpl implements RoomService {
         return null;
     }
 
+    @Override
+    public List<Room> getAll() {
+        return (List<Room>) this.roomRepository.findAll();
+    }
+
 
 }
