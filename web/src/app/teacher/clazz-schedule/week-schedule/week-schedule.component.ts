@@ -13,6 +13,7 @@ import {Term} from '../../../entity/term';
   styleUrls: ['./week-schedule.component.css']
 })
 export class WeekScheduleComponent implements OnInit {
+  userNumber: string | undefined;
 
   constructor(private courseScheduleService: CourseScheduleService,
               private termService: TermService) { }
@@ -35,8 +36,11 @@ export class WeekScheduleComponent implements OnInit {
   flag = 0;
 
   ngOnInit(): void {
-    this.courseScheduleService.getData()
-      .subscribe(dispatches => {
+    // @ts-ignore
+    this.userNumber = window.sessionStorage.getItem('userNumber');
+    // @ts-ignore
+    this.courseScheduleService.getData(this.userNumber)
+        .subscribe(dispatches => {
         console.log('getDataForWeek 请求成功', dispatches);
         this.dispatches = dispatches;
         this.loadData();
@@ -78,7 +82,7 @@ export class WeekScheduleComponent implements OnInit {
   getCourseName(day: number, lesson: number): string | void {
     this.day = day;
     this.lesson = lesson;
-    console.log('123123123', day, lesson, this.dispatchesMatrix);
+    // console.log('123123123', day, lesson, this.dispatchesMatrix);
     this.dispatch = this.dispatchesMatrix[day][lesson];
     const str = this.dispatch.course?.name;
     if (str) {
