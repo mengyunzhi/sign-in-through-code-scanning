@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StudentService {
-    Student save(@NotNull String name, @NotNull Short sex, Long clazzId, @NotNull String sno);
+    Student save(@NotNull String name, @NotNull Short sex, @NotNull String password, @NotNull Long clazzId, @NotNull String sno);
 
     Page findAll(String clazzName, String studentName, String sno, @NotNull Pageable pageable);
 
@@ -32,4 +32,6 @@ public interface StudentService {
     List<Student> getAllStudentByClazzId(Long clazzId);
 
     List<Student> getAll();
+
+    Long snoExist(Long userId, String sno);
 }

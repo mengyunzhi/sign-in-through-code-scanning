@@ -35,6 +35,7 @@ public class StudentController {
         return this.studentService.save(
             student.getUser().getName(),
             student.getUser().getSex(),
+            student.getUser().getPassword(),
             student.getClazz().getId(),
             student.getSno()
         );
@@ -86,6 +87,12 @@ public class StudentController {
     public String snoUnique(@RequestParam(required = false) Long userId,
                             @RequestParam String sno) {
         return this.studentService.snoUniqueByUserId(userId, sno);
+    }
+
+    @GetMapping("snoExist")
+    public Long snoExist(@RequestParam(required = false) Long userId,
+                            @RequestParam String sno) {
+        return this.studentService.snoExist(userId, sno);
     }
 
     @GetMapping("pageByScheduleId")

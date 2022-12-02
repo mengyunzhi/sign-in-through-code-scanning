@@ -39,15 +39,17 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Student save(String name, Short sex, Long clazzId, String sno) {
+    public Student save(String name, Short sex, String password, Long clazzId, String sno) {
         Assert.notNull(name, "name不能为null");
         Assert.notNull(sex, "sex不能为null");
+        Assert.notNull(sex, "password不能为null");
         Assert.notNull(sno, "sno不能为null");
         User user = new User();
         user.setNumber(sno);
         user.setRole(StaticVariable.ROLE_STUDENT);
         user.setName(name);
         user.setSex(sex);
+        user.setPassword(password);
         this.userService.save(user);
 
         Student student = new Student();
@@ -180,6 +182,15 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public List<Student> getAll() {
         return (List<Student>) this.studentRepository.findAll();
+    }
+
+    @Override
+    public Long snoExist(Long userId, String sno) {
+        Student student = this.studentRepository.findBySno(sno);
+        if (student == null) {
+            return 0L;
+        }
+        return 1L;
     }
 
 }

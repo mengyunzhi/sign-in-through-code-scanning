@@ -1,7 +1,9 @@
 package com.example.api.service;
 
+import com.example.api.entity.Student;
 import com.example.api.entity.Term;
 import com.example.api.entity.User;
+import com.example.api.repository.StudentRepository;
 import com.example.api.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -15,10 +17,14 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    
+    private StudentRepository studentRepository;
 
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,
+                           StudentRepository studentRepository) {
         this.userRepository = userRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Override
@@ -88,6 +94,17 @@ public class UserServiceImpl implements UserService {
             }
         }
         return "名称合理";
+    }
+
+    @Override
+    public Student studentRegister(String sno, String password, String number) {
+        Student student = this.studentRepository.findBySno(sno);
+        if (!Objects.equals(password, student.getUser().getPassword())) {
+            return new Student();
+        }
+        student.setState(1L);
+        student.getUser().setNumber(number);
+        return this.studentRepository.save(student);
     }
 
     private User updateFields(User user, User oldUser) {
