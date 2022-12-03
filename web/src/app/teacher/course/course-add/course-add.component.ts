@@ -41,13 +41,13 @@ export class CourseAddComponent implements OnInit {
     };
     this.courseService.add(course)
       .subscribe(success => {
-          console.log('添加成功', success);
-          this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
-        },
-        error => {
-          console.log('添加失败', error);
-          this.commonService.error();
-        });
+        console.log('添加成功', success);
+        this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
+      },
+      error => {
+        console.log('添加失败', error);
+        this.commonService.error();
+      });
   }
 
 }

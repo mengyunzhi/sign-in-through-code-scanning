@@ -33,13 +33,12 @@ export class NameEditComponent implements OnInit {
   ngOnInit(): void {
     const commonValidator = new CommonValidator(this.httpClient);
     this.schedule_id = +this.route.snapshot.params.schedule_id;
-    this.scheduleService.getById(this.schedule_id)
-      .subscribe(schedule => {
-        console.log('schedule name-edit', schedule);
-        this.course_id = schedule.course.id;
+    this.courseService.getByScheduleId(this.schedule_id)
+      .subscribe(course => {
+        this.course_id = course.id;
         this.formGroup.get('name')?.setAsyncValidators(commonValidator.courseNameUnique(this.course_id));
-        this.formGroup.get('name')?.setValue(schedule.course.name);
-        this.formGroup.get('lesson')?.setValue(schedule.course.lesson);
+        this.formGroup.get('name')?.setValue(course.name);
+        this.formGroup.get('lesson')?.setValue(course.lesson);
       }, error => {
         console.log(error);
       });

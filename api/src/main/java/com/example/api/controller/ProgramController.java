@@ -40,7 +40,16 @@ public class ProgramController {
         this.programService.deleteById(id);
     }
 
-
+    @GetMapping("programNameUnique")
+    public String programNameUnique(@RequestParam String name,
+                                   @RequestParam(required = false) Long programId) {
+        String msg = this.programService.programNameUnique(programId, name);
+        if (msg != null) {
+            return msg;
+        } else {
+            return null;
+        }
+    }
     public interface getByIdJsonView extends Program.NameJsonView, Program.LessonJsonView {}
     public interface updateJsonView extends Program.NameJsonView, Program.LessonJsonView {}
 

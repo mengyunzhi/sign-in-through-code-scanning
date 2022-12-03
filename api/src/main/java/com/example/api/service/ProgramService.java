@@ -13,4 +13,6 @@ public interface ProgramService {
     Program update(@NotNull Long id, Program program);
 
     void deleteById(@NotNull Long id);
+
+    String programNameUnique(Long programId, String name);
 }

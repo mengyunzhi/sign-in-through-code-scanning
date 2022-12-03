@@ -35,6 +35,22 @@ public class CourseController {
         return  this.courseService.findAll(searchName, searchLesson, pageable);
     }
 
+    @GetMapping("courseNameUnique")
+    public String courseNameUnique(@RequestParam String name,
+                                   @RequestParam(required = false) Long courseId) {
+        String msg = this.courseService.courseNameUnique(courseId, name);
+        if (msg != null) {
+            return msg;
+        } else {
+            return null;
+        }
+    }
+
+    @GetMapping("getByScheduleId/{scheduleId}")
+    public Course getByScheduleId(@PathVariable Long scheduleId) {
+        return this.courseService.getByScheduleId(scheduleId);
+    }
+
     @DeleteMapping("delete/{id}")
     public void delete(@PathVariable Long id) {
         this.courseService.deleteById(id);

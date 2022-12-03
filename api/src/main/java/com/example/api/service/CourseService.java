@@ -16,4 +16,8 @@ public interface CourseService {
     Course getById(@NotNull Long id);
 
     Course update(@NotNull Long id, @NotNull Course course);
+
+    String courseNameUnique(Long courseId, String name);
+
+    Course getByScheduleId(Long scheduleId);
 }
