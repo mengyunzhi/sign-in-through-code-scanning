@@ -168,17 +168,17 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         clazzes.add(clazz2);
         // 添加学生，该学生属于上面的班级
         User uStudent1 = this.getUser(StaticVariable.ROLE_STUDENT, "111111", "yunzhi", "学生1");
-        Student student1 = this.addStudent(uStudent1, clazz1, "111111", StaticVariable.STATE_TRUE);
+        Student student1 = this.addStudent(uStudent1, clazz1, "111111", StaticVariable.STATE_FALSE);
 
         User uStudent2 = this.getUser(StaticVariable.ROLE_STUDENT, "222222", "yunzhi", "学生2");
-        Student student2= this.addStudent(uStudent2, clazz2, "222222", StaticVariable.STATE_TRUE);
+        Student student2= this.addStudent(uStudent2, clazz2, "222222", StaticVariable.STATE_FALSE);
 
-        User uStudent3 = this.getUser(StaticVariable.ROLE_STUDENT, "333333", "yunzhi", "学生3");
+        User uStudent3 = this.getUser(StaticVariable.ROLE_STUDENT, "13122333333", "yunzhi", "学生3");
         Student student3= this.addStudent(uStudent3, clazz3, "333333", StaticVariable.STATE_TRUE);
 
-        User uStudent4 = this.getUser(StaticVariable.ROLE_STUDENT, "444444", "yunzhi", "学生4");
+        User uStudent4 = this.getUser(StaticVariable.ROLE_STUDENT, "13122444444", "yunzhi", "学生4");
         Student student4= this.addStudent(uStudent4, clazz4, "444444", StaticVariable.STATE_TRUE);
-        User uStudent5 = this.getUser(StaticVariable.ROLE_STUDENT, "555555", "yunzhi", "学生5");
+        User uStudent5 = this.getUser(StaticVariable.ROLE_STUDENT, "13122555555", "yunzhi", "学生5");
         Student student5 = this.addStudent(uStudent5, clazz4, "555555", StaticVariable.STATE_TRUE);
 
         List<Student> students = new ArrayList<>();

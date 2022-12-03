@@ -42,12 +42,14 @@ class StudentControllerTest {
         JSONObject jsonObject = new JSONObject();
         String name = RandomString.make(6);
         Short sex = (short) (new Random().nextLong() % 2);
+        String password = RandomString.make(6);
         Long clazzId = new Random().nextLong();
         String sno = RandomString.make(6);
 
         JSONObject userObject = new JSONObject();
         userObject.put("name", name);
         userObject.put("sex", sex);
+        userObject.put("password", password);
         JSONObject clazzObject = new JSONObject();
         clazzObject.put("id", clazzId);
 
@@ -63,6 +65,7 @@ class StudentControllerTest {
                 Mockito.any(),
                 Mockito.any(),
                 Mockito.any(),
+                Mockito.any(),
                 Mockito.any()
         );
         // 发起请求以及断言
@@ -72,18 +75,21 @@ class StudentControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("id").exists());
 
-        ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> stringArgumentCaptorName = ArgumentCaptor.forClass(String.class);
+        ArgumentCaptor<String> stringArgumentCaptorPassword = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<Short> shortArgumentCaptor = ArgumentCaptor.forClass(Short.class);
         ArgumentCaptor<Long> longArgumentCaptor = ArgumentCaptor.forClass(Long.class);
         ArgumentCaptor<String> stringArgumentCaptor2 = ArgumentCaptor.forClass(String.class);
         Mockito.verify(this.studentService).save(
-                stringArgumentCaptor.capture(),
+                stringArgumentCaptorName.capture(),
                 shortArgumentCaptor.capture(),
+                stringArgumentCaptorPassword.capture(),
                 longArgumentCaptor.capture(),
                 stringArgumentCaptor2.capture()
         );
-        Assertions.assertEquals(name, stringArgumentCaptor.getValue());
+        Assertions.assertEquals(name, stringArgumentCaptorName.getValue());
         Assertions.assertEquals(sex, shortArgumentCaptor.getValue());
+        Assertions.assertEquals(password, stringArgumentCaptorPassword.getValue());
         Assertions.assertEquals(clazzId, longArgumentCaptor.getValue());
         Assertions.assertEquals(sno, stringArgumentCaptor2.getValue());
     }

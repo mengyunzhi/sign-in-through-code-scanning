@@ -174,17 +174,16 @@ export class CommonValidator {
     };
   }
 
-  // todo: todo
   snoExist(user_id = 0): (control: AbstractControl) => Observable<ValidationErrors | null> {
     return (control) => {
       const sno = control.value;
       const httpParams = new HttpParams()
         .append('sno', sno)
         .append('user_id', user_id.toString());
-      return this.httpClient.get('/student/snoUnique', {params: httpParams})
+      return this.httpClient.get('/student/snoExist', {params: httpParams})
         .pipe(map(data => {
           console.log('snoExist', data);
-          if (data) {
+          if (data === 1) {
             return null;
           } else {
             return {snoExist: '学号不存在'};

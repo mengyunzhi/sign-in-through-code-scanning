@@ -48,7 +48,7 @@
       <input type="text" formControlName="number" id="number" class="form-control" />
       <small class="text-danger" *ngIf="registerGroup.get('number')?.errors">
         <ng-container *ngIf="registerGroup.get('number')?.errors?.isPhoneNumber">手机号格式错误</ng-container>
-        <ng-container *ngIf="registerGroup.get('number')?.errors?.numberUnique">该手机号已存在</ng-container>
+        <ng-container *ngIf="registerGroup.get('number')?.errors?.numberUnique === '名称已存在'">该手机号已存在</ng-container>
       </small>
     </div>
   </div>
@@ -68,7 +68,11 @@
   &nbsp;
   <div class="row">
     <div class="col-md-12">
-      <button type="submit" [disabled]="registerGroup.invalid || registerGroup.pending" (click)="studentRegister()" class="btn btn-primary btn-block">确定</button>
+<!--      [disabled]="registerGroup.invalid || registerGroup.pending"-->
+      <button type="submit" [disabled]="registerGroup.get('sno')?.errors?.required || registerGroup.get('sno')?.errors?.minlength || registerGroup.get('sno')?.errors?.maxlength || registerGroup.get('sno')?.errors?.sno
+       || registerGroup.get('sno')?.errors?.snoExist
+       || registerGroup.get('number')?.errors?.numberUnique  !== '名称合理'
+       || registerGroup.get('password')?.invalid" (click)="studentRegister()" class="btn btn-primary btn-block">确定</button>
     </div>
     <div class="col-md-12">
       <button type="submit" (click)="changeRegister()" class="mt-3 btn btn-primary btn-block">返回</button>

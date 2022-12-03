@@ -1,6 +1,7 @@
 package com.example.api.controller;
 
 import com.example.api.config.StaticVariable;
+import com.example.api.entity.Student;
 import com.example.api.entity.User;
 import com.example.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,10 @@ public class UserController {
     @GetMapping("getDefaultPassword")
     public String getDefaultPassword() {
         return StaticVariable.DEFAULT_PASSWORD;
+    }
+
+    @GetMapping("studentRegister")
+    public Student studentRegister(@RequestParam String sno, @RequestParam String password, @RequestParam String number) {
+        return this.userService.studentRegister(sno, password, number);
     }
 }
