@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Objects;
 
 @Service
 public class ProgramServiceImpl implements ProgramService {
@@ -52,5 +53,15 @@ public class ProgramServiceImpl implements ProgramService {
     public void deleteById(Long id) {
         Assert.notNull(id, "id不能为null");
         this.programRepository.deleteById(id);
+    }
+
+    @Override
+    public String programNameUnique(Long programId, String name) {
+        Assert.notNull(name, "name不能为null");
+        Program program = this.programRepository.findByName(name);
+        if (program != null && !Objects.equals(program.getId(), programId)) {
+            return "项目名已存在";
+        }
+        return null;
     }
 }

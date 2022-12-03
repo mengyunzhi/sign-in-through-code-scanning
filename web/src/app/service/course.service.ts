@@ -71,4 +71,8 @@ export class CourseService {
     console.log(id);
     return this.httpClient.delete<Course>('/course/delete/' + id.toString());
   }
+
+  getByScheduleId(scheduleId: number): Observable<Course> {
+    return this.httpClient.get<Course>('/course/getByScheduleId/' + scheduleId.toString());
+  }
 }

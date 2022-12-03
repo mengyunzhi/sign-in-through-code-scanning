@@ -1,7 +1,9 @@
 package com.example.api.service;
 
 import com.example.api.entity.Course;
+import com.example.api.entity.Schedule;
 import com.example.api.repository.CourseRepository;
+import com.example.api.repository.ScheduleRepository;
 import com.example.api.repository.specs.CourseSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,15 +13,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Objects;
 
 @Service
 public class CourseServiceImpl implements CourseService {
 
     CourseRepository courseRepository;
+    ScheduleRepository scheduleRepository;
 
     @Autowired
-    CourseServiceImpl(CourseRepository courseRepository) {
+    CourseServiceImpl(CourseRepository courseRepository,
+                      ScheduleRepository scheduleRepository) {
         this.courseRepository = courseRepository;
+        this.scheduleRepository = scheduleRepository;
     }
 
 
@@ -56,5 +62,22 @@ public class CourseServiceImpl implements CourseService {
         oldCourse.setName(course.getName());
         oldCourse.setLesson(course.getLesson());
         return this.courseRepository.save(oldCourse);
+    }
+
+    @Override
+    public String courseNameUnique(Long courseId, String name) {
+        Assert.notNull(name, "name不能为null");
+        Course course = this.courseRepository.findByName(name);
+        if (course != null && !Objects.equals(course.getId(), courseId)) {
+            return "课程名已存在";
+        }
+        return null;
+    }
+
+    @Override
+    public Course getByScheduleId(Long scheduleId) {
+        Assert.notNull(scheduleId, "scheduleId不能为null");
+        Schedule schedule = this.scheduleRepository.findById(scheduleId).get();
+        return schedule.getCourse();
     }
 }

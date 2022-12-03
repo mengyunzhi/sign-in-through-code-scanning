@@ -85,8 +85,8 @@ export class CommonValidator {
       const name = control.value;
       const httpParams = new HttpParams()
         .append('name', name)
-        .append('course_id', course_id.toString());
-      return this.httpClient.get('/course/courseNameUnique', {params: httpParams})
+        .append('courseId', course_id.toString());
+      return this.httpClient.get('/course/courseNameUnique', {params: httpParams, responseType: 'text'})
         .pipe(map(data => {
           console.log('courseNameUnique', data);
           if (data) {
@@ -125,8 +125,8 @@ export class CommonValidator {
       const name = control.value;
       const httpParams = new HttpParams()
         .append('name', name)
-        .append('progarm_id', progarm_id.toString());
-      return this.httpClient.get('/program/programNameUnique', {params: httpParams})
+        .append('programId', progarm_id.toString());
+      return this.httpClient.get('/program/programNameUnique', {params: httpParams, responseType: 'text'})
         .pipe(map(data => {
           console.log('programNameUnique', data);
           if (data) {
