@@ -27,6 +27,7 @@ export class TimeAddComponent implements OnInit {
     clazz_ids: new FormControl(null, Validators.required),
   });
 
+
   constructor(private scheduleService: ScheduleService,
               private clazzService: ClazzService,
               private teacherService: TeacherService,
@@ -35,7 +36,7 @@ export class TimeAddComponent implements OnInit {
               private termService: TermService,
               private commonService: CommonService) { }
 
-  courseTimes = [] as {weeks: number[], roomIds: number[]}[][];
+  courseTimes = [] as {weeks: number[], roomIds: number[], oWeeks: number[], oRoomIds: number[]}[][];
 
   lessons = [0, 1, 2, 3, 4];
   days = ['一', '二', '三', '四', '五', '六', '日'];
@@ -92,7 +93,6 @@ export class TimeAddComponent implements OnInit {
         console.log('失败', error);
       });
   }
-
   checkCourseTimes(): boolean {
     for (let i = 0; i < 7; i++) {
       for (let j = 0; j < 5; j++) {
@@ -110,7 +110,7 @@ export class TimeAddComponent implements OnInit {
     for (let i = 0; i < 7; i++) {
       this.courseTimes[i] = [];
       for (let j = 0; j < 7; j++) {
-        this.courseTimes[i][j] = {} as {weeks: number[], roomIds: number[]};
+        this.courseTimes[i][j] = {} as {weeks: number[], roomIds: number[], oWeeks: number[], oRoomIds: number[]};
       }
     }
   }
@@ -141,7 +141,9 @@ export class TimeAddComponent implements OnInit {
   /* 接收子组件传回的数据 */
   getFooterRun(data: {day: number, lesson: number, weeks: number[], roomIds: number[]}): void {
     // console.log('data', data);
-    this.courseTimes[data.day][data.lesson] = {weeks: data.weeks, roomIds: data.roomIds};
+    console.log('courseTimes改变');
+    this.courseTimes[data.day][data.lesson].weeks = data.weeks;
+    this.courseTimes[data.day][data.lesson].roomIds = data.roomIds;
     // console.log('courseTimes', this.courseTimes);
   }
 
@@ -157,17 +159,9 @@ export class TimeAddComponent implements OnInit {
         courseTimes: this.courseTimes
       })
         .subscribe(success => {
-            console.log('更新成功', success);
-            console.log(typeof(success));
-            if (!success) {
-              console.log('不支持此类操作');
-              this.commonService.error(() => this.router.navigate(['../'], {relativeTo: this.route}), '', '不支持此类操作');
-            } else {
-              this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
-            }
+            this.commonService.success(() => this.router.navigate(['../'], {relativeTo: this.route}));
           },
           error => {
-            console.log('更新失败', error);
             this.commonService.error();
           }, () => {
             this.isRequesting = false;
