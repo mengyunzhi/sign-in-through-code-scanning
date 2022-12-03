@@ -6,6 +6,7 @@ import com.example.api.entity.forType.ForRelateClazzToShedule;
 import com.example.api.entity.forType.forScheduleAdd.ForScheduleAdd;
 import com.example.api.entity.forType.forScheduleAdd.SaveForScheduleAdd;
 import com.example.api.entity.forType.forScheduleEdit.EditIndex;
+import com.example.api.entity.forType.forScheduleEdit.ForScheduleUpdate;
 import com.example.api.entity.forType.forTaskStudentAdd.ForTaskStudentAdd;
 import com.example.api.service.*;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -123,6 +124,13 @@ public class ScheduleController {
         List<Room> rooms = this.roomService.getAll();
 
         return new ForScheduleEdit(schedule, dispatches, rooms);
+    }
+
+    @PostMapping("scheduleUpdate")
+    public void scheduleUpdate(@RequestBody ForScheduleUpdate forScheduleUpdate) {
+        Schedule schedule = this.scheduleService.getById(forScheduleUpdate.scheduleId);
+        this.dispatchService.deleteAllByScheduleId(schedule.getId());
+        this.scheduleService.saveDispatches(forScheduleUpdate.courseTimes, forScheduleUpdate.scheduleId);
     }
 
     @DeleteMapping("delete/{id}")

@@ -19,7 +19,6 @@ import org.springframework.util.Assert;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
@@ -256,7 +255,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         return this.scheduleRepository.findSchedulesByTerm_Id(termId);
     }
 
-    private void saveDispatches(List<List<CourseTime>> courseTimes, Long scheduleId) {
+    @Override
+    public void saveDispatches(List<List<CourseTime>> courseTimes, Long scheduleId) {
         for (int day = 0; day < 7; day++) {
             for (int lesson = 0; lesson < 5; lesson++) {
                 List<Long> weeks = courseTimes.get(day).get(lesson).getWeeks();

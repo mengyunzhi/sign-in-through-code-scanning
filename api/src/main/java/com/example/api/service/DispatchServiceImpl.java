@@ -129,4 +129,9 @@ public class DispatchServiceImpl implements DispatchService {
 
         return forCourseScheduleGetData;
     }
+
+    @Override
+    public void deleteAllByScheduleId(Long scheduleId) {
+        this.dispatchRepository.deleteDispatchesByScheduleId(scheduleId);
+    }
 }

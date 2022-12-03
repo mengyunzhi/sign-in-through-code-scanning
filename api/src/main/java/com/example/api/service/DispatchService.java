@@ -15,4 +15,6 @@ public interface DispatchService {
 
     List<Dispatch> getDispatchesInTerm(Long termId);
     ForCourseScheduleGetData getData(String userNumber);
+
+    void deleteAllByScheduleId(Long scheduleId);
 }

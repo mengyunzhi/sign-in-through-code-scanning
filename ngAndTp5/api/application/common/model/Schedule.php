@@ -96,6 +96,7 @@ class Schedule extends Model {
         $newRoomIds = [];
         $deleteRoomIds = [];
         $dispatch_1 = Dispatch::where('schedule_id', 'eq', $scheduleId)->select();
+        // 获取默认的coourseTimes
         for ($i = 0; $i < 7; $i++) {
             for ($j = 0; $j < 5; $j++) { 
                 $indexCourseTimes[$i][$j]['weeks'] = [];
@@ -123,7 +124,7 @@ class Schedule extends Model {
                 $eidtDeleteCourseTimes[$i][$j]['roomIds'] = [];
             }
         }
-
+        // weeks或者roomIds的, 数量相同但是内容不同
         for ($i = 0; $i < 7; $i++) {
             for ($j = 0; $j < 5; $j++) {
                 if (count($indexCourseTimes[$i][$j]['weeks']) === count($newCourseTimes[$i][$j]->weeks)) {
@@ -145,6 +146,7 @@ class Schedule extends Model {
                 if (count($indexCourseTimes[$i][$j]['weeks']) < count($newCourseTimes[$i][$j]->weeks)
                  && count($indexCourseTimes[$i][$j]['roomIds']) < count($newCourseTimes[$i][$j]->roomIds)) {
                     $status1 = 1;
+                    // 找到其中新增的weeks 
                     for ($x = 0; $x < count($newCourseTimes[$i][$j]->weeks); $x++) {
                         $sta = 1;
                         for ($y = 0; $y < count($indexCourseTimes[$i][$j]['weeks']); $y++) {
@@ -156,7 +158,7 @@ class Schedule extends Model {
                             array_push($eidtAddCourseTimes[$i][$j]['weeks'], $newCourseTimes[$i][$j]->weeks[$x]);
                         }
                     }
-
+                    // 找到其中新增的roomIds
                     for ($x = 0; $x < count($newCourseTimes[$i][$j]->roomIds); $x++) {
                         $sta = 1;
                         for ($y = 0; $y < count($indexCourseTimes[$i][$j]['roomIds']); $y++) {
@@ -175,6 +177,7 @@ class Schedule extends Model {
                  && count($indexCourseTimes[$i][$j]['roomIds']) === count($newCourseTimes[$i][$j]->roomIds)) {
                     $status2 = 1;
                     // 原indexCourseTimes不变，新选周默认在当前单元所有已选教室上课
+                    // 找到新增的Weeks
                     for ($x = 0; $x < count($newCourseTimes[$i][$j]->weeks); $x++) {
                         $sta = 1;
                         for ($y = 0; $y < count($indexCourseTimes[$i][$j]['weeks']); $y++) {
@@ -186,7 +189,7 @@ class Schedule extends Model {
                             array_push($eidtAddCourseTimes[$i][$j]['weeks'], $newCourseTimes[$i][$j]->weeks[$x]);
                         }
                     }
-
+                    // RoomIds不变    
                     for ($x = 0; $x < count($newCourseTimes[$i][$j]->roomIds); $x++) {
                         array_push($eidtAddCourseTimes[$i][$j]['roomIds'], $newCourseTimes[$i][$j]->roomIds[$x]);
                     }
@@ -197,6 +200,7 @@ class Schedule extends Model {
                  && count($indexCourseTimes[$i][$j]['roomIds']) < count($newCourseTimes[$i][$j]->roomIds)) {
                     $status3 = 1;
                     // 原week的教室中加入新选教室
+                    // 找到新增的RoomIds
                     for ($x = 0; $x < count($newCourseTimes[$i][$j]->roomIds); $x++) {
                         $sta = 1;
                         for ($y = 0; $y < count($indexCourseTimes[$i][$j]['roomIds']); $y++) {
@@ -208,7 +212,7 @@ class Schedule extends Model {
                             array_push($newRoomIds, $newCourseTimes[$i][$j]->roomIds[$x]);
                         }
                     }
-
+                    // 直接找到对应的dispatches 然后添加其room
                     for ($x = 0; $x < count($newCourseTimes[$i][$j]->weeks); $x++) {
                         array_push($eidtAddCourseTimes[$i][$j]['weeks'], $newCourseTimes[$i][$j]->weeks[$x]);
                         $dispatch = new Dispatch();
@@ -242,13 +246,16 @@ class Schedule extends Model {
                 else if (count($indexCourseTimes[$i][$j]['weeks']) > count($newCourseTimes[$i][$j]->weeks)
                  && count($indexCourseTimes[$i][$j]['roomIds']) === count($newCourseTimes[$i][$j]->roomIds)) {
                     $status5 = 1;
+
                     for ($x = 0; $x < count($indexCourseTimes[$i][$j]['weeks']); $x++) {
                         $sta = 1;
+                        // 如果某周在新courseTimes不存在则$sta = 1
                         for ($y = 0; $y < count($newCourseTimes[$i][$j]->weeks); $y++) {
                             if ($indexCourseTimes[$i][$j]['weeks'][$x] === $newCourseTimes[$i][$j]->weeks[$y]) {
                                 $sta = 0;
                             }
                         }
+                        // 该周在新courseTimes不存在,删掉dispatch与room的关系
                         if ($sta === 1) {
                             array_push($eidtDeleteCourseTimes[$i][$j]['weeks'], $indexCourseTimes[$i][$j]['weeks'][$x]);
                             $dispatch = new Dispatch();
@@ -269,11 +276,13 @@ class Schedule extends Model {
                     $status6 = 1;
                     for ($x = 0; $x < count($indexCourseTimes[$i][$j]['roomIds']); $x++) {
                         $sta = 1;
+                        // 新的在里面不存在就$sta = 1;
                         for ($y = 0; $y < count($newCourseTimes[$i][$j]->roomIds); $y++) {
                             if ($indexCourseTimes[$i][$j]['roomIds'][$x] === $newCourseTimes[$i][$j]->roomIds[$y]) {
                                 $sta = 0;
                             }
                         }
+                        // 新的在里面不存在
                         if ($sta === 1) {
                             // array_push($deleteRoomIds, $indexCourseTimes[$i][$j]['roomIds'][$x]);
                             // for ($t = 0; $t < count($deleteRoomIds); $t++) {
@@ -338,9 +347,6 @@ class Schedule extends Model {
         // dump($indexCourseTimes[0][0]);
         // dump($eidtAddCourseTimes[0][0]);
         // dump($deleteRoomIds);
-        
-
-
 
     }
 

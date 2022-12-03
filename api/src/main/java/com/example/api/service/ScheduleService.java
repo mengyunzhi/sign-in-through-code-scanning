@@ -2,6 +2,7 @@ package com.example.api.service;
 
 import com.example.api.entity.Clazz;
 import com.example.api.entity.Schedule;
+import com.example.api.entity.forType.forScheduleAdd.CourseTime;
 import com.example.api.entity.forType.forScheduleAdd.ForScheduleAdd;
 import com.example.api.entity.forType.forScheduleAdd.SaveForScheduleAdd;
 import com.example.api.entity.forType.forScheduleEdit.EditIndex;
@@ -43,4 +44,6 @@ public interface ScheduleService {
     void deleteById(Long id);
 
     List<Schedule> getAllByTermId(Long termId);
+
+    void saveDispatches(List<List<CourseTime>> courseTimes, Long scheduleId);
 }
