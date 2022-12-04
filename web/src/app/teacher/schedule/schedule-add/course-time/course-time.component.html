@@ -25,14 +25,13 @@
       <div class="modal-body">
         <div class="row">
           <div class="col-sm-6">
-            <div class="row" *ngFor="let week of weeks; index as index">
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <input type="checkBox" (click)="onWeekChange(week)"  [disabled]="isWeekDisabled(index)" [id]="'week' + day.toString() + lesson.toString() + week.toString()">&nbsp;<label [for]="'week' + day.toString() + lesson.toString() + week.toString()">第{{ week + 1 }}周</label>
+            <div class="row" *ngFor="let week of weeksForLoop; index as index">
+              <input type="checkBox" [checked]="week.isChecked" (click)="onWeekChange(week.value)" [value]="week" [disabled]="isWeekDisabled(index)" [id]="'week' + day.toString() + lesson.toString() + week.value.toString()">&nbsp;<label [for]="'week' + day.toString() + lesson.toString() + week.value.toString()">第{{ week.value + 1 }}周</label>
             </div>
           </div>
           <div class="col-sm-6">
-            <div class="row" *ngFor="let room of rooms; index as index">
-              <input type="checkBox" (click)="onRoomChange(room.id)"  [disabled]="isRoomDisabled(room.id)" [id]="'room' + day.toString() + lesson.toString() + room.id.toString()">&nbsp;<label [for]="'room' + day.toString() + lesson.toString() + room.id.toString()">{{room.name}}</label>
+            <div class="row" *ngFor="let room of roomsForLoop; index as index">
+              <input type="checkBox" [checked]="room.isChecked" (click)="onRoomChange(room.id)" [value]="room.id" [disabled]="isRoomDisabled(room.id)" [id]="'room' + day.toString() + lesson.toString() + room.id.toString()">&nbsp;<label [for]="'room' + day.toString() + lesson.toString() + room.id.toString()">{{room.name}}</label>
             </div>
           </div>
         </div>
