@@ -1,5 +1,6 @@
 package com.example.api.service;
 
+import com.example.api.config.StaticVariable;
 import com.example.api.entity.Student;
 import com.example.api.entity.Term;
 import com.example.api.entity.User;
@@ -102,7 +103,7 @@ public class UserServiceImpl implements UserService {
         if (!Objects.equals(password, student.getUser().getPassword())) {
             return new Student();
         }
-        student.setState(1L);
+        student.setState(StaticVariable.STATE_TRUE);
         student.getUser().setNumber(number);
         return this.studentRepository.save(student);
     }

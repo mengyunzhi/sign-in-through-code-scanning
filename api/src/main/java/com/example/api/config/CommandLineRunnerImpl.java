@@ -74,7 +74,6 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         } else {
             logger.info("已添加初始化教师");
         }
-
 //        this.forHPTest();
         this.forCSHTest();
     }
