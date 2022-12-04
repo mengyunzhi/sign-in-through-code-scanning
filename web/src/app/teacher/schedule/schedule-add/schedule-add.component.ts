@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ScheduleService} from '../../../service/schedule.service';
 import {Course} from '../../../entity/course';
 import {Clazz} from '../../../entity/clazz';
@@ -12,6 +12,7 @@ import {Report} from 'notiflix';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TermService} from '../../../service/term.service';
 import {CommonService} from '../../../service/common.service';
+import {Observable} from 'rxjs';
 
 
 @Component({
@@ -88,6 +89,10 @@ export class ScheduleAddComponent implements OnInit {
   ngOnInit(): void {
     this.initCourseTimes();
     const userNumber = window.sessionStorage.getItem('userNumber') as string;
+    // this.formGroup.get('clazz_ids')?.valueChanges.subscribe(() => {
+    //   this.ngOnInit();
+    // });
+
     // 向后台请求数据
     this.scheduleService.getDataForScheduleAdd(userNumber)
       .subscribe(data => {

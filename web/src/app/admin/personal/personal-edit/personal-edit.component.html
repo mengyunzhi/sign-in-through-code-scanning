@@ -30,7 +30,7 @@
   <div class="form-row">
   <label class="col-sm-1 col-form-label">旧密码</label>
     <div class="form-group col-md-3">
-      <input type="password" class="form-control" id="password" formControlName="password" style="width: 200px" placeholder="旧密码">
+      <input type="password" class="form-control" id="password0" formControlName="password" style="width: 200px" placeholder="旧密码">
       <small class="text-danger" *ngIf="formGroup.get('password')?.value && formGroup.get('password')?.invalid">
         长度应为4-40
       </small>
@@ -40,7 +40,7 @@
     <div class="form-row">
       <label class="col-sm-1 col-form-label">新密码</label>
       <div class="form-group col-md-3">
-        <input type="password" class="form-control" id="password" formControlName="newPassword" style="width: 200px" placeholder="新密码">
+        <input type="password" class="form-control" id="password1" formControlName="newPassword" style="width: 200px" placeholder="新密码">
         <small class="text-danger" *ngIf="formGroup.get('password')?.value && formGroup.get('newPassword')?.invalid || !formGroup.get('newPassword')?.value">
           长度应为4-40
         </small>
@@ -49,7 +49,7 @@
     <div class="form-row">
       <label class="col-sm-1 col-form-label">&nbsp;</label>
       <div class="form-group col-md-3">
-        <input type="password" class="form-control" id="password" formControlName="newPasswordAgain" style="width: 200px" placeholder="确认密码">
+        <input type="password" class="form-control" id="password2" formControlName="newPasswordAgain" style="width: 200px" placeholder="确认密码">
         <small class="text-danger" *ngIf="formGroup.get('password')?.value && formGroup.get('newPasswordAgain')?.invalid  || !formGroup.get('newPasswordAgain')?.value">
           长度应为4-40
         </small>

@@ -1,6 +1,7 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {Room} from '../../../../entity/room';
 import {Teacher} from '../../../../entity/teacher';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-course-time',
@@ -61,6 +62,8 @@ export class CourseTimeComponent implements OnInit {
   // 不可用的教室
   conflictRooms = [] as number[];
   days = ['一', '二', '三', '四', '五', '六', '日'];
+  weeksForLoop = [] as {value: number, isChecked: boolean}[];
+  roomsForLoop = [] as {id: number, name: string, isChecked: boolean}[];
 
   courseTime = [] as {weeks: number[], roomIds: number[]}[][];
 
@@ -79,6 +82,8 @@ export class CourseTimeComponent implements OnInit {
     this.conflictWeeks = [];
     this.conflictRooms = [];
     this.disableWeeks = [];
+    this.roomsForLoop = [];
+    this.weeksForLoop = [];
   }
 
   onWeekChange(week: number): void {
@@ -150,19 +155,35 @@ export class CourseTimeComponent implements OnInit {
   // 筛选出disableWeeks
   loadData(): void {
     for (const data of this.conflictData) {
+      // 这个老师在当前周已经有课，直接跳过
       if (data.teacher_id === this.teacher.id) {
         this.disableWeeks.push(data.week);
         continue;
       }
       // data中clazzIds和selectedClazzes有交集
+      // 已选择的班级中在这个时间段有已经有课的
       if (data.clazzIds.filter(clazzId => this.selectedClazzes.includes(clazzId)).length > 0) {
         this.disableWeeks.push(data.week);
       }
     }
-    console.log('unit lesson', this.lesson);
-    console.log('unit weeks', this.weeks);
-    console.log('unit conflictData', this.conflictData);
-    console.log('unit rooms', this.selectedClazzes);
+    this.shiftWeeks();
+    this.shiftRooms();
+  }
+
+  shiftWeeks(): void {
+    let status = false;
+    this.weeks.forEach(week => {
+      if (this.selectedWeeks.indexOf(week) !== -1) { status = !status; }
+      this.weeksForLoop.push({value: week, isChecked: status});
+    });
+  }
+
+  shiftRooms(): void {
+    let status = false;
+    this.rooms.forEach(room => {
+      if (this.selectedRooms.indexOf(room.id) !== -1) { status = !status; }
+      this.roomsForLoop.push({id: room.id, name: room.name, isChecked: status});
+    });
   }
 
   addSelectWeeks(week: number): void {
