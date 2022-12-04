@@ -91,10 +91,10 @@ public class UserServiceImpl implements UserService {
         users = (List<User>) this.userRepository.findAll();
         for (User user : users) {
             if (Objects.equals(user.number, number) && !Objects.equals(user.id, id)) {
-                return "名称已存在";
+                return "手机号已存在";
             }
         }
-        return "名称合理";
+        return null;
     }
 
     @Override
@@ -108,11 +108,19 @@ public class UserServiceImpl implements UserService {
         return this.studentRepository.save(student);
     }
 
+    @Override
+    public Boolean isPasswordRight(String number, String password) {
+        User user = this.getCurrentLoginUser(number);
+        return Objects.equals(user.getPassword(), password);
+    }
+
     private User updateFields(User user, User oldUser) {
         oldUser.setName(user.getName());
         oldUser.setNumber(user.getNumber());
         oldUser.setSex(user.getSex());
-        oldUser.setPassword(user.getPassword());
+        if (!Objects.equals(user.getPassword(), "")) {
+            oldUser.setPassword(user.getPassword());
+        }
         return this.userRepository.save(oldUser);
     }
 

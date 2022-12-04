@@ -37,6 +37,7 @@ export class ValidatorClassDirective implements OnDestroy {
    */
   setClass(formControl: NgControl): void {
     const htmlElement = this.elementRef.nativeElement as HTMLElement;
+    console.log(htmlElement.className, formControl.valid);
     const classes = htmlElement.className.split(' ')
       .filter(value => value !== 'is-invalid' && value !== 'is-valid' && value !== 'is-required');
     if (formControl.valid) {
