@@ -26,7 +26,6 @@ export class PersonalEditComponent implements OnInit {
   });
 
   userNumber: string | undefined;
-  password: string | undefined;
   id: number | undefined;
   constructor(private userService: UserService,
               private router: Router,
@@ -50,59 +49,60 @@ export class PersonalEditComponent implements OnInit {
         this.formGroup.get('sex')?.setValue(+user.sex);
         this.formGroup.get('role')?.setValue(+user.role);
         this.formGroup.get('number')?.setValue(user.number);
-        this.password = user.password;
       }, error => {
         console.log('当前用户请求失败', error);
       });
   }
 
-  checkPassword(): boolean {
-    console.log('onSubmit h');
-    // 通过原密码确认身份
-    if (this.formGroup.get('password')?.value === this.password) {
-      // 对新密码验证
-      const newPassword = this.formGroup.get('newPassword')?.value;
-      const newPasswordAgain = this.formGroup.get('newPasswordAgain')?.value;
-      if (!newPassword) {
-        this.commonService.error(() => {}, '请输入新密码');
-        return false;
-      }
-      if (!newPasswordAgain) {
-        this.commonService.error(() => {}, '请确认密码');
-        return false;
-      }
-      console.log(!newPasswordAgain, newPasswordAgain);
-      if (newPassword === newPasswordAgain) {
-        return true;
-      } else {
-        this.commonService.error(() => {}, '两次输入的新密码不一致');
-        return false;
-      }
-    } else {
-      this.commonService.error(() => {}, '旧密码错误');
-      return false;
-    }
-  }
-
   onSubmit(): void {
-    console.log('onSubmit is called');
+    const password = this.formGroup.get('password')?.value;
+    const newPassword = this.formGroup.get('newPassword')?.value;
+    const newPasswordAgain = this.formGroup.get('newPasswordAgain')?.value;
     const data = {
       id: this.id,
       name: this.formGroup.get('name')?.value,
       sex: this.formGroup.get('sex')?.value,
       number: this.formGroup.get('number')?.value,
       role: this.formGroup.get('role')?.value,
-      password: this.formGroup.get('password')?.value,
+      password,
     };
-    if (!this.formGroup.get('password')?.value) {
-      data.password = this.password;
-    } else {
-      if (this.checkPassword()) {
-        data.password = this.formGroup.get('newPassword')?.value;
-      } else {
-        return ;
+    if (password) {
+      console.log(password, newPassword, newPasswordAgain);
+      if (!newPassword) {
+        this.commonService.error(() => {}, '请输入新密码');
+        return;
       }
+      if (!newPasswordAgain) {
+        this.commonService.error(() => {}, '请再次输入新密码');
+        return;
+      }
+      if (newPassword !== newPasswordAgain) {
+        this.commonService.error(() => {}, '两次输入的新密码不一致');
+        return;
+      }
+      if (newPassword === password) {
+        this.commonService.error(() => {}, '新旧密码不能相同');
+        return;
+      }
+      this.userService.isPasswordRight(this.userNumber as string, this.formGroup.get('password')?.value)
+        .subscribe((isRight: boolean) => {
+          if (!isRight) {
+            this.commonService.error(() => {}, '旧密码错误');
+            return;
+          }
+          data.password = newPassword;
+          this.userUpdate(data);
+          return true;
+        }, error => {
+          this.commonService.error(() => {}, '未知错误');
+          return false;
+        });
+    } else {
+      this.userUpdate(data);
     }
+  }
+
+  userUpdate(data: any): void {
     Assert.isNumber(this.id, 'id的类型错误');
     this.userService.userUpdate(data)
       .subscribe(user => {

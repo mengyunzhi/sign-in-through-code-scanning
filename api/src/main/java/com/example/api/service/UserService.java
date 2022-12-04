@@ -24,4 +24,6 @@ public interface UserService {
     String numberUnique(@NotNull Long id, String number);
 
     Student studentRegister(String sno, String password, String number);
+
+    Boolean isPasswordRight(String number, String password);
 }

@@ -50,4 +50,7 @@ export class UserService {
     return this.httpClient.get('/user/getDefaultPassword', {responseType: 'text'});
   }
 
+  isPasswordRight(userNumber: string, password: string): Observable<boolean> {
+    return this.httpClient.post<boolean>('/user/isPasswordRight', {number: userNumber, password});
+  }
 }

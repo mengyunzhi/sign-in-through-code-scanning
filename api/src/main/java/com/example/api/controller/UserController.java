@@ -37,6 +37,16 @@ public class UserController {
     }
 
     /**
+     * 密码是否正确
+     * number: 手机号
+     * password: 密码
+     */
+    @PostMapping("isPasswordRight")
+    public Boolean isPasswordRight(@RequestBody User user) {
+        return this.userService.isPasswordRight(user.getNumber(), user.getPassword());
+    }
+
+    /**
      * 用户手机号唯一验证
      */
     @GetMapping("numberUnique")
