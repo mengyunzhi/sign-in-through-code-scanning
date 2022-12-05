@@ -7,6 +7,8 @@ import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../../service/common.service';
 import {CommonValidator} from '../../../../validator/common-validator';
 import {HttpClient} from '@angular/common/http';
+import {ScheduleService} from '../../../../service/schedule.service';
+import {CourseService} from '../../../../service/course.service';
 
 @Component({
   selector: 'app-program-edit',
@@ -16,12 +18,16 @@ import {HttpClient} from '@angular/common/http';
 export class ProgramEditComponent implements OnInit {
 
   formGroup: FormGroup;
+  private schedule_id: number | undefined;
+  private courseName: string | undefined;
 
   constructor(private route: ActivatedRoute,
               private programService: ProgramService,
               private router: Router,
               private commService: CommonService,
-              private httpClient: HttpClient) {
+              private httpClient: HttpClient,
+              private scheduleService: ScheduleService,
+              private courseService: CourseService) {
     this.prograId = +this.route.snapshot.params.program_id;
     const commonValidator = new CommonValidator(httpClient);
     this.formGroup = new FormGroup({
@@ -43,6 +49,15 @@ export class ProgramEditComponent implements OnInit {
         this.formGroup.get('lesson')?.setValue(program.lesson);
       }, error => {
         console.log('error', error);
+      });
+    this.schedule_id = +this.route.snapshot.params.schedule_id;
+    this.scheduleService.getById(this.schedule_id)
+      .subscribe(schedule => {
+        const courseId = schedule.course.id;
+        this.courseService.getById(courseId)
+          .subscribe(course => {
+            this.courseName = course.name;
+          });
       });
   }
 

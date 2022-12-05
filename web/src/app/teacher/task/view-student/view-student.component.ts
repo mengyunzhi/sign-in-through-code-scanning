@@ -9,6 +9,8 @@ import {Confirm} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {User} from '../../../entity/user';
+import {ScheduleService} from '../../../service/schedule.service';
+import {CourseService} from '../../../service/course.service';
 
 @Component({
   selector: 'app-view-student',
@@ -32,14 +34,25 @@ export class ViewStudentComponent implements OnInit {
     numberOfElements: 0
   });
   schedule_id: number | undefined;
+  private courseName: string | undefined;
   constructor(private studentService: StudentService,
               private route: ActivatedRoute,
               private studentScheduleService: StudentScheduleService,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+              private scheduleService: ScheduleService,
+              private courseService: CourseService) { }
 
   ngOnInit(): void {
     this.schedule_id = +this.route.snapshot.params.schedule_id;
     this.loadByPage();
+    this.scheduleService.getById(this.schedule_id)
+      .subscribe(schedule => {
+        const courseId = schedule.course.id;
+        this.courseService.getById(courseId)
+          .subscribe(course => {
+            this.courseName = course.name;
+          });
+      });
   }
 
   loadByPage(page: number = 0): void {

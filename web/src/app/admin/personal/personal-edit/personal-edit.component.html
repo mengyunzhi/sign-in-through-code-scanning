@@ -1,3 +1,9 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">修改个人信息: {{formGroup.get('name').value}}</a></li>
+  </ol>
+</nav>
+
 <body class="container">
 <form style="margin-top: 20px" [formGroup]="formGroup">
   <div class="form-group row">
@@ -27,8 +33,6 @@
       </small>
     </div>
   </div>
-  {{ formGroup.get('newPassword')?.value | json }}
-  {{ formGroup.get('newPasswordAgain')?.value | json }}
   <div class="form-row">
   <label class="col-sm-1 col-form-label">旧密码</label>
     <div class="form-group col-md-3">

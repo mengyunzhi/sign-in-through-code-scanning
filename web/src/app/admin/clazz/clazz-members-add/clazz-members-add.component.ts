@@ -9,6 +9,7 @@ import {HttpClient} from '@angular/common/http';
 import {User} from '../../../entity/user';
 import {Clazz} from '../../../entity/clazz';
 import {Student} from '../../../entity/student';
+import {ClazzService} from '../../../service/clazz.service';
 
 @Component({
   selector: 'app-clazz-members-add',
@@ -20,12 +21,14 @@ export class ClazzMembersAddComponent implements OnInit {
   formGroup: FormGroup;
 
   clazz_id: number | undefined;
+  private clazzName: any;
 
   constructor(private studentService: StudentService,
               private route: ActivatedRoute,
               private router: Router,
               private commonService: CommonService,
-              private httpClient: HttpClient) {
+              private httpClient: HttpClient,
+              private clazzService: ClazzService) {
     const commonValidator = new CommonValidator(httpClient);
     this.formGroup = new FormGroup({
       name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
@@ -38,6 +41,10 @@ export class ClazzMembersAddComponent implements OnInit {
 
   ngOnInit(): void {
     this.clazz_id = +this.route.snapshot.params.clazz_id;
+    this.clazzService.getById(this.clazz_id)
+      .subscribe(clazz => {
+        this.clazzName = clazz.name;
+      });
   }
 
   onSubmit(): void {

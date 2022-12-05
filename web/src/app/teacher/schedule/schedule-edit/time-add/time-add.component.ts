@@ -13,6 +13,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {TermService} from '../../../../service/term.service';
 import {CommonService} from '../../../../service/common.service';
+import {CourseService} from '../../../../service/course.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class TimeAddComponent implements OnInit {
     course_id: new FormControl('', Validators.required),
     clazz_ids: new FormControl(null, Validators.required),
   });
+  private courseName: string | undefined;
 
 
   constructor(private scheduleService: ScheduleService,
@@ -34,7 +36,8 @@ export class TimeAddComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute,
               private termService: TermService,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+              private courseService: CourseService) { }
 
   courseTimes = [] as {weeks: number[], roomIds: number[], oWeeks: number[], oRoomIds: number[]}[][];
 
@@ -91,6 +94,14 @@ export class TimeAddComponent implements OnInit {
         this.weeks = this.termService.getWeeksByTerm(this.term);
       }, error =>  {
         console.log('失败', error);
+      });
+    this.scheduleService.getById(this.schedule_id)
+      .subscribe(schedule => {
+        const courseId = schedule.course.id;
+        this.courseService.getById(courseId)
+          .subscribe(course => {
+            this.courseName = course.name;
+          });
       });
   }
   checkCourseTimes(): boolean {

@@ -133,6 +133,10 @@ export class StudentService {
   getAll(): Observable<Student[]> {
     return this.httpClient.get<Array<Student>>('/student/getAll');
   }
+
+  getByStudentId(studentId: number): Observable<Student> {
+    return this.httpClient.get<Student>('/student/getByStudentId/' + studentId.toString());
+  }
 }
 
 interface T {
