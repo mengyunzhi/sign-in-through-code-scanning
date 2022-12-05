@@ -21,7 +21,7 @@ export class ClazzMembersAddComponent implements OnInit {
   formGroup: FormGroup;
 
   clazz_id: number | undefined;
-  private clazzName: any;
+  public clazzName: any;
 
   constructor(private studentService: StudentService,
               private route: ActivatedRoute,

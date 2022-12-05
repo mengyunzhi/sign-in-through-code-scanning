@@ -20,7 +20,7 @@ export class ClazzMembersEditComponent implements OnInit {
 
   clazz_id: number | undefined;
   id: number | undefined;
-  private clazzName: any;
+  public clazzName: any;
 
   constructor(private studentService: StudentService,
               private route: ActivatedRoute,
