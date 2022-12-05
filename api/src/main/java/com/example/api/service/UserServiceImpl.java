@@ -42,6 +42,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User login(String number, String password) {
         User user = this.userRepository.findByNumber(number).get();
+
+        if (user.getRole() == StaticVariable.ROLE_STUDENT) {
+            Student student = this.studentRepository.findByUserId(user.getId());
+            if (student.getState() == StaticVariable.STATE_FALSE) {
+                 user.setName("error");
+                 user.setNumber("学生尚未注册");
+                 return user;
+            }
+        }
+
         if (this.validatePassword(user, password)) {
             return user;
         } else {

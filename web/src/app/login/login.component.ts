@@ -69,6 +69,8 @@ export class LoginComponent implements OnInit {
           } else if (+user.role === UserService.ROLE_STUDENT) {
             this.router.navigateByUrl('/student').then();
           }
+        } else {
+          this.commonService.error(() => {}, user.number);
         }
       }, error => {
         console.log('登录失败', error);

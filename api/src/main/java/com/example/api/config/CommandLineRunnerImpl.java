@@ -74,84 +74,11 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         } else {
             logger.info("已添加初始化教师");
         }
-//        this.forHPTest();
-        this.forCSHTest();
+        this.forTest();
     }
 
 
-
-    private void forHepanTest() {
-        // 添加教师
-        User uTeacher1 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000000", "yunzhi", "教师1");
-        Teacher teacher1 = this.addTeacher(uTeacher1);
-        User uTeacher2 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000001", "yunzhi", "教师2");
-        Teacher teacher2 = this.addTeacher(uTeacher2);
-        // 添加班级
-        Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L, 1L);
-        Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L, 1L);
-        Clazz clazz3 = this.addClazz("testclazz3", (short) 8, 1000000000L, 1L);
-        Clazz clazz4 = this.addClazz("testclazz4", (short) 8, 100000000000L, 2L);
-        List<Clazz> clazzes = new ArrayList<>();
-        clazzes.add(clazz1);
-        clazzes.add(clazz2);
-        // 添加学生，该学生属于上面的班级
-        User uStudent1 = this.getUser(StaticVariable.ROLE_STUDENT, "111111", "yunzhi", "学生");
-        Student student1 = this.addStudent(uStudent1, clazz1, "111111", StaticVariable.STATE_TRUE);
-
-        User uStudent7 = this.getUser(StaticVariable.ROLE_STUDENT, "222222", "yunzhi", "222222");
-        Student student7= this.addStudent(uStudent7, clazz2, "222222", StaticVariable.STATE_TRUE);
-
-        User uStudent2 = this.getUser(StaticVariable.ROLE_STUDENT, "333333", "yunzhi", "333333");
-        Student student2 = this.addStudent(uStudent2, clazz1, "333333", StaticVariable.STATE_TRUE);
-
-        User uStudent3 = this.getUser(StaticVariable.ROLE_STUDENT, "444444", "yunzhi", "444444");
-        Student student3= this.addStudent(uStudent3, clazz1, "444444", StaticVariable.STATE_TRUE);
-
-        User uStudent4 = this.getUser(StaticVariable.ROLE_STUDENT, "555555", "yunzhi", "555555");
-        Student student4 = this.addStudent(uStudent4, clazz2, "555555", StaticVariable.STATE_TRUE);
-
-        User uStudent5 = this.getUser(StaticVariable.ROLE_STUDENT, "666666", "yunzhi", "666666");
-        Student student5 = this.addStudent(uStudent5, clazz2, "666666", StaticVariable.STATE_TRUE);
-
-        User uStudent6 = this.getUser(StaticVariable.ROLE_STUDENT, "777777", "yunzhi", "777777");
-        Student student6= this.addStudent(uStudent6, clazz2, "777777", StaticVariable.STATE_TRUE);
-
-
-        List<Student> students = new ArrayList<>();
-        students.add(student1);
-        students.add(student7);
-        students.add(student2);
-        students.add(student3);
-        students.add(student4);
-        students.add(student5);
-        students.add(student6);
-
-        // 添加教室
-        Room room1 = this.addRoom("testRoom1", 40L);
-        Room room2 = this.addRoom("testRoom2", 80L);
-        List<Room> rooms = new ArrayList<>();
-        rooms.add(room1);
-        rooms.add(room2);
-        // 添加学期
-        Term term1 = this.addTerm("testTerm1" , 1L);
-        Term term2 = this.addTerm("testTerm2", 0L);
-        Term term3 = this.addTerm("testTerm3", 0L);
-        // 添加课程
-        Course course1 = this.addCourse("testCourse1", 40L);
-        Course course2 = this.addCourse("testCourse2", 40L);
-        Course course3 = this.addCourse("testCourse3", 40L);
-        // 添加排课(schedule)
-        Schedule schedule1 = this.addSchedule(teacher1, term1, course1, clazzes, students);
-        Schedule schedule2 = this.addSchedule(teacher1, term1, course2, clazzes, students);
-        Schedule schedule3 = this.addSchedule(teacher1, term1, course3, clazzes, students);
-        Schedule schedule4 = this.addSchedule(teacher2, term1, course3, clazzes, students);
-        // 添加调度(dispatch)
-        Dispatch dispatch1 = this.addDispatch(schedule1, 0L, 0L, 0L, rooms);
-        Dispatch dispatch2 = this.addDispatch(schedule2, 0L, 0L, 0L, rooms);
-        Dispatch dispatch3 = this.addDispatch(schedule3, 0L, 0L, 0L, rooms);
-    }
-
-    private void forCSHTest() {
+    private void forTest() {
         // 添加教师
         User uTeacher1 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000000", "yunzhi", "教师1");
         Teacher teacher1 = this.addTeacher(uTeacher1);
@@ -195,7 +122,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         rooms.add(room1);
         rooms.add(room2);
         // 添加学期
-        Term term1 = this.addTerm("testTerm1" , 1L);
+        Term term1 = this.addTerm("testTerm1" , 0L);
         Term term2 = this.addTerm("testTerm2", 0L);
         Term term3 = this.addTerm("testTerm3", 0L);
         // 添加课程
