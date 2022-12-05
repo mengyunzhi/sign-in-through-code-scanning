@@ -116,4 +116,31 @@ export class PersonalEditComponent implements OnInit {
       });
   }
 
+  isDisabled(): boolean {
+    const phoneNumber = this.formGroup.get('number');
+    const password = this.formGroup.get('password');
+    const newPassword = this.formGroup.get('newPassword');
+    const newPasswordAgain = this.formGroup.get('newPasswordAgain');
+    if (phoneNumber?.errors) {
+      return true;
+    }
+    // 没有密码
+    if (!password?.value) {
+      return false;
+    }
+    // 有新密码,但是没有密码
+    if ((newPassword?.value || newPasswordAgain?.value) && password.value) {
+      return false;
+    }
+    // 没有填新密码
+    if (!newPassword?.value || !newPasswordAgain?.value) {
+      return true;
+    }
+    // 修改密码：密码无效
+    if (password.invalid || newPassword.invalid || newPasswordAgain.invalid) {
+      return true;
+    }
+    return false;
+  }
+
 }

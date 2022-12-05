@@ -65,12 +65,8 @@
   <div class="form-group row">
     <div class="col-sm-6 text-center">
       <button type="submit" class="btn btn-primary" (click)="onSubmit()" [disabled]="
-    formGroup.get('number')?.errors?.numberUnique
-&& (
-!formGroup.get('password')?.value
-|| (formGroup.get('password')?.value && formGroup.get('newPassword')?.invalid || !formGroup.get('newPassword')?.value)
-|| (formGroup.get('password')?.value && formGroup.get('newPasswordAgain')?.invalid  || !formGroup.get('newPasswordAgain')?.value)
-)">保存</button>
+      isDisabled()
+    ">保存</button>
       <a class="btn btn-primary" [routerLink]="'/admin/personal'">返回</a>
     </div>
   </div>
