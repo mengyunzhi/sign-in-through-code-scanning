@@ -19,7 +19,7 @@ export class ProgramEditComponent implements OnInit {
 
   formGroup: FormGroup;
   private schedule_id: number | undefined;
-  private courseName: string | undefined;
+  public courseName: string | undefined;
 
   constructor(private route: ActivatedRoute,
               private programService: ProgramService,

@@ -29,7 +29,7 @@ export class ViewStudentAddComponent implements OnInit {
   studentIds = [] as number[];
   // 标志数据是否返回，另外三个数据不足以作为判断标准
   flag = 0;
-  private courseName: string | undefined;
+  public courseName: string | undefined;
   constructor(private route: ActivatedRoute,
               private studentScheduleService: StudentScheduleService,
               private router: Router,

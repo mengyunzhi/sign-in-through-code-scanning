@@ -34,7 +34,7 @@ export class ViewStudentComponent implements OnInit {
     numberOfElements: 0
   });
   schedule_id: number | undefined;
-  private courseName: string | undefined;
+  public courseName: string | undefined;
   constructor(private studentService: StudentService,
               private route: ActivatedRoute,
               private studentScheduleService: StudentScheduleService,

@@ -27,7 +27,7 @@ export class TimeAddComponent implements OnInit {
     course_id: new FormControl('', Validators.required),
     clazz_ids: new FormControl(null, Validators.required),
   });
-  private courseName: string | undefined;
+  public courseName: string | undefined;
 
 
   constructor(private scheduleService: ScheduleService,

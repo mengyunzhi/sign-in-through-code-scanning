@@ -32,7 +32,7 @@ export class ClazzMembersComponent implements OnInit {
     name: new FormControl('', Validators.required),
     sno: new FormControl('', Validators.required),
   });
-  private clazzName: any;
+  public clazzName: any;
 
   constructor(private clazzService: ClazzService,
               private route: ActivatedRoute,

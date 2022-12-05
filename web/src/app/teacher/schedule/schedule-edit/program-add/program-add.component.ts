@@ -17,7 +17,7 @@ import {CourseService} from '../../../../service/course.service';
 })
 export class ProgramAddComponent implements OnInit {
   formGroup: FormGroup;
-  private courseName: string | undefined;
+  public courseName: string | undefined;
 
   constructor(private programService: ProgramService,
               private scheduleService: ScheduleService,

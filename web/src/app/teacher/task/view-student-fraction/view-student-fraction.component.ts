@@ -11,9 +11,9 @@ import {StudentService} from '../../../service/student.service';
 })
 export class ViewStudentFractionComponent implements OnInit {
   private schedule_id: number | undefined;
-  private courseName: string | undefined;
+  public courseName: string | undefined;
   private student_id: number | undefined;
-  private studentName: string | undefined;
+  public studentName: string | undefined;
 
   constructor(private route: ActivatedRoute,
               private scheduleService: ScheduleService,
