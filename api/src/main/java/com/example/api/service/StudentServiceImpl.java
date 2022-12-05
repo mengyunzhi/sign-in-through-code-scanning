@@ -56,6 +56,9 @@ public class StudentServiceImpl implements StudentService {
         student.setSno(sno);
         student.setState(0L);
 
+        Clazz currentClazz = this.clazzService.findById(clazzId);
+        currentClazz.setNumber_of_students(currentClazz.getNumber_of_students() + 1);
+
         Clazz clazz = new Clazz();
         clazz.setId(clazzId);
 
@@ -92,6 +95,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteByUserId(Long userId) {
         Assert.notNull(userId, "userId不能为null");
+
+        List<Schedule> allSchedule = (List<Schedule>) this.scheduleRepository.findAll();
+        for (Schedule schedule: allSchedule) {
+            schedule.getStudents().removeIf(student -> Objects.equals(student.getUser().getId(), userId));
+        }
+
         this.studentRepository.deleteByUserId(userId);
         this.userService.deleteById(userId);
     }

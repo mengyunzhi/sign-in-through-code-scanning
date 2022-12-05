@@ -49,11 +49,11 @@ public class ClazzServiceImpl implements ClazzService {
     public Page findAll(String searchName, @NotNull Pageable pageable) {
         Assert.notNull(pageable, "pageable不能为null");
         Page<Clazz> page = this.clazzRepository.findAll(searchName, pageable);
-        for (Clazz clazz:
-                page.getContent()) {
-            Long number_of_students = (long) this.studentRepository.findAll(StudentSpecs.belongToClazz(clazz.getId())).size();
-            clazz.setNumber_of_students(number_of_students);
-        }
+//        for (Clazz clazz:
+//                page.getContent()) {
+//            Long number_of_students = (long) this.studentRepository.findAll(StudentSpecs.belongToClazz(clazz.getId())).size();
+//            clazz.setNumber_of_students(number_of_students);
+//        }
         return page;
     }
 
@@ -138,6 +138,7 @@ public class ClazzServiceImpl implements ClazzService {
         oldClazz.setName(newClazz.getName());
         oldClazz.setEntrance_date(newClazz.getEntrance_date());
         oldClazz.setLength(newClazz.getLength());
+        oldClazz.setNumber_of_students(newClazz.getNumber_of_students());
         return this.clazzRepository.save(oldClazz);
     }
 }

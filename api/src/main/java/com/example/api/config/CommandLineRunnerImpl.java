@@ -87,10 +87,10 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         User uTeacher2 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000001", "yunzhi", "教师2");
         Teacher teacher2 = this.addTeacher(uTeacher2);
         // 添加班级
-        Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L);
-        Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L);
-        Clazz clazz3 = this.addClazz("testclazz3", (short) 8, 1000000000L);
-        Clazz clazz4 = this.addClazz("testclazz4", (short) 8, 100000000000L);
+        Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L, 1L);
+        Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L, 1L);
+        Clazz clazz3 = this.addClazz("testclazz3", (short) 8, 1000000000L, 1L);
+        Clazz clazz4 = this.addClazz("testclazz4", (short) 8, 100000000000L, 2L);
         List<Clazz> clazzes = new ArrayList<>();
         clazzes.add(clazz1);
         clazzes.add(clazz2);
@@ -158,10 +158,10 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         User uTeacher2 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000001", "yunzhi", "教师2");
         Teacher teacher2 = this.addTeacher(uTeacher2);
         // 添加班级
-        Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L);
-        Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L);
-        Clazz clazz3 = this.addClazz("testclazz3", (short) 8, 1000000000L);
-        Clazz clazz4 = this.addClazz("testclazz4", (short) 8, 100000000000L);
+        Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L, 1L);
+        Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L, 1L);
+        Clazz clazz3 = this.addClazz("testclazz3", (short) 8, 1000000000L, 1L);
+        Clazz clazz4 = this.addClazz("testclazz4", (short) 8, 100000000000L, 2L);
         List<Clazz> clazzes = new ArrayList<>();
         clazzes.add(clazz1);
         clazzes.add(clazz2);
@@ -301,11 +301,12 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         return user;
     }
 
-    private Clazz addClazz(String name, Short length, Long entranceDate) {
+    private Clazz addClazz(String name, Short length, Long entranceDate, Long numberOfStudents) {
         Clazz clazz = new Clazz();
         clazz.setName(name);
         clazz.setLength(length);
         clazz.setEntrance_date(entranceDate);
+        clazz.setNumber_of_students(numberOfStudents);
         return this.clazzRepository.save(clazz);
     }
 
