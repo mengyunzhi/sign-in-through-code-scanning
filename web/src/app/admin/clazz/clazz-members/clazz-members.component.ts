@@ -32,6 +32,7 @@ export class ClazzMembersComponent implements OnInit {
     name: new FormControl('', Validators.required),
     sno: new FormControl('', Validators.required),
   });
+  private clazzName: any;
 
   constructor(private clazzService: ClazzService,
               private route: ActivatedRoute,
@@ -42,6 +43,10 @@ export class ClazzMembersComponent implements OnInit {
   ngOnInit(): void {
     this.clazz_id = +this.route.snapshot.params.clazz_id;
     this.loadByPage(0, this.param);
+    this.clazzService.getById(this.clazz_id)
+      .subscribe(clazz => {
+        this.clazzName = clazz.name;
+      });
   }
 
   onDelete(id: number): void {

@@ -56,11 +56,32 @@ public class StudentServiceImpl implements StudentService {
         student.setSno(sno);
         student.setState(0L);
 
+        Clazz currentClazz = this.clazzService.findById(clazzId);
+        if (currentClazz != null) {
+            currentClazz.setNumber_of_students(currentClazz.getNumber_of_students() + 1);
+        }
+
         Clazz clazz = new Clazz();
         clazz.setId(clazzId);
 
         student.setUser(user);
         student.setClazz(clazz);
+
+        Long clazzCorrespondScheduleId = null;
+        List<Schedule> allSchedule = (List<Schedule>) this.scheduleRepository.findAll();
+        for (Schedule schedule : allSchedule) {
+            for (Clazz scheduleCorrespondClazz : schedule.getClazzes()) {
+                if (Objects.equals(scheduleCorrespondClazz.getId(), clazzId)) {
+                    clazzCorrespondScheduleId = schedule.getId();
+                    break;
+                }
+            }
+        }
+        if (clazzCorrespondScheduleId != null) {
+            Schedule clazzCorrespondSchedule = this.scheduleRepository.findById(clazzCorrespondScheduleId).get();
+            clazzCorrespondSchedule.getStudents().add(student);
+        }
+
         return this.studentRepository.save(student);
     }
 
@@ -76,6 +97,12 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteByUserId(Long userId) {
         Assert.notNull(userId, "userId不能为null");
+
+        List<Schedule> allSchedule = (List<Schedule>) this.scheduleRepository.findAll();
+        for (Schedule schedule: allSchedule) {
+            schedule.getStudents().removeIf(student -> Objects.equals(student.getUser().getId(), userId));
+        }
+
         this.studentRepository.deleteByUserId(userId);
         this.userService.deleteById(userId);
     }
@@ -191,6 +218,11 @@ public class StudentServiceImpl implements StudentService {
             return 0L;
         }
         return 1L;
+    }
+
+    @Override
+    public Student getByStudentId(Long studentId) {
+        return this.studentRepository.findById(studentId).get();
     }
 
 }

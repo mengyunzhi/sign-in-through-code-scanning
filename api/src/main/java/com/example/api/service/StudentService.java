@@ -34,4 +34,6 @@ public interface StudentService {
     List<Student> getAll();
 
     Long snoExist(Long userId, String sno);
+
+    Student getByStudentId(Long studentId);
 }

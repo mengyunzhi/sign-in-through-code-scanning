@@ -39,7 +39,7 @@ public class Clazz {
     private List<Student> students = new ArrayList<>();
 
     // 班级人数，非数据库属性
-    @Transient
+    @ApiModelProperty("班级人数")
     @JsonView(NumberOfStudentsJsonView.class)
     private Long number_of_students = 0L;
 

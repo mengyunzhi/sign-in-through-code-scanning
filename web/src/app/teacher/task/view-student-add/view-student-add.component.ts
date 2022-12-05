@@ -7,6 +7,8 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Assert} from '@yunzhi/ng-mock-api';
 import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
+import {ScheduleService} from '../../../service/schedule.service';
+import {CourseService} from '../../../service/course.service';
 
 @Component({
   selector: 'app-view-student-add',
@@ -27,10 +29,13 @@ export class ViewStudentAddComponent implements OnInit {
   studentIds = [] as number[];
   // 标志数据是否返回，另外三个数据不足以作为判断标准
   flag = 0;
+  private courseName: string | undefined;
   constructor(private route: ActivatedRoute,
               private studentScheduleService: StudentScheduleService,
               private router: Router,
-              private commonService: CommonService) { }
+              private commonService: CommonService,
+              private scheduleService: ScheduleService,
+              private courseService: CourseService) { }
 
   ngOnInit(): void {
     this.schedule_id = +this.route.snapshot.params.schedule_id;
@@ -43,6 +48,14 @@ export class ViewStudentAddComponent implements OnInit {
         this.allStudents = data.students;
       }, error => {
         console.log('请求失败', error);
+      });
+    this.scheduleService.getById(this.schedule_id)
+      .subscribe(schedule => {
+        const courseId = schedule.course.id;
+        this.courseService.getById(courseId)
+          .subscribe(course => {
+            this.courseName = course.name;
+          });
       });
   }
 

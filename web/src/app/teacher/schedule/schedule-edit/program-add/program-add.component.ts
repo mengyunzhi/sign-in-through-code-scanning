@@ -8,6 +8,7 @@ import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../../service/common.service';
 import {CommonValidator} from '../../../../validator/common-validator';
 import {HttpClient} from '@angular/common/http';
+import {CourseService} from '../../../../service/course.service';
 
 @Component({
   selector: 'app-program-add',
@@ -16,13 +17,15 @@ import {HttpClient} from '@angular/common/http';
 })
 export class ProgramAddComponent implements OnInit {
   formGroup: FormGroup;
+  private courseName: string | undefined;
 
   constructor(private programService: ProgramService,
               private scheduleService: ScheduleService,
               private route: ActivatedRoute,
               private router: Router,
               private commonService: CommonService,
-              private httpClient: HttpClient) {
+              private httpClient: HttpClient,
+              private courseService: CourseService) {
     const commonValidator = new CommonValidator(httpClient);
     this.formGroup = new FormGroup({
       name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength]),
@@ -42,6 +45,14 @@ export class ProgramAddComponent implements OnInit {
         this.course = schedule.course;
       }, error => {
         console.log(error);
+      });
+    this.scheduleService.getById(this.schedule_id)
+      .subscribe(schedule => {
+        const courseId = schedule.course.id;
+        this.courseService.getById(courseId)
+          .subscribe(course => {
+            this.courseName = course.name;
+          });
       });
   }
   onSubmit(): void {

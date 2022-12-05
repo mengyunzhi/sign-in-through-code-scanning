@@ -1,3 +1,9 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">查看班级成员: {{clazzName}}</a></li>
+  </ol>
+</nav>
+
 <div class="row">
   <div class="col-md-12 text-right">
     <a class="btn btn-primary" routerLink="./add"><i class="glyphicon"></i>新增</a>
@@ -38,7 +44,9 @@
     <td>{{ student.user.name }}</td>
     <td>{{ student.user.sex | sex }}</td>
     <td>{{ student.sno }}</td>
-    <td>{{ student.state ? student.user.number : '-' }}</td>
+    <td *ngIf="student.state === 1">{{student.user.number}}</td>
+    <td *ngIf="student.state === 0" style="color: crimson">未注册</td>
+<!--    <td>{{ student.state ? student.user.number : '-' }}</td>-->
     <td>
       <a class="btn btn-sm btn-primary" [routerLink]="'./edit/' + student.user.id">&nbsp;编辑</a>
       <a class="btn btn-sm btn-danger" (click)="onDelete(student.user.id)">&nbsp;删除</a>

@@ -87,10 +87,10 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         User uTeacher2 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000001", "yunzhi", "教师2");
         Teacher teacher2 = this.addTeacher(uTeacher2);
         // 添加班级
-        Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L);
-        Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L);
-        Clazz clazz3 = this.addClazz("testclazz3", (short) 8, 1000000000L);
-        Clazz clazz4 = this.addClazz("testclazz4", (short) 8, 100000000000L);
+        Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L, 1L);
+        Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L, 1L);
+        Clazz clazz3 = this.addClazz("testclazz3", (short) 8, 1000000000L, 1L);
+        Clazz clazz4 = this.addClazz("testclazz4", (short) 8, 100000000000L, 2L);
         List<Clazz> clazzes = new ArrayList<>();
         clazzes.add(clazz1);
         clazzes.add(clazz2);
@@ -158,10 +158,10 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         User uTeacher2 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000001", "yunzhi", "教师2");
         Teacher teacher2 = this.addTeacher(uTeacher2);
         // 添加班级
-        Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L);
-        Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L);
-        Clazz clazz3 = this.addClazz("testclazz3", (short) 8, 1000000000L);
-        Clazz clazz4 = this.addClazz("testclazz4", (short) 8, 100000000000L);
+        Clazz clazz1 = this.addClazz("testclazz1", (short) 2, 0L, 1L);
+        Clazz clazz2 = this.addClazz("testclazz2", (short) 4, 1000000L, 1L);
+        Clazz clazz3 = this.addClazz("testclazz3", (short) 8, 1000000000L, 1L);
+        Clazz clazz4 = this.addClazz("testclazz4", (short) 8, 100000000000L, 2L);
         List<Clazz> clazzes = new ArrayList<>();
         clazzes.add(clazz1);
         clazzes.add(clazz2);
@@ -180,9 +180,13 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         User uStudent5 = this.getUser(StaticVariable.ROLE_STUDENT, "13122555555", "yunzhi", "学生5");
         Student student5 = this.addStudent(uStudent5, clazz4, "555555", StaticVariable.STATE_TRUE);
 
-        List<Student> students = new ArrayList<>();
-        students.add(student1);
-        students.add(student2);
+
+        List<Student> studentsInClazz12 = new ArrayList<>();
+        studentsInClazz12.add(student1);
+        studentsInClazz12.add(student2);
+
+        List<Student> studentsInClazz3 = new ArrayList<>();
+        studentsInClazz3.add(student3);
 
         // 添加教室
         Room room1 = this.addRoom("testRoom1", 40L);
@@ -203,9 +207,9 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         Program program2 = this.addProgram("testProgram2", course2, 4L);
         Program program3 = this.addProgram("testProgram3", course3, 6L);
         // 添加排课(schedule)
-        Schedule schedule1 = this.addSchedule(teacher1, term1, course1, clazzes, null);
+        Schedule schedule1 = this.addSchedule(teacher1, term1, course1, clazzes, studentsInClazz12);
         List<Clazz> clazzes2 = new ArrayList<>(); clazzes2.add(clazz3);
-        Schedule schedule2 = this.addSchedule(teacher2, term1, course2, clazzes2, null);
+        Schedule schedule2 = this.addSchedule(teacher2, term1, course2, clazzes2, studentsInClazz3);
         // 添加调度(dispatch)
         Dispatch dispatch1 = this.addDispatch(schedule1, 0L, 0L, 0L, rooms);rooms.remove(1);
         Dispatch dispatch2 = this.addDispatch(schedule1, 1L, 1L, 1L, rooms);
@@ -297,11 +301,12 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         return user;
     }
 
-    private Clazz addClazz(String name, Short length, Long entranceDate) {
+    private Clazz addClazz(String name, Short length, Long entranceDate, Long numberOfStudents) {
         Clazz clazz = new Clazz();
         clazz.setName(name);
         clazz.setLength(length);
         clazz.setEntrance_date(entranceDate);
+        clazz.setNumber_of_students(numberOfStudents);
         return this.clazzRepository.save(clazz);
     }
 

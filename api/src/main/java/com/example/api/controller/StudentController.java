@@ -67,6 +67,11 @@ public class StudentController {
         return this.studentService.getByUserId(userId);
     }
 
+    @GetMapping("getByStudentId/{studentId}")
+    public Student getByStudentId(@PathVariable Long studentId) {
+        return this.studentService.getByStudentId(studentId);
+    }
+
     /**
      * 接受的student中的属性
      * user.name, user.sex, clazz.id, sno

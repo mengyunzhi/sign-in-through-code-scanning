@@ -6,8 +6,8 @@ import {Assert} from '@yunzhi/ng-mock-api';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
 import {HttpClient} from '@angular/common/http';
-import {User} from "../../../entity/user";
-import {Student} from "../../../entity/student";
+import {Student} from '../../../entity/student';
+import {ClazzService} from '../../../service/clazz.service';
 
 @Component({
   selector: 'app-clazz-mebers-edit',
@@ -20,12 +20,14 @@ export class ClazzMembersEditComponent implements OnInit {
 
   clazz_id: number | undefined;
   id: number | undefined;
+  private clazzName: any;
 
   constructor(private studentService: StudentService,
               private route: ActivatedRoute,
               private router: Router,
               private commonService: CommonService,
-              private httpClient: HttpClient) {
+              private httpClient: HttpClient,
+              private clazzService: ClazzService) {
     this.id = +this.route.snapshot.params.id;
     const commonValidator = new CommonValidator(httpClient);
     this.formGroup = new FormGroup({
@@ -48,6 +50,10 @@ export class ClazzMembersEditComponent implements OnInit {
         this.formGroup.get('sno')?.setValue(student.sno);
       }, error => {
         console.log('学生请求失败', error);
+      });
+    this.clazzService.getById(this.clazz_id)
+      .subscribe(clazz => {
+        this.clazzName = clazz.name;
       });
   }
 
