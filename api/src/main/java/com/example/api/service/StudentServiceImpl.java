@@ -57,7 +57,9 @@ public class StudentServiceImpl implements StudentService {
         student.setState(0L);
 
         Clazz currentClazz = this.clazzService.findById(clazzId);
-        currentClazz.setNumber_of_students(currentClazz.getNumber_of_students() + 1);
+        if (currentClazz != null) {
+            currentClazz.setNumber_of_students(currentClazz.getNumber_of_students() + 1);
+        }
 
         Clazz clazz = new Clazz();
         clazz.setId(clazzId);
