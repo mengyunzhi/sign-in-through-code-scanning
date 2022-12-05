@@ -61,6 +61,22 @@ public class StudentServiceImpl implements StudentService {
 
         student.setUser(user);
         student.setClazz(clazz);
+
+        Long clazzCorrespondScheduleId = null;
+        List<Schedule> allSchedule = (List<Schedule>) this.scheduleRepository.findAll();
+        for (Schedule schedule : allSchedule) {
+            for (Clazz scheduleCorrespondClazz : schedule.getClazzes()) {
+                if (Objects.equals(scheduleCorrespondClazz.getId(), clazzId)) {
+                    clazzCorrespondScheduleId = schedule.getId();
+                    break;
+                }
+            }
+        }
+        if (clazzCorrespondScheduleId != null) {
+            Schedule clazzCorrespondSchedule = this.scheduleRepository.findById(clazzCorrespondScheduleId).get();
+            clazzCorrespondSchedule.getStudents().add(student);
+        }
+
         return this.studentRepository.save(student);
     }
 
@@ -191,6 +207,11 @@ public class StudentServiceImpl implements StudentService {
             return 0L;
         }
         return 1L;
+    }
+
+    @Override
+    public Student getByStudentId(Long studentId) {
+        return this.studentRepository.findById(studentId).get();
     }
 
 }

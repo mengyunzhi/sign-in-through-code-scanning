@@ -180,9 +180,13 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         User uStudent5 = this.getUser(StaticVariable.ROLE_STUDENT, "13122555555", "yunzhi", "学生5");
         Student student5 = this.addStudent(uStudent5, clazz4, "555555", StaticVariable.STATE_TRUE);
 
-        List<Student> students = new ArrayList<>();
-        students.add(student1);
-        students.add(student2);
+
+        List<Student> studentsInClazz12 = new ArrayList<>();
+        studentsInClazz12.add(student1);
+        studentsInClazz12.add(student2);
+
+        List<Student> studentsInClazz3 = new ArrayList<>();
+        studentsInClazz3.add(student3);
 
         // 添加教室
         Room room1 = this.addRoom("testRoom1", 40L);
@@ -203,9 +207,9 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         Program program2 = this.addProgram("testProgram2", course2, 4L);
         Program program3 = this.addProgram("testProgram3", course3, 6L);
         // 添加排课(schedule)
-        Schedule schedule1 = this.addSchedule(teacher1, term1, course1, clazzes, null);
+        Schedule schedule1 = this.addSchedule(teacher1, term1, course1, clazzes, studentsInClazz12);
         List<Clazz> clazzes2 = new ArrayList<>(); clazzes2.add(clazz3);
-        Schedule schedule2 = this.addSchedule(teacher2, term1, course2, clazzes2, null);
+        Schedule schedule2 = this.addSchedule(teacher2, term1, course2, clazzes2, studentsInClazz3);
         // 添加调度(dispatch)
         Dispatch dispatch1 = this.addDispatch(schedule1, 0L, 0L, 0L, rooms);rooms.remove(1);
         Dispatch dispatch2 = this.addDispatch(schedule1, 1L, 1L, 1L, rooms);
