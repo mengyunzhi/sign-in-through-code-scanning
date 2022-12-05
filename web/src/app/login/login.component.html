@@ -69,10 +69,10 @@
   <div class="row">
     <div class="col-md-12">
 <!--      [disabled]="registerGroup.invalid || registerGroup.pending"-->
-      <button type="submit" [disabled]="registerGroup.get('sno')?.errors?.required || registerGroup.get('sno')?.errors?.minlength || registerGroup.get('sno')?.errors?.maxlength || registerGroup.get('sno')?.errors?.sno
-       || registerGroup.get('sno')?.errors?.snoExist
-       || registerGroup.get('number')?.errors?.numberUnique  !== '名称合理'
-       || registerGroup.get('password')?.invalid" (click)="studentRegister()" class="btn btn-primary btn-block">确定</button>
+      <button type="submit" [disabled]="
+registerGroup.get('sno')?.errors
+|| registerGroup.get('number')?.errors
+|| registerGroup.get('password')?.invalid" (click)="studentRegister()" class="btn btn-primary btn-block">确定</button>
     </div>
     <div class="col-md-12">
       <button type="submit" (click)="changeRegister()" class="mt-3 btn btn-primary btn-block">返回</button>
