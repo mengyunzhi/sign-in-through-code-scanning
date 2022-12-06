@@ -39,21 +39,17 @@ export class TeacherAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const cacheDefaultPassword = window.sessionStorage.getItem('cacheDefaultPassword');
-    if (cacheDefaultPassword === null) {
-      // this.formGroup.addControl(this.formKeys.name, new FormControl('', Validators.required));
-      // this.formGroup.addControl(this.formKeys.sex, new FormControl('', Validators.required));
-      // this.formGroup.addControl(this.formKeys.number, new FormControl('', [Validators.required, Validator.isPhoneNumber]));
+    this.indexTeacherPassword = window.sessionStorage.getItem('cacheDefaultPassword') as string;
+    if (this.indexTeacherPassword === '' || this.indexTeacherPassword === null) {
       this.userService.getDefaultPassword()
         .subscribe(success => {
           window.sessionStorage.setItem('cacheDefaultPassword', success);
-          // console.log(this.indexTeacherPassword);
+          this.indexTeacherPassword = success;
+          console.log(this.indexTeacherPassword);
         }, error => {
           console.log(error);
         });
     }
-    // @ts-ignore
-    this.indexTeacherPassword = window.sessionStorage.getItem('cacheDefaultPassword');
   }
 
   onSubmit(): void {

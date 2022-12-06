@@ -2,14 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {StudentService} from '../../../service/student.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Notify, Report} from 'notiflix';
 import {CommonService} from '../../../service/common.service';
 import {CommonValidator} from '../../../validator/common-validator';
 import {HttpClient} from '@angular/common/http';
-import {UserService} from "../../../service/user.service";
-import {Student} from "../../../entity/student";
-import {User} from "../../../entity/user";
-import {Clazz} from "../../../entity/clazz";
+import {UserService} from '../../../service/user.service';
+import {Student} from '../../../entity/student';
+import {User} from '../../../entity/user';
+import {Clazz} from '../../../entity/clazz';
 
 @Component({
   selector: 'app-student-add',
@@ -54,19 +53,17 @@ export class StudentAddComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const cacheDefaultPassword = window.sessionStorage.getItem('cacheDefaultPassword');
-    if (cacheDefaultPassword === null) {
+    this.indexStudentPassword = window.sessionStorage.getItem('cacheDefaultPassword') as string;
+    if (this.indexStudentPassword === '' || this.indexStudentPassword === null) {
       this.userService.getDefaultPassword()
         .subscribe(success => {
           window.sessionStorage.setItem('cacheDefaultPassword', success);
-          // this.indexStudentPassword = success;
+          this.indexStudentPassword = success;
           console.log(this.indexStudentPassword);
         }, error => {
           console.log(error);
         });
     }
-    // @ts-ignore
-    this.indexStudentPassword = window.sessionStorage.getItem('cacheDefaultPassword');
   }
 
 

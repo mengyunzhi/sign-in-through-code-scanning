@@ -28,7 +28,7 @@
         <input type="text" class="form-control" formControlName="number" style="width: 200px" appValidatorClass>
         <small class="text-danger" *ngIf="formGroup.get('number')?.errors">
           <ng-container *ngIf="formGroup.get('number')?.errors?.isPhoneNumber">手机号格式错误</ng-container>
-          <ng-container *ngIf="!formGroup.valid">该手机号已存在</ng-container>
+          <ng-container *ngIf="formGroup.get('number')?.errors?.numberUnique">该手机号已存在</ng-container>
         </small>
       </div>
     </div>
