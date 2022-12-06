@@ -74,7 +74,6 @@ export class CourseTime2Component implements OnInit {
   ngOnInit(): void {
     this.loadData();
     this.sendParent();
-    this.conflictData.length ? console.log(this.day, this.lesson, this.conflictData) : this.conflictData = [];
     // console.log('coursetime-conflictData', this.day, this.lesson, this.conflictData);
     // console.log(this.day, this.lesson, this.conflictData, this.disableWeeks, this.conflictWeeks);
     // console.log('-------------------\n unit day', this.day);
@@ -243,13 +242,16 @@ export class CourseTime2Component implements OnInit {
           }
         }
       } else {
+
         // 如果不对应，根据教师和班级的冲突条件添加disableWeek
         if (data.teacher_id === this.teacher.id) {
           this.disableWeeks.push(data.week);
           continue;
         }
+
+        console.log(this.day, this.lesson, this.conflictData, this.selectedClazzes, data.clazzIds);
         // data中clazzIds和selectedClazzes有交集
-        if (data.clazzIds.filter(clazzId => this.selectedClazzes?.includes(clazzId))) {
+        if (data.clazzIds.filter(clazzId => this.selectedClazzes?.includes(clazzId)).length > 0) {
           this.disableWeeks.push(data.week);
         }
       }

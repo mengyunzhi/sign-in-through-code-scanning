@@ -92,6 +92,12 @@ export class TimeAddComponent implements OnInit {
         this.dispatches = data.dispatchForSchedules;
         this.teacher = data.teacher;
         this.weeks = this.termService.getWeeksByTerm(this.term);
+        let clazzIds: number[];
+        clazzIds = [];
+        this.clazzes.forEach(clazz => {
+          clazzIds.push(clazz.id);
+        });
+        this.formGroup.get('clazz_ids')?.setValue(clazzIds);
       }, error =>  {
         console.log('失败', error);
       });
@@ -152,7 +158,6 @@ export class TimeAddComponent implements OnInit {
   /* 接收子组件传回的数据 */
   getFooterRun(data: {day: number, lesson: number, weeks: number[], roomIds: number[]}): void {
     // console.log('data', data);
-    console.log('courseTimes改变');
     this.courseTimes[data.day][data.lesson].weeks = data.weeks;
     this.courseTimes[data.day][data.lesson].roomIds = data.roomIds;
     // console.log('courseTimes', this.courseTimes);
