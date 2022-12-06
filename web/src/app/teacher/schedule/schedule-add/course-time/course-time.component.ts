@@ -68,6 +68,8 @@ export class CourseTimeComponent implements OnInit {
   courseTime = [] as {weeks: number[], roomIds: number[]}[][];
 
   ngOnInit(): void {
+    // clazzes变化的时候已经加载数据，需要先清除一下重新加载
+    this.clearData();
     this.loadData();
     console.log(this.day, this.lesson, this.conflictData, this.disableWeeks, this.conflictWeeks);
     // console.log('-------------------\n unit day', this.day);
