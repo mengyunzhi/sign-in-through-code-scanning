@@ -249,7 +249,6 @@ export class CourseTime2Component implements OnInit {
           continue;
         }
 
-        console.log(this.day, this.lesson, this.conflictData, this.selectedClazzes, data.clazzIds);
         // data中clazzIds和selectedClazzes有交集
         if (data.clazzIds.filter(clazzId => this.selectedClazzes?.includes(clazzId)).length > 0) {
           this.disableWeeks.push(data.week);
