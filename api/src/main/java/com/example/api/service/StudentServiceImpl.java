@@ -97,11 +97,14 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteByUserId(Long userId) {
         Assert.notNull(userId, "userId不能为null");
-
+        // 删掉该学生对应schedule
         List<Schedule> allSchedule = (List<Schedule>) this.scheduleRepository.findAll();
         for (Schedule schedule: allSchedule) {
             schedule.getStudents().removeIf(student -> Objects.equals(student.getUser().getId(), userId));
         }
+        // 该学生对应班级的人数减1
+        Student student = this.studentRepository.findByUserId(userId);
+        student.getClazz().setNumber_of_students(student.getClazz().getNumber_of_students() - 1);
 
         this.studentRepository.deleteByUserId(userId);
         this.userService.deleteById(userId);

@@ -10,6 +10,7 @@ import {User} from '../../../entity/user';
 import {Clazz} from '../../../entity/clazz';
 import {Student} from '../../../entity/student';
 import {ClazzService} from '../../../service/clazz.service';
+import {UserService} from '../../../service/user.service';
 
 @Component({
   selector: 'app-clazz-members-add',
@@ -22,13 +23,15 @@ export class ClazzMembersAddComponent implements OnInit {
 
   clazz_id: number | undefined;
   public clazzName: any;
+  indexStudentPassword: string | undefined;
 
   constructor(private studentService: StudentService,
               private route: ActivatedRoute,
               private router: Router,
               private commonService: CommonService,
               private httpClient: HttpClient,
-              private clazzService: ClazzService) {
+              private clazzService: ClazzService,
+              private userService: UserService) {
     const commonValidator = new CommonValidator(httpClient);
     this.formGroup = new FormGroup({
       name: new FormControl('', Validators.compose([Validators.required, CommonValidator.nameMinLength, CommonValidator.nameMaxLength])),
@@ -45,6 +48,18 @@ export class ClazzMembersAddComponent implements OnInit {
       .subscribe(clazz => {
         this.clazzName = clazz.name;
       });
+
+    this.indexStudentPassword = window.sessionStorage.getItem('cacheDefaultPassword') as string;
+    if (this.indexStudentPassword === '' || this.indexStudentPassword === null) {
+      this.userService.getDefaultPassword()
+        .subscribe(success => {
+          window.sessionStorage.setItem('cacheDefaultPassword', success);
+          this.indexStudentPassword = success;
+          console.log(this.indexStudentPassword);
+        }, error => {
+          console.log(error);
+        });
+    }
   }
 
   onSubmit(): void {

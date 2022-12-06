@@ -43,9 +43,9 @@ public class UserServiceImpl implements UserService {
     public User login(String number, String password) {
         User user = this.userRepository.findByNumber(number).get();
 
-        if (user.getRole() == StaticVariable.ROLE_STUDENT) {
+        if (Objects.equals(user.getRole(), StaticVariable.ROLE_STUDENT)) {
             Student student = this.studentRepository.findByUserId(user.getId());
-            if (student.getState() == StaticVariable.STATE_FALSE) {
+            if (Objects.equals(student.getState(), StaticVariable.STATE_FALSE)) {
                  user.setName("error");
                  user.setNumber("学生尚未注册");
                  return user;

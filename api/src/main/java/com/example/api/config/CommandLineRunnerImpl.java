@@ -77,7 +77,6 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         this.forTest();
     }
 
-
     private void forTest() {
         // 添加教师
         User uTeacher1 = this.getUser(StaticVariable.ROLE_TEACHER, "13100000000", "yunzhi", "教师1");
@@ -122,7 +121,7 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
         rooms.add(room1);
         rooms.add(room2);
         // 添加学期
-        Term term1 = this.addTerm("testTerm1" , 0L);
+        Term term1 = this.addTerm("testTerm1" , 1L);
         Term term2 = this.addTerm("testTerm2", 0L);
         Term term3 = this.addTerm("testTerm3", 0L);
         // 添加课程
