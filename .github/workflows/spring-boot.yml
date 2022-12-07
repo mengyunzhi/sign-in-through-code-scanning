@@ -20,16 +20,14 @@ jobs:
           cache: npm
           
       - name: npm install && angular test
+        run:  npm install    
+      - name: ng s
         run: |
-          npm install
-          ng t         
-#       - name: ng s
-#         run: |
-#           pwd
-#           cd web
-#           npm install --save-dev @angular-devkit/build-angular
-#           npm install -g @angular/cli@11.0.7
-#           ng s 
+          pwd
+          cd web
+          npm install --save-dev @angular-devkit/build-angular
+          npm install -g @angular/cli@11.0.7
+          ng t
 
 
 #   spring-boot-test:
