@@ -59,22 +59,22 @@ public class CommandLineRunnerImpl implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if(!userRepository.findByNumber("admin").isPresent()) {
+        if(!userRepository.findByNumber("13100000000").isPresent()) {
             logger.info("进行初始化管理员");
-            User user = this.getUser((short) 0, "admin", "yunzhi", "管理员");
+            User user = this.getUser((short) 0, "admin", "13100000000", "管理员");
             this.addAdmin(user);
         } else {
             logger.info("已添加初始化管理员");
         }
 
-        if(!userRepository.findByNumber("teacher").isPresent()) {
-            logger.info("进行初始化管教师");
-            User user = this.getUser((short) 1, "teacher", "yunzhi", "教师");
-            this.addTeacher(user);
-        } else {
-            logger.info("已添加初始化教师");
-        }
-        this.forTest();
+//        if(!userRepository.findByNumber("teacher").isPresent()) {
+//            logger.info("进行初始化管教师");
+//            User user = this.getUser((short) 1, "teacher", "yunzhi", "教师");
+//            this.addTeacher(user);
+//        } else {
+//            logger.info("已添加初始化教师");
+//        }
+//        this.forTest();
     }
 
     private void forTest() {
