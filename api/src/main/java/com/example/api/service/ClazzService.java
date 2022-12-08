@@ -28,4 +28,6 @@ public interface ClazzService {
     List<Long> clazzIdsHaveSelectCourse(@NotNull Long courseId);
 
     List<Clazz> getClazzesByCourseId(Long courseId);
+
+    void changeNumberOfStudents(Long clazzId, long num);
 }
