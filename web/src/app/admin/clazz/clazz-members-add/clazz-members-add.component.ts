@@ -64,10 +64,15 @@ export class ClazzMembersAddComponent implements OnInit {
 
   onSubmit(): void {
     Assert.isNumber(this.clazz_id, 'clazz_id类型错误');
+    let cacheDefaultPassword = window.sessionStorage.getItem('cacheDefaultPassword');
+    if (cacheDefaultPassword === null) {
+      cacheDefaultPassword = 'NoCache';
+    }
     this.studentService.save({
       user: {
         name: this.formGroup.get('name')?.value,
         sex: this.formGroup.get('sex')?.value,
+        password: cacheDefaultPassword,
       } as User,
       sno: this.formGroup.get('sno')?.value,
       clazz: {
