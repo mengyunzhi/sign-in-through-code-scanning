@@ -45,10 +45,10 @@
   <div class="row">
     <div class="col-md-12">
       <label for="number">手机号:</label>
-      <input type="text" formControlName="number" id="number" class="form-control" />
+      <input type="text" formControlName="number" id="number" class="form-control" appValidatorClass/>
       <small class="text-danger" *ngIf="registerGroup.get('number')?.errors">
         <ng-container *ngIf="registerGroup.get('number')?.errors?.isPhoneNumber">手机号格式错误</ng-container>
-        <ng-container *ngIf="registerGroup.get('number')?.errors?.numberUnique === '名称已存在'">该手机号已存在</ng-container>
+        <ng-container *ngIf="registerGroup.get('number')?.errors?.numberUnique">该手机号已存在</ng-container>
       </small>
     </div>
   </div>

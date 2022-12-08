@@ -32,7 +32,8 @@
       <td>{{ clazz.length }}</td>
       <td>
         <a class="btn btn-sm btn-primary col-md-2" [routerLink]="'./edit/' + clazz.id.toString()"><i class="fas fa-pen"></i>编辑</a>
-        <a class="btn btn-sm btn-danger" (click)="onDelete(clazz.id)"><i class="far fa-trash-alt"></i>删除</a>
+        <a class="btn btn-sm btn-danger" *ngIf="clazz.number_of_students === 0"  (click)="onDelete(clazz.id)"><i class="far fa-trash-alt"></i>删除</a>
+        <a class="btn btn-sm btn-danger disabled" *ngIf="clazz.number_of_students !== 0" (click)="onDelete(clazz.id)"><i class="far fa-trash-alt"></i>删除</a>
         <a class="btn btn-sm btn-success" [routerLink]="'clazzMembers/' + clazz.id.toString()">查看班级成员</a>
       </td>
     </tr>

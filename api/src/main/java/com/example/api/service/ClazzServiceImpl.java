@@ -108,6 +108,12 @@ public class ClazzServiceImpl implements ClazzService {
         return clazzes;
     }
 
+    @Override
+    public void changeNumberOfStudents(Long clazzId, long num) {
+        Clazz clazz = this.findById(clazzId);
+        clazz.setNumber_of_students(clazz.getNumber_of_students() + num);
+    }
+
     private List<Clazz> getClazzesBySchedules(List<Schedule> schedules) {
         List<Clazz> clazzes = new ArrayList<>();
         schedules.forEach(schedule -> {

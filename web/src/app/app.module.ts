@@ -12,6 +12,7 @@ import { IndexComponent } from './index/index.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import {ApiInterceptor} from './interceptor/api.interceptor';
 import {MockApiTestingModule} from './mock-api/mock-api-testing.module';
+import {ValidatorClassModule} from "./validator/validator/validator-class.module";
 
 
 @NgModule({
@@ -22,15 +23,16 @@ import {MockApiTestingModule} from './mock-api/mock-api-testing.module';
     IndexComponent,
     WelcomeComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    // 测试模块
-    // MockApiTestingModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        ValidatorClassModule,
+        // 测试模块
+        // MockApiTestingModule
+    ],
   providers: [
     DatePipe,
     {

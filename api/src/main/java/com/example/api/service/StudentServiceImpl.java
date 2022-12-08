@@ -129,9 +129,13 @@ public class StudentServiceImpl implements StudentService {
         User user = this.userService.getById(userId);
         user.setName(name);
         user.setSex(sex);
+        if (!Objects.equals(clazzId, student.getClazz().getId())) {
+            // 如果两个班级不相等，旧班级人数减1,新班级人数+1
+            this.clazzService.changeNumberOfStudents(student.getClazz().getId(), -1L);
+            this.clazzService.changeNumberOfStudents(clazzId, 1L);
+        }
         Clazz clazz = new Clazz();
         clazz.setId(clazzId);
-
         student.setUser(user);
         student.setClazz(clazz);
         return this.studentRepository.save(student);
